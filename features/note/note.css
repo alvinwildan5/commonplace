@@ -38,6 +38,7 @@ body {
   line-height: 1.8;
   font-size: 1.15rem;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* Mencegah horizontal scroll yang bocor */
 }
 a {
   color: inherit;
@@ -202,6 +203,7 @@ i.fa-regular {
   padding: 0 2rem;
   gap: 4rem;
   min-height: 80vh;
+  width: 100%;
 }
 
 /* =========================================================
@@ -287,8 +289,9 @@ i.fa-regular {
 ========================================================= */
 .main-content {
   flex-grow: 1;
-  min-width: 0;
+  min-width: 0; /* KRUSIAL: Mencegah flexbox hancur saat ada elemen baru */
   padding-bottom: 4rem;
+  width: 100%;
 }
 .note-header-simple h1 {
   font-family: var(--font-serif);
@@ -312,6 +315,7 @@ i.fa-regular {
 
 .topic-section {
   margin-bottom: 5rem;
+  width: 100%;
 }
 .topic-heading {
   display: flex;
@@ -329,16 +333,19 @@ i.fa-regular {
   margin-left: 20px;
 }
 
-/* CAROUSEL */
+/* CAROUSEL KONTROL DENGAN TOMBOL */
 .carousel-container {
   display: flex;
   align-items: center;
   gap: 1rem;
   position: relative;
+  width: 100%;
 }
 .carousel-viewport {
   overflow: hidden;
   width: 100%;
+  flex: 1; /* Pastikan viewport mengambil sisa ruang yang ada di antara tombol */
+  min-width: 0; /* Pengamanan flexbox */
   scroll-behavior: smooth;
 }
 .carousel-track {
@@ -419,7 +426,7 @@ i.fa-regular {
   gap: 12px;
 }
 
-/* MANAGE (EDIT/DELETE) ICONS — hanya untuk artikel yang dibuat via editor */
+/* MANAGE (EDIT/DELETE) ICONS */
 .ed-manage {
   display: flex;
   gap: 4px;
@@ -440,6 +447,7 @@ i.fa-regular {
   color: var(--accent-crimson);
 }
 
+/* TOMBOL KANAN KIRI SWIPE */
 .carousel-btn {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
@@ -452,7 +460,8 @@ i.fa-regular {
   align-items: center;
   color: var(--text-main);
   transition: var(--ease);
-  flex-shrink: 0;
+  flex-shrink: 0; /* Pastikan tombol tidak ikut mengecil */
+  z-index: 10;
 }
 .carousel-btn:hover {
   background: var(--accent-crimson);
@@ -586,7 +595,7 @@ i.fa-regular {
   font-style: italic;
 }
 
-/* IMAGE STYLE CLASSES — dipakai baik di editor maupun hasil publish */
+/* IMAGE STYLE CLASSES */
 .note-img {
   max-width: 100%;
   height: auto;
@@ -631,6 +640,8 @@ i.fa-regular {
   margin-top: 4rem;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  clear: both; /* Memastikan footer selalu berada di bawah elemen lain */
 }
 
 .footer-container {
@@ -795,7 +806,7 @@ i.fa-regular {
   letter-spacing: 1px;
   color: var(--text-muted);
   margin-bottom: 0.4rem;
-  margin-top: 0; /* Diubah menjadi 0 agar semua label sejajar merata */
+  margin-top: 0;
 }
 
 .field-input {
@@ -876,7 +887,7 @@ i.fa-regular {
 .editor-meta-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.2rem; /* Menggunakan gap seragam untuk vertikal & horizontal */
+  gap: 1.2rem;
   margin-bottom: 1.2rem;
 }
 .field-group {
@@ -913,7 +924,6 @@ i.fa-regular {
   color: #d4af37;
 }
 
-/* --- Custom Text Highlight (Stabilo Kuning Cerah) --- */
 .journal-highlight {
   background: linear-gradient(
     to top,
@@ -927,7 +937,6 @@ i.fa-regular {
   box-decoration-break: clone;
 }
 
-/* --- Journalistic Typographic Styles untuk Editor Body --- */
 .editor-body h2 {
   font-family: "Inter", sans-serif;
   font-size: 1.8rem;
@@ -1084,7 +1093,8 @@ i.fa-regular {
   .layout-wrapper {
     flex-direction: column;
     gap: 2rem;
-    padding-top: 100px; /* Menghindari overlap dengan fixed header */
+    padding-top: 100px;
+    width: 100%; /* Pastikan flex direction column tidak menciut */
   }
   .sidebar-nav {
     width: 100%;
@@ -1099,22 +1109,18 @@ i.fa-regular {
    RESPONSIVE DESIGN MOBILE (< 768px)
 ========================================================= */
 @media screen and (max-width: 768px) {
-  /* =========================================================
-     1. PERBAIKAN HEADER (Agar putihnya membungkus full ke bawah)
-  ========================================================= */
+  /* PERBAIKAN HEADER */
   .site-header {
     background: rgba(255, 255, 255, 0.98);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    height: auto; /* Memastikan background menutupi semua menu yang bertumpuk */
+    height: auto;
     padding-bottom: 0.5rem;
   }
-
   .site-nav {
-    padding: 0.8rem 1.5rem; /* Samakan padding dengan .container (1.5rem) */
+    padding: 0.8rem 1.5rem;
     flex-direction: column;
     gap: 0.8rem;
   }
-
   .nav-links {
     flex-wrap: wrap;
     justify-content: center;
@@ -1122,90 +1128,83 @@ i.fa-regular {
     font-size: 0.75rem;
   }
 
-  /* =========================================================
-     2. PERBAIKAN TOOLBAR (Pencarian & Tombol di dalam Container)
-  ========================================================= */
+  /* LAYOUT UMUM & TOOLBAR */
   .layout-wrapper {
-    /* Jarak agar konten tidak tertutup oleh header yang sekarang menjadi 2-3 baris */
     padding-top: 130px;
+    width: 100%;
   }
-
-  /* Gunakan class pembungkus toolbar Anda (misal: .note-toolbar / .search-section) */
   .search-section {
     width: 100%;
     background: var(--bg-paper);
     padding-bottom: 1rem;
   }
-
-  /* Pastikan di HTML, toolbar dibungkus <div class="container"> */
   .search-section .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    /* Secara otomatis akan mengikuti padding: 0 1.5rem; dari global .container */
   }
-
-  /* Bagian Input Pencarian */
   .search-input-wrapper {
-    flex: 1; /* Biarkan input mengambil sisa ruang di kiri */
-    min-width: 0; /* KRUSIAL: Mencegah input mendorong elemen keluar layar */
+    flex: 1;
+    min-width: 0;
   }
-
   .search-input-wrapper input {
     width: 100%;
   }
-
-  /* Bagian Tombol (Tulis & Login) */
   .toolbar-actions {
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Rata Kanan */
+    justify-content: flex-end;
     gap: 10px;
-    flex-shrink: 0; /* Mencegah tombol Tulis/Login mengecil atau tergencet */
+    flex-shrink: 0;
   }
 
   /* =========================================================
-     3. LAYOUT KONTEN BAWAHNYA
+     PERBAIKAN CAROUSEL KHUSUS MOBILE (Nongol 1.5 & Ada Tombol)
   ========================================================= */
+  .carousel-container {
+    gap: 0.25rem; /* Gap di antara tombol dan track diperkecil */
+  }
+  .carousel-track {
+    gap: 1rem; /* Jarak antar kartu lebih rapat */
+  }
+  .carousel-btn {
+    width: 32px; /* Tombol dibuat sedikit lebih kecil agar tak makan tempat */
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  /* INI YANG MENGATUR "NONGOL 1,5" CARD */
   .ed-card {
-    flex: 0 0 100%; /* Mengisi full container di HP */
-    margin-bottom: 1.5rem;
+    /* Set ke 80% agar menyisakan 20% layar (minus gap) untuk card berikutnya */
+    flex: 0 0 80%;
+    scroll-snap-align: center; /* Fokus di tengah, sangat ramah UX HP */
   }
 
-  /* =========================================================
-     LAYOUT UMUM MOBILE
-  ========================================================= */
-  .ed-card {
-    flex: 0 0 85%; /* 1 Kolom besar dengan efek mengintip */
-  }
-
-  /* =========================================================
-     EDITOR MODAL RESPONSIVE
-  ========================================================= */
+  /* EDITOR MODAL RESPONSIVE */
   .modal-overlay {
-    padding: 2vh 1rem; /* Maksimalkan ruang di layar HP */
+    padding: 2vh 1rem;
   }
   .modal-box {
     padding: 1.5rem;
   }
   .editor-meta-grid {
-    grid-template-columns: 1fr; /* Form editor menjadi 1 kolom penuh di bawah 768px */
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
   .editor-body {
     min-height: 200px;
   }
   .editor-toolbar {
-    justify-content: flex-start; /* Toolbar merata ke kiri di mobile */
+    justify-content: flex-start;
   }
   .tb-word-count {
-    width: 100%; /* Memaksa word-count turun ke baris baru di mobile */
+    width: 100%;
     margin-left: 0;
     margin-top: 5px;
   }
   .editor-footer {
-    flex-direction: column; /* Tombol footer bertumpuk */
+    flex-direction: column;
     align-items: stretch;
   }
   .editor-footer-actions {
@@ -1215,14 +1214,12 @@ i.fa-regular {
   }
   .btn-primary,
   .btn-ghost {
-    flex: 1; /* Tombol memenuhi lebar layar */
+    flex: 1;
   }
 }
 
 @media screen and (max-width: 480px) {
-  /* =========================================================
-     FOOTER SEPERTI SEBELUMNYA (DARI INDEX.CSS)
-  ========================================================= */
+  /* FOOTER KECIL */
   .footer-container {
     padding: 4rem 1.5rem 2rem;
     gap: 3rem;
@@ -1236,7 +1233,7 @@ i.fa-regular {
     gap: 1.5rem;
   }
 
-  /* Image Floats */
+  /* Image Floats Editor */
   .note-img-float-left,
   .note-img-float-right {
     float: none;
