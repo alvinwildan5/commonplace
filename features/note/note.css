@@ -1084,6 +1084,7 @@ i.fa-regular {
   .layout-wrapper {
     flex-direction: column;
     gap: 2rem;
+    padding-top: 100px; /* Menghindari overlap dengan fixed header */
   }
   .sidebar-nav {
     width: 100%;
@@ -1094,16 +1095,94 @@ i.fa-regular {
   }
 }
 
+/* =========================================================
+   RESPONSIVE DESIGN MOBILE (< 768px)
+========================================================= */
 @media screen and (max-width: 768px) {
-  /* Layout Umum Mobile */
+  /* =========================================================
+     1. PERBAIKAN HEADER (Agar putihnya membungkus full ke bawah)
+  ========================================================= */
+  .site-header {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    height: auto; /* Memastikan background menutupi semua menu yang bertumpuk */
+    padding-bottom: 0.5rem;
+  }
+
+  .site-nav {
+    padding: 0.8rem 1.5rem; /* Samakan padding dengan .container (1.5rem) */
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.2rem;
+    font-size: 0.75rem;
+  }
+
+  /* =========================================================
+     2. PERBAIKAN TOOLBAR (Pencarian & Tombol di dalam Container)
+  ========================================================= */
+  .layout-wrapper {
+    /* Jarak agar konten tidak tertutup oleh header yang sekarang menjadi 2-3 baris */
+    padding-top: 130px;
+  }
+
+  /* Gunakan class pembungkus toolbar Anda (misal: .note-toolbar / .search-section) */
+  .search-section {
+    width: 100%;
+    background: var(--bg-paper);
+    padding-bottom: 1rem;
+  }
+
+  /* Pastikan di HTML, toolbar dibungkus <div class="container"> */
+  .search-section .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    /* Secara otomatis akan mengikuti padding: 0 1.5rem; dari global .container */
+  }
+
+  /* Bagian Input Pencarian */
+  .search-input-wrapper {
+    flex: 1; /* Biarkan input mengambil sisa ruang di kiri */
+    min-width: 0; /* KRUSIAL: Mencegah input mendorong elemen keluar layar */
+  }
+
+  .search-input-wrapper input {
+    width: 100%;
+  }
+
+  /* Bagian Tombol (Tulis & Login) */
+  .toolbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Rata Kanan */
+    gap: 10px;
+    flex-shrink: 0; /* Mencegah tombol Tulis/Login mengecil atau tergencet */
+  }
+
+  /* =========================================================
+     3. LAYOUT KONTEN BAWAHNYA
+  ========================================================= */
+  .ed-card {
+    flex: 0 0 100%; /* Mengisi full container di HP */
+    margin-bottom: 1.5rem;
+  }
+
+  /* =========================================================
+     LAYOUT UMUM MOBILE
+  ========================================================= */
   .ed-card {
     flex: 0 0 85%; /* 1 Kolom besar dengan efek mengintip */
   }
-  .nav-links {
-    gap: 1rem;
-  }
 
-  /* EDITOR MODAL RESPONSIVE */
+  /* =========================================================
+     EDITOR MODAL RESPONSIVE
+  ========================================================= */
   .modal-overlay {
     padding: 2vh 1rem; /* Maksimalkan ruang di layar HP */
   }
@@ -1140,16 +1219,24 @@ i.fa-regular {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 480px) {
+  /* =========================================================
+     FOOTER SEPERTI SEBELUMNYA (DARI INDEX.CSS)
+  ========================================================= */
   .footer-container {
     padding: 4rem 1.5rem 2rem;
     gap: 3rem;
   }
+  .footer-tagline-large {
+    font-size: 1.6rem;
+  }
   .connect-links {
-    gap: 1.5rem;
     flex-direction: column;
     align-items: center;
+    gap: 1.5rem;
   }
+
+  /* Image Floats */
   .note-img-float-left,
   .note-img-float-right {
     float: none;

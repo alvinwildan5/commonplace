@@ -451,7 +451,7 @@ img {
   font-size: 0.58rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: #333; /* Adjusted for readability on glass */
+  color: #333;
 }
 
 .ainan-meta-value {
@@ -706,7 +706,7 @@ img {
 .site-footer {
   background-color: var(--accent-crimson);
   color: white;
-  margin-top: 4rem; /* Atur jarak footer dari konten atasnya */
+  margin-top: 4rem;
   display: flex;
   flex-direction: column;
 }
@@ -748,7 +748,7 @@ img {
   padding-top: 3rem;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Memastikan semua elemen di bawah berada tepat di tengah */
+  align-items: center;
   gap: 3rem;
 }
 
@@ -772,7 +772,7 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 3rem; /* Jarak antar link email, linkedin, instagram */
+  gap: 3rem;
 }
 
 .connect-links a {
@@ -786,12 +786,12 @@ img {
 }
 
 .connect-links a i {
-  font-size: 1.1rem; /* Ukuran icon sedikit diperbesar agar lebih seimbang di tengah */
+  font-size: 1.1rem;
 }
 
 .connect-links a:hover {
   color: var(--accent-gold);
-  transform: translateY(-3px); /* Efek sedikit melayang saat disorot */
+  transform: translateY(-3px);
 }
 
 .footer-copyright {
@@ -813,26 +813,24 @@ img {
     gap: 3rem;
   }
   .intro-image {
-    margin: 0 auto; /* Menengahkan gambar di tablet */
+    margin: 0 auto;
     width: min(500px, 100%);
   }
 
-  /* Ainan Section - Menonaktifkan Sticky di layar lebih kecil */
+  /* Ainan Section - Tetap Sticky dan Terpusat */
   .ainan-container {
     align-items: center;
     gap: 2rem;
   }
   .ainan-page-title {
-    position: relative;
-    height: auto;
     width: 100%;
     align-items: center;
     text-align: center;
-    margin-bottom: 1rem;
   }
   .ainan-page-title h2 {
     margin-left: 0;
-    width: 100%;
+    width: 90%;
+    padding: 0 1rem;
   }
   .ainan-glass-card {
     width: 100%;
@@ -842,7 +840,7 @@ img {
 
   /* Aftermovies */
   .aftermovie-layout {
-    flex-direction: column-reverse; /* Teks di atas carousel */
+    flex-direction: column-reverse;
     padding: 0;
     gap: 2rem;
   }
@@ -859,7 +857,7 @@ img {
     flex: 0 0 calc(55%);
   }
   .swipe-hint-wrapper {
-    justify-content: center; /* Menengahkan hint swipe */
+    justify-content: center;
   }
 }
 
@@ -872,12 +870,7 @@ img {
 
   /* Header / Nav */
   .site-header {
-    background: rgba(
-      255,
-      255,
-      255,
-      0.95
-    ); /* Lebih solid di HP agar mudah dibaca */
+    background: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   }
   .site-nav {
@@ -889,14 +882,16 @@ img {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.2rem;
-    font-size: 0.75rem; /* Mengecilkan teks menu */
+    font-size: 0.75rem;
   }
 
-  /* Hero Section */
+  /* Hero Section (Menjadi Landscape & Lebih Rendah) */
   .hero-section {
-    min-height: 50vh;
-    padding: 6rem 1rem 3rem;
-    background-attachment: scroll; /* KRUSIAL: Memperbaiki bug zoom background di iOS */
+    min-height: 35vh;
+    height: 35vh;
+    padding: 5rem 1rem 0;
+    background-attachment: scroll;
+    background-position: center top; /* Fokus mengambil potongan gambar bagian atas */
   }
 
   /* Archive Intro */
@@ -908,7 +903,7 @@ img {
     text-align: center;
   }
   .drop-cap::first-letter {
-    font-size: 3.5rem; /* Disesuaikan agar tidak terlalu besar di HP */
+    font-size: 3.5rem;
   }
 
   /* Community Quote */
@@ -919,10 +914,17 @@ img {
     font-size: clamp(1.5rem, 6vw, 2rem);
   }
 
-  /* Ainan Section */
+  /* Ainan Section (Proporsi Rasional & Efek Laptop) */
   .ainan-section {
-    padding: 4rem 0;
-    background-attachment: scroll; /* Memperbaiki bug iOS */
+    padding: 0 0 4rem 0;
+    background-attachment: fixed; /* Mengembalikan efek fixed/paralax laptop */
+  }
+  .ainan-page-title {
+    justify-content: flex-start;
+    padding-top: 15vh; /* Mengangkat judul ke bagian atas layar */
+  }
+  .ainan-page-title h2 {
+    font-size: 2.2rem;
   }
   .ainan-card-title {
     font-size: 2.2rem;
@@ -948,7 +950,7 @@ img {
 
   /* After Movies */
   .aftermovie-item {
-    flex: 0 0 calc(85%); /* Membesarkan video card agar lebih jelas di HP */
+    flex: 0 0 calc(85%);
   }
   .aftermovie-carousel {
     padding: 1rem 1rem 2rem 1rem;
@@ -983,6 +985,6 @@ img {
   .connect-links {
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem; /* Mengubah jejeran horizontal jadi vertikal yang rapi */
+    gap: 1.5rem;
   }
 }
