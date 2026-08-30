@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library | AWS Archive</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <!-- Tautkan ke file CSS yang baru -->
+    <link rel="stylesheet" href="./library.css" />
+    <link rel="stylesheet" href="../../index.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav class="site-nav">
+        <div class="nav-logo">
+          <a href="../../aws.html" class="brand-text">AWS</a>
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a
+              href="../note/note.html"
+              class="translatable"
+              data-en="Notes"
+              data-id="Catatan"
+              >Notes</a
+            >
+          </li>
+          <li>
+            <a
+              href="../library/library.html"
+              class="active translatable"
+              data-en="Library"
+              data-id="Perpustakaan"
+              >Library</a
+            >
+          </li>
+          <li>
+            <a
+              href="../profile/profile.html"
+              class="translatable"
+              data-en="Profile"
+              data-id="Profil"
+              >Profile</a
+            >
+          </li>
+          <li class="lang-menu">
+            <div class="lang-switcher">
+              <button
+                class="lang-btn"
+                id="btn-id"
+                onclick="switchLanguage('id')"
+              >
+                ID
+              </button>
+              <span class="lang-divider">|</span>
+              <button
+                class="lang-btn active"
+                id="btn-en"
+                onclick="switchLanguage('en')"
+              >
+                EN
+              </button>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="ivy-header" id="dynamic-header">
+      <div class="ivy-container">
+        <div class="subtitle-wrapper reveal-item">
+          <span
+            class="subtitle-text translatable"
+            data-id="Arsip Referensi & Literatur"
+            data-en="Reference & Literature Archive"
+          >
+            Reference & Literature Archive
+          </span>
+        </div>
+        <div class="title-wrapper reveal-item">
+          <h1
+            class="main-title translatable"
+            data-id="Pustaka Digital"
+            data-en="Digital Library"
+          >
+            Digital Library
+          </h1>
+        </div>
+        <div class="crimson-line reveal-item"></div>
+        <div class="desc-wrapper reveal-item">
+          <p
+            class="header-desc translatable"
+            data-id="Koleksi buku, makalah penelitian, catatan kuliah, dan referensi teknis pilihan yang membentuk pemahaman saya tentang dinamika iklim, sains, tata kelola, dan metodologi lapangan."
+            data-en="A curated collection of books, research papers, lecture notes, and technical references that have shaped my understanding of climate dynamics, science, governance, and field methodologies."
+          >
+            A curated collection of books, research papers, lecture notes, and
+            technical references that have shaped my understanding of climate
+            dynamics, science, governance, and field methodologies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+      <!-- SEARCH BAR -->
+      <section class="library-controls reveal-item">
+        <div class="search-minimal-wrapper">
+          <svg
+            class="search-minimal-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            id="librarySearch"
+            class="search-minimal-input translatable"
+            data-id="Cari judul buku, penulis, atau topik..."
+            data-en="Search titles, authors, or topics..."
+            placeholder="Search titles, authors, or topics..."
+            onkeyup="executeLibrarySearch()"
+          />
+        </div>
+      </section>
+
+      <!-- LIBRARY GRID -->
+      <section class="library-grid" id="libraryGridContainer">
+        <!-- Card 1 -->
+        <a
+          href="https://drive.google.com/file/d/1z07n_0d3Lz8zeO4GWqv-4VAlbubUl2Rg/view?usp=sharing"
+          target="_blank"
+          class="book-card reveal-item"
+        >
+          <div class="book-cover">
+            <!-- Ganti src dengan link gambar asli Anda -->
+            <img
+              src="../../assets/images/does asean matter.jpg"
+              alt="Does ASEAN Matter?"
+            />
+            <div class="book-overlay">
+              <span
+                class="translatable"
+                data-id="Buka Dokumen"
+                data-en="Open Archive"
+                >Open Archive</span
+              >
+            </div>
+          </div>
+          <div class="book-info">
+            <span
+              class="book-category translatable"
+              data-id="Hubungan Internasional"
+              data-en="International Relations"
+              >International Relations</span
+            >
+            <h3 class="serif">Does ASEAN Matter? A View from Within</h3>
+            <p>Marty Natalegawa</p>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a
+          href="https://drive.google.com/file/d/1OC3FuSwFpUMQScCfgfVP8A9q7yI2G9bG/view?usp=sharing"
+          target="_blank"
+          class="book-card reveal-item"
+        >
+          <div class="book-cover">
+            <img
+              src="../../assets/images/creating a learning society.jpg"
+              alt="Creating a Learning Society"
+            />
+            <div class="book-overlay">
+              <span
+                class="translatable"
+                data-id="Buka Dokumen"
+                data-en="Open Archive"
+                >Open Archive</span
+              >
+            </div>
+          </div>
+          <div class="book-info">
+            <span
+              class="book-category translatable"
+              data-id="Kajian Pendidikan"
+              data-en="Educational Studies"
+              >Educational Studies</span
+            >
+            <h3 class="serif">Creating a Learning Society</h3>
+            <p>Stephen Gorard & Gareth Rees</p>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a
+          href="https://drive.google.com/file/d/1fYMXhTZtERrCajVW3YcjhchWr6oY5aEJ/view?usp=sharing"
+          target="_blank"
+          class="book-card reveal-item"
+        >
+          <div class="book-cover">
+            <img
+              src="../../assets/images/majapahit.jpg"
+              alt="Majapahit Inspiration for The World"
+            />
+            <div class="book-overlay">
+              <span
+                class="translatable"
+                data-id="Buka Dokumen"
+                data-en="Open Archive"
+                >Open Archive</span
+              >
+            </div>
+          </div>
+          <div class="book-info">
+            <span
+              class="book-category translatable"
+              data-id="Sejarah"
+              data-en="History"
+              >History</span
+            >
+            <h3 class="serif">Majapahit Inspiration for The World</h3>
+            <p>Wes McKinney</p>
+          </div>
+        </a>
+      </section>
+
+      <!-- NO RESULTS MESSAGE -->
+      <div id="noResultsElement" class="no-results-box">
+        <p
+          class="translatable"
+          data-id="Tidak ada pustaka yang cocok dengan kriteria pencarian Anda."
+          data-en="No reference materials match your search criteria."
+        >
+          No reference materials match your search criteria.
+        </p>
+      </div>
+    </main>
+    <!-- =========================================================
+     UNIVERSAL FOOTER
+========================================================= -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- BAGIAN ATAS: LOGO & TAGLINE -->
+        <div class="footer-center">
+          <h3 class="footer-brand-logo">AWS</h3>
+          <p
+            class="footer-tagline-large translatable"
+            data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
+            data-id="Menelusuri persimpangan antara iklim, ekologi spasial, dan resiliensi masyarakat."
+          >
+            Navigating the intersections of climate, spatial ecology, and
+            community resilience.
+          </p>
+        </div>
+
+        <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
+        <div class="footer-bottom-area">
+          <div class="footer-connect-centered">
+            <span
+              class="nav-group-title translatable"
+              data-en="Connect"
+              data-id="Hubungi"
+              >Connect</span
+            >
+            <div class="connect-links">
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-solid fa-envelope"></i> Email
+              </a>
+              <a
+                href="https://www.linkedin.com/in/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+              </a>
+              <a
+                href="https://www.instagram.com/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-instagram"></i> Instagram
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-copyright">
+            <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Tautkan ke file JS -->
+    <script src="./library.js"></script>
+  </body>
+</html>

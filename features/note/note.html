@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes & Thoughts | AWS Archive</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./note.css" />
+    <link rel="stylesheet" href="../../index.css" />
+
+    <!-- LIBRARIES UNTUK EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav class="site-nav">
+        <div class="nav-logo">
+          <a href="../../aws.html" class="brand-text">AWS</a>
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a
+              href="note.html"
+              class="active translatable"
+              data-en="Notes"
+              data-id="Catatan"
+              >Notes</a
+            >
+          </li>
+          <li>
+            <a
+              href="../library/library.html"
+              class="translatable"
+              data-en="Library"
+              data-id="Perpustakaan"
+              >Library</a
+            >
+          </li>
+          <li>
+            <a
+              href="../profile/profile.html"
+              class="translatable"
+              data-en="Profile"
+              data-id="Profil"
+              >Profile</a
+            >
+          </li>
+          <li class="lang-menu">
+            <div class="lang-switcher">
+              <button
+                class="lang-btn"
+                id="btn-id"
+                onclick="switchLanguage('id')"
+              >
+                ID
+              </button>
+              <span class="lang-divider">|</span>
+              <button
+                class="lang-btn active"
+                id="btn-en"
+                onclick="switchLanguage('en')"
+              >
+                EN
+              </button>
+            </div>
+          </li>
+          <li class="auth-menu">
+            <!-- Ditukar oleh JS: tombol Login saat logged-out, Write + Logout saat logged-in -->
+            <button
+              class="auth-btn translatable"
+              id="loginTriggerBtn"
+              onclick="openLogin()"
+              data-en="Login"
+              data-id="Login"
+              title="Login"
+            >
+              <i class="fa-solid fa-user-lock"></i>
+            </button>
+            <button
+              class="auth-btn write-btn translatable"
+              id="writeTriggerBtn"
+              onclick="openEditor()"
+              data-en="Write"
+              data-id="Tulis"
+              style="display: none"
+            >
+              <i class="fa-solid fa-pen"></i>
+              <span class="translatable" data-en="Write" data-id="Tulis"
+                >Write</span
+              >
+            </button>
+            <button
+              class="auth-btn logout-btn"
+              id="logoutTriggerBtn"
+              onclick="logoutOwner()"
+              style="display: none"
+              title="Logout"
+            >
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="layout-wrapper">
+      <!-- SIDEBAR -->
+      <aside class="sidebar-nav">
+        <div class="sidebar-sticky">
+          <!-- SEARCH BAR -->
+          <div class="sidebar-search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              type="text"
+              id="noteSearch"
+              class="sidebar-search-input translatable"
+              data-en="Search notes..."
+              data-id="Cari catatan..."
+              placeholder="Search notes..."
+              onkeyup="executeNoteSearch()"
+            />
+          </div>
+
+          <!-- TOPIC NAVIGATION -->
+          <ul class="topic-list" id="topic-list">
+            <li>
+              <a href="#culture" class="active"
+                ><i class="fa-solid fa-masks-theater"></i> Culture & History</a
+              >
+            </li>
+            <li>
+              <a href="#sustainability"
+                ><i class="fa-solid fa-leaf"></i> Sustainability</a
+              >
+            </li>
+            <li>
+              <a href="#education"
+                ><i class="fa-solid fa-book-open"></i> Education</a
+              >
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content" id="main-content">
+        <div class="note-header-simple">
+          <h1
+            class="translatable"
+            data-en="Notes & Thoughts"
+            data-id="Catatan & Pemikiran"
+          >
+            Notes & Thoughts
+          </h1>
+          <p
+            class="translatable"
+            data-en="A collection of digital archives organized by topic. A continuously growing space of thoughts."
+            data-id="Kumpulan arsip digital yang diatur berdasarkan topik. Sebuah ruang pemikiran yang terus bertumbuh."
+          >
+            A collection of digital archives organized by topic. A continuously
+            growing space of thoughts.
+          </p>
+        </div>
+
+        <!-- NO RESULTS MESSAGE -->
+        <div id="noResultsElement" class="no-results-box" style="display: none">
+          <p
+            class="translatable"
+            data-en="No notes match your search criteria."
+            data-id="Tidak ada catatan yang cocok dengan kata kunci pencarian Anda."
+          >
+            No notes match your search criteria.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <!-- MODAL READING OVERLAY -->
+    <div id="reading-overlay" class="reading-overlay">
+      <div class="reading-modal">
+        <div class="reading-nav">
+          <button class="close-btn" onclick="closeArticle()">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="translatable" data-en="Back to Notes" data-id="Kembali"
+              >Back to Notes</span
+            >
+          </button>
+
+          <!-- EXPORT TOOLS PROFESIONAL -->
+          <div class="export-tools">
+            <span
+              class="export-label translatable"
+              data-en="Share or Export:"
+              data-id="Bagikan atau Unduh:"
+              >Share or Export:</span
+            >
+            <button
+              class="tool-btn"
+              onclick="downloadNote('pdf')"
+              title="Download PDF"
+            >
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </button>
+            <button
+              class="tool-btn"
+              onclick="downloadNote('word')"
+              title="Download Word"
+            >
+              <i class="fa-solid fa-file-word"></i> Word
+            </button>
+            <button
+              class="tool-btn"
+              onclick="downloadNote('png')"
+              title="Download Image"
+            >
+              <i class="fa-solid fa-image"></i> PNG
+            </button>
+            <button
+              class="tool-btn tool-primary"
+              onclick="copyArticleLink()"
+              title="Copy Link"
+            >
+              <i class="fa-solid fa-link"></i> Link
+            </button>
+          </div>
+        </div>
+
+        <div id="reading-content-area" class="reading-content">
+          <!-- Content Injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= LOGIN MODAL ================= -->
+    <div id="login-overlay" class="modal-overlay">
+      <div class="modal-box login-box">
+        <button class="modal-close" onclick="closeLogin()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="modal-title">Owner Login</h2>
+        <p class="modal-subtitle">
+          Dengan login, Anda dapat menulis catatan baru sesuai topik yang anda
+          inginkan. Hubungi pemilik untuk mendapatkan akses.
+        </p>
+        <form id="loginForm" onsubmit="return handleLogin(event);">
+          <label class="field-label" for="ownerPassword">Password</label>
+          <input
+            type="password"
+            id="ownerPassword"
+            class="field-input"
+            autocomplete="current-password"
+            required
+          />
+          <p id="loginError" class="field-error" style="display: none">
+            Incorrect password.
+          </p>
+          <button type="submit" class="btn-primary full-width">
+            <i class="fa-solid fa-unlock"></i> Login
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= EDITOR MODAL ================= -->
+    <div id="editor-overlay" class="modal-overlay">
+      <div class="modal-box editor-box">
+        <div class="editor-header">
+          <h2 class="modal-title" id="editorHeading">Write a New Note</h2>
+          <button class="modal-close" onclick="closeEditor()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="editor-meta-grid">
+          <div class="field-group">
+            <label class="field-label" for="fieldTitle">Title</label>
+            <input
+              type="text"
+              id="fieldTitle"
+              class="field-input title-input"
+              placeholder="Give your note a title"
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="fieldTopicSelect">Topic</label>
+            <select
+              id="fieldTopicSelect"
+              class="field-input"
+              onchange="handleTopicSelectChange()"
+            >
+              <option value="culture">Culture &amp; History</option>
+              <option value="sustainability" selected>Sustainability</option>
+              <option value="education">Education</option>
+              <option value="__new__">+ New topic...</option>
+            </select>
+          </div>
+
+          <div class="field-group" id="newTopicGroup" style="display: none">
+            <label class="field-label" for="fieldNewTopicName"
+              >New topic name</label
+            >
+            <input
+              type="text"
+              id="fieldNewTopicName"
+              class="field-input"
+              placeholder="e.g. Technology"
+            />
+            <label
+              class="field-label"
+              for="fieldNewTopicIcon"
+              style="margin-top: 0.6rem"
+              >Icon</label
+            >
+            <select id="fieldNewTopicIcon" class="field-input">
+              <option value="fa-lightbulb">Idea</option>
+              <option value="fa-flask">Science</option>
+              <option value="fa-code">Technology</option>
+              <option value="fa-pen-nib">Writing</option>
+              <option value="fa-mountain-sun">Travel</option>
+              <option value="fa-heart-pulse">Wellbeing</option>
+              <option value="fa-city">Urban</option>
+              <option value="fa-seedling">Nature</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="fieldDate">Date</label>
+            <input type="date" id="fieldDate" class="field-input" />
+          </div>
+
+          <div class="field-group span-2">
+            <label class="field-label" for="fieldExcerpt">Excerpt</label>
+            <textarea
+              id="fieldExcerpt"
+              class="field-input"
+              rows="2"
+              placeholder="A short teaser shown on the card (1-2 sentences)"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- RICH TEXT TOOLBAR -->
+        <!-- RICH TEXT TOOLBAR -->
+        <div class="editor-toolbar">
+          <!-- Group 1: Format & Font -->
+          <div class="tb-group">
+            <select
+              class="tb-select"
+              id="tbBlockType"
+              onchange="applyBlockType(this.value)"
+              title="Paragraph style"
+            >
+              <option value="P">Paragraph</option>
+              <option value="H2">Heading 1 (Main)</option>
+              <option value="H3">Heading 2 (Sub)</option>
+              <option value="H4">Heading 3 (Minor)</option>
+              <option value="BLOCKQUOTE">Quote</option>
+            </select>
+
+            <select
+              class="tb-select"
+              id="tbFont"
+              onchange="applyFont(this.value)"
+              title="Font Family"
+            >
+              <option value="'Crimson Text', Georgia, serif">
+                Serif (Classic)
+              </option>
+              <option value="'Inter', sans-serif">Sans (Modern)</option>
+              <option value="'JetBrains Mono', monospace">Mono (Code)</option>
+            </select>
+          </div>
+
+          <span class="tb-divider"></span>
+
+          <!-- Group 2: Text Styles -->
+          <div class="tb-group">
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('bold')"
+              title="Bold"
+            >
+              <i class="fa-solid fa-bold"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('italic')"
+              title="Italic"
+            >
+              <i class="fa-solid fa-italic"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('underline')"
+              title="Underline"
+            >
+              <i class="fa-solid fa-underline"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('strikeThrough')"
+              title="Strikethrough"
+            >
+              <i class="fa-solid fa-strikethrough"></i>
+            </button>
+            <!-- Custom Highlight Button -->
+            <button
+              type="button"
+              class="tb-btn highlight-btn"
+              onclick="applyCustomHighlight()"
+              title="Highlighter"
+            >
+              <i class="fa-solid fa-highlighter"></i>
+            </button>
+          </div>
+
+          <span class="tb-divider"></span>
+
+          <!-- Group 3: Lists & Alignments -->
+          <div class="tb-group">
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('insertUnorderedList')"
+              title="Bullet List"
+            >
+              <i class="fa-solid fa-list-ul"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('insertOrderedList')"
+              title="Numbered List"
+            >
+              <i class="fa-solid fa-list-ol"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('justifyLeft')"
+              title="Align left"
+            >
+              <i class="fa-solid fa-align-left"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('justifyCenter')"
+              title="Align center"
+            >
+              <i class="fa-solid fa-align-center"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('justifyFull')"
+              title="Justify"
+            >
+              <i class="fa-solid fa-align-justify"></i>
+            </button>
+          </div>
+
+          <span class="tb-divider"></span>
+
+          <!-- Group 4: Insertions -->
+          <div class="tb-group">
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="triggerImageInsert()"
+              title="Insert image"
+            >
+              <i class="fa-solid fa-image"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="triggerLinkInsert()"
+              title="Insert link"
+            >
+              <i class="fa-solid fa-link"></i>
+            </button>
+            <input
+              type="file"
+              id="imageFileInput"
+              accept="image/*"
+              style="display: none"
+              onchange="handleImageFileChosen(event)"
+            />
+          </div>
+
+          <span class="tb-word-count" id="tbWordCount"
+            >0 words &bull; ~1 min read</span
+          >
+        </div>
+
+        <!-- IMAGE STYLE PICKER (muncul sesaat setelah pilih file) -->
+        <div
+          class="image-style-picker"
+          id="imageStylePicker"
+          style="display: none"
+        >
+          <span>Image style:</span>
+          <button type="button" onclick="insertPendingImage('note-img-full')">
+            Full width
+          </button>
+          <button
+            type="button"
+            onclick="insertPendingImage('note-img-rounded')"
+          >
+            Rounded
+          </button>
+          <button
+            type="button"
+            onclick="insertPendingImage('note-img-bordered')"
+          >
+            Bordered
+          </button>
+          <button
+            type="button"
+            onclick="insertPendingImage('note-img-center-small')"
+          >
+            Centered, small
+          </button>
+          <button
+            type="button"
+            onclick="insertPendingImage('note-img-float-left')"
+          >
+            Float left
+          </button>
+          <button
+            type="button"
+            onclick="insertPendingImage('note-img-float-right')"
+          >
+            Float right
+          </button>
+          <button
+            type="button"
+            class="cancel-style"
+            onclick="cancelPendingImage()"
+          >
+            Cancel
+          </button>
+        </div>
+
+        <div
+          id="editorBody"
+          class="editor-body"
+          contenteditable="true"
+          data-placeholder="Start writing..."
+        ></div>
+
+        <div class="editor-footer">
+          <span id="editorStatus" class="editor-status"></span>
+          <div class="editor-footer-actions">
+            <button type="button" class="btn-ghost" onclick="closeEditor()">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn-primary"
+              onclick="publishArticle()"
+            >
+              <i class="fa-solid fa-paper-plane"></i>
+              <span id="publishBtnLabel">Publish</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+     UNIVERSAL FOOTER
+========================================================= -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- BAGIAN ATAS: LOGO & TAGLINE -->
+        <div class="footer-center">
+          <h3 class="footer-brand-logo">AWS</h3>
+          <p
+            class="footer-tagline-large translatable"
+            data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
+            data-id="Menelusuri persimpangan antara iklim, ekologi spasial, dan resiliensi masyarakat."
+          >
+            Navigating the intersections of climate, spatial ecology, and
+            community resilience.
+          </p>
+        </div>
+
+        <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
+        <div class="footer-bottom-area">
+          <div class="footer-connect-centered">
+            <span
+              class="nav-group-title translatable"
+              data-en="Connect"
+              data-id="Hubungi"
+              >Connect</span
+            >
+            <div class="connect-links">
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-solid fa-envelope"></i> Email
+              </a>
+              <a
+                href="https://www.linkedin.com/in/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+              </a>
+              <a
+                href="https://www.instagram.com/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-instagram"></i> Instagram
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-copyright">
+            <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./note.js"></script>
+    <script src="../../index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,481 @@
+/* =========================================================
+   VARIABLES & BASE STYLES
+========================================================= */
+:root {
+  --bg-paper: #ffffff;
+  --text-main: #222222;
+  --text-muted: #555555;
+  --accent-crimson: #8b0000;
+  --accent-gold: #d4af37;
+  --border-color: #dcdcdc;
+  --font-serif: "Crimson Text", Georgia, serif;
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --ease: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-paper);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--ease);
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: transparent;
+  transition:
+    background 0.4s ease,
+    backdrop-filter 0.4s ease,
+    border-bottom 0.4s ease;
+}
+
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.site-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent-crimson);
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--accent-crimson);
+  border-bottom: 2px solid var(--accent-crimson);
+  font-weight: 600;
+  padding-bottom: 4px;
+}
+
+.lang-switcher button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+}
+.lang-switcher button.active {
+  font-weight: bold;
+  color: var(--accent-crimson);
+}
+.lang-divider {
+  margin: 0 5px;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   HERO SECTION (IVY HEADER)
+========================================================= */
+.ivy-header {
+  padding: 150px 2rem 80px; /* Space for fixed header */
+  background-color: var(--bg-paper);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.ivy-container {
+  max-width: 800px;
+}
+
+.subtitle-text {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+}
+
+.main-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  color: var(--text-main);
+  margin: 1rem 0;
+}
+
+.crimson-line {
+  width: 60px;
+  height: 3px;
+  background-color: var(--accent-crimson);
+  margin: 0 auto;
+}
+
+.desc-wrapper {
+  margin-top: 1.5rem;
+}
+.header-desc {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   LIBRARY CONTROLS (SEARCH BAR)
+========================================================= */
+.library-controls {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.search-minimal-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+}
+
+.search-minimal-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+}
+
+.search-minimal-input {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  background: var(--bg-paper);
+  color: var(--text-main);
+  outline: none;
+  transition: var(--ease);
+}
+
+.search-minimal-input:focus {
+  border-color: var(--accent-crimson);
+  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.05);
+}
+
+/* =========================================================
+   LIBRARY GRID & CARDS
+========================================================= */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 3rem 2rem;
+  padding-bottom: 5rem;
+}
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.book-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3; /* Memastikan rasio buku proporsional */
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  background-color: #f5f5f5; /* Fallback warna jika gambar lambat dimuat */
+}
+
+/* KRUSIAL: Aturan untuk memastikan gambar apapun bisa masuk tanpa distorsi */
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Mencegah distorsi/gepeng */
+  object-position: center; /* Memastikan fokus selalu di tengah */
+  display: block; /* Menghilangkan margin bawah default pada img inline */
+  transition: transform 0.5s ease;
+}
+
+.book-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.book-overlay span {
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 1px solid white;
+  padding: 10px 20px;
+  border-radius: 2px;
+}
+
+.book-card:hover .book-cover img {
+  transform: scale(1.05);
+}
+.book-card:hover .book-overlay {
+  opacity: 1;
+}
+
+.book-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-category {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-crimson);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.book-info h3 {
+  font-size: 1.4rem;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.book-info p {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.no-results-box {
+  text-align: center;
+  padding: 4rem 0;
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+  display: none;
+}
+
+/* =========================================================
+   UNIVERSAL FOOTER STYLES
+========================================================= */
+.site-footer {
+  background-color: var(--accent-crimson);
+  color: white;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.footer-center {
+  text-align: center;
+}
+
+.footer-brand-logo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  letter-spacing: 0.4em;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.footer-tagline-large {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.3;
+}
+
+.footer-bottom-area {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.footer-connect-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-group-title {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.connect-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.connect-links a {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--ease);
+}
+
+.connect-links a i {
+  font-size: 1.1rem;
+}
+
+.connect-links a:hover {
+  color: var(--accent-gold);
+  transform: translateY(-3px);
+}
+
+.footer-copyright {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (TABLET & MOBILE)
+========================================================= */
+
+/* Tablet Portrait & Small Laptops */
+@media screen and (max-width: 992px) {
+  .library-grid {
+    /* Sedikit memperkecil minimum lebar grid di tablet */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2.5rem 1.5rem;
+  }
+}
+
+/* Mobile Phones */
+@media screen and (max-width: 768px) {
+  .site-nav {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.2rem;
+    font-size: 0.8rem;
+  }
+
+  .ivy-header {
+    padding: 180px 1.5rem 50px; /* Menyesuaikan ruang karena header menumpuk */
+  }
+
+  .library-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(160px, 1fr)
+    ); /* Mengizinkan 2 kolom di HP layar standar */
+    gap: 2rem 1rem;
+  }
+
+  .book-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .book-info p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small Mobile Phones (iPhone SE dll) */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0 1.2rem;
+  }
+
+  .library-grid {
+    /* Di layar sangat kecil, grid akan menggunakan 1 kolom (atau 2 kolom sangat rapat) */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .footer-container {
+    padding: 4rem 1.5rem 2rem;
+    gap: 3rem;
+  }
+
+  .connect-links {
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-tagline-large {
+    font-size: 1.5rem; /* Menyesuaikan font footer agar tidak tumpang tindih */
+  }
+}

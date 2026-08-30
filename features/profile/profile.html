@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile | AWS Archive</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./profile.css" />
+    <link rel="stylesheet" href="../../index.css" />
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav class="site-nav">
+        <div class="nav-logo">
+          <a href="../../aws.html" class="brand-text">AWS</a>
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a
+              href="../note/note.html"
+              class="translatable"
+              data-en="Notes"
+              data-id="Catatan"
+              >Notes</a
+            >
+          </li>
+          <li>
+            <a
+              href="../library/library.html"
+              class="translatable"
+              data-en="Library"
+              data-id="Perpustakaan"
+              >Library</a
+            >
+          </li>
+          <li>
+            <a
+              href="./profile.html"
+              class="active translatable"
+              data-en="Profile"
+              data-id="Profil"
+              >Profile</a
+            >
+          </li>
+          <li class="lang-menu">
+            <div class="lang-switcher">
+              <button
+                class="lang-btn"
+                id="btn-id"
+                onclick="switchLanguage('id')"
+              >
+                ID
+              </button>
+              <span class="lang-divider">|</span>
+              <button
+                class="lang-btn active"
+                id="btn-en"
+                onclick="switchLanguage('en')"
+              >
+                EN
+              </button>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="ivy-header" id="dynamic-header"></section>
+
+    <!-- MAIN LAYOUT -->
+    <main class="main-layout container">
+      <!-- LEFT SIDEBAR: PROFILE & CONTACT -->
+      <aside class="profile-container reveal-item">
+        <div class="profile-sticky">
+          <div class="profile-photo">
+            <img
+              src="/assets/images/profile.png"
+              alt="Alvin Wildan Sahli Portrait"
+            />
+          </div>
+          <h1 class="profile-name">Alvin Wildan Sahli</h1>
+          <p
+            class="profile-title translatable"
+            data-en="Applied Meteorology & Spatial Ecology"
+            data-id="Meteorologi Terapan & Ekologi Spasial"
+          >
+            Applied Meteorology & Spatial Ecology
+          </p>
+
+          <div class="contact-section">
+            <h3
+              class="translatable"
+              data-en="Contact & Network"
+              data-id="Kontak & Jejaring"
+            >
+              Contact & Network
+            </h3>
+
+            <!-- EMAIL -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+
+              <div class="contact-info">
+                <span
+                  class="contact-label translatable"
+                  data-en="Email"
+                  data-id="Email"
+                >
+                  Email
+                </span>
+
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  alvinwildansahli@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <!-- WHATSAPP -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+
+              <div class="contact-info">
+                <span
+                  class="contact-label translatable"
+                  data-en="WhatsApp"
+                  data-id="WhatsApp"
+                >
+                  WhatsApp
+                </span>
+
+                <a
+                  href="https://wa.me/6281575431109"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  +62 815-7543-1109
+                </a>
+              </div>
+            </div>
+
+            <!-- LINKEDIN -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </div>
+
+              <div class="contact-info">
+                <span
+                  class="contact-label translatable"
+                  data-en="LinkedIn"
+                  data-id="LinkedIn"
+                >
+                  LinkedIn
+                </span>
+
+                <a
+                  href="https://www.linkedin.com/in/alvinwildans"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  in/alvinwildans
+                </a>
+              </div>
+            </div>
+
+            <!-- INSTAGRAM -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-brands fa-instagram"></i>
+              </div>
+
+              <div class="contact-info">
+                <span
+                  class="contact-label translatable"
+                  data-en="Instagram"
+                  data-id="Instagram"
+                >
+                  Instagram
+                </span>
+
+                <a
+                  href="https://www.instagram.com/alvinwildans"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  @alvinwildans
+                </a>
+              </div>
+            </div>
+
+            <!-- CV -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-solid fa-file-alt"></i>
+              </div>
+
+              <div class="contact-info">
+                <span
+                  class="contact-label translatable"
+                  data-en="Curriculum Vitae"
+                  data-id="Curriculum Vitae"
+                >
+                  Curriculum Vitae
+                </span>
+
+                <a
+                  href="https://hieryuiikzcrvssuvsmn.supabase.co/storage/v1/object/public/Memoir%20Project/CV_Alvin%20Wildan%20Sahli.pdf"
+                  target="_blank"
+                  class="translatable"
+                  data-en="View CV"
+                  data-id="Lihat CV"
+                >
+                  View CV
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT SIDEBAR: BIO & FORM -->
+      <section
+        class="content-container reveal-item"
+        style="transition-delay: 0.2s"
+      >
+        <!-- BIOGRAPHY NARRATIVE -->
+        <div class="bio-section">
+          <h2
+            class="bio-heading translatable"
+            data-en="Bridging Science and Community"
+            data-id="Menjembatani Sains dan Masyarakat"
+          >
+            Bridging Science and Community
+          </h2>
+          <p
+            class="translatable"
+            data-en="I am driven by the intersection of climate dynamics, remote sensing, and sustainable policy. With an academic foundation in Applied Meteorology from IPB University, my work heavily involves processing multi-sensor satellite imagery and formulating spatial models to monitor environmental changes, particularly in vital ecosystems like mangroves."
+            data-id="Saya terdorong oleh persimpangan antara dinamika iklim, penginderaan jauh, dan kebijakan berkelanjutan. Dengan latar belakang akademik di bidang Meteorologi Terapan dari IPB University, pekerjaan saya banyak melibatkan pemrosesan citra satelit multi-sensor dan perumusan model spasial untuk memantau perubahan lingkungan, khususnya pada ekosistem vital seperti mangrove."
+          >
+            I am driven by the intersection of climate dynamics, remote sensing,
+            and sustainable policy. With an academic foundation in Applied
+            Meteorology from IPB University, my work heavily involves processing
+            multi-sensor satellite imagery and formulating spatial models to
+            monitor environmental changes, particularly in vital ecosystems like
+            mangroves.
+          </p>
+          <p
+            class="translatable"
+            data-en="Beyond technical analysis using Google Earth Engine and Python, I believe that data must translate into actionable community resilience. Whether it is engaging in international climate policy frameworks or grassroots disaster mitigation projects, my goal is to foster informed decision-making for a changing world."
+            data-id="Di luar analisis teknis menggunakan Google Earth Engine dan Python, saya percaya bahwa data harus diterjemahkan menjadi resiliensi masyarakat yang dapat ditindaklanjuti. Baik itu terlibat dalam kerangka kebijakan iklim internasional atau proyek mitigasi bencana di tingkat akar rumput, tujuan saya adalah mendorong pengambilan keputusan yang tepat untuk dunia yang terus berubah."
+          >
+            Beyond technical analysis using Google Earth Engine and Python, I
+            believe that data must translate into actionable community
+            resilience. Whether it is engaging in international climate policy
+            frameworks or grassroots disaster mitigation projects, my goal is to
+            foster informed decision-making for a changing world.
+          </p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- CONTACT FORM -->
+        <div class="ivy-form-container">
+          <div class="form-header">
+            <h2
+              class="translatable"
+              data-en="Feedback, Collaboration & Inquiry"
+              data-id="Umpan Balik, Kolaborasi & Pertanyaan"
+            >
+              Feedback, Collaboration & Inquiry
+            </h2>
+            <p
+              class="translatable"
+              data-en="If you would like to share feedback, ask a question, discuss an idea, or explore a potential collaboration, feel free to leave a message below. I read every message and appreciate the time taken to write."
+              data-id="Jika Anda ingin berbagi umpan balik, bertanya, mendiskusikan ide, atau menjajaki potensi kolaborasi, silakan tinggalkan pesan di bawah. Saya membaca setiap pesan yang masuk."
+            >
+              If you would like to share feedback, ask a question, discuss an
+              idea, or explore a potential collaboration, feel free to leave a
+              message below. I read every message and appreciate the time taken
+              to write.
+            </p>
+          </div>
+
+          <form id="contactForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label
+                  class="translatable"
+                  data-en="First Name (Optional)"
+                  data-id="Nama Depan (Opsional)"
+                  >First Name (Optional)</label
+                >
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="Jane"
+                />
+              </div>
+              <div class="form-group">
+                <label
+                  class="translatable"
+                  data-en="Last Name (Optional)"
+                  data-id="Nama Belakang (Opsional)"
+                  >Last Name (Optional)</label
+                >
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Doe"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label
+                class="translatable"
+                data-en="Your Email (Optional)"
+                data-id="Email Anda (Opsional)"
+                >Your Email (Optional)</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="example@example.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label
+                class="translatable"
+                data-en="How's your day going so far?"
+                data-id="Bagaimana harimu sejauh ini?"
+                >How's your day going so far?</label
+              >
+              <select id="rating" name="rating">
+                <option
+                  value=""
+                  disabled
+                  selected
+                  class="translatable"
+                  data-en="Select a rating..."
+                  data-id="Pilih penilaian..."
+                >
+                  Select a rating...
+                </option>
+                <option value="4">Excellent</option>
+                <option value="3">Good</option>
+                <option value="2">Average</option>
+                <option value="1">Needs Improvement</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label
+                class="translatable"
+                data-en="Please share your message *"
+                data-id="Silakan tulis pesan Anda *"
+                >Please share your message *</label
+              >
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="5"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              id="submitBtn"
+              class="submit-btn translatable"
+              data-en="Send Message"
+              data-id="Kirim Pesan"
+            >
+              Send Message
+            </button>
+
+            <div id="statusMessage"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+    <!-- =========================================================
+     UNIVERSAL FOOTER
+========================================================= -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- BAGIAN ATAS: LOGO & TAGLINE -->
+        <div class="footer-center">
+          <h3 class="footer-brand-logo">AWS</h3>
+          <p
+            class="footer-tagline-large translatable"
+            data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
+            data-id="Menelusuri persimpangan antara iklim, ekologi spasial, dan resiliensi masyarakat."
+          >
+            Navigating the intersections of climate, spatial ecology, and
+            community resilience.
+          </p>
+        </div>
+
+        <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
+        <div class="footer-bottom-area">
+          <div class="footer-connect-centered">
+            <span
+              class="nav-group-title translatable"
+              data-en="Connect"
+              data-id="Hubungi"
+              >Connect</span
+            >
+            <div class="connect-links">
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-solid fa-envelope"></i> Email
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-linkedin-in"></i>
+                LinkedIn
+              </a>
+
+              <a
+                href="https://www.instagram.com/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-instagram"></i>
+                Instagram
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-copyright">
+            <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="./profile.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1159 @@
+/* ==========================================================================
+   NOTES SCRIPT (PARIPURNA) DENGAN CYCLICAL INFINITE CAROUSEL
+   + CMS: LOGIN, EDITOR, RICH TEXT, IMAGE STYLES
+   ========================================================================== */
+
+/* =========================================================
+   IMPORTS & VARIABLES
+========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  --bg-paper: #ffffff;
+  --bg-white: #ffffff;
+  --bg-alt: #f9f9f9;
+  --text-main: #222222;
+  --text-muted: #555555;
+  --accent-crimson: #8b0000;
+  --accent-gold: #d4af37;
+  --border-color: #dcdcdc;
+  --font-serif: "Crimson Text", Georgia, serif;
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --ease: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background-color: var(--bg-paper);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  line-height: 1.8;
+  font-size: 1.15rem;
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--ease);
+}
+
+/* FONT AWESOME FIX */
+i[class^="fa-"],
+i[class*=" fa-"] {
+  font-family: "Font Awesome 6 Free" !important;
+}
+i.fa-brands {
+  font-family: "Font Awesome 6 Brands" !important;
+}
+i.fa-solid {
+  font-weight: 900 !important;
+}
+i.fa-regular {
+  font-weight: 400 !important;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition:
+    background 0.4s ease,
+    backdrop-filter 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.site-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.brand-text {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent-crimson);
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  list-style: none;
+}
+
+.nav-links a {
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: var(--ease);
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--accent-crimson);
+  border-bottom-color: var(--accent-crimson);
+  font-weight: 600;
+}
+
+.lang-switcher button {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  transition: var(--ease);
+  font-family: var(--font-sans);
+}
+
+.lang-switcher button.active {
+  opacity: 1;
+  font-weight: 600;
+  color: var(--accent-crimson);
+}
+
+.lang-divider {
+  margin: 0 5px;
+  opacity: 0.5;
+}
+
+/* AUTH / WRITE BUTTONS IN NAV */
+.auth-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  padding: 7px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--ease);
+}
+.auth-btn:hover {
+  border-color: var(--accent-crimson);
+  color: var(--accent-crimson);
+}
+.write-btn {
+  background: var(--accent-crimson);
+  color: #fff;
+  border-color: var(--accent-crimson);
+}
+.write-btn:hover {
+  background: #6e0000;
+  color: #fff;
+}
+.logout-btn {
+  padding: 7px 10px;
+}
+
+/* =========================================================
+   LAYOUT WRAPPER (HEADER & SIDEBAR COLLISION FIX)
+========================================================= */
+.layout-wrapper {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1400px;
+  margin: 120px auto 0;
+  padding: 0 2rem;
+  gap: 4rem;
+  min-height: 80vh;
+}
+
+/* =========================================================
+   SIDEBAR (PERFECT STICKY)
+========================================================= */
+.sidebar-nav {
+  width: 250px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+}
+
+.sidebar-search-wrapper {
+  position: relative;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+.search-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+.sidebar-search-input {
+  width: 100%;
+  padding: 8px 0 8px 25px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-main);
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  outline: none;
+  transition: var(--ease);
+}
+.sidebar-search-input:focus {
+  border-bottom-color: var(--accent-crimson);
+}
+.sidebar-search-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+}
+.topic-list a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  padding: 0.8rem 0;
+  transition: var(--ease);
+}
+.topic-list a i {
+  color: var(--text-muted);
+  width: 20px;
+  transition: var(--ease);
+}
+.topic-list a:hover,
+.topic-list a.active {
+  color: var(--text-main);
+  font-weight: 600;
+  transform: translateX(5px);
+}
+.topic-list a:hover i,
+.topic-list a.active i {
+  color: var(--accent-crimson);
+}
+
+/* =========================================================
+   MAIN CONTENT & CAROUSEL
+========================================================= */
+.main-content {
+  flex-grow: 1;
+  min-width: 0;
+  padding-bottom: 4rem;
+}
+.note-header-simple h1 {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.note-header-simple p {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  margin-bottom: 4rem;
+}
+.no-results-box {
+  text-align: center;
+  padding: 3rem;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-family: var(--font-sans);
+}
+
+.topic-section {
+  margin-bottom: 5rem;
+}
+.topic-heading {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  white-space: nowrap;
+}
+.topic-heading::after {
+  content: "";
+  flex-grow: 1;
+  height: 1px;
+  background-color: var(--border-color);
+  margin-left: 20px;
+}
+
+/* CAROUSEL */
+.carousel-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+.carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+.carousel-track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* CARD */
+.ed-card {
+  flex: 0 0 calc((100% - 4rem) / 3);
+  scroll-snap-align: start;
+  min-width: 280px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border-color);
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-top: 3px solid var(--accent-crimson);
+  transition: var(--ease);
+}
+.ed-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transform: translateY(-5px);
+}
+.ed-meta {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-crimson);
+  margin-bottom: 1rem;
+}
+.ed-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+.ed-excerpt p {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.ed-full-text {
+  display: none;
+}
+.ed-actions {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.ed-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  transition: var(--ease);
+}
+.ed-btn:hover {
+  color: var(--accent-crimson);
+  gap: 12px;
+}
+
+/* MANAGE (EDIT/DELETE) ICONS — hanya untuk artikel yang dibuat via editor */
+.ed-manage {
+  display: flex;
+  gap: 4px;
+}
+.ed-manage-btn {
+  background: none;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--ease);
+}
+.ed-manage-btn:hover {
+  background: var(--bg-alt);
+  color: var(--accent-crimson);
+}
+
+.carousel-btn {
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-main);
+  transition: var(--ease);
+  flex-shrink: 0;
+}
+.carousel-btn:hover {
+  background: var(--accent-crimson);
+  color: white;
+  border-color: var(--accent-crimson);
+}
+
+/* =========================================================
+   READING OVERLAY (MODAL) & EXPORT BUTTONS
+========================================================= */
+.reading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--ease);
+}
+.reading-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.reading-modal {
+  width: 100%;
+  max-width: 800px;
+  padding: 4rem 2rem;
+  transform: translateY(20px);
+  transition: transform 0.4s var(--ease);
+}
+.reading-overlay.active .reading-modal {
+  transform: translateY(0);
+}
+
+.reading-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+  transition: var(--ease);
+}
+.close-btn:hover {
+  color: var(--accent-crimson);
+  transform: translateX(-5px);
+}
+
+.export-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.export-label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-right: 5px;
+}
+.tool-btn {
+  background: var(--bg-alt);
+  border: 1px solid transparent;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--ease);
+}
+.tool-btn:hover {
+  background: var(--bg-white);
+  border-color: var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: var(--accent-crimson);
+  transform: translateY(-2px);
+}
+.tool-primary {
+  background: var(--text-main);
+  color: white;
+}
+.tool-primary:hover {
+  background: var(--accent-crimson);
+  color: white;
+}
+
+.reading-content .ed-full-text {
+  display: block;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-main);
+}
+.reading-content .ed-full-text p {
+  margin-bottom: 1.5rem;
+}
+.reading-content .ed-full-text h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+}
+.reading-content .ed-full-text blockquote {
+  border-left: 3px solid var(--accent-crimson);
+  padding-left: 1.2rem;
+  margin: 1.5rem 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* IMAGE STYLE CLASSES — dipakai baik di editor maupun hasil publish */
+.note-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+.note-img-full {
+  width: 100%;
+}
+.note-img-rounded {
+  border-radius: 16px;
+}
+.note-img-bordered {
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 6px;
+  background: #fff;
+}
+.note-img-center-small {
+  width: 55%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.note-img-float-left {
+  float: left;
+  width: 42%;
+  margin: 0.3rem 1.5rem 1rem 0;
+}
+.note-img-float-right {
+  float: right;
+  width: 42%;
+  margin: 0.3rem 0 1rem 1.5rem;
+}
+
+/* =========================================================
+   UNIVERSAL FOOTER STYLES
+========================================================= */
+.site-footer {
+  background-color: var(--accent-crimson);
+  color: white;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.footer-center {
+  text-align: center;
+}
+
+.footer-brand-logo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  letter-spacing: 0.4em;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.footer-tagline-large {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.3;
+}
+
+.footer-bottom-area {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.footer-connect-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-group-title {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.connect-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.connect-links a {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--ease);
+}
+
+.connect-links a i {
+  font-size: 1.1rem;
+}
+
+.connect-links a:hover {
+  color: var(--accent-gold);
+  transform: translateY(-3px);
+}
+
+.footer-copyright {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================================
+   GENERIC MODAL (LOGIN + EDITOR SHARE THIS SHELL)
+========================================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 15, 10, 0.55);
+  z-index: 1200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 6vh 1.5rem;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--ease);
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-box {
+  background: var(--bg-white);
+  width: 100%;
+  max-width: 460px;
+  padding: 2.5rem;
+  position: relative;
+  border-top: 3px solid var(--accent-crimson);
+  transform: translateY(16px);
+  transition: transform 0.4s var(--ease);
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+.modal-overlay.active .modal-box {
+  transform: translateY(0);
+}
+.editor-box {
+  max-width: 860px;
+}
+.modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--ease);
+  padding: 5px;
+}
+.modal-close:hover {
+  color: var(--accent-crimson);
+}
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  margin-top: 0; /* Diubah menjadi 0 agar semua label sejajar merata */
+}
+
+.field-input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--bg-white);
+  outline: none;
+  transition: var(--ease);
+  resize: vertical;
+}
+.field-input:focus {
+  border-color: var(--accent-crimson);
+}
+.field-error {
+  color: var(--accent-crimson);
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0;
+}
+.btn-primary {
+  background: var(--accent-crimson);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  transition: var(--ease);
+}
+.btn-primary:hover {
+  background: #6e0000;
+}
+.btn-ghost {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--ease);
+}
+.btn-ghost:hover {
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+.full-width {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+/* LOGIN BOX */
+#loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+/* EDITOR BOX */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.editor-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem; /* Menggunakan gap seragam untuk vertikal & horizontal */
+  margin-bottom: 1.2rem;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+}
+.field-group.span-2 {
+  grid-column: 1 / -1;
+}
+.title-input {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+}
+
+/* --- Editor Toolbar Layout Enhancements --- */
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 4px 4px 0 0;
+}
+
+.tb-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.highlight-btn {
+  color: #d4af37;
+}
+
+/* --- Custom Text Highlight (Stabilo Kuning Cerah) --- */
+.journal-highlight {
+  background: linear-gradient(
+    to top,
+    #f6ff00 0%,
+    rgba(246, 255, 0, 0.6) 40%,
+    transparent 75%
+  );
+  padding: 0 2px;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* --- Journalistic Typographic Styles untuk Editor Body --- */
+.editor-body h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 1.8rem;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 2px solid #222;
+  padding-bottom: 4px;
+}
+
+.editor-body h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 1.4rem;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.editor-body blockquote {
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  border-left: 4px solid #8b0000;
+  margin: 1.5em 0;
+  padding: 0.5em 1.5em;
+  background: #fdfbfb;
+  color: #444;
+}
+
+.editor-body ul,
+.editor-body ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+.editor-body li {
+  margin-bottom: 0.5em;
+}
+
+.tb-select {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  background: var(--bg-white);
+  cursor: pointer;
+}
+.tb-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border-color);
+  margin: 0 4px;
+}
+.tb-btn {
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: var(--ease);
+}
+.tb-btn:hover {
+  background: var(--border-color);
+  color: var(--accent-crimson);
+}
+.tb-word-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.image-style-picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #fff8e6;
+  border: 1px solid var(--accent-gold);
+  border-top: none;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+}
+.image-style-picker span {
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+.image-style-picker button {
+  border: 1px solid var(--border-color);
+  background: #fff;
+  border-radius: 50px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: var(--ease);
+}
+.image-style-picker button:hover {
+  border-color: var(--accent-crimson);
+  color: var(--accent-crimson);
+}
+.image-style-picker .cancel-style {
+  margin-left: auto;
+  color: var(--text-muted);
+}
+
+.editor-body {
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 6px 6px;
+  min-height: 260px;
+  max-height: 45vh;
+  overflow-y: auto;
+  padding: 1.2rem 1.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  outline: none;
+}
+.editor-body:empty::before {
+  content: attr(data-placeholder);
+  color: #aaa;
+}
+.editor-body p {
+  margin-bottom: 0.9rem;
+}
+.editor-body img {
+  max-width: 100%;
+}
+
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.editor-status {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.editor-footer-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: auto;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (MENGUASAI HP DAN TABLET)
+========================================================= */
+@media screen and (max-width: 992px) {
+  .layout-wrapper {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .sidebar-nav {
+    width: 100%;
+    position: static;
+  }
+  .ed-card {
+    flex: 0 0 calc(50% - 1rem); /* 2 Kolom di Tablet */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* Layout Umum Mobile */
+  .ed-card {
+    flex: 0 0 85%; /* 1 Kolom besar dengan efek mengintip */
+  }
+  .nav-links {
+    gap: 1rem;
+  }
+
+  /* EDITOR MODAL RESPONSIVE */
+  .modal-overlay {
+    padding: 2vh 1rem; /* Maksimalkan ruang di layar HP */
+  }
+  .modal-box {
+    padding: 1.5rem;
+  }
+  .editor-meta-grid {
+    grid-template-columns: 1fr; /* Form editor menjadi 1 kolom penuh di bawah 768px */
+    gap: 1rem;
+  }
+  .editor-body {
+    min-height: 200px;
+  }
+  .editor-toolbar {
+    justify-content: flex-start; /* Toolbar merata ke kiri di mobile */
+  }
+  .tb-word-count {
+    width: 100%; /* Memaksa word-count turun ke baris baru di mobile */
+    margin-left: 0;
+    margin-top: 5px;
+  }
+  .editor-footer {
+    flex-direction: column; /* Tombol footer bertumpuk */
+    align-items: stretch;
+  }
+  .editor-footer-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .btn-primary,
+  .btn-ghost {
+    flex: 1; /* Tombol memenuhi lebar layar */
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer-container {
+    padding: 4rem 1.5rem 2rem;
+    gap: 3rem;
+  }
+  .connect-links {
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  .note-img-float-left,
+  .note-img-float-right {
+    float: none;
+    width: 100%;
+    margin: 1rem 0;
+  }
+}

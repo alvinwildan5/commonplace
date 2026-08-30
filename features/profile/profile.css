@@ -1,0 +1,482 @@
+/* =========================================================
+   IMPORTS, VARIABLES & BASE RESETS
+========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap");
+
+:root {
+  --bg-paper: #ffffff;
+  --bg-white: #ffffff;
+  --bg-alt: #f9f9f9;
+  --text-main: #222222;
+  --text-muted: #555555;
+  --accent-crimson: #8b0000;
+  --accent-gold: #d4af37;
+  --border-color: #dcdcdc;
+  --border-dark: #1a1a1a;
+  --font-serif: "Crimson Text", Georgia, serif;
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --ease: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background-color: var(--bg-paper);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  line-height: 1.8;
+  font-size: 1.15rem;
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-main);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--ease);
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Font Awesome Protection */
+i[class^="fa-"],
+i[class*=" fa-"] {
+  font-family: "Font Awesome 6 Free" !important;
+}
+i.fa-brands {
+  font-family: "Font Awesome 6 Brands" !important;
+}
+i.fa-solid {
+  font-weight: 900 !important;
+}
+i.fa-regular {
+  font-weight: 400 !important;
+}
+
+/* =========================================================
+   HERO SECTION
+========================================================= */
+.ivy-header {
+  padding: 150px 2rem 50px;
+  text-align: center;
+  background-color: var(--bg-paper);
+}
+.main-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+.crimson-line {
+  width: 60px;
+  height: 3px;
+  background-color: var(--accent-crimson);
+  margin: 0 auto;
+}
+
+/* =========================================================
+   PROFILE LAYOUT
+========================================================= */
+.main-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 4rem;
+  padding-bottom: 6rem;
+  align-items: start;
+}
+
+/* LEFT SIDEBAR */
+.profile-sticky {
+  position: sticky;
+  top: 100px;
+}
+.profile-photo {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: var(--ease);
+}
+.profile-photo:hover img {
+  filter: grayscale(0%);
+}
+.profile-name {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+}
+.profile-title {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--accent-crimson);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+}
+
+/* Contact Items */
+.contact-section h3 {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 1.2rem;
+}
+.contact-icon {
+  width: 20px;
+  color: var(--accent-crimson);
+  font-size: 1.1rem;
+  text-align: center;
+  margin-top: 2px;
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+}
+.contact-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.contact-info a {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+.contact-info a:hover {
+  color: var(--accent-crimson);
+}
+
+/* RIGHT CONTENT */
+.bio-section p {
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+  text-align: justify;
+}
+.bio-heading {
+  font-size: 2rem;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+}
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: var(--border-color);
+  margin: 3rem 0;
+}
+
+/* =========================================================
+   FORM STYLES
+========================================================= */
+.form-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.form-header p {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-alt);
+  color: var(--text-main);
+  transition: var(--ease);
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent-crimson);
+  background: var(--bg-white);
+  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.05);
+}
+.submit-btn {
+  background: var(--bg-white);
+  border: 1px solid var(--border-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 15px 30px;
+  cursor: pointer;
+  transition: var(--ease);
+  border-radius: 4px;
+  width: 100%;
+}
+.submit-btn:hover {
+  background: var(--accent-crimson);
+  color: white;
+  border-color: var(--accent-crimson);
+}
+
+#statusMessage {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  display: none;
+  text-align: center;
+}
+.success {
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  color: #2e7d32;
+}
+.error {
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
+  color: #c62828;
+}
+
+/* =========================================================
+   UNIVERSAL FOOTER STYLES
+========================================================= */
+.site-footer {
+  background-color: var(--accent-crimson);
+  color: white;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.footer-center {
+  text-align: center;
+}
+
+.footer-brand-logo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  letter-spacing: 0.4em;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.footer-tagline-large {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.3;
+}
+
+.footer-bottom-area {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.footer-connect-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-group-title {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.connect-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.connect-links a {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--ease);
+}
+
+.connect-links a i {
+  font-size: 1.1rem;
+}
+
+.connect-links a:hover {
+  color: var(--accent-gold);
+  transform: translateY(-3px);
+}
+
+.footer-copyright {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (TABLET & MOBILE)
+========================================================= */
+
+/* Tablet & Smaller Laptops */
+@media screen and (max-width: 992px) {
+  .main-layout {
+    grid-template-columns: 1fr; /* Mengubah layout menjadi 1 kolom (atas-bawah) */
+    gap: 3rem;
+  }
+
+  /* Menonaktifkan sticky sidebar di layar yang lebih kecil */
+  .profile-sticky {
+    position: relative;
+    top: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .profile-photo {
+    max-width: 300px; /* Mengecilkan ukuran foto agar tidak terlalu mendominasi */
+    margin: 0 auto 1.5rem;
+  }
+
+  .contact-item {
+    justify-content: center; /* Menengahkan daftar kontak */
+  }
+
+  .contact-section h3 {
+    text-align: center;
+  }
+}
+
+/* Mobile Phones (Large & Medium) */
+@media screen and (max-width: 768px) {
+  .ivy-header {
+    padding: 120px 1.5rem 40px;
+  }
+
+  .bio-heading,
+  .form-header h2 {
+    font-size: 1.7rem;
+    text-align: center;
+  }
+
+  .bio-section p {
+    text-align: left; /* Kembalikan ke rata kiri agar lebih mudah dibaca di HP */
+  }
+
+  /* Mengubah kolom form menjadi memanjang ke bawah (1 kolom) */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+/* Small Mobile Phones (iPhone SE, dsb.) */
+@media screen and (max-width: 480px) {
+  .profile-name {
+    font-size: 1.6rem;
+  }
+
+  .profile-title {
+    font-size: 0.75rem;
+  }
+
+  .footer-container {
+    padding: 4rem 1.5rem 2rem;
+    gap: 3rem;
+  }
+
+  .connect-links {
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-tagline-large {
+    font-size: 1.5rem;
+  }
+}
