@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link
@@ -79,7 +79,6 @@
             </div>
           </li>
           <li class="auth-menu">
-            <!-- Ditukar oleh JS: tombol Login saat logged-out, Write + Logout saat logged-in -->
             <button
               class="auth-btn translatable"
               id="loginTriggerBtn"
@@ -135,7 +134,7 @@
             />
           </div>
 
-          <!-- TOPIC NAVIGATION (Otomatis dirender berdasarkan urutan kebaruan) -->
+          <!-- TOPIC NAVIGATION -->
           <ul class="topic-list" id="topic-list"></ul>
         </div>
       </aside>
@@ -184,47 +183,72 @@
             >
           </button>
 
-          <!-- EXPORT TOOLS PROFESIONAL -->
-          <div class="export-tools">
-            <span
-              class="export-label translatable"
-              data-en="Share or Export:"
-              data-id="Bagikan atau Unduh:"
-              >Share or Export:</span
-            >
+          <!-- EXPORT & SHARE TOOLS (3 DOTS MENU) -->
+          <div class="export-menu-container">
             <button
               class="tool-btn"
-              onclick="downloadNote('pdf')"
-              title="Download PDF"
+              onclick="toggleExportMenu()"
+              title="Share or Export"
             >
-              <i class="fa-solid fa-file-pdf"></i> PDF
+              <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
-            <button
-              class="tool-btn"
-              onclick="downloadNote('word')"
-              title="Download Word"
-            >
-              <i class="fa-solid fa-file-word"></i> Word
-            </button>
-            <button
-              class="tool-btn"
-              onclick="downloadNote('png')"
-              title="Download Image"
-            >
-              <i class="fa-solid fa-image"></i> PNG
-            </button>
-            <button
-              class="tool-btn tool-primary"
-              onclick="copyArticleLink()"
-              title="Copy Link"
-            >
-              <i class="fa-solid fa-link"></i> Link
-            </button>
+            <div class="export-dropdown" id="exportDropdown">
+              <div class="dropdown-section">
+                <span
+                  class="dropdown-label translatable"
+                  data-en="Share"
+                  data-id="Bagikan"
+                  >Share</span
+                >
+                <button onclick="shareLink('wa')">
+                  <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </button>
+                <button onclick="shareLink('x')">
+                  <i class="fa-brands fa-x-twitter"></i> X (Twitter)
+                </button>
+                <button onclick="shareLink('ig')">
+                  <i class="fa-brands fa-instagram"></i> Instagram
+                </button>
+                <button onclick="copyArticleLink()">
+                  <i class="fa-solid fa-link"></i> Copy Link
+                </button>
+              </div>
+              <div class="dropdown-section">
+                <span
+                  class="dropdown-label translatable"
+                  data-en="Export"
+                  data-id="Unduh"
+                  >Export</span
+                >
+                <button onclick="downloadNote('pdf')">
+                  <i class="fa-solid fa-file-pdf"></i> PDF (Auto-Format)
+                </button>
+                <button onclick="downloadNote('word')">
+                  <i class="fa-solid fa-file-word"></i> Word (Auto-Format)
+                </button>
+                <button onclick="downloadNote('png')">
+                  <i class="fa-solid fa-image"></i> PNG (Image)
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
         <div id="reading-content-area" class="reading-content">
           <!-- Content Injected via JS -->
+        </div>
+
+        <!-- TOMBOL KEMBALI DI BAWAH KANAN -->
+        <div class="close-btn-bottom-container">
+          <button class="close-btn-bottom" onclick="closeArticle()">
+            <span
+              class="translatable"
+              data-en="Finish Reading"
+              data-id="Selesai Membaca"
+              >Finish Reading</span
+            >
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -348,8 +372,9 @@
               onchange="applyBlockType(this.value)"
             >
               <option value="P">Paragraf</option>
-              <option value="H2">Heading 1</option>
-              <option value="H3">Heading 2</option>
+              <option value="H1">Heading 1</option>
+              <option value="H2">Heading 2</option>
+              <option value="H3">Heading 3</option>
               <option value="BLOCKQUOTE">Kutipan</option>
             </select>
             <select
@@ -358,10 +383,12 @@
               onmousedown="saveSelection()"
               onchange="applyFont(this.value)"
             >
-              <option value="'Crimson Text', Georgia, serif">
+              <option value="'Charter', 'Georgia', serif">
                 Serif (Klasik)
               </option>
-              <option value="'Inter', sans-serif">Sans (Modern)</option>
+              <option value="'Inter', -apple-system, sans-serif">
+                Sans (Modern)
+              </option>
               <option value="'JetBrains Mono', monospace">Mono (Kode)</option>
             </select>
             <select
@@ -372,7 +399,7 @@
               title="Spasi Baris"
             >
               <option value="1.2">Spasi: Rapat (1.2)</option>
-              <option value="1.5" selected>Spasi: Normal (1.5)</option>
+              <option value="1.58" selected>Spasi: Normal (1.58)</option>
               <option value="2.0">Spasi: Lebar (2.0)</option>
             </select>
           </div>
@@ -397,6 +424,14 @@
             </button>
             <button
               type="button"
+              class="tb-btn"
+              onclick="execToolbar('strikeThrough')"
+              title="Strikethrough"
+            >
+              <i class="fa-solid fa-strikethrough"></i>
+            </button>
+            <button
+              type="button"
               class="tb-btn highlight-btn"
               onclick="applyCustomHighlight()"
             >
@@ -412,6 +447,14 @@
               title="Bullet List"
             >
               <i class="fa-solid fa-list-ul"></i>
+            </button>
+            <button
+              type="button"
+              class="tb-btn"
+              onclick="execToolbar('insertOrderedList')"
+              title="Numbered List"
+            >
+              <i class="fa-solid fa-list-ol"></i>
             </button>
             <button
               type="button"

@@ -2,7 +2,7 @@
    NOTES SCRIPT (PARIPURNA) — CMS EDITION (SUPABASE INTEGRATED)
    Auth + Supabase Database + Rich Text Editor + 
    Cyclical Infinite Carousel + Search + Bilingual + ScrollSpy 
-   + Auto Sync Latest Order
+   + Auto Sync Latest Order + Advanced Export & Share (Bug Fixed Paripurna)
    ========================================================================== */
 
 const OWNER_PASSWORD_HASH =
@@ -216,7 +216,7 @@ function initSingleCarousel(container) {
 }
 
 /* --------------------------------------------------------------------------
-   3. MODAL READING OVERLAY (Sync Sidebar & Excerpt Removal)
+   3. MODAL READING OVERLAY
 -------------------------------------------------------------------------- */
 let currentArticleTitle = "Document";
 
@@ -224,7 +224,6 @@ window.openArticle = function (articleId) {
   const article = document.getElementById(articleId);
   if (!article) return;
 
-  // Sync indikator sidebar sesuai catatan yang sedang di-klik
   const parentSection = article.closest(".topic-section");
   if (parentSection) {
     const topicId = parentSection.getAttribute("id");
@@ -241,8 +240,6 @@ window.openArticle = function (articleId) {
   const modalContent = document.getElementById("reading-content-area");
 
   const clone = contentToExport.cloneNode(true);
-
-  // Hapus tag excerpt dari mode reading
   const excerptEl = clone.querySelector(".ed-excerpt");
   if (excerptEl) excerptEl.remove();
 
@@ -253,75 +250,65 @@ window.openArticle = function (articleId) {
 
   document.getElementById("reading-overlay").classList.add("active");
   document.body.style.overflow = "hidden";
+  document.getElementById("exportDropdown").classList.remove("show"); // Reset menu
 };
 
 window.closeArticle = function () {
   document.getElementById("reading-overlay").classList.remove("active");
   document.body.style.overflow = "auto";
+  document.getElementById("exportDropdown").classList.remove("show");
 };
 
 /* --------------------------------------------------------------------------
-   4. EXPORT & SHARE FUNCTIONS
+   4. EXPORT & SHARE FUNCTIONS (FIXED)
 -------------------------------------------------------------------------- */
-window.downloadNote = function (format) {
-  const element = document.getElementById("reading-content-area");
-  const originalPadding = element.style.padding;
-  const originalBg = element.style.backgroundColor;
-  element.style.padding = "40px";
-  element.style.backgroundColor = "#ffffff";
+window.toggleExportMenu = function () {
+  document.getElementById("exportDropdown").classList.toggle("show");
+};
 
-  const filename = `${currentArticleTitle
-    .substring(0, 30)
-    .replace(/[^a-z0-9]/gi, "_")
-    .toLowerCase()}`;
-
-  if (format === "pdf") {
-    const opt = {
-      margin: 1,
-      filename: `${filename}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
-    html2pdf()
-      .set(opt)
-      .from(element)
-      .save()
-      .then(() => {
-        element.style.padding = originalPadding;
-        element.style.backgroundColor = originalBg;
-      });
-  } else if (format === "png") {
-    html2canvas(element, {
-      useCORS: true,
-      scale: 2,
-      backgroundColor: "#ffffff",
-    }).then((canvas) => {
-      const link = document.createElement("a");
-      link.download = `${filename}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-      element.style.padding = originalPadding;
-      element.style.backgroundColor = originalBg;
-    });
-  } else if (format === "word") {
-    const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-      <head><meta charset='utf-8'><title>Export</title>
-      <style> body { font-family: 'Times New Roman', serif; margin: 1in; } table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; } table, th, td { border: 1px solid black; padding: 8px; } </style></head><body>`;
-    const footer = "</body></html>";
-    const sourceHTML = header + element.innerHTML + footer;
-    const source =
-      "data:application/vnd.ms-word;charset=utf-8," +
-      encodeURIComponent(sourceHTML);
-    const fileDownload = document.createElement("a");
-    document.body.appendChild(fileDownload);
-    fileDownload.href = source;
-    fileDownload.download = `${filename}.doc`;
-    fileDownload.click();
-    document.body.removeChild(fileDownload);
-    element.style.padding = originalPadding;
-    element.style.backgroundColor = originalBg;
+document.addEventListener("click", function (e) {
+  const container = document.querySelector(".export-menu-container");
+  const dropdown = document.getElementById("exportDropdown");
+  if (container && !container.contains(e.target) && dropdown) {
+    dropdown.classList.remove("show");
   }
+});
+
+window.shareLink = function (platform) {
+  const url = encodeURIComponent(window.location.href.split("#")[0]);
+  const title = encodeURIComponent(currentArticleTitle);
+
+  if (platform === "wa") {
+    window.open(
+      `https://api.whatsapp.com/send?text=*${title}*%0A${url}`,
+      "_blank",
+    );
+  } else if (platform === "x") {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${title}&url=${url}`,
+      "_blank",
+    );
+  } else if (platform === "ig") {
+    // Alihkan langsung ke DM IG setelah copy link
+    navigator.clipboard
+      .writeText(window.location.href.split("#")[0])
+      .then(() => {
+        alert(
+          "Link telah berhasil disalin!\nKarena limitasi web, Anda akan segera dialihkan ke DM Instagram. Silakan 'Paste' (Tempel) link tersebut ke target DM atau Story Anda.",
+        );
+
+        // Jika di HP upayakan buka aplikasi. Jika tidak, buka versi web inbox.
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          window.location.href = "instagram://app";
+          setTimeout(() => {
+            window.location.href = "https://www.instagram.com/direct/inbox/";
+          }, 1500);
+        } else {
+          window.open("https://www.instagram.com/direct/inbox/", "_blank");
+        }
+      });
+  }
+  document.getElementById("exportDropdown").classList.remove("show");
 };
 
 window.copyArticleLink = function () {
@@ -330,6 +317,131 @@ window.copyArticleLink = function () {
     .writeText(url)
     .then(() => alert("Link copied to clipboard!"))
     .catch((err) => console.error("Failed to copy link: ", err));
+  document.getElementById("exportDropdown").classList.remove("show");
+};
+
+window.downloadNote = function (format) {
+  document.getElementById("exportDropdown").classList.remove("show");
+
+  const originalElement = document.getElementById("reading-content-area");
+  const filename = `${currentArticleTitle
+    .substring(0, 30)
+    .replace(/[^a-z0-9]/gi, "_")
+    .toLowerCase()}`;
+
+  if (format === "pdf" || format === "png") {
+    // Buat container tersembunyi agar web tidak berkedip dan canvas tidak kosong
+    const hiddenContainer = document.createElement("div");
+    hiddenContainer.className = "export-mode-active";
+
+    // Setting CSS absolut di luar layar, tetapi lebarnya dibatasi secara keras (800px) agar rendering kontennya rapi
+    hiddenContainer.style.position = "fixed";
+    hiddenContainer.style.top = "0";
+    hiddenContainer.style.left = "-9999px";
+    hiddenContainer.style.width = "800px";
+    hiddenContainer.style.backgroundColor = "#ffffff";
+    hiddenContainer.style.color = "#000000";
+
+    const exportClone = originalElement.cloneNode(true);
+    hiddenContainer.appendChild(exportClone);
+    document.body.appendChild(hiddenContainer);
+
+    if (format === "pdf") {
+      const opt = {
+        margin: 1, // NORMAL MARGIN (1 inch)
+        filename: `${filename}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, windowWidth: 800 },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      };
+
+      // Tunggu render DOM selesai baru execute
+      setTimeout(() => {
+        html2pdf()
+          .set(opt)
+          .from(hiddenContainer)
+          .save()
+          .then(() => {
+            document.body.removeChild(hiddenContainer);
+          });
+      }, 300);
+    } else {
+      // PNG Export
+      hiddenContainer.style.padding = "40px";
+      setTimeout(() => {
+        html2canvas(hiddenContainer, {
+          useCORS: true,
+          scale: 2,
+          backgroundColor: "#ffffff",
+        }).then((canvas) => {
+          const link = document.createElement("a");
+          link.download = `${filename}.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          document.body.removeChild(hiddenContainer);
+        });
+      }, 300);
+    }
+  } else if (format === "word") {
+    const exportClone = originalElement.cloneNode(true);
+
+    // Inject proper styling for MS Word (Fix Gambar Besar & Justify)
+    exportClone.querySelectorAll("img").forEach((img) => {
+      // Hapus styling konflik, sisakan attribut absolut yang dikenal Ms Word
+      img.removeAttribute("style");
+      img.removeAttribute("class");
+      // Lebar 620 piksel adalah lebar sisa kertas A4 / Letter setelah dipotong margin normal (1 in)
+      // Gambar akan merentang sejajar sempurna dengan garis teks (justify) tanpa melebihi margin.
+      img.setAttribute("width", "620");
+    });
+
+    exportClone.querySelectorAll("p, div, li, td, th").forEach((el) => {
+      el.style.textAlign = "justify";
+      el.style.fontSize = "12pt";
+      el.style.fontFamily = '"Times New Roman", serif';
+      el.style.lineHeight = "1.5";
+    });
+
+    exportClone.querySelectorAll("h1, h2, h3, .ed-title").forEach((el) => {
+      el.style.textAlign = "left";
+      el.style.fontSize = "16pt";
+      el.style.fontFamily = '"Times New Roman", serif';
+      el.style.fontWeight = "bold";
+    });
+
+    // Header dengan standard MS Word namespace dan margin Normal (1 inch all side)
+    const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset='utf-8'><title>Export</title>
+      <style> 
+        @page WordSection1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in 1.0in 1.0in 1.0in;
+            mso-header-margin: 0.5in;
+            mso-footer-margin: 0.5in;
+            mso-paper-source: 0;
+        }
+        div.WordSection1 { page: WordSection1; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; } 
+        table, th, td { border: 1px solid black; padding: 8px; } 
+      </style></head><body><div class="WordSection1">`;
+
+    const footer = "</div></body></html>";
+    const sourceHTML = header + exportClone.innerHTML + footer;
+
+    // Memaksa file dikenali sebagai aplikasi word dan diconvert menjadi blob msword
+    const blob = new Blob(["\ufeff", sourceHTML], {
+      type: "application/msword",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${filename}.doc`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 };
 
 /* --------------------------------------------------------------------------
@@ -462,7 +574,7 @@ async function fetchArticlesFromSupabase() {
   const { data, error } = await supabaseClient
     .from("articles")
     .select("*")
-    .order("date_iso", { ascending: false }); // Diambil berdasarkan tanggal terbaru
+    .order("date_iso", { ascending: false });
 
   if (error) {
     console.error("Failed to load articles from Supabase:", error);
@@ -494,7 +606,6 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
   let section = document.getElementById(topicSlug);
   if (section) return section;
 
-  // Buat section baru untuk Main Content jika belum ada
   section = document.createElement("section");
   section.id = topicSlug;
   section.className = "topic-section";
@@ -510,7 +621,6 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
   `;
   document.getElementById("main-content").appendChild(section);
 
-  // Buat list baru untuk Sidebar secara berurutan
   const topicList = document.getElementById("topic-list");
   const li = document.createElement("li");
   li.innerHTML = `<a href="#${topicSlug}"><i class="fa-solid ${iconClass || "fa-tag"}"></i> ${escapeHtml(topicLabel)}</a>`;
@@ -542,7 +652,6 @@ function buildArticleElement(data) {
 }
 
 async function loadSavedArticlesIntoDom() {
-  // Bersihkan sidebar & konten lama agar murni dibentuk berurutan dari DB
   const topicList = document.getElementById("topic-list");
   if (topicList) topicList.innerHTML = "";
   document.querySelectorAll(".topic-section").forEach((sec) => sec.remove());
@@ -564,7 +673,6 @@ async function loadSavedArticlesIntoDom() {
     track.appendChild(buildArticleElement(data));
   });
 
-  // Set active state pada topik teratas di sidebar
   const firstLink = document.querySelector(".topic-list a");
   if (firstLink) firstLink.classList.add("active");
 }
@@ -690,7 +798,7 @@ function slugify(text) {
 }
 
 /* --------------------------------------------------------------------------
-   11. PUBLISH / EDIT / DELETE ARTICLE (PEMBARUAN: Sync Ke Posisi Teratas)
+   11. PUBLISH / EDIT / DELETE ARTICLE
 -------------------------------------------------------------------------- */
 window.editArticle = function (articleId) {
   if (!isOwnerLoggedIn()) {
@@ -852,15 +960,12 @@ window.publishArticle = async function () {
   const section = ensureTopicSection(topicId, topicLabel, topicIcon);
   const track = section.querySelector(".carousel-track");
 
-  // Masukkan catatan baru ke urutan PERTAMA (Paling Kiri) di karousel
   track.prepend(buildArticleElement(dataApp));
 
-  // Pindahkan Section Topik ini ke urutan PALING ATAS di halaman utama
   const mainContent = document.getElementById("main-content");
   const noResults = document.getElementById("noResultsElement");
   mainContent.insertBefore(section, noResults.nextSibling);
 
-  // Pindahkan Menu Topik ini ke urutan PALING ATAS di Sidebar
   const topicList = document.getElementById("topic-list");
   const targetLi = document.querySelector(
     `.topic-list a[href="#${topicId}"]`,
