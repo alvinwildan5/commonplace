@@ -12,8 +12,8 @@
   --bg-paper: #ffffff;
   --bg-white: #ffffff;
   --bg-alt: #f9f9f9;
-  --text-main: #222222;
-  --text-muted: #555555;
+  --text-main: #242424; /* Soft dark ala Medium */
+  --text-muted: #6b6b6b;
   --accent-crimson: #8b0000;
   --accent-gold: #d4af37;
   --border-color: #dcdcdc;
@@ -38,7 +38,7 @@ body {
   line-height: 1.8;
   font-size: 1.15rem;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden; /* Mencegah horizontal scroll yang bocor */
+  overflow-x: hidden;
 }
 a {
   color: inherit;
@@ -79,7 +79,6 @@ i.fa-regular {
     box-shadow 0.4s ease,
     border-color 0.4s ease;
 }
-
 .site-header.scrolled {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(14px);
@@ -87,7 +86,6 @@ i.fa-regular {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
-
 .site-nav {
   display: flex;
   justify-content: space-between;
@@ -97,7 +95,6 @@ i.fa-regular {
   margin: 0 auto;
   height: 100%;
 }
-
 .brand-text {
   font-family: var(--font-serif);
   font-size: 1.8rem;
@@ -105,7 +102,6 @@ i.fa-regular {
   color: var(--accent-crimson);
   letter-spacing: 0.5px;
 }
-
 .nav-links {
   display: flex;
   align-items: center;
@@ -116,20 +112,17 @@ i.fa-regular {
   letter-spacing: 1.5px;
   list-style: none;
 }
-
 .nav-links a {
   padding-bottom: 4px;
   border-bottom: 2px solid transparent;
   transition: var(--ease);
 }
-
 .nav-links a.active,
 .nav-links a:hover {
   color: var(--accent-crimson);
   border-bottom-color: var(--accent-crimson);
   font-weight: 600;
 }
-
 .lang-switcher button {
   background: none;
   border: none;
@@ -141,19 +134,15 @@ i.fa-regular {
   transition: var(--ease);
   font-family: var(--font-sans);
 }
-
 .lang-switcher button.active {
   opacity: 1;
   font-weight: 600;
   color: var(--accent-crimson);
 }
-
 .lang-divider {
   margin: 0 5px;
   opacity: 0.5;
 }
-
-/* AUTH / WRITE BUTTONS IN NAV */
 .auth-menu {
   display: flex;
   align-items: center;
@@ -206,9 +195,7 @@ i.fa-regular {
   width: 100%;
 }
 
-/* =========================================================
-   SIDEBAR (PERFECT STICKY)
-========================================================= */
+/* SIDEBAR */
 .sidebar-nav {
   width: 250px;
   flex-shrink: 0;
@@ -216,7 +203,6 @@ i.fa-regular {
   top: 120px;
   align-self: flex-start;
 }
-
 .sidebar-search-wrapper {
   position: relative;
   margin-bottom: 2.5rem;
@@ -251,7 +237,6 @@ i.fa-regular {
   color: var(--text-muted);
   opacity: 0.7;
 }
-
 .topic-list {
   display: flex;
   flex-direction: column;
@@ -284,12 +269,10 @@ i.fa-regular {
   color: var(--accent-crimson);
 }
 
-/* =========================================================
-   MAIN CONTENT & CAROUSEL
-========================================================= */
+/* MAIN CONTENT */
 .main-content {
   flex-grow: 1;
-  min-width: 0; /* KRUSIAL: Mencegah flexbox hancur saat ada elemen baru */
+  min-width: 0;
   padding-bottom: 4rem;
   width: 100%;
 }
@@ -312,7 +295,6 @@ i.fa-regular {
   margin-bottom: 2rem;
   font-family: var(--font-sans);
 }
-
 .topic-section {
   margin-bottom: 5rem;
   width: 100%;
@@ -344,8 +326,8 @@ i.fa-regular {
 .carousel-viewport {
   overflow: hidden;
   width: 100%;
-  flex: 1; /* Pastikan viewport mengambil sisa ruang yang ada di antara tombol */
-  min-width: 0; /* Pengamanan flexbox */
+  flex: 1;
+  min-width: 0;
   scroll-behavior: smooth;
 }
 .carousel-track {
@@ -390,6 +372,7 @@ i.fa-regular {
   font-size: 1.4rem;
   margin-bottom: 1rem;
   line-height: 1.3;
+  color: var(--text-main);
 }
 .ed-excerpt p {
   font-family: var(--font-sans);
@@ -426,7 +409,6 @@ i.fa-regular {
   gap: 12px;
 }
 
-/* MANAGE (EDIT/DELETE) ICONS */
 .ed-manage {
   display: flex;
   gap: 4px;
@@ -446,8 +428,6 @@ i.fa-regular {
   background: var(--bg-alt);
   color: var(--accent-crimson);
 }
-
-/* TOMBOL KANAN KIRI SWIPE */
 .carousel-btn {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
@@ -460,7 +440,7 @@ i.fa-regular {
   align-items: center;
   color: var(--text-main);
   transition: var(--ease);
-  flex-shrink: 0; /* Pastikan tombol tidak ikut mengecil */
+  flex-shrink: 0;
   z-index: 10;
 }
 .carousel-btn:hover {
@@ -470,7 +450,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   READING OVERLAY (MODAL) & EXPORT BUTTONS
+   READING OVERLAY (MODAL) - MEDIUM TYPOGRAPHY STYLE
 ========================================================= */
 .reading-overlay {
   position: fixed;
@@ -493,15 +473,15 @@ i.fa-regular {
 }
 .reading-modal {
   width: 100%;
-  max-width: 800px;
-  padding: 4rem 2rem;
+  max-width: 740px;
+  padding: 5rem 2rem;
   transform: translateY(20px);
   transition: transform 0.4s var(--ease);
+  margin: 0 auto;
 }
 .reading-overlay.active .reading-modal {
   transform: translateY(0);
 }
-
 .reading-nav {
   display: flex;
   justify-content: space-between;
@@ -573,29 +553,53 @@ i.fa-regular {
   color: white;
 }
 
+/* Tipografi Isi Tulisan */
+.reading-content .ed-meta {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+}
+.reading-content .ed-title {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+.reading-content .ed-excerpt {
+  display: none !important;
+}
 .reading-content .ed-full-text {
   display: block;
-  font-size: 1.1rem;
-  line-height: 1.8;
+  font-size: 1.35rem;
+  line-height: 1.85;
   color: var(--text-main);
+  font-family: var(--font-serif);
 }
 .reading-content .ed-full-text p {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
 }
 .reading-content .ed-full-text h3 {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  margin: 2rem 0 1rem;
+  font-family: var(--font-sans);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 2.5rem 0 1rem;
+  color: var(--text-main);
 }
 .reading-content .ed-full-text blockquote {
-  border-left: 3px solid var(--accent-crimson);
-  padding-left: 1.2rem;
-  margin: 1.5rem 0;
-  color: var(--text-muted);
+  border-left: 3px solid var(--text-main);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  color: var(--text-main);
   font-style: italic;
+  font-size: 1.45rem;
+  background: transparent;
 }
 
-/* IMAGE STYLE CLASSES */
+/* Gambar di Reading View */
 .note-img {
   max-width: 100%;
   height: auto;
@@ -632,108 +636,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   UNIVERSAL FOOTER STYLES
-========================================================= */
-.site-footer {
-  background-color: var(--accent-crimson);
-  color: white;
-  margin-top: 4rem;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  clear: both; /* Memastikan footer selalu berada di bawah elemen lain */
-}
-
-.footer-container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 5rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-}
-
-.footer-center {
-  text-align: center;
-}
-
-.footer-brand-logo {
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  letter-spacing: 0.4em;
-  color: var(--accent-gold);
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-}
-
-.footer-tagline-large {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.3;
-}
-
-.footer-bottom-area {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding-top: 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-}
-
-.footer-connect-centered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.nav-group-title {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent-gold);
-  font-weight: 600;
-}
-
-.connect-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 3rem;
-}
-
-.connect-links a {
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: var(--ease);
-}
-
-.connect-links a i {
-  font-size: 1.1rem;
-}
-
-.connect-links a:hover {
-  color: var(--accent-gold);
-  transform: translateY(-3px);
-}
-
-.footer-copyright {
-  text-align: center;
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* =========================================================
-   GENERIC MODAL (LOGIN + EDITOR SHARE THIS SHELL)
+   GENERIC MODAL (LOGIN & EDITOR)
 ========================================================= */
 .modal-overlay {
   position: fixed;
@@ -808,7 +711,6 @@ i.fa-regular {
   margin-bottom: 0.4rem;
   margin-top: 0;
 }
-
 .field-input {
   width: 100%;
   border: 1px solid var(--border-color);
@@ -870,14 +772,11 @@ i.fa-regular {
   width: 100%;
   margin-top: 1.5rem;
 }
-
-/* LOGIN BOX */
 #loginForm {
   display: flex;
   flex-direction: column;
 }
 
-/* EDITOR BOX */
 .editor-header {
   display: flex;
   justify-content: space-between;
@@ -902,7 +801,6 @@ i.fa-regular {
   font-size: 1.3rem;
 }
 
-/* --- Editor Toolbar Layout Enhancements --- */
 .editor-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -913,17 +811,14 @@ i.fa-regular {
   border-bottom: 1px solid #e9ecef;
   border-radius: 4px 4px 0 0;
 }
-
 .tb-group {
   display: flex;
   align-items: center;
   gap: 4px;
 }
-
 .highlight-btn {
   color: #d4af37;
 }
-
 .journal-highlight {
   background: linear-gradient(
     to top,
@@ -936,7 +831,6 @@ i.fa-regular {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
-
 .editor-body h2 {
   font-family: "Inter", sans-serif;
   font-size: 1.8rem;
@@ -945,14 +839,12 @@ i.fa-regular {
   border-bottom: 2px solid #222;
   padding-bottom: 4px;
 }
-
 .editor-body h3 {
   font-family: "Inter", sans-serif;
   font-size: 1.4rem;
   margin-top: 1.2em;
   margin-bottom: 0.5em;
 }
-
 .editor-body blockquote {
   font-family: "Crimson Text", serif;
   font-style: italic;
@@ -963,13 +855,11 @@ i.fa-regular {
   background: #fdfbfb;
   color: #444;
 }
-
 .editor-body ul,
 .editor-body ol {
   margin: 1em 0;
   padding-left: 2em;
 }
-
 .editor-body li {
   margin-bottom: 0.5em;
 }
@@ -1010,7 +900,6 @@ i.fa-regular {
   color: var(--text-muted);
   white-space: nowrap;
 }
-
 .image-style-picker {
   display: flex;
   align-items: center;
@@ -1067,7 +956,6 @@ i.fa-regular {
 .editor-body img {
   max-width: 100%;
 }
-
 .editor-footer {
   display: flex;
   justify-content: space-between;
@@ -1087,29 +975,114 @@ i.fa-regular {
 }
 
 /* =========================================================
-   RESPONSIVE DESIGN (MENGUASAI HP DAN TABLET)
+   UNIVERSAL FOOTER STYLES
+========================================================= */
+.site-footer {
+  background-color: var(--accent-crimson);
+  color: white;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  clear: both;
+}
+.footer-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.footer-center {
+  text-align: center;
+}
+.footer-brand-logo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  letter-spacing: 0.4em;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.footer-tagline-large {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.3;
+}
+.footer-bottom-area {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+.footer-connect-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.nav-group-title {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+.connect-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+.connect-links a {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--ease);
+}
+.connect-links a i {
+  font-size: 1.1rem;
+}
+.connect-links a:hover {
+  color: var(--accent-gold);
+  transform: translateY(-3px);
+}
+.footer-copyright {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN 
 ========================================================= */
 @media screen and (max-width: 992px) {
   .layout-wrapper {
     flex-direction: column;
     gap: 2rem;
     padding-top: 100px;
-    width: 100%; /* Pastikan flex direction column tidak menciut */
+    width: 100%;
   }
   .sidebar-nav {
     width: 100%;
     position: static;
   }
   .ed-card {
-    flex: 0 0 calc(50% - 1rem); /* 2 Kolom di Tablet */
+    flex: 0 0 calc(50% - 1rem);
   }
 }
 
-/* =========================================================
-   RESPONSIVE DESIGN MOBILE (< 768px)
-========================================================= */
 @media screen and (max-width: 768px) {
-  /* PERBAIKAN HEADER */
   .site-header {
     background: rgba(255, 255, 255, 0.98);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -1127,61 +1100,37 @@ i.fa-regular {
     gap: 1.2rem;
     font-size: 0.75rem;
   }
-
-  /* LAYOUT UMUM & TOOLBAR */
   .layout-wrapper {
     padding-top: 130px;
     width: 100%;
   }
-  .search-section {
-    width: 100%;
-    background: var(--bg-paper);
-    padding-bottom: 1rem;
+
+  .reading-modal {
+    padding: 3rem 1.5rem;
   }
-  .search-section .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+  .reading-content .ed-title {
+    font-size: 2.2rem;
   }
-  .search-input-wrapper {
-    flex: 1;
-    min-width: 0;
-  }
-  .search-input-wrapper input {
-    width: 100%;
-  }
-  .toolbar-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    flex-shrink: 0;
+  .reading-content .ed-full-text {
+    font-size: 1.15rem;
   }
 
-  /* =========================================================
-     PERBAIKAN CAROUSEL KHUSUS MOBILE (Nongol 1.5 & Ada Tombol)
-  ========================================================= */
   .carousel-container {
-    gap: 0.25rem; /* Gap di antara tombol dan track diperkecil */
+    gap: 0.25rem;
   }
   .carousel-track {
-    gap: 1rem; /* Jarak antar kartu lebih rapat */
+    gap: 1rem;
   }
   .carousel-btn {
-    width: 32px; /* Tombol dibuat sedikit lebih kecil agar tak makan tempat */
+    width: 32px;
     height: 32px;
     font-size: 0.8rem;
   }
-
-  /* INI YANG MENGATUR "NONGOL 1,5" CARD */
   .ed-card {
-    /* Set ke 80% agar menyisakan 20% layar (minus gap) untuk card berikutnya */
     flex: 0 0 80%;
-    scroll-snap-align: center; /* Fokus di tengah, sangat ramah UX HP */
+    scroll-snap-align: center;
   }
 
-  /* EDITOR MODAL RESPONSIVE */
   .modal-overlay {
     padding: 2vh 1rem;
   }
@@ -1219,7 +1168,6 @@ i.fa-regular {
 }
 
 @media screen and (max-width: 480px) {
-  /* FOOTER KECIL */
   .footer-container {
     padding: 4rem 1.5rem 2rem;
     gap: 3rem;
@@ -1232,8 +1180,6 @@ i.fa-regular {
     align-items: center;
     gap: 1.5rem;
   }
-
-  /* Image Floats Editor */
   .note-img-float-left,
   .note-img-float-right {
     float: none;

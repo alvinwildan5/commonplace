@@ -135,24 +135,8 @@
             />
           </div>
 
-          <!-- TOPIC NAVIGATION -->
-          <ul class="topic-list" id="topic-list">
-            <li>
-              <a href="#culture" class="active"
-                ><i class="fa-solid fa-masks-theater"></i> Culture & History</a
-              >
-            </li>
-            <li>
-              <a href="#sustainability"
-                ><i class="fa-solid fa-leaf"></i> Sustainability</a
-              >
-            </li>
-            <li>
-              <a href="#education"
-                ><i class="fa-solid fa-book-open"></i> Education</a
-              >
-            </li>
-          </ul>
+          <!-- TOPIC NAVIGATION (Otomatis dirender berdasarkan urutan kebaruan) -->
+          <ul class="topic-list" id="topic-list"></ul>
         </div>
       </aside>
 
@@ -356,7 +340,6 @@
 
         <!-- RICH TEXT TOOLBAR -->
         <div class="editor-toolbar">
-          <!-- Group 1: Format & Font -->
           <div class="tb-group">
             <select
               class="tb-select"
@@ -369,7 +352,6 @@
               <option value="H3">Heading 2</option>
               <option value="BLOCKQUOTE">Kutipan</option>
             </select>
-
             <select
               class="tb-select"
               id="tbFont"
@@ -381,13 +363,7 @@
               </option>
               <option value="'Inter', sans-serif">Sans (Modern)</option>
               <option value="'JetBrains Mono', monospace">Mono (Kode)</option>
-              <option value="'Merriweather', serif">
-                Merriweather (Jurnal)
-              </option>
-              <option value="'Lora', serif">Lora (Estetik)</option>
-              <option value="'Roboto', sans-serif">Roboto (Bersih)</option>
             </select>
-
             <select
               class="tb-select"
               id="tbLineSpacing"
@@ -400,10 +376,7 @@
               <option value="2.0">Spasi: Lebar (2.0)</option>
             </select>
           </div>
-
           <span class="tb-divider"></span>
-
-          <!-- Group 2: Text Styles -->
           <div class="tb-group">
             <button type="button" class="tb-btn" onclick="execToolbar('bold')">
               <i class="fa-solid fa-bold"></i>
@@ -430,10 +403,7 @@
               <i class="fa-solid fa-highlighter"></i>
             </button>
           </div>
-
           <span class="tb-divider"></span>
-
-          <!-- Group 3: Lists, Align, Table -->
           <div class="tb-group">
             <button
               type="button"
@@ -467,8 +437,6 @@
             >
               <i class="fa-solid fa-align-justify"></i>
             </button>
-
-            <!-- Dropdown Opsi Tabel Lengkap -->
             <select
               class="tb-select"
               id="tbTableAction"
@@ -494,8 +462,6 @@
               <option value="unmerge">↶ Pisahkan Sel</option>
             </select>
           </div>
-
-          <!-- Group 4: Insertions -->
           <div class="tb-group">
             <button
               type="button"
@@ -521,12 +487,12 @@
               onchange="handleImageFileChosen(event)"
             />
           </div>
-
           <span class="tb-word-count" id="tbWordCount"
             >0 words &bull; ~1 min read</span
           >
         </div>
-        <!-- IMAGE STYLE PICKER (muncul sesaat setelah pilih file) -->
+
+        <!-- IMAGE STYLE PICKER -->
         <div
           class="image-style-picker"
           id="imageStylePicker"
@@ -601,12 +567,9 @@
       </div>
     </div>
 
-    <!-- =========================================================
-     UNIVERSAL FOOTER
-========================================================= -->
+    <!-- UNIVERSAL FOOTER -->
     <footer class="site-footer">
       <div class="footer-container">
-        <!-- BAGIAN ATAS: LOGO & TAGLINE -->
         <div class="footer-center">
           <h3 class="footer-brand-logo">AWS</h3>
           <p
@@ -618,8 +581,6 @@
             community resilience.
           </p>
         </div>
-
-        <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
         <div class="footer-bottom-area">
           <div class="footer-connect-centered">
             <span
@@ -633,26 +594,22 @@
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                ><i class="fa-solid fa-envelope"></i> Email</a
               >
-                <i class="fa-solid fa-envelope"></i> Email
-              </a>
               <a
                 href="https://www.linkedin.com/in/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
+                ><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a
               >
-                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
-              </a>
               <a
                 href="https://www.instagram.com/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
+                ><i class="fa-brands fa-instagram"></i> Instagram</a
               >
-                <i class="fa-brands fa-instagram"></i> Instagram
-              </a>
             </div>
           </div>
-
           <div class="footer-copyright">
             <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
           </div>

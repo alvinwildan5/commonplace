@@ -1,31 +1,27 @@
 /* ==========================================================================
    NOTES SCRIPT (PARIPURNA) — CMS EDITION (SUPABASE INTEGRATED)
-   Auth (client-side gate) + Supabase Database + Rich Text Editor + 
-   Cyclical Infinite Carousel (idempotent re-init) + Search + 
-   Bilingual + ScrollSpy + Export
+   Auth + Supabase Database + Rich Text Editor + 
+   Cyclical Infinite Carousel + Search + Bilingual + ScrollSpy 
+   + Auto Sync Latest Order
    ========================================================================== */
 
-/* --------------------------------------------------------------------------
-   0. CONFIG & STORAGE KEYS
--------------------------------------------------------------------------- */
 const OWNER_PASSWORD_HASH =
-  "69bfe17dbd9743d9a11023421d37589c19c461539012b540c0a242b4fdfb5aab"; // default password: "notes2026"
+  "69bfe17dbd9743d9a11023421d37589c19c461539012b540c0a242b4fdfb5aab";
 const AUTH_KEY = "aws_notes_auth";
-const STATIC_TOPICS = ["culture", "sustainability", "environment", "education"];
-const STATIC_TOPIC_LABELS = {
-  culture: "Culture & History",
-  sustainability: "Sustainability",
-  environment: "Environment",
-  education: "Education",
+
+// Konfigurasi topik statis beserta ikonnya
+const TOPIC_CONFIG = {
+  culture: { label: "Culture & History", icon: "fa-masks-theater" },
+  sustainability: { label: "Sustainability", icon: "fa-leaf" },
+  environment: { label: "Environment", icon: "fa-seedling" },
+  education: { label: "Education", icon: "fa-book-open" },
 };
 
 let pendingImageDataUrl = null;
 let editingArticleId = null;
-let globalArticlesCache = []; // Cache lokal untuk mempermudah edit secara sinkron tanpa fetch berulang
+let globalArticlesCache = [];
+let scrollSpyObserver = null;
 
-// ==========================================
-// INISIALISASI SUPABASE
-// ==========================================
 const SUPABASE_URL = "https://hieryuiikzcrvssuvsmn.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_O0XW4AxwOSNv1cvGkxx5Tg_8XTOnRzF";
 const supabaseClient = window.supabase.createClient(
@@ -34,31 +30,20 @@ const supabaseClient = window.supabase.createClient(
 );
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // 1. Set Language Init
   const savedLanguage = localStorage.getItem("language") || "en";
   switchLanguage(savedLanguage);
 
-  // 2. Muat artikel dari SUPABASE SEBELUM carousel di-init
   await loadSavedArticlesIntoDom();
-
-  // 3. Initialize all Carousels
   initCarousels();
-
-  // 4. Initialize Sidebar ScrollSpy
   initScrollSpy();
-
-  // 5. Auth UI state
   refreshAuthUI();
 
-  // 6. Default tanggal di editor = hari ini
   const dateField = document.getElementById("fieldDate");
   if (dateField) dateField.value = new Date().toISOString().slice(0, 10);
 
-  // 7. Word count & Auto-format live update
   const editorBody = document.getElementById("editorBody");
   if (editorBody) {
     editorBody.addEventListener("input", function (e) {
-      // Auto-replace panah
       const sel = window.getSelection();
       if (sel.rangeCount > 0) {
         const node = sel.anchorNode;
@@ -77,22 +62,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       updateWordCount();
     });
-
-    // Native Undo/Redo listener override just in case
-    editorBody.addEventListener("keydown", function (e) {
-      if (e.ctrlKey && e.key.toLowerCase() === "z") {
-        // Biarkan browser handle native undo
-      }
-      if (
-        (e.ctrlKey && e.key.toLowerCase() === "y") ||
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "z")
-      ) {
-        // Biarkan browser handle native redo
-      }
-    });
   }
 
-  // 8. Header Scroll Blur
   const header = document.querySelector(".site-header");
   if (header) {
     window.addEventListener(
@@ -152,7 +123,7 @@ window.executeNoteSearch = function () {
 };
 
 /* --------------------------------------------------------------------------
-   2. CYCLICAL INFINITE CAROUSEL CONTROLS (IDEMPOTENT)
+   2. CYCLICAL INFINITE CAROUSEL CONTROLS
 -------------------------------------------------------------------------- */
 function initCarousels() {
   document.querySelectorAll(".carousel-container").forEach((container) => {
@@ -175,19 +146,6 @@ function initSingleCarousel(container) {
 
   const prevBtn = container.querySelector(".prev-btn");
   const nextBtn = container.querySelector(".next-btn");
-  const dotsContainer = container.querySelector(".carousel-dots");
-  let dots = [];
-
-  if (dotsContainer) {
-    dotsContainer.innerHTML = "";
-    originalItems.forEach((_, index) => {
-      const dot = document.createElement("div");
-      dot.classList.add("carousel-dot");
-      if (index === 0) dot.classList.add("active");
-      dotsContainer.appendChild(dot);
-    });
-    dots = Array.from(dotsContainer.querySelectorAll(".carousel-dot"));
-  }
 
   const createSafeClone = (item) => {
     const clone = item.cloneNode(true);
@@ -222,16 +180,6 @@ function initSingleCarousel(container) {
     if (!step) return;
     const scrollLeft = track.scrollLeft;
 
-    if (dotsContainer) {
-      const absoluteIndex = Math.round(scrollLeft / step);
-      let realIndex = (absoluteIndex - totalOriginal) % totalOriginal;
-      if (realIndex < 0) realIndex += totalOriginal;
-
-      dots.forEach((dot, index) => {
-        dot.classList.toggle("active", index === realIndex);
-      });
-    }
-
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
       if (scrollLeft <= (totalOriginal - 1) * step) {
@@ -265,21 +213,10 @@ function initSingleCarousel(container) {
     nextBtn.replaceWith(newNext);
     newNext.addEventListener("click", () => scrollByArrow(1));
   }
-  if (dotsContainer) {
-    dots.forEach((dot, index) => {
-      dot.addEventListener("click", () => {
-        const step = getScrollStep();
-        track.scrollTo({
-          left: (totalOriginal + index) * step,
-          behavior: "smooth",
-        });
-      });
-    });
-  }
 }
 
 /* --------------------------------------------------------------------------
-   3. MODAL READING OVERLAY
+   3. MODAL READING OVERLAY (Sync Sidebar & Excerpt Removal)
 -------------------------------------------------------------------------- */
 let currentArticleTitle = "Document";
 
@@ -287,9 +224,29 @@ window.openArticle = function (articleId) {
   const article = document.getElementById(articleId);
   if (!article) return;
 
+  // Sync indikator sidebar sesuai catatan yang sedang di-klik
+  const parentSection = article.closest(".topic-section");
+  if (parentSection) {
+    const topicId = parentSection.getAttribute("id");
+    document
+      .querySelectorAll(".topic-list a")
+      .forEach((link) => link.classList.remove("active"));
+    const activeLink = document.querySelector(
+      `.topic-list a[href="#${topicId}"]`,
+    );
+    if (activeLink) activeLink.classList.add("active");
+  }
+
   const contentToExport = document.getElementById(`content-${articleId}`);
   const modalContent = document.getElementById("reading-content-area");
-  modalContent.innerHTML = contentToExport.innerHTML;
+
+  const clone = contentToExport.cloneNode(true);
+
+  // Hapus tag excerpt dari mode reading
+  const excerptEl = clone.querySelector(".ed-excerpt");
+  if (excerptEl) excerptEl.remove();
+
+  modalContent.innerHTML = clone.innerHTML;
 
   const titleEl = modalContent.querySelector(".ed-title");
   if (titleEl) currentArticleTitle = titleEl.innerText;
@@ -308,8 +265,6 @@ window.closeArticle = function () {
 -------------------------------------------------------------------------- */
 window.downloadNote = function (format) {
   const element = document.getElementById("reading-content-area");
-
-  // Simpan gaya asli dan berikan padding sementara agar tidak mepet
   const originalPadding = element.style.padding;
   const originalBg = element.style.backgroundColor;
   element.style.padding = "40px";
@@ -352,24 +307,18 @@ window.downloadNote = function (format) {
   } else if (format === "word") {
     const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset='utf-8'><title>Export</title>
-      <style>
-        body { font-family: 'Times New Roman', serif; margin: 1in; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-        table, th, td { border: 1px solid black; padding: 8px; }
-      </style></head><body>`;
+      <style> body { font-family: 'Times New Roman', serif; margin: 1in; } table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; } table, th, td { border: 1px solid black; padding: 8px; } </style></head><body>`;
     const footer = "</body></html>";
     const sourceHTML = header + element.innerHTML + footer;
     const source =
       "data:application/vnd.ms-word;charset=utf-8," +
       encodeURIComponent(sourceHTML);
-
     const fileDownload = document.createElement("a");
     document.body.appendChild(fileDownload);
     fileDownload.href = source;
     fileDownload.download = `${filename}.doc`;
     fileDownload.click();
     document.body.removeChild(fileDownload);
-
     element.style.padding = originalPadding;
     element.style.backgroundColor = originalBg;
   }
@@ -388,7 +337,6 @@ window.copyArticleLink = function () {
 -------------------------------------------------------------------------- */
 window.switchLanguage = function (lang) {
   if (lang !== "en" && lang !== "id") return;
-
   document.querySelectorAll(".translatable").forEach((element) => {
     const translatedText = element.getAttribute(`data-${lang}`);
     if (translatedText !== null) {
@@ -399,39 +347,37 @@ window.switchLanguage = function (lang) {
       }
     }
   });
-
-  document.querySelectorAll(".lang-btn").forEach((button) => {
-    button.classList.remove("active");
-  });
-
+  document
+    .querySelectorAll(".lang-btn")
+    .forEach((button) => button.classList.remove("active"));
   const activeButton = document.getElementById(`btn-${lang}`);
   if (activeButton) activeButton.classList.add("active");
-
   localStorage.setItem("language", lang);
   document.documentElement.lang = lang;
 };
 
 /* --------------------------------------------------------------------------
-   6. SCROLL SPY SIDEBAR
+   6. SCROLL SPY SIDEBAR 
 -------------------------------------------------------------------------- */
 function initScrollSpy() {
-  const sections = document.querySelectorAll(".topic-section");
-  const navLinks = document.querySelectorAll(".topic-list a");
+  if (scrollSpyObserver) scrollSpyObserver.disconnect();
 
-  if (sections.length === 0 || navLinks.length === 0) return;
+  const sections = document.querySelectorAll(".topic-section");
+  if (sections.length === 0) return;
 
   const observerOptions = {
     root: null,
-    rootMargin: "-150px 0px -40% 0px",
+    rootMargin: "-25% 0px -70% 0px",
     threshold: 0,
   };
 
-  const observer = new IntersectionObserver((entries) => {
+  scrollSpyObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const currentId = entry.target.getAttribute("id");
-        navLinks.forEach((link) => link.classList.remove("active"));
-
+        document
+          .querySelectorAll(".topic-list a")
+          .forEach((link) => link.classList.remove("active"));
         const activeLink = document.querySelector(
           `.topic-list a[href="#${currentId}"]`,
         );
@@ -440,7 +386,7 @@ function initScrollSpy() {
     });
   }, observerOptions);
 
-  sections.forEach((section) => observer.observe(section));
+  sections.forEach((section) => scrollSpyObserver.observe(section));
 }
 
 /* --------------------------------------------------------------------------
@@ -510,13 +456,13 @@ window.logoutOwner = function () {
 };
 
 /* --------------------------------------------------------------------------
-   8. ARTICLE SUPABASE FETCHING & DOM RENDERING
+   8. ARTICLE FETCHING & DOM RENDERING (SYNC KEBARUAN 100%)
 -------------------------------------------------------------------------- */
 async function fetchArticlesFromSupabase() {
   const { data, error } = await supabaseClient
     .from("articles")
     .select("*")
-    .order("date_iso", { ascending: false });
+    .order("date_iso", { ascending: false }); // Diambil berdasarkan tanggal terbaru
 
   if (error) {
     console.error("Failed to load articles from Supabase:", error);
@@ -538,18 +484,17 @@ async function fetchArticlesFromSupabase() {
   return globalArticlesCache;
 }
 
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 function ensureTopicSection(topicSlug, topicLabel, iconClass) {
   let section = document.getElementById(topicSlug);
   if (section) return section;
 
+  // Buat section baru untuk Main Content jika belum ada
   section = document.createElement("section");
   section.id = topicSlug;
   section.className = "topic-section";
@@ -565,23 +510,13 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
   `;
   document.getElementById("main-content").appendChild(section);
 
+  // Buat list baru untuk Sidebar secara berurutan
   const topicList = document.getElementById("topic-list");
-  const alreadyInNav = Array.from(topicList.querySelectorAll("a")).some(
-    (a) => a.getAttribute("href") === `#${topicSlug}`,
-  );
+  const li = document.createElement("li");
+  li.innerHTML = `<a href="#${topicSlug}"><i class="fa-solid ${iconClass || "fa-tag"}"></i> ${escapeHtml(topicLabel)}</a>`;
+  topicList.appendChild(li);
 
-  if (!alreadyInNav) {
-    const li = document.createElement("li");
-    li.innerHTML = `<a href="#${topicSlug}"><i class="fa-solid ${iconClass || "fa-tag"}"></i> ${escapeHtml(topicLabel)}</a>`;
-    topicList.appendChild(li);
-  }
   return section;
-}
-
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
 }
 
 function buildArticleElement(data) {
@@ -607,16 +542,31 @@ function buildArticleElement(data) {
 }
 
 async function loadSavedArticlesIntoDom() {
+  // Bersihkan sidebar & konten lama agar murni dibentuk berurutan dari DB
+  const topicList = document.getElementById("topic-list");
+  if (topicList) topicList.innerHTML = "";
+  document.querySelectorAll(".topic-section").forEach((sec) => sec.remove());
+
   const articles = await fetchArticlesFromSupabase();
+
   articles.forEach((data) => {
+    let icon = data.topicIcon;
+    if (TOPIC_CONFIG[data.topicId]) {
+      icon = TOPIC_CONFIG[data.topicId].icon;
+    }
+
     const section = ensureTopicSection(
       data.topicId,
       data.topicLabel,
-      data.topicIcon,
+      icon || "fa-tag",
     );
     const track = section.querySelector(".carousel-track");
     track.appendChild(buildArticleElement(data));
   });
+
+  // Set active state pada topik teratas di sidebar
+  const firstLink = document.querySelector(".topic-list a");
+  if (firstLink) firstLink.classList.add("active");
 }
 
 /* --------------------------------------------------------------------------
@@ -731,8 +681,16 @@ window.cancelPendingImage = function () {
   if (picker) picker.style.display = "none";
 };
 
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 /* --------------------------------------------------------------------------
-   11. PUBLISH / EDIT / DELETE ARTICLE (Supabase Integration)
+   11. PUBLISH / EDIT / DELETE ARTICLE (PEMBARUAN: Sync Ke Posisi Teratas)
 -------------------------------------------------------------------------- */
 window.editArticle = function (articleId) {
   if (!isOwnerLoggedIn()) {
@@ -742,9 +700,7 @@ window.editArticle = function (articleId) {
 
   const data = globalArticlesCache.find((a) => a.id === articleId);
   if (!data) {
-    alert(
-      "This note isn't editable — it might be hardcoded into the HTML or not found in the database.",
-    );
+    alert("This note isn't editable.");
     return;
   }
 
@@ -757,7 +713,7 @@ window.editArticle = function (articleId) {
   document.getElementById("editorBody").innerHTML = data.bodyHTML;
 
   const topicSelect = document.getElementById("fieldTopicSelect");
-  const isStatic = STATIC_TOPICS.includes(data.topicId);
+  const isStatic = !!TOPIC_CONFIG[data.topicId];
 
   if (isStatic) {
     topicSelect.value = data.topicId;
@@ -796,6 +752,8 @@ window.deleteArticle = async function (articleId) {
   const container = el ? el.closest(".carousel-container") : null;
   if (el) el.remove();
   if (container) initSingleCarousel(container);
+
+  initScrollSpy();
 };
 
 window.publishArticle = async function () {
@@ -819,7 +777,9 @@ window.publishArticle = async function () {
     topicIcon = document.getElementById("fieldNewTopicIcon").value;
   } else {
     topicId = topicSelectVal;
-    topicLabel = STATIC_TOPIC_LABELS[topicSelectVal] || topicSelectVal;
+    topicLabel = TOPIC_CONFIG[topicSelectVal]
+      ? TOPIC_CONFIG[topicSelectVal].label
+      : topicSelectVal;
     topicIcon = null;
   }
 
@@ -850,7 +810,6 @@ window.publishArticle = async function () {
     readTime,
     bodyHTML,
   };
-
   const dbPayload = {
     id: dataApp.id,
     topic_id: dataApp.topicId,
@@ -872,7 +831,6 @@ window.publishArticle = async function () {
       .update(dbPayload)
       .eq("id", editingArticleId);
     if (error) return setEditorStatus("Error updating: " + error.message);
-
     const idx = globalArticlesCache.findIndex((a) => a.id === editingArticleId);
     if (idx > -1) globalArticlesCache.splice(idx, 1);
   } else {
@@ -893,7 +851,21 @@ window.publishArticle = async function () {
 
   const section = ensureTopicSection(topicId, topicLabel, topicIcon);
   const track = section.querySelector(".carousel-track");
-  track.appendChild(buildArticleElement(dataApp));
+
+  // Masukkan catatan baru ke urutan PERTAMA (Paling Kiri) di karousel
+  track.prepend(buildArticleElement(dataApp));
+
+  // Pindahkan Section Topik ini ke urutan PALING ATAS di halaman utama
+  const mainContent = document.getElementById("main-content");
+  const noResults = document.getElementById("noResultsElement");
+  mainContent.insertBefore(section, noResults.nextSibling);
+
+  // Pindahkan Menu Topik ini ke urutan PALING ATAS di Sidebar
+  const topicList = document.getElementById("topic-list");
+  const targetLi = document.querySelector(
+    `.topic-list a[href="#${topicId}"]`,
+  ).parentElement;
+  topicList.prepend(targetLi);
 
   if (
     oldContainer &&
@@ -903,6 +875,8 @@ window.publishArticle = async function () {
   }
 
   initSingleCarousel(section.querySelector(".carousel-container"));
+  initScrollSpy();
+
   editingArticleId = null;
   closeEditor();
 };
@@ -913,52 +887,8 @@ function setEditorStatus(message) {
 }
 
 /* --------------------------------------------------------------------------
-   12. BACKUP / MIGRATION & EDITOR TOOLS
+   12. EDITOR TOOLS & AUTO-FORMATTING
 -------------------------------------------------------------------------- */
-window.exportArticlesJSON = function () {
-  const data = JSON.stringify(globalArticlesCache, null, 2);
-  const blob = new Blob([data], { type: "application/json" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "notes-backup.json";
-  link.click();
-};
-
-window.importArticlesJSON = function (fileInputEvent) {
-  const file = fileInputEvent.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!Array.isArray(imported)) throw new Error("Invalid format");
-
-      const dbRows = imported.map((a) => ({
-        id: a.id,
-        topic_id: a.topicId,
-        topic_label: a.topicLabel,
-        topic_icon: a.topicIcon,
-        title: a.title,
-        excerpt: a.excerpt,
-        date_iso: a.dateISO,
-        date_display: a.dateDisplay,
-        read_time: a.readTime,
-        body_html: a.bodyHTML,
-      }));
-
-      const { error } = await supabaseClient.from("articles").insert(dbRows);
-      if (error) throw new Error(error.message);
-
-      alert("Import success!");
-      location.reload();
-    } catch (err) {
-      alert("Could not import file: " + err.message);
-    }
-  };
-  reader.readAsText(file);
-};
-
-// --- CUSTOM HIGHLIGHT WITH TOGGLE (Undo Support) ---
 window.applyCustomHighlight = function () {
   const body = document.getElementById("editorBody");
   body.focus();
@@ -969,40 +899,30 @@ window.applyCustomHighlight = function () {
   let container = range.commonAncestorContainer;
   if (container.nodeType === 3) container = container.parentNode;
 
-  // Cek apakah teks yang dipilih sudah di dalam span highlight
   const existingHighlight = container.closest(".journal-highlight");
 
   if (existingHighlight) {
-    // 1. Matikan highlight (Unwrap the span to undo it naturally)
     const parent = existingHighlight.parentNode;
     while (existingHighlight.firstChild) {
       parent.insertBefore(existingHighlight.firstChild, existingHighlight);
     }
     parent.removeChild(existingHighlight);
-
-    // Hapus seleksi kursor agar clean
     selection.removeAllRanges();
   } else {
-    // 2. Nyalakan highlight (Bungkus dengan span)
     const span = document.createElement("span");
     span.className = "journal-highlight";
-
     const selectedText = range.extractContents();
     span.appendChild(selectedText);
     range.insertNode(span);
-
-    // Pindahkan kursor ke akhir teks yang baru saja di-highlight
     selection.removeAllRanges();
     const newRange = document.createRange();
     newRange.setStartAfter(span);
     newRange.collapse(true);
     selection.addRange(newRange);
   }
-
   updateWordCount();
 };
 
-// --- SISTEM PENYIMPANAN SELECTION & AUTO-FORMAT ---
 let lastSelectionRange = null;
 window.saveSelection = function () {
   const sel = window.getSelection();
@@ -1071,7 +991,6 @@ window.handleTableAction = function (val) {
 
   let node = selection.getRangeAt(0).commonAncestorContainer;
   if (node.nodeType === 3) node = node.parentNode;
-
   const table = node.closest("table");
   if (!table)
     return alert("Kursor Anda harus berada di dalam tabel untuk mengeditnya.");
