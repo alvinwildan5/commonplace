@@ -1241,3 +1241,4 @@ window.handleTableAction = function (val) {
       break;
   }
 };
+

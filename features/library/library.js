@@ -127,3 +127,24 @@ function switchLanguage(lang) {
     }
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  formatEtAl();
+});
+
+// Fungsi untuk mencari dan memiringkan "et al." secara otomatis
+function formatEtAl() {
+  // Mencari semua tag <p> di dalam .book-info (asumsi tempat penulis & tahun berada)
+  const authorElements = document.querySelectorAll(".book-info p");
+
+  authorElements.forEach((el) => {
+    // Mengecek apakah terdapat teks "et al."
+    if (el.innerHTML.includes("et al.")) {
+      // Mengganti "et al." menjadi miring <i>et al.</i>
+      // Juga merapikan jika ada kasus menempel dengan tahun (misal: "et al.2023" menjadi "et al. 2023")
+      el.innerHTML = el.innerHTML
+        .replace(/et al\./g, "<i>et al.</i>")
+        .replace(/<\/i>(\d{4})/g, "</i> $1"); // Memberi spasi antara </i> dan angka tahun
+    }
+  });
+}
