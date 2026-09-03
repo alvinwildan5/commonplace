@@ -1013,6 +1013,8 @@ img {
 
   .site-header {
     width: 100%;
+    position: fixed;
+    top: 0;
     height: auto;
     padding: 0;
   }
@@ -1563,5 +1565,61 @@ img {
     min-height: 300px !important;
     margin: 0 !important;
     padding: 0 !important;
+  }
+  /* =========================================================
+   HERO — MOBILE: REMOVE DESKTOP PLACEHOLDER SPACE
+========================================================= */
+
+  .hero-placeholder {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hero langsung mengikuti navigation */
+  .hero-section {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    width: 100% !important;
+    height: 300px !important;
+    min-height: 300px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .hero-split-image {
+    position: absolute !important;
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-height: 0 !important;
+    max-height: none !important;
+
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-split-image img {
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
+
+    object-fit: cover !important;
+    object-position: center bottom !important;
   }
 }
