@@ -1123,7 +1123,7 @@ img {
     width: 100%;
     padding: 1.5rem 1rem;
     text-align: left;
-    transform: translateY(15px);
+    transform: translateY(25px);
   }
 
   .hero-title {
@@ -1159,6 +1159,7 @@ img {
     max-width: 260px;
     margin: 0 auto;
     order: -1;
+    display: none; /* Disembunyikan untuk layar kecil */
   }
 
   .intro-text {
