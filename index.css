@@ -174,22 +174,7 @@ img {
    FIXED BACKGROUND + SCROLL FADE / PARALLAX
 ========================================================= */
 
-/*
-   HERO ARCHITECTURE
-
-   Layer 0 : body
-   Layer 1 : hero image
-   Layer 2 : hero text
-   Layer 10: following sections
-
-   Hero tetap berada di belakang konten,
-   tetapi TIDAK menggunakan z-index negatif.
-*/
-
-/* =========================================================
-   HERO PLACEHOLDER
-========================================================= */
-
+/* HERO PLACEHOLDER */
 .hero-placeholder {
   width: 100%;
   height: 85vh;
@@ -197,63 +182,40 @@ img {
   pointer-events: none;
 }
 
-/* =========================================================
-   HERO BASE
-========================================================= */
-
+/* HERO BASE */
 .hero-section {
   position: fixed;
   inset: 0;
-
   width: 100%;
   height: 85vh;
   min-height: 680px;
-
   z-index: 0;
-
   display: flex;
   align-items: center;
-
   overflow: hidden;
-
   background-color: var(--bg-paper);
-
   isolation: isolate;
-
   pointer-events: none;
 }
 
-/* =========================================================
-   HERO IMAGE
-   PALING BELAKANG DI DALAM HERO
-========================================================= */
-
+/* HERO IMAGE */
 .hero-split-image {
   position: absolute;
-
   top: 0;
   right: 0;
-
   width: 68%;
   height: 100%;
-
   z-index: 0;
-
   overflow: hidden;
-
   pointer-events: none;
 }
 
 .hero-split-image::after {
   content: "";
-
   position: absolute;
   inset: 0;
-
   z-index: 2;
-
   pointer-events: none;
-
   background: linear-gradient(
     to right,
     rgba(252, 251, 249, 1) 0%,
@@ -266,283 +228,109 @@ img {
 
 .hero-split-image img {
   position: absolute;
-
   inset: 0;
-
   width: 100%;
   height: 100%;
-
   max-width: none;
-
   object-fit: cover;
   object-position: center center;
-
   transform: scale(1.03);
-
   filter: saturate(0.82) contrast(0.96) brightness(1.04);
-
   user-select: none;
   pointer-events: none;
-
   transition: transform 0.1s linear;
 }
 
-/* =========================================================
-   HERO CONTENT
-   DI ATAS IMAGE
-========================================================= */
-
+/* HERO CONTENT */
 .hero-content {
   position: relative;
-
   z-index: 2;
-
   display: flex;
   align-items: center;
-
   height: 100%;
-
   pointer-events: none;
 }
 
-/* =========================================================
-   HERO TEXT
-========================================================= */
-
+/* HERO TEXT */
 .hero-split-text {
   position: relative;
-
   width: 55%;
   max-width: 650px;
-
   padding: 4rem 0;
-
   z-index: 3;
-
   opacity: 1;
-
   will-change: transform, opacity;
-
   pointer-events: auto;
-
-  /*
-     JS mengambil alih transform + opacity.
-     Jangan tambahkan transition panjang di sini,
-     supaya gerakan mengikuti scroll secara langsung.
-  */
 }
 
-/* =========================================================
-   HERO EYEBROW
-========================================================= */
-
+/* HERO EYEBROW */
 .hero-eyebrow {
   display: block;
-
   margin-bottom: 0.8rem;
-
   font-family: var(--font-sans);
-
   font-size: 0.68rem;
   font-weight: 400;
-
   text-transform: uppercase;
   letter-spacing: 3px;
-
   color: var(--accent-gold);
 }
 
-/* =========================================================
-   HERO TITLE
-========================================================= */
-
+/* HERO TITLE */
 .hero-title {
   margin: 0;
-
   font-family: var(--font-serif);
-
   font-size: clamp(3.8rem, 6.2vw, 6.2rem);
-
   font-weight: 400;
-
   line-height: 0.98;
-
   letter-spacing: -2px;
-
   color: var(--text-main);
-
   max-width: 600px;
 }
 
-/* =========================================================
-   GOLD DIVIDER
-========================================================= */
-
+/* GOLD DIVIDER */
 .gold-divider {
   width: 60px;
   height: 2px;
-
   margin: 2rem 0 1.5rem;
-
   background-color: var(--accent-gold);
-
   transform-origin: left center;
-
   will-change: transform;
 }
 
-/* =========================================================
-   HERO SUBTITLE
-========================================================= */
-
+/* HERO SUBTITLE */
 .hero-subtitle {
   display: block;
-
   font-family: var(--font-sans);
-
   font-size: 0.78rem;
   font-weight: 300;
-
   text-transform: uppercase;
-
   letter-spacing: 3px;
-
   color: var(--text-muted);
 }
 
-/* =========================================================
-   SECTION BERIKUTNYA
-   HARUS MENUTUP HERO
-========================================================= */
-
+/* MENUTUP HERO */
 .content-section,
 .archive-intro-section,
 .community-quote-section,
 .ainan-section,
 .site-footer {
   position: relative;
-
   z-index: 10;
 }
 
-/* =========================================================
-   ARCHIVE INTRO
-========================================================= */
-
-.archive-intro-section {
-  background-color: var(--bg-white);
-
-  padding: 7rem 0;
-}
-
-/* =========================================================
-   HERO IMAGE PARALLAX CLASS
-   Dipakai JS
-========================================================= */
-
+/* HERO IMAGE PARALLAX CLASS (JS) */
 .hero-split-image img.hero-image-parallax {
   will-change: transform;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media screen and (max-width: 992px) {
-  .hero-placeholder {
-    height: auto;
-    min-height: 0;
-  }
-
-  .hero-section {
-    position: relative;
-
-    height: auto;
-    min-height: 100vh;
-
-    flex-direction: column;
-
-    padding-top: 100px;
-
-    z-index: 0;
-  }
-
-  .hero-content {
-    min-height: 52vh;
-
-    align-items: center;
-  }
-
-  .hero-split-text {
-    width: 100%;
-
-    padding: 4rem 2rem;
-  }
-
-  .hero-title {
-    font-size: clamp(3rem, 8vw, 5rem);
-  }
-
-  .hero-split-image {
-    position: relative;
-
-    top: auto;
-    right: auto;
-
-    width: 100%;
-    height: 48vh;
-
-    order: 2;
-  }
-
-  .hero-split-image::after {
-    background: linear-gradient(
-      to bottom,
-      rgba(252, 251, 249, 1) 0%,
-      rgba(252, 251, 249, 0) 40%
-    );
-  }
-
-  .hero-split-image img {
-    object-position: center center;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .hero-section {
-    min-height: 100svh;
-  }
-
-  .hero-content {
-    min-height: 55svh;
-  }
-
-  .hero-split-text {
-    padding: 3rem 1.5rem;
-  }
-
-  .hero-title {
-    font-size: 3rem;
-
-    letter-spacing: -1px;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.62rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.7rem;
-    letter-spacing: 2px;
-  }
-
-  .hero-split-image {
-    height: 45svh;
-  }
-}
 /* ========================================================= 
    5. ARCHIVE INTRODUCTION 
 ========================================================= */
+.archive-intro-section {
+  background-color: var(--bg-white);
+  padding: 7rem 0;
+}
+
 .content-section {
   position: relative;
   z-index: 10;
@@ -810,6 +598,7 @@ img {
   gap: 18px;
   color: var(--accent-gold);
 }
+
 /* ========================================================= 
    8. SPACE TO GROW (ORGANIZATIONS GRID) 
 ========================================================= */
@@ -1049,7 +838,6 @@ img {
 .site-footer {
   background-color: var(--bg-white);
   color: var(--text-main);
-  /* HAPUS: margin-top: 4rem; */
   border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -1149,9 +937,35 @@ img {
 }
 
 /* ========================================================= 
-   11. RESPONSIVE DESIGN
+   11. RESPONSIVE DESIGN (FULLY EXPANDED & REFINED)
 ========================================================= */
+
+/* --- LARGE DESKTOP (1400px+) --- */
+@media screen and (min-width: 1400px) {
+  .site-nav {
+    padding: 1.5rem 0;
+  }
+}
+
+/* --- LAPTOP / SMALL DESKTOP (1024px - 1199px) --- */
+@media screen and (max-width: 1199px) {
+  .intro-layout {
+    gap: 3rem;
+  }
+  .aftermovie-layout {
+    gap: 2.5rem;
+  }
+  .org-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .connect-links {
+    gap: 2.5rem;
+  }
+}
+
+/* --- TABLET LANDSCAPE (769px - 992px) --- */
 @media screen and (max-width: 992px) {
+  /* Layout shifts */
   .hero-layout,
   .intro-layout,
   .aftermovie-layout {
@@ -1159,18 +973,47 @@ img {
     gap: 4rem;
   }
 
+  /* Hero Adjustments */
+  .hero-placeholder {
+    height: auto;
+    min-height: 0;
+  }
+  .hero-section {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    flex-direction: column;
+    padding-top: 100px;
+    z-index: 0;
+  }
+  .hero-content {
+    min-height: 52vh;
+    align-items: center;
+  }
   .hero-split-text {
     width: 100%;
     padding: 3rem 2rem;
   }
-
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 5rem);
+  }
   .hero-split-image {
     position: relative;
+    top: auto;
+    right: auto;
     width: 100%;
     height: 50vh;
+    order: 2;
   }
-
+  .hero-split-image::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(252, 251, 249, 1) 0%,
+      rgba(252, 251, 249, 0) 40%
+    );
+  }
   .hero-split-image img {
+    object-position: center center;
     mask-image: linear-gradient(
       to bottom,
       transparent 0%,
@@ -1183,11 +1026,13 @@ img {
     );
   }
 
+  /* Intro Section */
   .intro-image {
     width: min(500px, 100%);
     margin: 0 auto;
   }
 
+  /* Ainan Section Adjustments */
   .ainan-container {
     align-items: center;
   }
@@ -1202,12 +1047,14 @@ img {
   .ainan-page-title h2 {
     margin-left: 0;
     width: 90%;
+    margin: 0 auto;
   }
   .ainan-glass-card {
     width: 100%;
     max-width: 650px;
   }
 
+  /* Aftermovie Adjustments */
   .aftermovie-layout {
     padding: 0 2rem;
   }
@@ -1228,27 +1075,66 @@ img {
   }
 }
 
+/* --- TABLET PORTRAIT (600px - 768px) --- */
 @media screen and (max-width: 768px) {
+  body {
+    font-size: 1.05rem;
+  }
   .container {
     padding: 0 1.5rem;
   }
-  .nav-links {
-    display: none; /* Hide on mobile or implement hamburger menu */
+  .site-nav {
+    padding: 1rem 1.5rem;
   }
 
+  /* Hide standard nav on mobile */
+  .nav-links {
+    display: none;
+  }
+
+  /* Hero Section */
   .hero-section {
-    min-height: auto;
-    flex-direction: column;
-    padding-top: 100px;
+    min-height: 100svh;
+  }
+  .hero-content {
+    min-height: 55svh;
+  }
+  .hero-split-text {
+    padding: 3rem 1.5rem;
   }
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
+    letter-spacing: -1px;
+  }
+  .hero-eyebrow {
+    font-size: 0.62rem;
+  }
+  .hero-subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+  }
+  .hero-split-image {
+    height: 45svh;
   }
 
+  /* Sections Paddings */
+  .content-section,
+  .archive-intro-section,
+  .community-quote-section,
+  .ainan-section {
+    padding: 5rem 0;
+  }
+
+  /* Community Quote */
   .community-quote p {
     font-size: 1.8rem;
   }
+  .community-quote::before {
+    font-size: 4.5rem;
+    margin-bottom: 2rem;
+  }
 
+  /* Ainan Card */
   .ainan-card-title {
     font-size: 1.8rem;
   }
@@ -1256,12 +1142,17 @@ img {
     padding: 2rem 1.5rem;
   }
 
+  /* Organizations Grid */
   .org-grid {
     grid-template-columns: 1fr;
   }
+
+  /* Aftermovie */
   .aftermovie-item {
     flex: 0 0 calc(85%);
   }
+
+  /* Footer */
   .footer-container {
     padding: 4rem 1.5rem 2rem;
     gap: 3rem;
@@ -1270,5 +1161,156 @@ img {
     flex-direction: column;
     gap: 2rem;
     align-items: center;
+  }
+}
+
+/* --- MOBILE LANDSCAPE / LARGE PHONES (481px - 599px) --- */
+@media screen and (max-width: 599px) {
+  .hero-split-text {
+    padding: 2.5rem 1.5rem;
+  }
+  .hero-title {
+    font-size: 2.6rem;
+  }
+  .section-title {
+    font-size: 1.9rem;
+  }
+  .community-quote p {
+    font-size: 1.5rem;
+  }
+  .org-card {
+    padding: 2rem;
+  }
+  .ainan-glass-card {
+    padding: 2rem 1.25rem;
+  }
+  .footer-tagline-large {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- SMALL MOBILE (<= 480px) --- */
+@media screen and (max-width: 480px) {
+  body {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .site-header {
+    padding: 0;
+  }
+  .site-nav {
+    padding: 0.8rem 1.2rem;
+  }
+  .brand-text {
+    font-size: 1.5rem;
+    letter-spacing: 6px;
+  }
+
+  .hero-section {
+    padding-top: 80px;
+  }
+  .hero-split-text {
+    padding: 2rem 1.2rem;
+  }
+  .hero-title {
+    font-size: 2.3rem;
+  }
+
+  .content-section,
+  .archive-intro-section,
+  .community-quote-section,
+  .ainan-section {
+    padding: 4rem 0;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .intro-text p {
+    margin-bottom: 1.5rem;
+  }
+  .drop-cap::first-letter {
+    font-size: 4rem;
+    padding-right: 8px;
+    padding-top: 6px;
+  }
+
+  .community-quote p {
+    font-size: 1.35rem;
+  }
+  .community-quote::before {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ainan-page-title h2 {
+    font-size: 2rem;
+  }
+  .ainan-card-title {
+    font-size: 1.5rem;
+  }
+  .excerpt-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+
+  .org-card {
+    padding: 1.5rem;
+  }
+  .org-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .aftermovie-item {
+    flex: 0 0 calc(90%);
+  }
+
+  .footer-container {
+    padding: 3rem 1.2rem 2rem;
+    gap: 2.5rem;
+  }
+  .footer-brand-logo {
+    font-size: 1.2rem;
+  }
+  .footer-tagline-large {
+    font-size: 1.35rem;
+  }
+  .footer-bottom-area {
+    padding-top: 3rem;
+    gap: 3rem;
+  }
+  .nav-group-title {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+  }
+}
+
+/* --- VERY SMALL MOBILE (<= 360px) --- */
+@media screen and (max-width: 360px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+  .community-quote p {
+    font-size: 1.2rem;
+  }
+  .ainan-page-title h2 {
+    font-size: 1.75rem;
+  }
+  .ainan-card-title {
+    font-size: 1.35rem;
+  }
+  .org-card {
+    padding: 1.2rem;
+  }
+  .footer-tagline-large {
+    font-size: 1.2rem;
   }
 }

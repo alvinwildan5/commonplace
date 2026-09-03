@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* =========================================================
-   IMPORTS, VARIABLES & BASE RESETS
+   1. IMPORTS, VARIABLES & BASE RESETS
 ========================================================= */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap");
 
@@ -78,7 +78,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   HEADER
+   2. HEADER
 ========================================================= */
 .site-header {
   position: fixed;
@@ -147,7 +147,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   HERO SECTION
+   3. HERO SECTION
 ========================================================= */
 .ivy-header {
   padding: 200px 2rem 50px; /* Spacing lapang dari atas */
@@ -176,7 +176,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   PROFILE LAYOUT
+   4. PROFILE LAYOUT
 ========================================================= */
 .main-layout {
   display: grid;
@@ -296,7 +296,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   FORM STYLES (EDITORIAL & PREMIUM)
+   5. FORM STYLES (EDITORIAL & PREMIUM)
 ========================================================= */
 .form-header h2 {
   font-size: 2rem;
@@ -393,7 +393,7 @@ i.fa-regular {
 }
 
 /* =========================================================
-   UNIVERSAL FOOTER STYLES
+   6. UNIVERSAL FOOTER STYLES
 ========================================================= */
 .site-footer {
   background-color: var(--bg-white);
@@ -497,15 +497,29 @@ i.fa-regular {
 }
 
 /* =========================================================
-   RESPONSIVE DESIGN (TABLET & MOBILE)
+   7. RESPONSIVE DESIGN (FULLY EXPANDED)
 ========================================================= */
 
+/* --- LARGE DESKTOP (1400px+) --- */
+@media screen and (min-width: 1400px) {
+  .site-nav {
+    padding: 1.5rem 0;
+  }
+}
+
+/* --- LAPTOP / SMALL DESKTOP (993px - 1399px) --- */
+@media screen and (max-width: 1399px) {
+  .main-layout {
+    gap: 4rem;
+  }
+}
+
+/* --- TABLET LANDSCAPE (769px - 992px) --- */
 @media screen and (max-width: 992px) {
   .main-layout {
     grid-template-columns: 1fr;
     gap: 4rem;
   }
-
   .profile-sticky {
     position: relative;
     top: 0;
@@ -513,85 +527,132 @@ i.fa-regular {
     margin: 0 auto;
     text-align: center;
   }
-
   .profile-photo {
     max-width: 350px;
     margin: 0 auto 2rem;
   }
-
   .contact-item {
     justify-content: center;
   }
-
   .contact-section h3 {
+    text-align: center;
+  }
+  .bio-heading {
     text-align: center;
   }
 }
 
+/* --- TABLET PORTRAIT (600px - 768px) --- */
 @media screen and (max-width: 768px) {
   .site-header {
     height: auto;
     padding-bottom: 0.5rem;
   }
-
   .site-nav {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem 1.5rem;
   }
-
   .nav-links {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
     font-size: 0.75rem;
   }
-
   .ivy-header {
     padding: 160px 1.5rem 50px;
   }
-
   .bio-heading,
   .form-header h2 {
     font-size: 2rem;
     text-align: center;
   }
-
+  /* Mengubah text bio menjadi rata kiri untuk keterbacaan di layar kecil */
   .bio-section p {
     text-align: left;
   }
-
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
   }
-
   .container {
     padding: 0 1.5rem;
   }
 }
 
+/* --- MOBILE LANDSCAPE / LARGE PHONES (481px - 599px) --- */
+@media screen and (max-width: 599px) {
+  .site-nav {
+    padding: 1rem;
+  }
+  .main-title {
+    font-size: 2.5rem;
+  }
+  .profile-photo {
+    max-width: 280px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 14px;
+  }
+}
+
+/* --- SMALL MOBILE (<= 480px) --- */
 @media screen and (max-width: 480px) {
+  .brand-text {
+    font-size: 1.4rem;
+    letter-spacing: 1.5px;
+  }
+  .main-title {
+    font-size: 2.2rem;
+  }
   .profile-name {
     font-size: 1.8rem;
   }
-
   .profile-title {
     font-size: 0.7rem;
   }
-
+  .bio-heading {
+    font-size: 1.8rem;
+  }
   .footer-container {
     padding: 4rem 1.5rem 2rem;
     gap: 3rem;
   }
-
   .connect-links {
     gap: 2rem;
     flex-direction: column;
     align-items: center;
   }
-
   .footer-tagline-large {
     font-size: 1.6rem;
+  }
+  .submit-btn {
+    padding: 14px 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* --- VERY SMALL MOBILE (<= 360px) --- */
+@media screen and (max-width: 360px) {
+  .nav-links {
+    gap: 0.8rem 1rem;
+    font-size: 0.65rem;
+  }
+  .main-title {
+    font-size: 2rem;
+  }
+  .profile-name {
+    font-size: 1.6rem;
+  }
+  .form-header h2 {
+    font-size: 1.6rem;
+  }
+  .contact-label {
+    font-size: 0.65rem;
+  }
+  .contact-info a {
+    font-size: 0.8rem;
   }
 }

@@ -1,8 +1,7 @@
 /* ==========================================================================
-   NOTES SCRIPT (PARIPURNA) — CMS EDITION (SUPABASE INTEGRATED) + SHAREABLE URL LINK
-   Auth + Supabase Database + Rich Text Editor + 
-   Cyclical Infinite Carousel + Search + Bilingual + ScrollSpy 
-   + Auto Sync Latest Order + Advanced Export & Share (Bug Fixed Paripurna)
+   NOTES SCRIPT (PARIPURNA) — CMS EDITION (SUPABASE INTEGRATED)
+   Auth + Supabase Database + Rich Text Editor + Cyclical Carousel + Search 
+   + Bilingual + ScrollSpy + Auto Sync + Advanced Export & Share (Fixed)
    ========================================================================== */
 
 const OWNER_PASSWORD_HASH =
@@ -79,11 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   }
 
-  // EVENT LISTENER UNTUK SHAREABLE URL ARTICLE
-  // Mengecek apakah terdapat fragment #article-xxx di URL saat memuat halaman
   checkHashForArticle();
-
-  // Event listener jika user menavigasikan back/forward pada browser
   window.addEventListener("hashchange", checkHashForArticle);
 });
 
@@ -92,16 +87,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 -------------------------------------------------------------------------- */
 function checkHashForArticle() {
   if (window.location.hash) {
-    const articleId = window.location.hash.substring(1); // Menghapus tanda '#'
-
-    // Pastikan hash bukan topik melainkan id artikel
+    const articleId = window.location.hash.substring(1);
     if (
       articleId.startsWith("article-") ||
       globalArticlesCache.some((a) => a.id === articleId)
     ) {
-      // Kasih delay sebentar untuk memastikan DOM selesai dirender
       setTimeout(() => {
-        openArticle(articleId, false); // false berarti jangan update hash lagi agar tidak infinite loop
+        openArticle(articleId, false);
       }, 500);
     }
   }
@@ -243,7 +235,7 @@ function initSingleCarousel(container) {
 }
 
 /* --------------------------------------------------------------------------
-   3. MODAL READING OVERLAY (UPDATE UNTUK URL LINKING)
+   3. MODAL READING OVERLAY
 -------------------------------------------------------------------------- */
 let currentArticleTitle = "Document";
 
@@ -277,12 +269,9 @@ window.openArticle = function (articleId, updateHash = true) {
 
   document.getElementById("reading-overlay").classList.add("active");
   document.body.style.overflow = "hidden";
-  document.getElementById("exportDropdown").classList.remove("show"); // Reset menu
+  document.getElementById("exportDropdown").classList.remove("show");
 
-  // Mengupdate Hash Fragment di URL agar link bisa dibagikan
-  if (updateHash) {
-    window.history.pushState(null, null, `#${articleId}`);
-  }
+  if (updateHash) window.history.pushState(null, null, `#${articleId}`);
 };
 
 window.closeArticle = function () {
@@ -290,13 +279,12 @@ window.closeArticle = function () {
   document.body.style.overflow = "auto";
   document.getElementById("exportDropdown").classList.remove("show");
 
-  // Menghapus id artikel dari URL saat modal ditutup
   const currentPath = window.location.pathname + window.location.search;
   window.history.pushState(null, null, currentPath);
 };
 
 /* --------------------------------------------------------------------------
-   4. EXPORT & SHARE FUNCTIONS (FIXED & SHARE LINK MENGAMBIL HASH URL)
+   4. EXPORT & SHARE FUNCTIONS
 -------------------------------------------------------------------------- */
 window.toggleExportMenu = function () {
   document.getElementById("exportDropdown").classList.toggle("show");
@@ -311,10 +299,8 @@ document.addEventListener("click", function (e) {
 });
 
 window.shareLink = function (platform) {
-  // Mengambil URL yang sekarang lengkap dengan fragment #article-xxx
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(currentArticleTitle);
-
   if (platform === "wa") {
     window.open(
       `https://api.whatsapp.com/send?text=*${title}*%0A${url}`,
@@ -330,7 +316,6 @@ window.shareLink = function (platform) {
 };
 
 window.copyArticleLink = function () {
-  // Menyalin link yang sudah terdapat #article-xxx
   const url = window.location.href;
   navigator.clipboard
     .writeText(url)
@@ -349,11 +334,8 @@ window.downloadNote = function (format) {
     .toLowerCase()}`;
 
   if (format === "pdf" || format === "png") {
-    // Buat container tersembunyi agar web tidak berkedip dan canvas tidak kosong
     const hiddenContainer = document.createElement("div");
     hiddenContainer.className = "export-mode-active";
-
-    // Setting CSS absolut di luar layar, tetapi lebarnya dibatasi secara keras (800px) agar rendering kontennya rapi
     hiddenContainer.style.position = "fixed";
     hiddenContainer.style.top = "0";
     hiddenContainer.style.left = "-9999px";
@@ -367,26 +349,21 @@ window.downloadNote = function (format) {
 
     if (format === "pdf") {
       const opt = {
-        margin: 1, // NORMAL MARGIN (1 inch)
+        margin: 1,
         filename: `${filename}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, windowWidth: 800 },
         jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
         pagebreak: { mode: ["avoid-all", "css", "legacy"] },
       };
-
-      // Tunggu render DOM selesai baru execute
       setTimeout(() => {
         html2pdf()
           .set(opt)
           .from(hiddenContainer)
           .save()
-          .then(() => {
-            document.body.removeChild(hiddenContainer);
-          });
+          .then(() => document.body.removeChild(hiddenContainer));
       }, 300);
     } else {
-      // PNG Export
       hiddenContainer.style.padding = "40px";
       setTimeout(() => {
         html2canvas(hiddenContainer, {
@@ -404,24 +381,17 @@ window.downloadNote = function (format) {
     }
   } else if (format === "word") {
     const exportClone = originalElement.cloneNode(true);
-
-    // Inject proper styling for MS Word (Fix Gambar Besar & Justify)
     exportClone.querySelectorAll("img").forEach((img) => {
-      // Hapus styling konflik, sisakan attribut absolut yang dikenal Ms Word
       img.removeAttribute("style");
       img.removeAttribute("class");
-      // Lebar 620 piksel adalah lebar sisa kertas A4 / Letter setelah dipotong margin normal (1 in)
-      // Gambar akan merentang sejajar sempurna dengan garis teks (justify) tanpa melebihi margin.
       img.setAttribute("width", "620");
     });
-
     exportClone.querySelectorAll("p, div, li, td, th").forEach((el) => {
       el.style.textAlign = "justify";
       el.style.fontSize = "12pt";
       el.style.fontFamily = '"Times New Roman", serif';
       el.style.lineHeight = "1.5";
     });
-
     exportClone.querySelectorAll("h1, h2, h3, .ed-title").forEach((el) => {
       el.style.textAlign = "left";
       el.style.fontSize = "16pt";
@@ -429,26 +399,17 @@ window.downloadNote = function (format) {
       el.style.fontWeight = "bold";
     });
 
-    // Header dengan standard MS Word namespace dan margin Normal (1 inch all side)
     const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset='utf-8'><title>Export</title>
       <style> 
-        @page WordSection1 {
-            size: 8.5in 11.0in;
-            margin: 1.0in 1.0in 1.0in 1.0in;
-            mso-header-margin: 0.5in;
-            mso-footer-margin: 0.5in;
-            mso-paper-source: 0;
-        }
+        @page WordSection1 { size: 8.5in 11.0in; margin: 1.0in 1.0in 1.0in 1.0in; mso-header-margin: 0.5in; mso-footer-margin: 0.5in; mso-paper-source: 0; }
         div.WordSection1 { page: WordSection1; }
         table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; } 
         table, th, td { border: 1px solid black; padding: 8px; } 
       </style></head><body><div class="WordSection1">`;
-
     const footer = "</div></body></html>";
     const sourceHTML = header + exportClone.innerHTML + footer;
 
-    // Memaksa file dikenali sebagai aplikasi word dan diconvert menjadi blob msword
     const blob = new Blob(["\ufeff", sourceHTML], {
       type: "application/msword",
     });
@@ -471,11 +432,9 @@ window.switchLanguage = function (lang) {
   document.querySelectorAll(".translatable").forEach((element) => {
     const translatedText = element.getAttribute(`data-${lang}`);
     if (translatedText !== null) {
-      if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+      if (element.tagName === "INPUT" || element.tagName === "TEXTAREA")
         element.placeholder = translatedText;
-      } else {
-        element.innerHTML = translatedText;
-      }
+      else element.innerHTML = translatedText;
     }
   });
   document
@@ -492,36 +451,32 @@ window.switchLanguage = function (lang) {
 -------------------------------------------------------------------------- */
 function initScrollSpy() {
   if (scrollSpyObserver) scrollSpyObserver.disconnect();
-
   const sections = document.querySelectorAll(".topic-section");
   if (sections.length === 0) return;
 
-  const observerOptions = {
-    root: null,
-    rootMargin: "-25% 0px -70% 0px",
-    threshold: 0,
-  };
-
-  scrollSpyObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const currentId = entry.target.getAttribute("id");
-        document
-          .querySelectorAll(".topic-list a")
-          .forEach((link) => link.classList.remove("active"));
-        const activeLink = document.querySelector(
-          `.topic-list a[href="#${currentId}"]`,
-        );
-        if (activeLink) activeLink.classList.add("active");
-      }
-    });
-  }, observerOptions);
+  scrollSpyObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const currentId = entry.target.getAttribute("id");
+          document
+            .querySelectorAll(".topic-list a")
+            .forEach((link) => link.classList.remove("active"));
+          const activeLink = document.querySelector(
+            `.topic-list a[href="#${currentId}"]`,
+          );
+          if (activeLink) activeLink.classList.add("active");
+        }
+      });
+    },
+    { root: null, rootMargin: "-25% 0px -70% 0px", threshold: 0 },
+  );
 
   sections.forEach((section) => scrollSpyObserver.observe(section));
 }
 
 /* --------------------------------------------------------------------------
-   7. AUTH (CLIENT-SIDE GATE)
+   7. AUTH
 -------------------------------------------------------------------------- */
 async function sha256Hex(text) {
   const buf = await crypto.subtle.digest(
@@ -548,10 +503,9 @@ function refreshAuthUI() {
   document.getElementById("logoutTriggerBtn").style.display = loggedIn
     ? "inline-flex"
     : "none";
-
-  document.querySelectorAll(".ed-manage").forEach((el) => {
-    el.style.display = loggedIn ? "flex" : "none";
-  });
+  document
+    .querySelectorAll(".ed-manage")
+    .forEach((el) => (el.style.display = loggedIn ? "flex" : "none"));
 }
 
 window.openLogin = function () {
@@ -560,43 +514,36 @@ window.openLogin = function () {
   document.getElementById("ownerPassword").value = "";
   document.body.style.overflow = "hidden";
 };
-
 window.closeLogin = function () {
   document.getElementById("login-overlay").classList.remove("active");
   document.body.style.overflow = "auto";
 };
-
 window.handleLogin = async function (event) {
   event.preventDefault();
   const pw = document.getElementById("ownerPassword").value;
   const hash = await sha256Hex(pw);
-
   if (hash === OWNER_PASSWORD_HASH) {
     localStorage.setItem(AUTH_KEY, "true");
     closeLogin();
     refreshAuthUI();
-  } else {
-    document.getElementById("loginError").style.display = "block";
-  }
+  } else document.getElementById("loginError").style.display = "block";
   return false;
 };
-
 window.logoutOwner = function () {
   localStorage.removeItem(AUTH_KEY);
   refreshAuthUI();
 };
 
 /* --------------------------------------------------------------------------
-   8. ARTICLE FETCHING & DOM RENDERING (SYNC KEBARUAN 100%)
+   8. ARTICLE FETCHING & DOM RENDERING
 -------------------------------------------------------------------------- */
 async function fetchArticlesFromSupabase() {
   const { data, error } = await supabaseClient
     .from("articles")
     .select("*")
     .order("date_iso", { ascending: false });
-
   if (error) {
-    console.error("Failed to load articles from Supabase:", error);
+    console.error("Failed to load articles:", error);
     return [];
   }
 
@@ -632,12 +579,9 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
     <h2 class="topic-heading">${escapeHtml(topicLabel)}</h2>
     <div class="carousel-container">
       <button class="carousel-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
-      <div class="carousel-viewport">
-        <div class="carousel-track"></div>
-      </div>
+      <div class="carousel-viewport"><div class="carousel-track"></div></div>
       <button class="carousel-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
-    </div>
-  `;
+    </div>`;
   document.getElementById("main-content").appendChild(section);
 
   const topicList = document.getElementById("topic-list");
@@ -665,8 +609,7 @@ function buildArticleElement(data) {
         <button class="ed-manage-btn" onclick="editArticle('${data.id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
         <button class="ed-manage-btn" onclick="deleteArticle('${data.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
       </div>
-    </div>
-  `;
+    </div>`;
   return article;
 }
 
@@ -676,20 +619,17 @@ async function loadSavedArticlesIntoDom() {
   document.querySelectorAll(".topic-section").forEach((sec) => sec.remove());
 
   const articles = await fetchArticlesFromSupabase();
-
   articles.forEach((data) => {
     let icon = data.topicIcon;
-    if (TOPIC_CONFIG[data.topicId]) {
-      icon = TOPIC_CONFIG[data.topicId].icon;
-    }
-
+    if (TOPIC_CONFIG[data.topicId]) icon = TOPIC_CONFIG[data.topicId].icon;
     const section = ensureTopicSection(
       data.topicId,
       data.topicLabel,
       icon || "fa-tag",
     );
-    const track = section.querySelector(".carousel-track");
-    track.appendChild(buildArticleElement(data));
+    section
+      .querySelector(".carousel-track")
+      .appendChild(buildArticleElement(data));
   });
 
   const firstLink = document.querySelector(".topic-list a");
@@ -704,7 +644,6 @@ window.openEditor = function () {
     openLogin();
     return;
   }
-
   editingArticleId = null;
   document.getElementById("editorHeading").textContent = "Write a New Note";
   document.getElementById("publishBtnLabel").textContent = "Publish";
@@ -723,24 +662,22 @@ window.openEditor = function () {
   document.getElementById("editor-overlay").classList.add("active");
   document.body.style.overflow = "hidden";
 };
-
 window.closeEditor = function () {
   document.getElementById("editor-overlay").classList.remove("active");
   document.body.style.overflow = "auto";
   cancelPendingImage();
 };
-
 window.handleTopicSelectChange = function () {
   const val = document.getElementById("fieldTopicSelect").value;
   document.getElementById("newTopicGroup").style.display =
     val === "__new__" ? "block" : "none";
 };
 
+// Toolbar Exec
 window.execToolbar = function (command) {
   document.getElementById("editorBody").focus();
   document.execCommand(command, false, null);
 };
-
 window.triggerLinkInsert = function () {
   const url = prompt("Enter URL:", "https://");
   if (!url) return;
@@ -766,16 +703,13 @@ window.triggerImageInsert = function () {
   const body = document.getElementById("editorBody");
   body.focus();
   const sel = window.getSelection();
-  if (sel && sel.rangeCount > 0) {
-    savedSelectionRange = sel.getRangeAt(0);
-  }
+  if (sel && sel.rangeCount > 0) savedSelectionRange = sel.getRangeAt(0);
   document.getElementById("imageFileInput").click();
 };
 
 window.handleImageFileChosen = function (event) {
   const file = event.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = (e) => {
     pendingImageDataUrl = e.target.result;
@@ -787,7 +721,6 @@ window.handleImageFileChosen = function (event) {
 
 window.insertPendingImage = function (styleClass) {
   if (!pendingImageDataUrl) return;
-
   const body = document.getElementById("editorBody");
   body.focus();
   const sel = window.getSelection();
@@ -824,7 +757,6 @@ window.editArticle = function (articleId) {
     openLogin();
     return;
   }
-
   const data = globalArticlesCache.find((a) => a.id === articleId);
   if (!data) {
     alert("This note isn't editable.");
@@ -841,7 +773,6 @@ window.editArticle = function (articleId) {
 
   const topicSelect = document.getElementById("fieldTopicSelect");
   const isStatic = !!TOPIC_CONFIG[data.topicId];
-
   if (isStatic) {
     topicSelect.value = data.topicId;
     document.getElementById("newTopicGroup").style.display = "none";
@@ -852,7 +783,6 @@ window.editArticle = function (articleId) {
     document.getElementById("fieldNewTopicIcon").value =
       data.topicIcon || "fa-lightbulb";
   }
-
   updateWordCount();
   document.getElementById("editorStatus").textContent = "";
   document.getElementById("editor-overlay").classList.add("active");
@@ -867,19 +797,16 @@ window.deleteArticle = async function (articleId) {
     .from("articles")
     .delete()
     .eq("id", articleId);
-
   if (error) {
-    alert("Failed to delete article: " + error.message);
+    alert("Failed to delete: " + error.message);
     return;
   }
 
   globalArticlesCache = globalArticlesCache.filter((a) => a.id !== articleId);
-
   const el = document.getElementById(articleId);
   const container = el ? el.closest(".carousel-container") : null;
   if (el) el.remove();
   if (container) initSingleCarousel(container);
-
   initScrollSpy();
 };
 
@@ -916,7 +843,6 @@ window.publishArticle = async function () {
     day: "2-digit",
     year: "numeric",
   });
-
   const wordCount = document
     .getElementById("editorBody")
     .textContent.trim()
@@ -966,7 +892,6 @@ window.publishArticle = async function () {
   }
 
   globalArticlesCache.push(dataApp);
-
   let oldContainer = null;
   if (editingArticleId) {
     const oldEl = document.getElementById(editingArticleId);
@@ -978,26 +903,24 @@ window.publishArticle = async function () {
 
   const section = ensureTopicSection(topicId, topicLabel, topicIcon);
   const track = section.querySelector(".carousel-track");
-
   track.prepend(buildArticleElement(dataApp));
 
   const mainContent = document.getElementById("main-content");
-  const noResults = document.getElementById("noResultsElement");
-  mainContent.insertBefore(section, noResults.nextSibling);
+  mainContent.insertBefore(
+    section,
+    document.getElementById("noResultsElement").nextSibling,
+  );
 
-  const topicList = document.getElementById("topic-list");
   const targetLi = document.querySelector(
     `.topic-list a[href="#${topicId}"]`,
   ).parentElement;
-  topicList.prepend(targetLi);
+  document.getElementById("topic-list").prepend(targetLi);
 
   if (
     oldContainer &&
     oldContainer !== section.querySelector(".carousel-container")
-  ) {
+  )
     initSingleCarousel(oldContainer);
-  }
-
   initSingleCarousel(section.querySelector(".carousel-container"));
   initScrollSpy();
 
@@ -1011,7 +934,7 @@ function setEditorStatus(message) {
 }
 
 /* --------------------------------------------------------------------------
-   12. EDITOR TOOLS & AUTO-FORMATTING
+   12. EDITOR TOOLS & AUTO-FORMATTING (FIXED)
 -------------------------------------------------------------------------- */
 window.applyCustomHighlight = function () {
   const body = document.getElementById("editorBody");
@@ -1073,14 +996,24 @@ function restoreSelection() {
   }
 }
 
+// FIXED: Penargetan Line Height agar akurat untuk blok paragraf/heading
 window.applyLineHeight = function (val) {
   restoreSelection();
   const selection = window.getSelection();
   if (selection.rangeCount > 0) {
     let node = selection.getRangeAt(0).commonAncestorContainer;
     if (node.nodeType === 3) node = node.parentNode;
-    node.style.lineHeight = val;
-    node.style.marginBottom = val > 1.5 ? "1.5em" : "1em";
+
+    // Cari parent element level blok
+    const blockParent = node.closest(
+      "p, h1, h2, h3, h4, h5, h6, blockquote, li, td, div",
+    );
+    if (blockParent && blockParent.id !== "editorBody") {
+      blockParent.style.lineHeight = val;
+      blockParent.style.marginBottom = val > 1.5 ? "1.5em" : "1em";
+    } else {
+      node.style.lineHeight = val;
+    }
   }
 };
 
@@ -1095,12 +1028,12 @@ window.handleTableAction = function (val) {
     if (!rows || !cols) return;
 
     let tableHTML =
-      '<table style="width:100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 1rem;"><tbody>';
+      '<table style="width:100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 1.5rem;"><tbody>';
     for (let i = 0; i < rows; i++) {
       tableHTML += "<tr>";
       for (let j = 0; j < cols; j++) {
         tableHTML +=
-          '<td style="border: 1px solid #ccc; padding: 8px;">Sel</td>';
+          '<td style="border: 1px solid #ccc; padding: 8px 12px;">Sel</td>';
       }
       tableHTML += "</tr>";
     }
@@ -1183,7 +1116,6 @@ window.handleTableAction = function (val) {
       const currentRowSpan = cell.getAttribute("rowspan")
         ? parseInt(cell.getAttribute("rowspan"))
         : 1;
-
       let colIndex = 0;
       for (let c of Array.from(row.children)) {
         if (c === cell) break;
@@ -1191,7 +1123,6 @@ window.handleTableAction = function (val) {
           ? parseInt(c.getAttribute("colspan"))
           : 1;
       }
-
       const nextRow = allRows[rowIndex + currentRowSpan];
       if (nextRow) {
         let targetCell = null;
@@ -1205,7 +1136,6 @@ window.handleTableAction = function (val) {
             ? parseInt(c.getAttribute("colspan"))
             : 1;
         }
-
         if (targetCell) {
           const targetRowSpan = targetCell.getAttribute("rowspan")
             ? parseInt(targetCell.getAttribute("rowspan"))
@@ -1213,10 +1143,6 @@ window.handleTableAction = function (val) {
           cell.setAttribute("rowspan", currentRowSpan + targetRowSpan);
           cell.innerHTML += "<br>" + targetCell.innerHTML;
           targetCell.remove();
-        } else {
-          alert(
-            "Gagal: Struktur baris bawah tidak sejajar karena modifikasi sebelumnya.",
-          );
         }
       }
       break;
@@ -1239,13 +1165,11 @@ window.handleTableAction = function (val) {
         }
         cell.removeAttribute("colspan");
       }
-
       if (rSpan > 1) {
         const rRef = cell.closest("tr");
         const tBodyRef = rRef.closest("tbody") || rRef.parentNode;
         const rowsArr = Array.from(tBodyRef.querySelectorAll("tr"));
         const rIdx = rowsArr.indexOf(rRef);
-
         for (let i = 1; i < rSpan; i++) {
           const nRow = rowsArr[rIdx + i];
           if (nRow) {
