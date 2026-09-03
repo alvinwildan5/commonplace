@@ -98,13 +98,15 @@ i.fa-regular {
   justify-content: space-between;
 }
 .brand-text {
-  font-family: "Bodoni Moda", Didot, serif;
+  font-family: "University Roman", Didot, serif;
   font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 10px;
-  color: #b89b72;
+  font-weight: 500;
+  letter-spacing: -3px;
   line-height: 1;
   text-transform: uppercase;
+
+  /* Warna Solid Gold Elegan */
+  color: #c5a059;
 }
 .nav-links {
   display: flex;
@@ -1412,6 +1414,12 @@ i.fa-regular {
     margin-bottom: 1.15rem;
   }
 
+  /* ========================================================================
+     SIDEBAR / SEARCH / TOPICS
+======================================================================== */
+
+  /* ... (kode bagian atas tetap sama) ... */
+
   .sidebar-search-wrapper input,
   .sidebar-search-wrapper textarea,
   .search-input {
@@ -1419,7 +1427,27 @@ i.fa-regular {
     max-width: 100%;
     font-size: 0.82rem;
     padding: 0.75rem 0.85rem;
+
+    /* Membuat sudut tidak terlalu kotak (sedikit melengkung) */
+    border-radius: 8px;
+    /* Garis batas awal yang netral dan halus */
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    /* Membuat transisi warna jadi mulus saat diklik, tidak patah/mengagetkan */
+    transition: all 0.3s ease;
   }
+
+  /* Efek saat kolom diklik / diketik */
+  .sidebar-search-wrapper input:focus,
+  .sidebar-search-wrapper textarea:focus,
+  .search-input:focus {
+    outline: none; /* Menghapus border biru/hitam bawaan standar browser */
+    border-color: #c5a059; /* Mengubah warna garis utama menjadi gold elegan */
+    /* Menciptakan ilusi "garis tipis di luar kotak" (ring transparan) */
+    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
+  }
+
+  /* ... (kode bagian bawah seperti .topic-list tetap sama) ... */
 
   .topic-list {
     width: 100%;

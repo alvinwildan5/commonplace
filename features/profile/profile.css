@@ -561,14 +561,16 @@ i.fa-regular {
   }
 
   .brand-text {
-    width: 100%;
-    font-size: 1.25rem;
-    line-height: 1.2;
-    letter-spacing: 4px;
-    text-align: center;
-    white-space: nowrap;
-  }
+    font-family: "University Roman", Didot, serif;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -3px;
+    line-height: 1;
+    text-transform: uppercase;
 
+    /* Warna Solid Gold Elegan */
+    color: #c5a059;
+  }
   .auth-menu {
     width: 100%;
     margin-left: 0;
@@ -685,10 +687,9 @@ i.fa-regular {
     line-height: 1.5;
     letter-spacing: 1.5px;
   }
-
   /* -------------------------------------------------------
-     CONTACT
-  ------------------------------------------------------- */
+    CONTACT
+------------------------------------------------------- */
   .contact-section {
     width: 100%;
     max-width: 100%;
@@ -699,17 +700,27 @@ i.fa-regular {
     line-height: 1.4;
     letter-spacing: 2px;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem; /* Sedikit dirapatkan dari 1.5rem */
   }
 
   .contact-item {
+    display: flex; /* Wajib ditambahkan agar konten menyamping */
+    align-items: center; /* Memastikan logo dan teks sejajar tepat di tengah secara vertikal */
+    justify-content: center; /* Membawa seluruh isi item ke tengah layar */
+    gap: 0.65rem; /* Jarak antara logo dan teks */
+    margin-bottom: 0.8rem; /* Jarak atas-bawah antar contact-item, bisa diubah sesuai selera */
     width: 100%;
     max-width: 100%;
-    justify-content: center;
-    gap: 0.65rem;
+  }
+
+  /* Menghilangkan margin pada item paling bawah agar layout tidak bocor */
+  .contact-item:last-child {
+    margin-bottom: 0;
   }
 
   .contact-label {
+    display: flex; /* Membantu menengahkan logo/ikon kalau ukurannya beda dengan teks */
+    align-items: center;
     font-size: 0.62rem;
     line-height: 1.4;
   }
@@ -723,7 +734,6 @@ i.fa-regular {
     line-height: 1.5;
     overflow-wrap: anywhere;
   }
-
   /* -------------------------------------------------------
      BIO
   ------------------------------------------------------- */
