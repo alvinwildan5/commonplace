@@ -10,7 +10,7 @@
   --bg-alt: #f8f8f8;
   --text-main: #242424;
   --text-muted: #6b6b6b;
-  --text-light: #9a9a9a;
+  --text-light: #767676; /* Dipergelap sedikit agar lolos kontras rasio WCAG */
   --accent-gold: #b89b72;
   --accent-gold-dark: #9e835b;
   --border-color: #e6e6e6;
@@ -32,10 +32,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
+
 body {
   background-color: var(--bg-paper);
   color: var(--text-main);
@@ -46,19 +48,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
 button,
 input,
 textarea,
 select {
   font: inherit;
 }
+
 img {
   max-width: 100%;
 }
+
 a {
   color: inherit;
   text-decoration: none;
   transition: var(--ease);
+}
+
+/* Global Focus Accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
 }
 
 i[class^="fa-"],
@@ -75,7 +90,9 @@ i.fa-regular {
   font-weight: 400 !important;
 }
 
-/* HEADER & NAV */
+/* ==========================================================================
+   HEADER & NAV 
+========================================================================== */
 .site-header {
   position: fixed;
   top: 0;
@@ -87,6 +104,7 @@ i.fa-regular {
   border-bottom: 1px solid var(--border-color);
   transition: var(--ease);
 }
+
 .site-nav {
   width: 100%;
   max-width: 1400px;
@@ -97,6 +115,7 @@ i.fa-regular {
   align-items: center;
   justify-content: space-between;
 }
+
 .brand-text {
   font-family: "University Roman", Didot, serif;
   font-size: 2rem;
@@ -104,10 +123,9 @@ i.fa-regular {
   letter-spacing: -3px;
   line-height: 1;
   text-transform: uppercase;
-
-  /* Warna Solid Gold Elegan */
   color: #c5a059;
 }
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -119,16 +137,27 @@ i.fa-regular {
   letter-spacing: 0.12em;
   font-weight: 400;
 }
+
 .nav-links a {
   color: var(--text-muted);
   padding-bottom: 5px;
   border-bottom: 1px solid transparent;
 }
+
 .nav-links a.active,
 .nav-links a:hover {
   color: var(--text-main);
   border-bottom-color: var(--accent-gold);
 }
+
+/* Lang Switcher - Desktop Horizontal Fix */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  white-space: nowrap;
+}
+
 .lang-switcher button {
   background: none;
   border: none;
@@ -139,14 +168,17 @@ i.fa-regular {
   letter-spacing: 0.08em;
   transition: var(--ease);
 }
+
 .lang-switcher button.active {
   color: var(--accent-gold);
   font-weight: 500;
 }
+
 .lang-divider {
   margin: 0 8px;
   color: var(--border-color);
 }
+
 .auth-menu {
   width: 100%;
   display: flex;
@@ -173,42 +205,30 @@ i.fa-regular {
   cursor: pointer;
   transition: var(--ease);
 }
+
 .auth-btn:hover {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
 }
+
 .write-btn {
   background: var(--accent-gold);
   color: #ffffff;
   border-color: var(--accent-gold);
 }
+
 .write-btn:hover {
   background: var(--accent-gold-dark);
   color: #ffffff;
 }
+
 .logout-btn {
   padding: 7px 5px;
 }
 
-.modal-box {
-  position: relative; /* Menjadikan kotak ini sebagai acuan posisi tombol */
-  /* ... biarkan properti .modal-box kamu yang lain tetap ada ... */
-}
-
-.modal-close {
-  position: absolute;
-  top: 20px; /* Atur jarak dari sisi atas kotak */
-  right: 20px; /* Atur jarak dari sisi kanan kotak */
-
-  /* Reset gaya bawaan tombol (opsional, sesuaikan dengan desainmu) */
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #333; /* Ganti dengan variabel warnamu, misal var(--text-color) */
-}
-
-/* LAYOUT & SIDEBAR */
+/* ==========================================================================
+   LAYOUT & SIDEBAR 
+========================================================================== */
 .layout-wrapper {
   display: flex;
   align-items: flex-start;
@@ -219,6 +239,7 @@ i.fa-regular {
   gap: 64px;
   min-height: 80vh;
 }
+
 .sidebar-nav {
   width: 220px;
   flex: 0 0 220px;
@@ -226,11 +247,13 @@ i.fa-regular {
   top: 108px;
   align-self: flex-start;
 }
+
 .sidebar-search-wrapper {
   position: relative;
   width: 100%;
   margin-bottom: 2.3rem;
 }
+
 .search-icon {
   position: absolute;
   left: 0;
@@ -240,6 +263,7 @@ i.fa-regular {
   font-size: 0.85rem;
   pointer-events: none;
 }
+
 .sidebar-search-input {
   width: 100%;
   padding: 8px 0 9px 24px;
@@ -253,15 +277,18 @@ i.fa-regular {
   outline: none;
   transition: var(--ease);
 }
+
 .sidebar-search-input:focus {
   border-bottom-color: var(--accent-gold);
 }
+
 .topic-list {
   display: flex;
   flex-direction: column;
   gap: 0;
   list-style: none;
 }
+
 .topic-list a {
   display: flex;
   align-items: center;
@@ -273,33 +300,40 @@ i.fa-regular {
   padding: 0.62rem 0;
   transition: var(--ease);
 }
+
 .topic-list a i {
   width: 18px;
   color: var(--text-muted);
   transition: var(--ease);
 }
+
 .topic-list a:hover,
 .topic-list a.active {
   color: var(--text-main);
   font-weight: 500;
   transform: translateX(3px);
 }
+
 .topic-list a:hover i,
 .topic-list a.active i {
   color: var(--accent-gold);
 }
 
-/* MAIN CONTENT */
+/* ==========================================================================
+   MAIN CONTENT 
+========================================================================== */
 .main-content {
   flex: 1 1 auto;
   min-width: 0;
   width: 100%;
   padding-bottom: 5rem;
 }
+
 .note-header-simple {
   max-width: 720px;
   margin-bottom: 4rem;
 }
+
 .note-header-simple h1 {
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 4vw, 3.5rem);
@@ -308,12 +342,14 @@ i.fa-regular {
   letter-spacing: -0.02em;
   margin-bottom: 0.8rem;
 }
+
 .note-header-simple p {
   color: var(--text-muted);
   font-family: var(--font-sans);
   font-size: 0.95rem;
   line-height: 1.6;
 }
+
 .no-results-box {
   text-align: center;
   padding: 3rem;
@@ -324,10 +360,12 @@ i.fa-regular {
   font-family: var(--font-sans);
   font-size: 0.9rem;
 }
+
 .topic-section {
   margin-bottom: 5rem;
   width: 100%;
 }
+
 .topic-heading {
   display: flex;
   align-items: center;
@@ -338,6 +376,7 @@ i.fa-regular {
   white-space: nowrap;
   font-weight: 400;
 }
+
 .topic-heading::after {
   content: "";
   flex-grow: 1;
@@ -346,7 +385,9 @@ i.fa-regular {
   margin-left: 18px;
 }
 
-/* CAROUSEL */
+/* ==========================================================================
+   CAROUSEL 
+========================================================================== */
 .carousel-container {
   display: flex;
   align-items: center;
@@ -354,6 +395,7 @@ i.fa-regular {
   position: relative;
   width: 100%;
 }
+
 .carousel-viewport {
   overflow: hidden;
   width: 100%;
@@ -361,6 +403,7 @@ i.fa-regular {
   min-width: 0;
   scroll-behavior: smooth;
 }
+
 .carousel-track {
   display: flex;
   gap: 20px;
@@ -369,9 +412,11 @@ i.fa-regular {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .carousel-track::-webkit-scrollbar {
   display: none;
 }
+
 .carousel-btn {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
@@ -387,13 +432,16 @@ i.fa-regular {
   flex-shrink: 0;
   z-index: 10;
 }
+
 .carousel-btn:hover {
   background: var(--bg-alt);
   color: var(--accent-gold);
   border-color: var(--accent-gold);
 }
 
-/* CARDS */
+/* ==========================================================================
+   CARDS 
+========================================================================== */
 .ed-card {
   flex: 0 0 calc((100% - 40px) / 3);
   min-width: 280px;
@@ -407,11 +455,13 @@ i.fa-regular {
   position: relative;
   transition: var(--ease);
 }
+
 .ed-card:hover {
   border-color: var(--border-dark);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
   transform: translateY(-2px);
 }
+
 .ed-meta {
   font-family: var(--font-sans);
   font-size: 0.66rem;
@@ -421,6 +471,7 @@ i.fa-regular {
   color: var(--accent-gold);
   margin-bottom: 1rem;
 }
+
 .ed-title {
   font-family: var(--font-serif);
   font-size: 1.45rem;
@@ -429,15 +480,18 @@ i.fa-regular {
   font-weight: 400;
   margin-bottom: 0.85rem;
 }
+
 .ed-excerpt p {
   font-family: var(--font-sans);
   font-size: 0.88rem;
   color: var(--text-muted);
   line-height: 1.7;
 }
+
 .ed-full-text {
   display: none;
 }
+
 .ed-actions {
   margin-top: auto;
   padding-top: 1.5rem;
@@ -446,6 +500,7 @@ i.fa-regular {
   justify-content: space-between;
   gap: 0.5rem;
 }
+
 .ed-btn {
   background: none;
   border: none;
@@ -463,14 +518,17 @@ i.fa-regular {
   border-bottom: 1px solid var(--accent-gold);
   padding-bottom: 4px;
 }
+
 .ed-btn:hover {
   color: var(--accent-gold);
   gap: 10px;
 }
+
 .ed-manage {
   display: flex;
   gap: 2px;
 }
+
 .ed-manage-btn {
   background: none;
   border: none;
@@ -482,12 +540,15 @@ i.fa-regular {
   font-size: 0.78rem;
   transition: var(--ease);
 }
+
 .ed-manage-btn:hover {
   background: var(--bg-alt);
   color: var(--accent-gold);
 }
 
-/* READING MODAL OVERLAY */
+/* ==========================================================================
+   READING MODAL OVERLAY 
+========================================================================== */
 .reading-overlay {
   position: fixed;
   inset: 0;
@@ -502,10 +563,12 @@ i.fa-regular {
   visibility: hidden;
   transition: var(--ease);
 }
+
 .reading-overlay.active {
   opacity: 1;
   visibility: visible;
 }
+
 .reading-modal {
   width: 100%;
   max-width: 860px;
@@ -514,9 +577,11 @@ i.fa-regular {
   transition: transform 0.4s var(--ease);
   margin: 0 auto;
 }
+
 .reading-overlay.active .reading-modal {
   transform: translateY(0);
 }
+
 .reading-nav {
   display: flex;
   justify-content: space-between;
@@ -527,6 +592,7 @@ i.fa-regular {
   flex-wrap: wrap;
   gap: 1rem;
 }
+
 .close-btn {
   background: none;
   border: none;
@@ -542,10 +608,12 @@ i.fa-regular {
   color: var(--text-main);
   transition: var(--ease);
 }
+
 .close-btn:hover {
   color: var(--accent-gold);
   transform: translateX(-3px);
 }
+
 .tool-btn {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
@@ -561,6 +629,7 @@ i.fa-regular {
   align-items: center;
   transition: var(--ease);
 }
+
 .tool-btn:hover {
   background: var(--bg-alt);
   color: var(--accent-gold);
@@ -568,11 +637,14 @@ i.fa-regular {
   transform: translateY(-1px);
 }
 
-/* DROPDOWN */
+/* ==========================================================================
+   DROPDOWN 
+========================================================================== */
 .export-menu-container {
   position: relative;
   display: inline-block;
 }
+
 .export-dropdown {
   position: absolute;
   right: 0;
@@ -588,18 +660,22 @@ i.fa-regular {
   z-index: 100;
   overflow: hidden;
 }
+
 .export-dropdown.show {
   display: flex;
 }
+
 .dropdown-section {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--border-color);
   padding: 8px 0;
 }
+
 .dropdown-section:last-child {
   border-bottom: none;
 }
+
 .dropdown-label {
   font-size: 0.66rem;
   text-transform: uppercase;
@@ -608,6 +684,7 @@ i.fa-regular {
   font-family: var(--font-sans);
   letter-spacing: 0.14em;
 }
+
 .export-dropdown button {
   background: none;
   border: none;
@@ -622,17 +699,17 @@ i.fa-regular {
   gap: 11px;
   transition: var(--ease);
 }
+
 .export-dropdown button:hover {
   background: var(--bg-alt);
   color: var(--accent-gold);
 }
 
 /* ==========================================================================
-   READING & EDITOR TYPOGRAPHY (FIXED: Dihapus !important-nya)
+   READING & EDITOR TYPOGRAPHY 
 ========================================================================== */
 .reading-content,
 #editorBody {
-  /* Default fallback tanpa !important agar Toolbar bisa apply style */
   font-family: var(--font-serif);
   font-size: 20px;
   line-height: 1.62;
@@ -653,9 +730,11 @@ i.fa-regular {
   text-transform: uppercase;
   color: var(--text-muted);
 }
+
 .reading-content .ed-excerpt {
   display: none;
 }
+
 .reading-content .ed-full-text {
   display: block;
 }
@@ -676,6 +755,7 @@ i.fa-regular {
   margin-bottom: 0.55em;
   line-height: 1.25;
 }
+
 .reading-content h1,
 #editorBody h1,
 .reading-content .ed-title {
@@ -683,10 +763,12 @@ i.fa-regular {
   margin-top: 0;
   margin-bottom: 1rem;
 }
+
 .reading-content h2,
 #editorBody h2 {
   font-size: 1.85rem;
 }
+
 .reading-content h3,
 #editorBody h3 {
   font-size: 1.4rem;
@@ -711,6 +793,7 @@ i.fa-regular {
   margin: 2rem 0;
   position: relative;
 }
+
 .reading-content blockquote::before,
 #editorBody blockquote::before {
   content: "“";
@@ -724,27 +807,29 @@ i.fa-regular {
   padding: 0 2px;
 }
 
-/* LISTS (FIXED BUGS) */
+/* LISTS */
 .reading-content ul,
 #editorBody ul,
 .reading-content ol,
 #editorBody ol {
   margin: 1.35em 0;
-  padding-left: 2em; /* Dirapihkan agar bullet tidak nabrak ke kiri */
+  padding-left: 2em;
 }
+
 .reading-content li,
 #editorBody li {
   margin-bottom: 0.55em;
   padding-left: 0.15em;
 }
 
-/* TABLES (FIXED) */
+/* TABLES */
 .reading-content table,
 #editorBody table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1.5rem;
 }
+
 .reading-content th,
 .reading-content td,
 #editorBody th,
@@ -762,13 +847,14 @@ i.fa-regular {
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
+
 .reading-content a:hover,
 #editorBody a:hover {
   color: var(--accent-gold);
 }
 
 /* ==========================================================================
-   IMAGE SYSTEM (FIXED & SPECIFICITY ENHANCED)
+   IMAGE SYSTEM 
 ========================================================================== */
 .reading-content img,
 #editorBody img,
@@ -781,7 +867,6 @@ i.fa-regular {
   object-fit: contain;
 }
 
-/* 1. FULL WIDTH */
 .reading-content img.note-img-full,
 #editorBody img.note-img-full,
 .note-img-full {
@@ -791,14 +876,12 @@ i.fa-regular {
   margin-right: auto !important;
 }
 
-/* 2. ROUNDED */
 .reading-content img.note-img-rounded,
 #editorBody img.note-img-rounded,
 .note-img-rounded {
   border-radius: 12px !important;
 }
 
-/* 3. BORDERED */
 .reading-content img.note-img-bordered,
 #editorBody img.note-img-bordered,
 .note-img-bordered {
@@ -807,7 +890,6 @@ i.fa-regular {
   background: var(--bg-white) !important;
 }
 
-/* 4. CENTERED SMALL */
 .reading-content img.note-img-center-small,
 #editorBody img.note-img-center-small,
 .note-img-center-small {
@@ -818,7 +900,6 @@ i.fa-regular {
   display: block !important;
 }
 
-/* 5. FLOAT LEFT */
 .reading-content img.note-img-float-left,
 #editorBody img.note-img-float-left,
 .note-img-float-left {
@@ -829,7 +910,6 @@ i.fa-regular {
   display: inline-block !important;
 }
 
-/* 6. FLOAT RIGHT */
 .reading-content img.note-img-float-right,
 #editorBody img.note-img-float-right,
 .note-img-float-right {
@@ -840,7 +920,6 @@ i.fa-regular {
   display: inline-block !important;
 }
 
-/* CLEAR FLOATS (Agar teks paragraf berikutnya tidak berantakan setelah gambar di-float) */
 .reading-content::after,
 #editorBody::after {
   content: "";
@@ -854,6 +933,7 @@ i.fa-regular {
 .export-mode-active {
   max-width: none !important;
 }
+
 .export-mode-active p,
 .export-mode-active div,
 .export-mode-active li,
@@ -864,11 +944,13 @@ i.fa-regular {
   line-height: 1.5 !important;
   text-align: justify !important;
 }
+
 .export-mode-active span {
   font-family: "Times New Roman", Times, serif !important;
   font-size: 12pt !important;
   line-height: 1.5 !important;
 }
+
 .export-mode-active h1,
 .export-mode-active h2,
 .export-mode-active h3,
@@ -880,6 +962,7 @@ i.fa-regular {
   text-align: left !important;
   margin-bottom: 12pt !important;
 }
+
 .export-mode-active img {
   width: 100% !important;
   max-width: 100% !important;
@@ -901,6 +984,7 @@ i.fa-regular {
   padding-bottom: 5rem;
   border-top: 1px solid var(--border-color);
 }
+
 .close-btn-bottom {
   background: var(--bg-white);
   color: var(--text-main);
@@ -918,6 +1002,7 @@ i.fa-regular {
   gap: 8px;
   transition: var(--ease);
 }
+
 .close-btn-bottom:hover {
   background: var(--bg-alt);
   color: var(--accent-gold);
@@ -938,10 +1023,12 @@ i.fa-regular {
   visibility: hidden;
   transition: var(--ease);
 }
+
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
 }
+
 .modal-box {
   background: var(--bg-white);
   width: 100%;
@@ -954,12 +1041,15 @@ i.fa-regular {
   font-family: var(--font-sans);
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
 }
+
 .modal-overlay.active .modal-box {
   transform: translateY(0);
 }
+
 .editor-box {
   max-width: 860px;
 }
+
 .modal-close {
   position: absolute;
   top: 1.4rem;
@@ -972,9 +1062,11 @@ i.fa-regular {
   transition: var(--ease);
   padding: 5px;
 }
+
 .modal-close:hover {
   color: var(--accent-gold);
 }
+
 .modal-title {
   font-family: var(--font-display);
   font-size: 1.9rem;
@@ -982,6 +1074,7 @@ i.fa-regular {
   margin-bottom: 0.8rem;
   font-weight: 400;
 }
+
 .modal-subtitle {
   font-size: 0.88rem;
   color: var(--text-muted);
@@ -989,7 +1082,9 @@ i.fa-regular {
   line-height: 1.6;
 }
 
-/* FORMS & EDITOR CONTROLS */
+/* ==========================================================================
+   FORMS & EDITOR CONTROLS 
+========================================================================== */
 .field-label {
   display: block;
   font-size: 0.66rem;
@@ -998,6 +1093,7 @@ i.fa-regular {
   color: var(--accent-gold);
   margin-bottom: 0.6rem;
 }
+
 .field-input {
   width: 100%;
   border: 1px solid var(--border-color);
@@ -1011,9 +1107,11 @@ i.fa-regular {
   transition: var(--ease);
   resize: vertical;
 }
+
 .field-input:focus {
   border-color: var(--accent-gold);
 }
+
 .field-error {
   color: var(--accent-gold);
   font-size: 0.78rem;
@@ -1038,9 +1136,11 @@ i.fa-regular {
   justify-content: center;
   transition: var(--ease);
 }
+
 .btn-primary:hover {
   background: var(--accent-gold-dark);
 }
+
 .btn-ghost {
   background: none;
   border: 1px solid var(--border-color);
@@ -1055,10 +1155,12 @@ i.fa-regular {
   cursor: pointer;
   transition: var(--ease);
 }
+
 .btn-ghost:hover {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
 }
+
 .full-width {
   width: 100%;
   margin-top: 1.5rem;
@@ -1070,19 +1172,23 @@ i.fa-regular {
   align-items: flex-start;
   margin-bottom: 2rem;
 }
+
 .editor-meta-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
+
 .field-group {
   display: flex;
   flex-direction: column;
 }
+
 .field-group.span-2 {
   grid-column: 1 / -1;
 }
+
 .title-input {
   font-family: var(--font-serif);
   font-size: 1.4rem;
@@ -1097,14 +1203,17 @@ i.fa-regular {
   background: var(--bg-alt);
   border-bottom: 1px solid var(--border-color);
 }
+
 .tb-group {
   display: flex;
   align-items: center;
   gap: 3px;
 }
+
 .highlight-btn {
   color: var(--accent-gold);
 }
+
 .tb-select {
   border: 1px solid var(--border-color);
   border-radius: 4px;
@@ -1113,19 +1222,19 @@ i.fa-regular {
   font-size: 0.76rem;
   background: var(--bg-white);
   cursor: pointer;
-
-  /* --- TAMBAHAN UNTUK MENCEGAH OVERLAP --- */
-  max-width: 135px; /* Membatasi lebar maksimal dropdown */
+  max-width: 135px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Teks kepanjangan jadi titik-titik (...) */
+  text-overflow: ellipsis;
 }
+
 .tb-divider {
   width: 1px;
   height: 22px;
   background: var(--border-color);
   margin: 0 5px;
 }
+
 .tb-btn {
   background: none;
   border: none;
@@ -1137,11 +1246,13 @@ i.fa-regular {
   font-size: 0.88rem;
   transition: var(--ease);
 }
+
 .tb-btn:hover {
   background: var(--bg-white);
   color: var(--accent-gold);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 }
+
 .tb-word-count {
   margin-left: auto;
   font-size: 0.72rem;
@@ -1160,6 +1271,7 @@ i.fa-regular {
   font-size: 0.78rem;
   font-family: var(--font-sans);
 }
+
 .image-style-picker span {
   color: var(--accent-gold);
   text-transform: uppercase;
@@ -1167,6 +1279,7 @@ i.fa-regular {
   font-size: 0.65rem;
   margin-right: 5px;
 }
+
 .image-style-picker button {
   border: 1px solid var(--border-color);
   background: var(--bg-white);
@@ -1177,10 +1290,12 @@ i.fa-regular {
   font-family: var(--font-sans);
   transition: var(--ease);
 }
+
 .image-style-picker button:hover {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
 }
+
 .image-style-picker .cancel-style {
   margin-left: auto;
   color: var(--text-muted);
@@ -1198,10 +1313,12 @@ i.fa-regular {
   font-size: 20px;
   line-height: 1.62;
 }
+
 .editor-body:empty::before {
   content: attr(data-placeholder);
   color: #aaa;
 }
+
 .editor-footer {
   display: flex;
   justify-content: space-between;
@@ -1210,17 +1327,21 @@ i.fa-regular {
   flex-wrap: wrap;
   gap: 1rem;
 }
+
 .editor-status {
   font-size: 0.82rem;
   color: var(--text-muted);
 }
+
 .editor-footer-actions {
   display: flex;
   gap: 1rem;
   margin-left: auto;
 }
 
-/* FOOTER */
+/* ==========================================================================
+   FOOTER 
+========================================================================== */
 .site-footer {
   background-color: var(--bg-white);
   color: var(--text-main);
@@ -1231,6 +1352,7 @@ i.fa-regular {
   width: 100%;
   clear: both;
 }
+
 .footer-container {
   width: 100%;
   max-width: 1200px;
@@ -1240,9 +1362,11 @@ i.fa-regular {
   flex-direction: column;
   gap: 4rem;
 }
+
 .footer-center {
   text-align: center;
 }
+
 .footer-brand-logo {
   font-family: var(--font-serif);
   font-size: 1.3rem;
@@ -1251,6 +1375,7 @@ i.fa-regular {
   margin-bottom: 1.8rem;
   text-transform: uppercase;
 }
+
 .footer-tagline-large {
   font-family: var(--font-serif);
   font-size: clamp(1.8rem, 3vw, 2.6rem);
@@ -1260,6 +1385,7 @@ i.fa-regular {
   font-weight: 400;
   letter-spacing: -0.015em;
 }
+
 .footer-bottom-area {
   border-top: 1px solid var(--border-color);
   padding-top: 3.5rem;
@@ -1268,12 +1394,14 @@ i.fa-regular {
   align-items: center;
   gap: 3.5rem;
 }
+
 .footer-connect-centered {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.7rem;
 }
+
 .nav-group-title {
   font-family: var(--font-sans);
   font-size: 0.68rem;
@@ -1282,12 +1410,14 @@ i.fa-regular {
   color: var(--accent-gold);
   font-weight: 500;
 }
+
 .connect-links {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 3rem;
 }
+
 .connect-links a {
   font-family: var(--font-sans);
   font-size: 0.78rem;
@@ -1299,10 +1429,12 @@ i.fa-regular {
   gap: 10px;
   transition: var(--ease);
 }
+
 .connect-links a:hover {
   color: var(--accent-gold);
   transform: translateY(-1px);
 }
+
 .footer-copyright {
   text-align: center;
   font-family: var(--font-sans);
@@ -1310,38 +1442,11 @@ i.fa-regular {
   color: var(--text-muted);
 }
 
-.nav-links a.active,
-.nav-links a:hover {
-  color: var(--text-main);
-  border-bottom-color: var(--accent-gold);
-}
-
-/* === TAMBAHKAN KODE INI UNTUK DESKTOP === */
-.lang-switcher {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  white-space: nowrap; /* Mencegah elemen turun ke bawah walau terhimpit */
-}
-/* ======================================== */
-
-.lang-switcher button {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-/* ... lanjutan kode Anda ... */
-
 /* ==========================================================================
-   8. MOBILE FINAL REFINEMENT — 360px–420px
-   Header & Footer mengikuti template responsive sebelumnya
-   Semua elemen content disesuaikan untuk compact mobile
+   MOBILE FINAL REFINEMENT (Aman untuk Semua Smartphone s/d 600px)
 ========================================================================== */
-
-@media screen and (min-width: 360px) and (max-width: 420px) {
-  /* ========================================================================
-     GLOBAL / VIEWPORT
-  ======================================================================== */
-
+@media screen and (max-width: 600px) {
+  /* GLOBAL / VIEWPORT */
   html,
   body {
     width: 100%;
@@ -1362,10 +1467,7 @@ i.fa-regular {
 
   img,
   video,
-  iframe {
-    max-width: 100%;
-  }
-
+  iframe,
   button,
   input,
   textarea,
@@ -1373,19 +1475,7 @@ i.fa-regular {
     max-width: 100%;
   }
 
-  /* ========================================================================
-     HEADER
-     Mengikuti template header sebelumnya
-  ======================================================================== */
-
-  /* ========================================================================
-     HEADER (Khusus Mobile: Logo -> Navigasi -> Login)
-======================================================================== */
-  /* ========================================================================
-   HEADER MOBILE — HORIZONTAL
-   Logo | Navigation | Language / Auth
-======================================================================== */
-
+  /* HEADER MOBILE — HORIZONTAL */
   .site-header {
     width: 100%;
     height: 64px;
@@ -1404,7 +1494,6 @@ i.fa-regular {
     padding: 0 12px;
   }
 
-  /* LOGO */
   .brand-text {
     flex: 0 0 auto;
     order: 1;
@@ -1414,7 +1503,6 @@ i.fa-regular {
     white-space: nowrap;
   }
 
-  /* NAVIGATION */
   .nav-links {
     flex: 1 1 auto;
     width: auto;
@@ -1432,9 +1520,9 @@ i.fa-regular {
 
   .nav-links a {
     white-space: nowrap;
+    padding: 6px 2px; /* Ditingkatkan untuk area tap target */
   }
 
-  /* LANGUAGE SWITCHER */
   .lang-switcher {
     flex: 0 0 auto;
     display: flex;
@@ -1451,7 +1539,7 @@ i.fa-regular {
     justify-content: center;
     background: none;
     border: none;
-    padding: 4px 2px;
+    padding: 8px 4px; /* Ditingkatkan untuk area tap target */
     white-space: nowrap;
     font-family: var(--font-sans);
     font-size: 0.58rem;
@@ -1465,7 +1553,6 @@ i.fa-regular {
     color: var(--border-color);
   }
 
-  /* AUTH */
   .auth-menu {
     flex: 0 0 auto;
     width: auto;
@@ -1480,27 +1567,22 @@ i.fa-regular {
 
   .auth-btn {
     white-space: nowrap;
-    padding: 7px 9px;
+    padding: 8px 10px;
     font-size: 0.58rem;
   }
-  /* ========================================================================
-     MAIN LAYOUT
-  ======================================================================== */
 
+  /* MAIN LAYOUT */
   .layout-wrapper {
     width: 100%;
     max-width: 100%;
     display: flex;
     flex-direction: column;
     gap: 2.2rem;
-    padding: 170px 14px 0;
+    padding: 100px 14px 0; /* Disesuaikan agar tidak terlalu jauh ke bawah */
     margin: 0 auto;
   }
 
-  /* ========================================================================
-     SIDEBAR / SEARCH / TOPICS
-  ======================================================================== */
-
+  /* SIDEBAR / SEARCH / TOPICS */
   .sidebar-nav {
     width: 100%;
     flex: none;
@@ -1513,40 +1595,26 @@ i.fa-regular {
     margin-bottom: 1.15rem;
   }
 
-  /* ========================================================================
-     SIDEBAR / SEARCH / TOPICS
-  ======================================================================== */
-
   .sidebar-search-wrapper input,
   .sidebar-search-wrapper textarea,
   .search-input {
     width: 100%;
     max-width: 100%;
     font-size: 0.82rem;
-
-    /* 
-       Format: atas | kanan | bawah | kiri 
-       Kiri di-set ke 2rem (sekitar 32px) untuk memberi ruang bagi ikon search.
-       Jika masih kurang geser, angkanya bisa dinaikkan jadi 2.2rem atau 2.5rem.
-    */
     padding: 0.5rem 0 0.5rem 2rem;
-
     border: none;
     border-bottom: 1px solid #555555e2;
     background-color: transparent;
     border-radius: 0;
-
     transition: border-color 0.3s ease;
   }
 
-  /* Efek saat kolom diklik / sedang mengetik */
   .sidebar-search-wrapper input:focus,
   .sidebar-search-wrapper textarea:focus,
   .search-input:focus {
     outline: none;
     border-bottom: 1px solid #c5a059;
   }
-  /* ... (kode bagian bawah seperti .topic-list tetap sama) ... */
 
   .topic-list {
     width: 100%;
@@ -1556,7 +1624,7 @@ i.fa-regular {
   }
 
   .topic-list a {
-    padding: 0.5rem 0;
+    padding: 0.8rem 0; /* Diperbesar untuk touch UX */
     font-size: 0.8rem;
     line-height: 1.4;
   }
@@ -1571,10 +1639,7 @@ i.fa-regular {
     margin-left: 8px;
   }
 
-  /* ========================================================================
-     NOTE HEADER
-  ======================================================================== */
-
+  /* NOTE HEADER */
   .note-header-simple {
     width: 100%;
     max-width: 100%;
@@ -1596,19 +1661,13 @@ i.fa-regular {
     line-height: 1.6;
   }
 
-  /* ========================================================================
-     TOPIC SECTION
-  ======================================================================== */
-
+  /* TOPIC SECTION */
   .topic-section {
     width: 100%;
     margin-bottom: 3.2rem;
   }
 
-  /* ========================================================================
-     CAROUSEL
-  ======================================================================== */
-
+  /* CAROUSEL */
   .carousel-container {
     width: 100%;
     max-width: 100%;
@@ -1633,10 +1692,7 @@ i.fa-regular {
     font-size: 0.7rem;
   }
 
-  /* ========================================================================
-     EDITORIAL CARDS
-  ======================================================================== */
-
+  /* EDITORIAL CARDS */
   .ed-card {
     flex: 0 0 88%;
     min-width: 0;
@@ -1663,10 +1719,7 @@ i.fa-regular {
     font-size: 0.65rem;
   }
 
-  /* ========================================================================
-     READING MODAL
-  ======================================================================== */
-
+  /* READING MODAL */
   .modal-overlay {
     width: 100%;
     max-width: 100%;
@@ -1699,10 +1752,7 @@ i.fa-regular {
     line-height: 1.68;
   }
 
-  /* ========================================================================
-     READING TYPOGRAPHY
-  ======================================================================== */
-
+  /* READING TYPOGRAPHY */
   .reading-content h1,
   #editorBody h1,
   .reading-content .ed-title {
@@ -1774,10 +1824,7 @@ i.fa-regular {
     font-size: 0.78rem;
   }
 
-  /* ========================================================================
-     IMAGE STYLES
-  ======================================================================== */
-
+  /* IMAGE STYLES */
   .note-img-center-small {
     width: 100% !important;
     max-width: 100% !important;
@@ -1802,10 +1849,7 @@ i.fa-regular {
     height: auto;
   }
 
-  /* ========================================================================
-     BOTTOM CLOSE / ACTION AREA
-  ======================================================================== */
-
+  /* BOTTOM CLOSE / ACTION AREA */
   .close-btn-bottom-container {
     width: 100%;
     max-width: 100%;
@@ -1815,10 +1859,7 @@ i.fa-regular {
     max-width: 100%;
   }
 
-  /* ========================================================================
-     GENERAL MODAL
-  ======================================================================== */
-
+  /* GENERAL MODAL */
   .modal-box {
     position: relative;
     width: 100%;
@@ -1848,19 +1889,13 @@ i.fa-regular {
     line-height: 1.5;
   }
 
-  /* ========================================================================
-     EXPORT DROPDOWN
-  ======================================================================== */
-
+  /* EXPORT DROPDOWN */
   .export-dropdown {
     width: 200px;
     max-width: calc(100vw - 28px);
   }
 
-  /* ========================================================================
-     EDITOR META
-  ======================================================================== */
-
+  /* EDITOR META */
   .editor-meta-grid {
     width: 100%;
     grid-template-columns: 1fr;
@@ -1881,10 +1916,7 @@ i.fa-regular {
     font-size: 0.85rem;
   }
 
-  /* ========================================================================
-     EDITOR TOOLBAR
-  ======================================================================== */
-
+  /* EDITOR TOOLBAR */
   .editor-toolbar {
     width: 100%;
     max-width: 100%;
@@ -1919,10 +1951,7 @@ i.fa-regular {
     font-size: 0.65rem;
   }
 
-  /* ========================================================================
-     EDITOR BODY
-  ======================================================================== */
-
+  /* EDITOR BODY */
   .editor-body {
     width: 100%;
     max-width: 100%;
@@ -1935,10 +1964,7 @@ i.fa-regular {
     overflow-y: auto;
   }
 
-  /* ========================================================================
-     IMAGE STYLE PICKER
-  ======================================================================== */
-
+  /* IMAGE STYLE PICKER */
   .image-style-picker {
     width: 100%;
     max-width: 100%;
@@ -1964,10 +1990,7 @@ i.fa-regular {
     margin-left: 0;
   }
 
-  /* ========================================================================
-     EDITOR FOOTER / BUTTONS
-  ======================================================================== */
-
+  /* EDITOR FOOTER / BUTTONS */
   .editor-footer {
     width: 100%;
     flex-direction: column;
@@ -1991,11 +2014,7 @@ i.fa-regular {
     padding: 9px 10px;
   }
 
-  /* ========================================================================
-     FOOTER
-     Mengikuti template footer responsive sebelumnya
-  ======================================================================== */
-
+  /* FOOTER */
   .footer-container {
     width: 100%;
     padding: 3rem 1.1rem 1.5rem;
@@ -2037,10 +2056,7 @@ i.fa-regular {
     line-height: 1.5;
   }
 
-  /* ========================================================================
-     TOUCH TARGET / INTERACTION
-  ======================================================================== */
-
+  /* TOUCH TARGET / INTERACTION */
   .nav-links a,
   .topic-list a,
   button,
@@ -2049,10 +2065,7 @@ i.fa-regular {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* ========================================================================
-     PREVENT LONG CONTENT FROM BREAKING MOBILE WIDTH
-  ======================================================================== */
-
+  /* PREVENT LONG CONTENT FROM BREAKING MOBILE WIDTH */
   .reading-content *,
   #editorBody *,
   .note-header-simple *,
