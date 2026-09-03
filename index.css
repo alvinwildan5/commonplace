@@ -982,7 +982,6 @@ img {
     height: auto;
   }
 
-  /* Prevent hyphens and aggressive text cutting */
   p,
   h1,
   h2,
@@ -1079,8 +1078,8 @@ img {
 
   .hero-section {
     width: 100%;
-    min-height: auto; /* Removed 100svh to make it more compact */
-    padding-top: 120px; /* Account for stacked header */
+    min-height: auto;
+    padding-top: 120px;
     padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -1089,7 +1088,7 @@ img {
   .hero-content {
     min-height: auto;
     padding: 0;
-    order: 2; /* Ensure text flows naturally if image is rearranged */
+    order: 2;
   }
 
   .hero-split-text {
@@ -1105,7 +1104,6 @@ img {
     margin-bottom: 1rem;
   }
 
-  /* Hilangkan garis pada teks Alvin Wildan Sahli sesuai permintaan */
   .gold-divider {
     display: none !important;
   }
@@ -1122,7 +1120,7 @@ img {
     min-height: 250px;
     max-height: 350px;
     position: relative;
-    order: 1; /* Moves image logically */
+    order: 1;
   }
 
   /* =========================================================
@@ -1136,7 +1134,6 @@ img {
     width: 100%;
   }
 
-  /* Gambar ditaruh di atas teks untuk layar kecil */
   .intro-image {
     width: 100%;
     max-width: 260px;
@@ -1148,7 +1145,6 @@ img {
     width: 100%;
   }
 
-  /* Menormalkan spasi teks (menghilangkan justify yang membuat bolong-bolong) */
   .intro-text p {
     font-size: 1rem;
     line-height: 1.6;
@@ -1187,40 +1183,83 @@ img {
 
   /* =========================================================
      AINAN SECTION (RECENT NOTES)
+     Fixing overlapping text and layout issues
   ========================================================= */
 
   .ainan-section {
     padding-top: 3rem;
     padding-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ainan-page-title {
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    display: block;
   }
 
   .ainan-page-title h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     line-height: 1.2;
     padding: 0 1rem;
+    margin: 0;
+  }
+
+  .ainan-page-title h2 span {
+    display: block;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .ainan-container {
+    width: 100%;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .ainan-glass-card {
-    padding: 1.5rem 1rem;
-    margin-bottom: 1.5rem;
+    display: block;
+    width: 100%;
+    padding: 1.5rem 1.25rem;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ainan-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ainan-card-category {
+    display: inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
   }
 
   .ainan-card-title {
-    font-size: 1.25rem;
-    line-height: 1.4;
+    font-size: 1.35rem;
+    line-height: 1.3;
     margin-bottom: 1rem;
   }
 
   .ainan-card-description {
     font-size: 1rem;
     line-height: 1.5;
+    margin-bottom: 1.25rem;
   }
 
   .ainan-card-link {
     min-height: 44px;
     display: inline-flex;
     align-items: center;
-    margin-top: 1rem;
     font-weight: 600;
   }
 
@@ -1254,7 +1293,7 @@ img {
   }
 
   .org-title-wrapper {
-    min-width: 0; /* Prevent flex blowout */
+    min-width: 0;
   }
 
   .org-name {
@@ -1283,24 +1322,78 @@ img {
 
   /* =========================================================
      AFTERMOVIE CAROUSEL
+     Fixing squished layout and vertical stacking
   ========================================================= */
 
   .aftermovie-layout {
-    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .aftermovie-info {
+    width: 100%;
+    text-align: center;
+    order: 1; /* Keep title text logically above or below naturally */
+  }
+
+  .aftermovie-info p {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 auto;
+    word-break: normal;
+  }
+
+  .aftermovie-carousel-wrapper {
+    width: 100%;
+    order: 2;
+  }
+
+  .aftermovie-carousel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem; /* Space for scrollbar */
+    -webkit-overflow-scrolling: touch;
   }
 
   .aftermovie-item {
-    flex: 0 0 100%; /* Make items fill the small screen */
-    max-width: 100%;
+    flex: 0 0 90%;
+    max-width: 90%;
+    scroll-snap-align: center;
+  }
+
+  .youtube-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #000;
+  }
+
+  .youtube-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 
   .aftermovie-title {
     font-size: 1rem;
     line-height: 1.4;
     margin-top: 0.75rem;
+    text-align: center;
   }
 
   /* =========================================================
@@ -1326,7 +1419,7 @@ img {
   textarea {
     width: 100%;
     min-height: 44px;
-    font-size: 1rem; /* Prevent iOS zoom */
+    font-size: 1rem;
     line-height: 1.5;
     padding: 0.75rem;
   }
@@ -1336,7 +1429,7 @@ img {
     min-height: 44px;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
-    width: 100%; /* Full width for easy tapping */
+    width: 100%;
   }
 
   /* =========================================================
