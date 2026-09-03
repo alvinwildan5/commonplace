@@ -937,394 +937,496 @@ img {
 }
 
 /* ==========================================================================
-   11. RESPONSIVE DESIGN (FULLY EXPANDED & REFINED)
+   MOBILE REFINEMENT — 360px TO 420px ONLY
+   Final override for compact mobile screens
 ========================================================================== */
 
-/* --- LARGE DESKTOP (1400px+) --- */
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 360px) and (max-width: 420px) {
+  /* =========================================================
+     GLOBAL
+  ========================================================= */
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  /* =========================================================
+     HEADER / NAVIGATION
+  ========================================================= */
+
+  .site-header {
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
+
   .site-nav {
-    padding: 1.5rem 0;
-  }
-}
-
-/* --- LAPTOP / SMALL DESKTOP (1024px - 1199px) --- */
-@media screen and (max-width: 1199px) {
-  .intro-layout {
-    gap: 3rem;
-  }
-  .aftermovie-layout {
-    gap: 2.5rem;
-  }
-  .org-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .connect-links {
-    gap: 2.5rem;
-  }
-}
-
-/* --- TABLET LANDSCAPE (769px - 992px) --- */
-@media screen and (max-width: 992px) {
-  /* Layout shifts */
-  .hero-layout,
-  .intro-layout,
-  .aftermovie-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 4rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    gap: 0.7rem;
   }
 
-  /* Hero Adjustments */
-  .hero-placeholder {
-    height: auto;
-    min-height: 0;
+  .brand-text {
+    font-size: 1.25rem;
+    letter-spacing: 4px;
+    line-height: 1.2;
+    white-space: nowrap;
   }
-  .hero-section {
-    position: relative;
-    height: auto;
-    min-height: 100vh;
-    flex-direction: column;
-    padding-top: 100px;
-    z-index: 0;
-  }
-  .hero-content {
-    min-height: 52vh;
+
+  .nav-links {
+    width: 100%;
+    gap: 0.65rem 1rem;
+    justify-content: center;
     align-items: center;
+    font-size: 0.58rem;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
   }
+
+  .nav-links a {
+    white-space: nowrap;
+  }
+
+  /* =========================================================
+     HERO
+  ========================================================= */
+
+  .hero-section {
+    width: 100%;
+    min-height: 100svh;
+    padding-top: 70px;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    width: 100%;
+    min-height: 52svh;
+    justify-content: center;
+  }
+
   .hero-split-text {
     width: 100%;
-    padding: 3rem 2rem;
+    padding: 2rem 1.1rem 2.5rem;
+    text-align: left;
   }
+
+  .hero-eyebrow {
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+
   .hero-title {
-    font-size: clamp(3rem, 8vw, 5rem);
+    max-width: 100%;
+    font-size: clamp(2.15rem, 10vw, 2.55rem);
+    line-height: 1.02;
+    letter-spacing: -1.2px;
+    margin-bottom: 1rem;
+    overflow-wrap: break-word;
   }
+
+  .hero-subtitle {
+    max-width: 100%;
+    font-size: 0.62rem;
+    line-height: 1.7;
+    letter-spacing: 1.5px;
+  }
+
   .hero-split-image {
-    position: relative;
-    top: auto;
-    right: auto;
     width: 100%;
-    height: 50vh;
-    order: 2;
+    height: 48svh;
+    min-height: 260px;
+    max-height: 380px;
+    overflow: hidden;
   }
+
+  .hero-split-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
   .hero-split-image::after {
     background: linear-gradient(
       to bottom,
       rgba(252, 251, 249, 1) 0%,
-      rgba(252, 251, 249, 0) 40%
-    );
-  }
-  .hero-split-image img {
-    object-position: center center;
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(0, 0, 0, 1) 30%
-    );
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(0, 0, 0, 1) 30%
+      rgba(252, 251, 249, 0.7) 10%,
+      rgba(252, 251, 249, 0) 38%
     );
   }
 
-  /* Intro Section - FOTO BW DI ATAS TEKS */
-  .intro-image {
-    order: -1; /* Memaksa foto naik ke atas teks */
-    width: min(500px, 100%);
-    margin: 0 auto 1rem;
-  }
+  /* =========================================================
+     GENERAL SECTIONS
+  ========================================================= */
 
-  /* Ainan Section Adjustments - MENCEGAH BENTROK DENGAN CARD */
-  .ainan-container {
-    align-items: center;
-  }
-  .ainan-page-title {
-    position: relative; /* Menghapus sticky agar tidak bentrok */
-    top: 0;
-    height: auto; /* Mengembalikan tinggi normal */
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 2.5rem;
-  }
-  .ainan-page-title h2 {
-    margin: 0 auto;
-    width: 100%;
-    max-width: 600px;
-  }
-  .ainan-glass-card {
-    width: 100%;
-    max-width: 650px;
-  }
-
-  /* Aftermovie Adjustments */
-  .aftermovie-layout {
-    padding: 0 2rem;
-  }
-  .aftermovie-info {
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  .aftermovie-carousel-wrapper {
-    width: 100%;
-  }
-  .aftermovie-item {
-    flex: 0 0 calc(60%);
-  }
-  .aftermovie-carousel {
-    padding: 1rem 0;
-  }
-}
-
-/* --- TABLET PORTRAIT (600px - 768px) --- */
-@media screen and (max-width: 768px) {
-  body {
-    font-size: 1.05rem;
-  }
-  .container {
-    padding: 0 1.5rem;
-  }
-  .site-header {
-    height: auto;
-    padding-bottom: 0.5rem;
-  }
-
-  /* Navbar adjustments agar menu tidak hilang */
-  .site-nav {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-  }
-  .nav-links {
-    display: flex; /* Mengganti display: none agar tetap muncul */
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-    font-size: 0.65rem;
-  }
-
-  /* Hero Section */
-  .hero-section {
-    min-height: 100svh;
-  }
-  .hero-content {
-    min-height: 55svh;
-  }
-  .hero-split-text {
-    padding: 3rem 1.5rem;
-  }
-  .hero-title {
-    font-size: 3rem;
-    letter-spacing: -1px;
-  }
-  .hero-eyebrow {
-    font-size: 0.62rem;
-  }
-  .hero-subtitle {
-    font-size: 0.7rem;
-    letter-spacing: 2px;
-  }
-  .hero-split-image {
-    height: 45svh;
-  }
-
-  /* Sections Paddings */
   .content-section,
   .archive-intro-section,
   .community-quote-section,
   .ainan-section {
-    padding: 5rem 0;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
   }
 
-  /* Community Quote */
-  .community-quote p {
-    font-size: 1.8rem;
-  }
-  .community-quote::before {
-    font-size: 4.5rem;
-    margin-bottom: 2rem;
+  .section-title {
+    font-size: 1.6rem;
+    line-height: 1.15;
+    letter-spacing: -0.4px;
+    margin-bottom: 1.7rem;
   }
 
-  /* Ainan Card */
-  .ainan-card-title {
-    font-size: 1.8rem;
-  }
-  .ainan-glass-card {
-    padding: 2rem 1.5rem;
-  }
+  /* =========================================================
+     INTRO
+  ========================================================= */
 
-  /* Organizations Grid */
-  .org-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Aftermovie */
-  .aftermovie-item {
-    flex: 0 0 calc(85%);
-  }
-
-  /* Footer */
-  .footer-container {
-    padding: 4rem 1.5rem 2rem;
-    gap: 3rem;
-  }
-  .connect-links {
-    flex-direction: column;
+  .intro-layout {
+    width: 100%;
     gap: 2rem;
-    align-items: center;
-  }
-}
-
-/* --- MOBILE LANDSCAPE / LARGE PHONES (481px - 599px) --- */
-@media screen and (max-width: 599px) {
-  .hero-split-text {
-    padding: 2.5rem 1.5rem;
-  }
-  .hero-title {
-    font-size: 2.6rem;
-  }
-  .section-title {
-    font-size: 1.9rem;
-  }
-  .community-quote p {
-    font-size: 1.5rem;
-  }
-  .org-card {
-    padding: 2rem;
-  }
-  .ainan-glass-card {
-    padding: 2rem 1.25rem;
-  }
-  .footer-tagline-large {
-    font-size: 1.5rem;
-  }
-}
-
-/* --- SMALL MOBILE (<= 480px) --- */
-@media screen and (max-width: 480px) {
-  body {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-  .site-header {
-    padding: 0;
-  }
-  .site-nav {
-    padding: 0.8rem 1.2rem;
-  }
-  .brand-text {
-    font-size: 1.5rem;
-    letter-spacing: 6px;
   }
 
-  .hero-section {
-    padding-top: 80px;
-  }
-  .hero-split-text {
-    padding: 2rem 1.2rem;
-  }
-  .hero-title {
-    font-size: 2.3rem;
+  .intro-image {
+    width: min(100%, 360px);
+    margin: 0 auto 0.5rem;
   }
 
-  .content-section,
-  .archive-intro-section,
-  .community-quote-section,
-  .ainan-section {
-    padding: 4rem 0;
+  .intro-image img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
-  .section-title {
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
+  .intro-text {
+    width: 100%;
   }
 
   .intro-text p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
   }
+
   .drop-cap::first-letter {
-    font-size: 4rem;
-    padding-right: 8px;
-    padding-top: 6px;
+    font-size: 3.5rem;
+    line-height: 0.85;
+    padding-right: 6px;
+    padding-top: 4px;
+  }
+
+  /* =========================================================
+     COMMUNITY QUOTE
+  ========================================================= */
+
+  .community-quote {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .community-quote::before {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 1.2rem;
   }
 
   .community-quote p {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    letter-spacing: -0.2px;
   }
-  .community-quote::before {
-    font-size: 3.5rem;
-    margin-bottom: 1.5rem;
+
+  /* =========================================================
+     AINAN SECTION
+  ========================================================= */
+
+  .ainan-container {
+    width: 100%;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+  }
+
+  .ainan-page-title {
+    width: 100%;
+    margin-bottom: 1.8rem;
+    text-align: center;
   }
 
   .ainan-page-title h2 {
-    font-size: 2rem;
-  }
-  .ainan-card-title {
-    font-size: 1.5rem;
-  }
-  .excerpt-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.2rem;
+    width: 100%;
+    max-width: 100%;
+    font-size: 1.8rem;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
   }
 
-  .org-card {
-    padding: 1.5rem;
+  .ainan-glass-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem 1.15rem;
+    border-radius: 12px;
   }
-  .org-header {
-    flex-direction: column;
-    align-items: flex-start;
+
+  .ainan-card-title {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin-bottom: 0.9rem;
+  }
+
+  .ainan-glass-card p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .excerpt-meta {
+    width: 100%;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+  }
+
+  /* =========================================================
+     ORGANIZATIONS
+  ========================================================= */
+
+  .org-grid {
+    width: 100%;
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  .aftermovie-item {
-    flex: 0 0 calc(90%);
+  .org-card {
+    width: 100%;
+    padding: 1.25rem;
+    border-radius: 10px;
   }
+
+  .org-header {
+    gap: 0.7rem;
+  }
+
+  .org-header h3 {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .org-card p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  /* =========================================================
+     AFTERMOVIE
+  ========================================================= */
+
+  .aftermovie-layout {
+    width: 100%;
+    padding: 0 1.1rem;
+    gap: 2rem;
+  }
+
+  .aftermovie-info {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .aftermovie-carousel-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .aftermovie-carousel {
+    width: 100%;
+    padding: 0.75rem 0;
+    gap: 0.8rem;
+  }
+
+  .aftermovie-item {
+    flex: 0 0 88%;
+    max-width: 88%;
+  }
+
+  .aftermovie-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* =========================================================
+     FOOTER
+  ========================================================= */
 
   .footer-container {
-    padding: 3rem 1.2rem 2rem;
-    gap: 2.5rem;
+    width: 100%;
+    padding: 3rem 1.1rem 1.5rem;
+    gap: 2rem;
   }
+
   .footer-brand-logo {
-    font-size: 1.2rem;
-  }
-  .footer-tagline-large {
-    font-size: 1.35rem;
-  }
-  .footer-bottom-area {
-    padding-top: 3rem;
-    gap: 3rem;
-  }
-  .nav-group-title {
-    font-size: 0.7rem;
+    font-size: 1.05rem;
     letter-spacing: 2px;
   }
-}
 
-/* --- VERY SMALL MOBILE (<= 360px) --- */
-@media screen and (max-width: 360px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-  .section-title {
-    font-size: 1.5rem;
-  }
-  .community-quote p {
-    font-size: 1.2rem;
-  }
-  .ainan-page-title h2 {
-    font-size: 1.75rem;
-  }
-  .ainan-card-title {
-    font-size: 1.35rem;
-  }
-  .org-card {
-    padding: 1.2rem;
-  }
   .footer-tagline-large {
-    font-size: 1.2rem;
+    max-width: 100%;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .connect-links {
+    width: 100%;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .nav-group-title {
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+  }
+
+  .footer-bottom-area {
+    width: 100%;
+    padding-top: 2.5rem;
+    gap: 2rem;
+  }
+
+  /* =========================================================
+     SMALL UI / LINKS / BUTTONS
+  ========================================================= */
+
+  button,
+  .button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    min-height: 40px;
+  }
+
+  /* Prevent long text from breaking layout */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  a,
+  span {
+    overflow-wrap: break-word;
+  }
+
+  /* =========================================================
+     SPACING CORRECTION
+  ========================================================= */
+
+  .content-section > *,
+  .archive-intro-section > *,
+  .community-quote-section > *,
+  .ainan-section > * {
+    max-width: 100%;
+  }
+
+  /* =========================================================
+     360–380px EXTRA COMPRESSION
+     Hanya aktif pada layar yang benar-benar sempit
+  ========================================================= */
+
+  @media screen and (max-width: 380px) {
+    .container {
+      padding-left: 0.9rem;
+      padding-right: 0.9rem;
+    }
+
+    .site-nav {
+      padding-left: 0.85rem;
+      padding-right: 0.85rem;
+    }
+
+    .brand-text {
+      font-size: 1.15rem;
+      letter-spacing: 3.5px;
+    }
+
+    .nav-links {
+      gap: 0.55rem 0.8rem;
+      font-size: 0.55rem;
+    }
+
+    .hero-split-text {
+      padding-left: 0.9rem;
+      padding-right: 0.9rem;
+    }
+
+    .hero-title {
+      font-size: 2.05rem;
+      letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.58rem;
+      letter-spacing: 1.2px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .intro-text p {
+      font-size: 0.88rem;
+    }
+
+    .community-quote p {
+      font-size: 1.18rem;
+    }
+
+    .ainan-page-title h2 {
+      font-size: 1.65rem;
+    }
+
+    .ainan-card-title {
+      font-size: 1.3rem;
+    }
+
+    .ainan-glass-card {
+      padding: 1.3rem 1rem;
+    }
+
+    .org-card {
+      padding: 1.1rem;
+    }
+
+    .aftermovie-item {
+      flex-basis: 90%;
+      max-width: 90%;
+    }
+
+    .footer-container {
+      padding-left: 0.9rem;
+      padding-right: 0.9rem;
+    }
+
+    .footer-tagline-large {
+      font-size: 1.15rem;
+    }
   }
 }
