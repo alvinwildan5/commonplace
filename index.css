@@ -1006,7 +1006,7 @@ img {
   }
 
   /* =========================================================
-     HEADER & NAVIGATION (COMPACT)
+     HEADER & NAVIGATION (SINGLE LINE OVERRIDE)
   ========================================================= */
 
   .site-header {
@@ -1019,8 +1019,8 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem 1rem; /* Dibuat lebih mepet */
-    gap: 0.5rem; /* Jarak antar logo dan link dikurangi */
+    padding: 0.5rem;
+    gap: 0.5rem;
   }
 
   .nav-logo {
@@ -1039,10 +1039,10 @@ img {
 
   .nav-links {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap; /* Memaksa menu menjadi satu baris */
+    justify-content: space-evenly; /* Menyebarkan menu agar tidak menumpuk */
     align-items: center;
-    gap: 0.25rem 1rem; /* Jarak antar menu dirapatkan */
+    gap: 0.2rem;
     width: 100%;
     padding: 0;
   }
@@ -1054,13 +1054,13 @@ img {
 
   .nav-links a,
   .lang-btn {
-    min-height: 36px; /* Diperkecil agar header tidak memakan layar, tapi tetap aman ditekan */
-    min-width: 36px;
+    min-height: 36px;
+    min-width: auto; /* Auto agar bisa fleksibel muat di layar kecil */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
-    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem; /* Diperkecil agar muat sebaris pada 360px */
+    padding: 0.25rem;
     white-space: nowrap;
     line-height: 1;
   }
@@ -1068,11 +1068,11 @@ img {
   .lang-switcher {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.15rem;
   }
 
   .lang-divider {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
   /* =========================================================
@@ -1082,7 +1082,7 @@ img {
   .hero-section {
     width: 100%;
     min-height: auto;
-    padding-top: 90px; /* Disesuaikan dengan header yang lebih compact */
+    padding-top: 90px;
     padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -1186,7 +1186,7 @@ img {
   }
 
   /* =========================================================
-     AINAN SECTION (RECENT NOTES) - FIX STRUKTUR & OVERLAP
+     AINAN SECTION (RECENT NOTES)
   ========================================================= */
 
   .ainan-section {
@@ -1332,31 +1332,33 @@ img {
   }
 
   /* =========================================================
-     AFTERMOVIE CAROUSEL
+     AFTERMOVIE CAROUSEL (PADDING REDUCED)
   ========================================================= */
 
   .aftermovie-layout {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem; /* Gap diperkecil */
     width: 100%;
-    padding: 0 1rem;
+    padding: 0 0.5rem; /* Padding horizontal diperkecil */
   }
 
   .aftermovie-info {
     width: 100%;
     text-align: center;
     order: 1;
+    padding: 0 0.5rem;
   }
 
   .aftermovie-info h2 {
     margin-bottom: 0.5rem;
+    font-size: 1.5rem;
   }
 
   .aftermovie-info p {
     width: 100%;
     font-size: 0.95rem;
-    line-height: 1.5;
+    line-height: 1.4;
     margin: 0 auto;
   }
 
@@ -1370,15 +1372,15 @@ img {
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 1rem;
+    gap: 0.75rem; /* Gap antar video diperkecil */
     scroll-snap-type: x mandatory;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem; /* Padding bawah diperkecil */
     -webkit-overflow-scrolling: touch;
   }
 
   .aftermovie-item {
-    flex: 0 0 90%;
-    max-width: 90%;
+    flex: 0 0 92%; /* Video lebih lebar karena padding berkurang */
+    max-width: 92%;
     scroll-snap-align: center;
   }
 
@@ -1388,7 +1390,7 @@ img {
     padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 6px;
     background: #000;
   }
 
@@ -1402,9 +1404,9 @@ img {
   }
 
   .aftermovie-title {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    margin-top: 0.5rem;
     text-align: center;
   }
 
@@ -1449,12 +1451,12 @@ img {
   ========================================================= */
 
   .footer-container {
-    padding: 2rem 1rem 1.5rem; /* Ruang atas dan bawah dikurangi drastis */
+    padding: 2rem 1rem 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 1.5rem; /* Gap keseluruhan dikurangi */
+    gap: 1.5rem;
   }
 
   .footer-center {
@@ -1485,7 +1487,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem; /* Link sosial media lebih merapat */
+    gap: 0.5rem;
     width: 100%;
   }
 
@@ -1495,7 +1497,7 @@ img {
   }
 
   .connect-links a {
-    min-height: 36px; /* Diperkecil dari 44px agar lebih padat ke bawah */
+    min-height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
