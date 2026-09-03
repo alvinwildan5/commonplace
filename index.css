@@ -1123,7 +1123,7 @@ img {
     width: 100%;
     padding: 2.5rem 1rem;
     text-align: left;
-    transform: translateY(25px);
+    transform: translateY(60px);
   }
 
   .hero-title {
@@ -1622,6 +1622,6 @@ img {
     max-width: none !important;
 
     object-fit: cover !important;
-    object-position: center bottom !important;
+    object-position: center !important;
   }
 }
