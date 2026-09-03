@@ -936,9 +936,9 @@ img {
   color: var(--text-muted);
 }
 
-/* ========================================================= 
+/* ==========================================================================
    11. RESPONSIVE DESIGN (FULLY EXPANDED & REFINED)
-========================================================= */
+========================================================================== */
 
 /* --- LARGE DESKTOP (1400px+) --- */
 @media screen and (min-width: 1400px) {
@@ -969,6 +969,7 @@ img {
   .hero-layout,
   .intro-layout,
   .aftermovie-layout {
+    display: flex;
     flex-direction: column;
     gap: 4rem;
   }
@@ -1026,28 +1027,30 @@ img {
     );
   }
 
-  /* Intro Section */
+  /* Intro Section - FOTO BW DI ATAS TEKS */
   .intro-image {
+    order: -1; /* Memaksa foto naik ke atas teks */
     width: min(500px, 100%);
-    margin: 0 auto;
+    margin: 0 auto 1rem;
   }
 
-  /* Ainan Section Adjustments */
+  /* Ainan Section Adjustments - MENCEGAH BENTROK DENGAN CARD */
   .ainan-container {
     align-items: center;
   }
   .ainan-page-title {
+    position: relative; /* Menghapus sticky agar tidak bentrok */
+    top: 0;
+    height: auto; /* Mengembalikan tinggi normal */
     width: 100%;
     align-items: center;
     text-align: center;
-    height: auto;
-    position: relative;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
   .ainan-page-title h2 {
-    margin-left: 0;
-    width: 90%;
     margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
   }
   .ainan-glass-card {
     width: 100%;
@@ -1083,13 +1086,24 @@ img {
   .container {
     padding: 0 1.5rem;
   }
-  .site-nav {
-    padding: 1rem 1.5rem;
+  .site-header {
+    height: auto;
+    padding-bottom: 0.5rem;
   }
 
-  /* Hide standard nav on mobile */
+  /* Navbar adjustments agar menu tidak hilang */
+  .site-nav {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
   .nav-links {
-    display: none;
+    display: flex; /* Mengganti display: none agar tetap muncul */
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    font-size: 0.65rem;
   }
 
   /* Hero Section */
