@@ -1439,10 +1439,7 @@ i.fa-regular {
 
   /* ========================================================================
      SIDEBAR / SEARCH / TOPICS
-======================================================================== */
-  /* ========================================================================
-     SIDEBAR / SEARCH / TOPICS
-======================================================================== */
+  ======================================================================== */
 
   .sidebar-search-wrapper input,
   .sidebar-search-wrapper textarea,
@@ -1450,15 +1447,16 @@ i.fa-regular {
     width: 100%;
     max-width: 100%;
     font-size: 0.82rem;
-    /* Padding kiri-kanan dibuat 0 agar teks sejajar sempurna dengan ujung garis */
-    padding: 0.5rem 0;
 
-    /* Menghilangkan semua garis tepi kotak bawaan */
+    /* 
+       Format: atas | kanan | bawah | kiri 
+       Kiri di-set ke 2rem (sekitar 32px) untuk memberi ruang bagi ikon search.
+       Jika masih kurang geser, angkanya bisa dinaikkan jadi 2.2rem atau 2.5rem.
+    */
+    padding: 0.5rem 0 0.5rem 2rem;
+
     border: none;
-    /* Hanya menyisakan garis bawah berwarna abu-abu gelap */
-    border-bottom: 1.5px solid #555555;
-
-    /* Background transparan agar benar-benar terlihat menyatu dengan halaman */
+    border-bottom: 1px solid #555555e2;
     background-color: transparent;
     border-radius: 0;
 
@@ -1469,11 +1467,9 @@ i.fa-regular {
   .sidebar-search-wrapper input:focus,
   .sidebar-search-wrapper textarea:focus,
   .search-input:focus {
-    outline: none; /* Mencegah munculnya kotak biru/hitam bawaan browser */
-    border-bottom: 1.5px solid #c5a059; /* Garis bawah berubah menjadi gold elegan */
-    /* Tidak ada tambahan box-shadow atau ring */
+    outline: none;
+    border-bottom: 1px solid #c5a059;
   }
-
   /* ... (kode bagian bawah seperti .topic-list tetap sama) ... */
 
   .topic-list {
