@@ -715,15 +715,21 @@ i.fa-regular {
     margin-bottom: 0;
   }
 
-  .contact-icon {
-    margin-top: 0; /* Menghilangkan margin bawaan agar ikon benar-benar rata tengah dengan teks */
-    font-size: 1.1rem;
+  .contact-item {
+    display: flex;
+    flex-direction: column; /* Mengubah arah susunan menjadi atas-bawah */
+    align-items: center; /* Memastikan ikon rata tengah */
+    justify-content: center;
+    gap: 5px; /* Jarak ikon ke teks dipersempit karena atas-bawah */
+    margin-bottom: 1.2rem;
+    width: 100%;
   }
 
   .contact-info {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Menjaga teks tetap rata kiri di dalam grupnya sendiri agar rapi di sebelah ikon */
+    align-items: center; /* Teks rata tengah terhadap grupnya */
+    text-align: center; /* Memastikan teks yang panjang ikut rata tengah */
   }
 
   .contact-label {
@@ -757,7 +763,7 @@ i.fa-regular {
     max-width: 100%;
     font-size: 0.9rem;
     line-height: 1.75;
-    text-align: left;
+    text-align: justify;
     margin-bottom: 1.4rem;
   }
 

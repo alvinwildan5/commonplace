@@ -336,7 +336,7 @@ img {
 .content-section {
   position: relative;
   z-index: 10;
-  padding: 7rem 0;
+  padding: 3rem 0;
 }
 
 .intro-layout {
@@ -1155,7 +1155,7 @@ img {
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 1rem;
-    text-align: left;
+    text-align: justify;
     word-break: normal;
   }
 
@@ -1336,6 +1336,12 @@ img {
   /* =========================================================
      AFTERMOVIE CAROUSEL (PADDING REDUCED)
   ========================================================= */
+  .content-section {
+    position: relative;
+    z-index: 10;
+    padding: 1rem 0;
+  }
+
   .section-title {
     margin-bottom: 0.5rem;
     font-size: 1.5rem;
