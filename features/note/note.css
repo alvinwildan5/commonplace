@@ -1334,18 +1334,23 @@ i.fa-regular {
      Mengikuti template header sebelumnya
   ======================================================================== */
 
+  /* ========================================================================
+     HEADER (Khusus Mobile: Logo -> Navigasi -> Login)
+======================================================================== */
+
   .site-header {
     width: 100%;
     height: auto;
-    min-height: 60px;
+    min-height: 80px; /* Sedikit lebih tinggi dari sebelumnya */
     padding: 0;
   }
 
   .site-nav {
-    width: 100%;
+    display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    padding: 0.8rem 1rem 0.5rem;
+    align-items: center; /* Memastikan semua elemen rata tengah */
+    gap: 1rem; /* Jarak antar baris (Logo ke Menu ke Tombol) sedikit dilegakan */
+    padding: 1.2rem 1rem 1rem; /* Padding atas ditambah sedikit */
   }
 
   .brand-text {
@@ -1353,18 +1358,36 @@ i.fa-regular {
     line-height: 1.2;
     letter-spacing: 4px;
     white-space: nowrap;
+    order: 1; /* Urutan pertama paling atas */
+  }
+
+  .nav-links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    font-size: 0.65rem; /* Sedikit diperbesar dari 0.58rem agar nyaman ditap di HP */
+    line-height: 1.3;
+    order: 2; /* Menu navigasi sekarang tepat di bawah logo */
+  }
+
+  .nav-links a {
+    white-space: nowrap;
   }
 
   .auth-menu {
     width: 100%;
-    margin-left: 0;
+    display: flex;
     justify-content: center;
-    order: 2;
+    margin-left: 0;
+    order: 3; /* Tombol login sekarang berada paling bawah */
   }
 
   .auth-btn {
-    padding: 7px 11px;
-    font-size: 0.6rem;
+    padding: 8px 16px; /* Disesuaikan sedikit agar lebih mudah ditekan jari */
+    font-size: 0.65rem;
     line-height: 1.2;
   }
 
@@ -1394,7 +1417,7 @@ i.fa-regular {
     display: flex;
     flex-direction: column;
     gap: 2.2rem;
-    padding: 155px 14px 0;
+    padding: 170px 14px 0;
     margin: 0 auto;
   }
 
@@ -1417,8 +1440,9 @@ i.fa-regular {
   /* ========================================================================
      SIDEBAR / SEARCH / TOPICS
 ======================================================================== */
-
-  /* ... (kode bagian atas tetap sama) ... */
+  /* ========================================================================
+     SIDEBAR / SEARCH / TOPICS
+======================================================================== */
 
   .sidebar-search-wrapper input,
   .sidebar-search-wrapper textarea,
@@ -1426,25 +1450,28 @@ i.fa-regular {
     width: 100%;
     max-width: 100%;
     font-size: 0.82rem;
-    padding: 0.75rem 0.85rem;
+    /* Padding kiri-kanan dibuat 0 agar teks sejajar sempurna dengan ujung garis */
+    padding: 0.5rem 0;
 
-    /* Membuat sudut tidak terlalu kotak (sedikit melengkung) */
-    border-radius: 8px;
-    /* Garis batas awal yang netral dan halus */
-    border: 1px solid #e0e0e0;
-    background-color: #ffffff;
-    /* Membuat transisi warna jadi mulus saat diklik, tidak patah/mengagetkan */
-    transition: all 0.3s ease;
+    /* Menghilangkan semua garis tepi kotak bawaan */
+    border: none;
+    /* Hanya menyisakan garis bawah berwarna abu-abu gelap */
+    border-bottom: 1.5px solid #555555;
+
+    /* Background transparan agar benar-benar terlihat menyatu dengan halaman */
+    background-color: transparent;
+    border-radius: 0;
+
+    transition: border-color 0.3s ease;
   }
 
-  /* Efek saat kolom diklik / diketik */
+  /* Efek saat kolom diklik / sedang mengetik */
   .sidebar-search-wrapper input:focus,
   .sidebar-search-wrapper textarea:focus,
   .search-input:focus {
-    outline: none; /* Menghapus border biru/hitam bawaan standar browser */
-    border-color: #c5a059; /* Mengubah warna garis utama menjadi gold elegan */
-    /* Menciptakan ilusi "garis tipis di luar kotak" (ring transparan) */
-    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
+    outline: none; /* Mencegah munculnya kotak biru/hitam bawaan browser */
+    border-bottom: 1.5px solid #c5a059; /* Garis bawah berubah menjadi gold elegan */
+    /* Tidak ada tambahan box-shadow atau ring */
   }
 
   /* ... (kode bagian bawah seperti .topic-list tetap sama) ... */
