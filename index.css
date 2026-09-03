@@ -116,11 +116,13 @@ img {
 }
 
 .brand-text {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--text-main);
-  letter-spacing: 2px;
+  font-family: "Bodoni Moda", Didot, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 10px;
+  color: #b89b72;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .nav-links {
@@ -650,7 +652,7 @@ img {
   padding: 8rem 0;
   /* Background foto dengan efek parallax & overlay ivory editorial */
   background-image:
-    linear-gradient(rgba(252, 251, 249, 0.723), rgba(252, 251, 249, 0)),
+    linear-gradient(rgba(252, 251, 249, 0.829), rgba(252, 251, 249, 0)),
     url("./assets/images/notes.jpg");
   background-size: cover;
   background-position: center;
