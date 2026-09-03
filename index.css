@@ -1084,14 +1084,13 @@ img {
   .hero-section {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 260px;
     min-height: 0;
     padding: 0;
     display: block;
     overflow: hidden;
   }
 
-  /* IMAGE MENJADI BACKGROUND / LAYER BELAKANG */
   .hero-split-image {
     position: absolute;
     inset: 0;
@@ -1100,6 +1099,9 @@ img {
     min-height: 0;
     max-height: none;
     z-index: 1;
+
+    object-fit: cover;
+    object-position: center bottom;
   }
 
   /* TEXT BERADA DI DEPAN IMAGE */
@@ -1536,5 +1538,30 @@ img {
     font-size: 0.8rem;
     line-height: 1.4;
     margin: 0;
+  }
+
+  /* =========================================================
+   FORCE HERO TO START IMMEDIATELY AFTER HEADER
+========================================================= */
+
+  .site-header {
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .site-nav {
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0.5rem !important;
+  }
+
+  .hero-section {
+    height: 300px !important;
+    min-height: 300px !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
