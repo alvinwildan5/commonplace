@@ -1767,10 +1767,22 @@ i.fa-regular {
   ======================================================================== */
 
   .modal-box {
+    position: relative;
     width: 100%;
     max-width: 100%;
     padding: 1.5rem 1.1rem;
     border-radius: 5px;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .modal-title {
