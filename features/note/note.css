@@ -148,10 +148,15 @@ i.fa-regular {
   color: var(--border-color);
 }
 .auth-menu {
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  margin-left: 0;
+  order: 3;
 }
+
 .auth-btn {
   display: inline-flex;
   align-items: center;
@@ -182,7 +187,25 @@ i.fa-regular {
   color: #ffffff;
 }
 .logout-btn {
-  padding: 7px 10px;
+  padding: 7px 5px;
+}
+
+.modal-box {
+  position: relative; /* Menjadikan kotak ini sebagai acuan posisi tombol */
+  /* ... biarkan properti .modal-box kamu yang lain tetap ada ... */
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px; /* Atur jarak dari sisi atas kotak */
+  right: 20px; /* Atur jarak dari sisi kanan kotak */
+
+  /* Reset gaya bawaan tombol (opsional, sesuaikan dengan desainmu) */
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #333; /* Ganti dengan variabel warnamu, misal var(--text-color) */
 }
 
 /* LAYOUT & SIDEBAR */
