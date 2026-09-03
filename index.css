@@ -1006,7 +1006,7 @@ img {
   }
 
   /* =========================================================
-     HEADER & NAVIGATION
+     HEADER & NAVIGATION (COMPACT)
   ========================================================= */
 
   .site-header {
@@ -1019,8 +1019,8 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
-    gap: 1rem;
+    padding: 0.5rem 1rem; /* Dibuat lebih mepet */
+    gap: 0.5rem; /* Jarak antar logo dan link dikurangi */
   }
 
   .nav-logo {
@@ -1029,11 +1029,12 @@ img {
   }
 
   .brand-text {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     letter-spacing: 2px;
     display: inline-block;
-    min-height: 44px;
-    line-height: 44px;
+    min-height: auto;
+    line-height: 1.2;
+    margin: 0;
   }
 
   .nav-links {
@@ -1041,25 +1042,27 @@ img {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem 1rem;
+    gap: 0.25rem 1rem; /* Jarak antar menu dirapatkan */
     width: 100%;
     padding: 0;
   }
 
   .nav-links li {
     list-style: none;
+    margin: 0;
   }
 
   .nav-links a,
   .lang-btn {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 36px; /* Diperkecil agar header tidak memakan layar, tapi tetap aman ditekan */
+    min-width: 36px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
-    padding: 0.5rem;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
     white-space: nowrap;
+    line-height: 1;
   }
 
   .lang-switcher {
@@ -1069,7 +1072,7 @@ img {
   }
 
   .lang-divider {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   /* =========================================================
@@ -1079,7 +1082,7 @@ img {
   .hero-section {
     width: 100%;
     min-height: auto;
-    padding-top: 120px;
+    padding-top: 90px; /* Disesuaikan dengan header yang lebih compact */
     padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -1101,7 +1104,7 @@ img {
     font-size: 2.25rem;
     line-height: 1.1;
     letter-spacing: -0.5px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .gold-divider {
@@ -1112,6 +1115,7 @@ img {
     font-size: 0.85rem;
     line-height: 1.5;
     letter-spacing: 1px;
+    margin: 0;
   }
 
   .hero-split-image {
@@ -1130,7 +1134,7 @@ img {
   .intro-layout {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
     width: 100%;
   }
 
@@ -1147,8 +1151,8 @@ img {
 
   .intro-text p {
     font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
     text-align: left;
     word-break: normal;
   }
@@ -1166,8 +1170,8 @@ img {
   ========================================================= */
 
   .community-quote-section {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 
   .community-quote {
@@ -1182,36 +1186,41 @@ img {
   }
 
   /* =========================================================
-     AINAN SECTION (RECENT NOTES)
-     Fixing overlapping text and layout issues
+     AINAN SECTION (RECENT NOTES) - FIX STRUKTUR & OVERLAP
   ========================================================= */
 
   .ainan-section {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
   .ainan-page-title {
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     position: relative;
-    display: block;
+    z-index: 2;
+    padding: 0 1rem;
   }
 
   .ainan-page-title h2 {
-    font-size: 2rem;
-    line-height: 1.2;
-    padding: 0 1rem;
+    font-size: 1.75rem;
+    line-height: 1.3;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   .ainan-page-title h2 span {
-    display: block;
-    font-size: 1rem;
-    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
   }
 
   .ainan-container {
@@ -1219,7 +1228,9 @@ img {
     padding: 0 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 2;
   }
 
   .ainan-glass-card {
@@ -1228,7 +1239,6 @@ img {
     padding: 1.5rem 1.25rem;
     margin: 0;
     position: relative;
-    z-index: 2;
   }
 
   .ainan-card-content {
@@ -1240,20 +1250,20 @@ img {
     display: inline-block;
     font-size: 0.8rem;
     letter-spacing: 1px;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     text-transform: uppercase;
   }
 
   .ainan-card-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     line-height: 1.3;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .ainan-card-description {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .ainan-card-link {
@@ -1270,7 +1280,7 @@ img {
   .org-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
   .org-card {
@@ -1283,7 +1293,7 @@ img {
     flex-direction: row;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .org-logo {
@@ -1297,9 +1307,10 @@ img {
   }
 
   .org-name {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     line-height: 1.3;
     overflow-wrap: break-word;
+    margin: 0;
   }
 
   .org-role {
@@ -1309,9 +1320,9 @@ img {
   }
 
   .org-desc {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     line-height: 1.5;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .org-link {
@@ -1322,13 +1333,12 @@ img {
 
   /* =========================================================
      AFTERMOVIE CAROUSEL
-     Fixing squished layout and vertical stacking
   ========================================================= */
 
   .aftermovie-layout {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
     width: 100%;
     padding: 0 1rem;
   }
@@ -1336,16 +1346,18 @@ img {
   .aftermovie-info {
     width: 100%;
     text-align: center;
-    order: 1; /* Keep title text logically above or below naturally */
+    order: 1;
+  }
+
+  .aftermovie-info h2 {
+    margin-bottom: 0.5rem;
   }
 
   .aftermovie-info p {
     width: 100%;
-    max-width: 100%;
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.5;
     margin: 0 auto;
-    word-break: normal;
   }
 
   .aftermovie-carousel-wrapper {
@@ -1360,7 +1372,7 @@ img {
     overflow-x: auto;
     gap: 1rem;
     scroll-snap-type: x mandatory;
-    padding-bottom: 1rem; /* Space for scrollbar */
+    padding-bottom: 1rem;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -1373,7 +1385,7 @@ img {
   .youtube-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
     border-radius: 8px;
@@ -1390,7 +1402,7 @@ img {
   }
 
   .aftermovie-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.4;
     margin-top: 0.75rem;
     text-align: center;
@@ -1405,7 +1417,7 @@ img {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .contact-info {
@@ -1427,62 +1439,79 @@ img {
   button,
   .submit-btn {
     min-height: 44px;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1rem;
     font-size: 1rem;
     width: 100%;
   }
 
   /* =========================================================
-     FOOTER
+     FOOTER (COMPACT)
   ========================================================= */
 
   .footer-container {
-    padding: 3rem 1rem 2rem;
+    padding: 2rem 1rem 1.5rem; /* Ruang atas dan bawah dikurangi drastis */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 2rem;
+    gap: 1.5rem; /* Gap keseluruhan dikurangi */
   }
 
   .footer-center {
     width: 100%;
   }
 
+  .footer-brand-logo {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
   .footer-tagline-large {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
   }
 
   .footer-bottom-area {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
+    padding-top: 0;
   }
 
   .connect-links {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem; /* Link sosial media lebih merapat */
     width: 100%;
+  }
+
+  .nav-group-title {
+    margin-bottom: 0.5rem;
+    display: inline-block;
   }
 
   .connect-links a {
-    min-height: 44px;
+    min-height: 36px; /* Diperkecil dari 44px agar lebih padat ke bawah */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
-    font-size: 1rem;
-    padding: 0.5rem;
+    font-size: 0.95rem;
+    padding: 0.25rem;
+  }
+
+  .footer-copyright {
+    margin-top: 0.5rem;
   }
 
   .footer-copyright p {
-    font-size: 0.85rem;
-    line-height: 1.5;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
   }
 }
