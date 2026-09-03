@@ -715,6 +715,14 @@ i.fa-regular {
     margin-bottom: 0;
   }
 
+  .contact-icon {
+    width: 20px;
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 2px;
+  }
+
   .contact-item {
     display: flex;
     flex-direction: column; /* Mengubah arah susunan menjadi atas-bawah */
