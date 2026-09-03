@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NOTES SCRIPT (PARIPURNA) — CMS EDITION (SUPABASE INTEGRATED)
+   NOTES SCRIPT (PARIPURNA) — CMS EDITION (SUPABASE INTEGRATED) + SHAREABLE URL LINK
    Auth + Supabase Database + Rich Text Editor + 
    Cyclical Infinite Carousel + Search + Bilingual + ScrollSpy 
    + Auto Sync Latest Order + Advanced Export & Share (Bug Fixed Paripurna)
@@ -78,7 +78,34 @@ document.addEventListener("DOMContentLoaded", async () => {
       { passive: true },
     );
   }
+
+  // EVENT LISTENER UNTUK SHAREABLE URL ARTICLE
+  // Mengecek apakah terdapat fragment #article-xxx di URL saat memuat halaman
+  checkHashForArticle();
+
+  // Event listener jika user menavigasikan back/forward pada browser
+  window.addEventListener("hashchange", checkHashForArticle);
 });
+
+/* --------------------------------------------------------------------------
+   SHAREABLE URL / DEEP LINKING CHECK
+-------------------------------------------------------------------------- */
+function checkHashForArticle() {
+  if (window.location.hash) {
+    const articleId = window.location.hash.substring(1); // Menghapus tanda '#'
+
+    // Pastikan hash bukan topik melainkan id artikel
+    if (
+      articleId.startsWith("article-") ||
+      globalArticlesCache.some((a) => a.id === articleId)
+    ) {
+      // Kasih delay sebentar untuk memastikan DOM selesai dirender
+      setTimeout(() => {
+        openArticle(articleId, false); // false berarti jangan update hash lagi agar tidak infinite loop
+      }, 500);
+    }
+  }
+}
 
 /* --------------------------------------------------------------------------
    1. DEEP SEARCH FILTER
@@ -216,11 +243,11 @@ function initSingleCarousel(container) {
 }
 
 /* --------------------------------------------------------------------------
-   3. MODAL READING OVERLAY
+   3. MODAL READING OVERLAY (UPDATE UNTUK URL LINKING)
 -------------------------------------------------------------------------- */
 let currentArticleTitle = "Document";
 
-window.openArticle = function (articleId) {
+window.openArticle = function (articleId, updateHash = true) {
   const article = document.getElementById(articleId);
   if (!article) return;
 
@@ -251,16 +278,25 @@ window.openArticle = function (articleId) {
   document.getElementById("reading-overlay").classList.add("active");
   document.body.style.overflow = "hidden";
   document.getElementById("exportDropdown").classList.remove("show"); // Reset menu
+
+  // Mengupdate Hash Fragment di URL agar link bisa dibagikan
+  if (updateHash) {
+    window.history.pushState(null, null, `#${articleId}`);
+  }
 };
 
 window.closeArticle = function () {
   document.getElementById("reading-overlay").classList.remove("active");
   document.body.style.overflow = "auto";
   document.getElementById("exportDropdown").classList.remove("show");
+
+  // Menghapus id artikel dari URL saat modal ditutup
+  const currentPath = window.location.pathname + window.location.search;
+  window.history.pushState(null, null, currentPath);
 };
 
 /* --------------------------------------------------------------------------
-   4. EXPORT & SHARE FUNCTIONS (FIXED)
+   4. EXPORT & SHARE FUNCTIONS (FIXED & SHARE LINK MENGAMBIL HASH URL)
 -------------------------------------------------------------------------- */
 window.toggleExportMenu = function () {
   document.getElementById("exportDropdown").classList.toggle("show");
@@ -275,7 +311,8 @@ document.addEventListener("click", function (e) {
 });
 
 window.shareLink = function (platform) {
-  const url = encodeURIComponent(window.location.href.split("#")[0]);
+  // Mengambil URL yang sekarang lengkap dengan fragment #article-xxx
+  const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(currentArticleTitle);
 
   if (platform === "wa") {
@@ -288,31 +325,13 @@ window.shareLink = function (platform) {
       `https://twitter.com/intent/tweet?text=${title}&url=${url}`,
       "_blank",
     );
-  } else if (platform === "ig") {
-    // Alihkan langsung ke DM IG setelah copy link
-    navigator.clipboard
-      .writeText(window.location.href.split("#")[0])
-      .then(() => {
-        alert(
-          "Link telah berhasil disalin!\nKarena limitasi web, Anda akan segera dialihkan ke DM Instagram. Silakan 'Paste' (Tempel) link tersebut ke target DM atau Story Anda.",
-        );
-
-        // Jika di HP upayakan buka aplikasi. Jika tidak, buka versi web inbox.
-        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-          window.location.href = "instagram://app";
-          setTimeout(() => {
-            window.location.href = "https://www.instagram.com/direct/inbox/";
-          }, 1500);
-        } else {
-          window.open("https://www.instagram.com/direct/inbox/", "_blank");
-        }
-      });
   }
   document.getElementById("exportDropdown").classList.remove("show");
 };
 
 window.copyArticleLink = function () {
-  const url = window.location.href.split("#")[0];
+  // Menyalin link yang sudah terdapat #article-xxx
+  const url = window.location.href;
   navigator.clipboard
     .writeText(url)
     .then(() => alert("Link copied to clipboard!"))
@@ -1241,4 +1260,3 @@ window.handleTableAction = function (val) {
       break;
   }
 };
-

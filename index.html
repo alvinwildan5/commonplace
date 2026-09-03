@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <link
@@ -15,10 +15,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <link rel="stylesheet" href="/index.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
   </head>
   <body>
     <header class="site-header">
@@ -76,551 +72,710 @@
         </ul>
       </nav>
     </header>
-<!-- =========================================================
-     HERO
+
+    <!-- =========================================================
+     HERO — FIXED BACKGROUND / DYNAMIC EDITORIAL
 ========================================================= -->
-<section class="hero-section bg-white">
-  <div class="container hero-content">
-  </div>
-</section>
-<!-- =========================================================
+
+    <!-- Spacer agar konten pertama tidak langsung berada di belakang Hero -->
+    <div class="hero-placeholder" aria-hidden="true"></div>
+
+    <section class="hero-section bg-paper" id="hero">
+      <!-- =====================================================
+       HERO IMAGE — LAYER PALING BELAKANG
+  ====================================================== -->
+      <div class="hero-split-image" aria-hidden="true">
+        <img src="assets/images/main.JPG" alt="" draggable="false" />
+      </div>
+
+      <!-- =====================================================
+       HERO TEXT — LAYER DI ATAS IMAGE
+  ====================================================== -->
+      <div class="container hero-content">
+        <div class="hero-split-text" id="heroText">
+          <span class="hero-eyebrow"> Recent Notes </span>
+
+          <h1 class="hero-title">
+            Alvin Wildan<br />
+            Sahli
+          </h1>
+
+          <div class="gold-divider"></div>
+
+          <p
+            class="hero-subtitle translatable"
+            data-en="A Personal Archive"
+            data-id="Sebuah Arsip Personal"
+          >
+            A Personal Archive
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
      ARCHIVE INTRODUCTION
 ========================================================= -->
-<section class="content-section archive-intro-section">
-  <div class="container intro-layout">
-    <div class="intro-text">
-  <h2
-    class="section-title translatable"
-    data-en="Commonplace"
-    data-id="Kehidupan Sehari-hari"
-  >
-    Commonplace
-  </h2>
-  <p
-    class="drop-cap translatable"
-    data-en="Write down a thought before it disappears."
-    data-id="Tulislah sebuah pikiran sebelum dia menghilang."
-  >
-    Write down a thought before it disappears.
-  </p>
-  <p
-    class="translatable"
-    data-en="Some thoughts arrive quietly. They do not ask to be remembered, yet for a brief moment, they make the world feel different. Then time moves, another thought takes its place, and what once felt important becomes impossible to recall."
-    data-id="Beberapa pikiran datang dengan diam. Mereka tidak meminta untuk diingat, tetapi untuk sesaat, mereka membuat dunia terasa berbeda. Kemudian waktu bergerak, pikiran lain mengambil tempatnya, dan sesuatu yang sebelumnya terasa begitu penting perlahan menjadi mustahil untuk diingat kembali."
-  >
-    Some thoughts arrive quietly. They do not ask to be remembered, yet for a brief moment, they make the world feel different. Then time moves, another thought takes its place, and what once felt important becomes impossible to recall.
-  </p>
-  <p
-    class="translatable"
-    data-en="Perhaps that is why we write."
-    data-id="Mungkin itulah alasan kita menulis."
-  >
-    Perhaps that is why we write.
-  </p>
-</div>
-    <div class="intro-image">
-      <img
-        src="/assets/images/bw.png"
-        alt="Alvin Wildan Sahli Portrait"
-      />
-    </div>
-  </div>
-</section>
-<!-- =========================================================
+    <section class="content-section archive-intro-section bg-white">
+      <div class="container intro-layout">
+        <div class="intro-text">
+          <h2
+            class="section-title translatable"
+            data-en="Commonplace"
+            data-id="Kehidupan Sehari-hari"
+          >
+            Commonplace
+          </h2>
+
+          <p
+            class="drop-cap translatable"
+            data-en="Write down a thought before it disappears."
+            data-id="Tulislah sebuah pikiran sebelum dia menghilang."
+          >
+            Write down a thought before it disappears.
+          </p>
+
+          <p
+            class="translatable"
+            data-en="Some thoughts arrive quietly. They do not ask to be remembered, yet for a brief moment, they make the world feel different. Then time moves, another thought takes its place, and what once felt important becomes impossible to recall."
+            data-id="Beberapa pikiran datang dengan diam. Mereka tidak meminta untuk diingat, tetapi untuk sesaat, mereka membuat dunia terasa berbeda. Kemudian waktu bergerak, pikiran lain mengambil tempatnya, dan sesuatu yang sebelumnya terasa begitu penting perlahan menjadi mustahil untuk diingat kembali."
+          >
+            Some thoughts arrive quietly. They do not ask to be remembered, yet
+            for a brief moment, they make the world feel different. Then time
+            moves, another thought takes its place, and what once felt important
+            becomes impossible to recall.
+          </p>
+
+          <p
+            class="translatable"
+            data-en="Perhaps that is why we write."
+            data-id="Mungkin itulah alasan kita menulis."
+          >
+            Perhaps that is why we write.
+          </p>
+        </div>
+
+        <div class="intro-image">
+          <img src="assets/images/bw.png" alt="Alvin Wildan Sahli Portrait" />
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
      COMMUNITY QUOTE — SEPARATE SECTION
 ========================================================= -->
-<section class="community-quote-section">
-  <div class="container community-quote-container">
-    <blockquote class="community-quote">
-    <p
-      class="translatable"
-      data-en="Even the word desa feels closer to Indonesia than kota. Perhaps that is why Desanesia sounds more familiar than Kotanesia."
-      data-id="Bahkan kata desa terasa lebih dekat dengan Indonesia daripada kota. Mungkin karena itu, Desanesia terdengar lebih akrab daripada Kotanesia."
-    >
-      Even the word desa feels closer to Indonesia than kota. Perhaps that is why Desanesia sounds more familiar than Kotanesia.
-    </p>
-  </div>
-</section>
-<!-- ============================================================
-     SECTION 2: AINAN — FEATURED NOTES
+    <section class="community-quote-section bg-alt">
+      <div class="container community-quote-container">
+        <blockquote class="community-quote">
+          <p
+            class="translatable"
+            data-en="Even the word desa feels closer to Indonesia than kota. Perhaps that is why Desanesia sounds more familiar than Kotanesia."
+            data-id="Bahkan kata desa terasa lebih dekat dengan Indonesia daripada kota. Mungkin karena itu, Desanesia terdengar lebih akrab daripada Kotanesia."
+          >
+            Even the word desa feels closer to Indonesia than kota. Perhaps that
+            is why Desanesia sounds more familiar than Kotanesia.
+          </p>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SECTION 2: AINAN — FEATURED NOTES / RECENT ARTICLES
      ============================================================ -->
-<section class="content-section-ainan ainan-section">
-  <!-- PAGE TITLE — MENEMPEL PADA AINAN SECTION -->
-  <div class="ainan-page-title">
-    <h2
-      class="translatable"
-      data-en="Community Development and Service Learning Program"
-      data-id="Program Pengembangan Masyarakat dan Pembelajaran Berbasis Pengabdian"
-    >
-      Program Pengembangan Masyarakat
-      <span>dan Pembelajaran Berbasis Pengabdian</span>
-    </h2>
-  </div>
-  <!-- CARDS -->
-  <div class="ainan-container">
-    <!-- CARD 1 -->
-    <article class="ainan-glass-card">
-      <div class="ainan-card-content">
-        <!-- CATEGORY -->
-        <span
-          class="ainan-card-category translatable"
-          data-en="Community Empowerment"
-          data-id="Pemberdayaan Masyarakat"
+    <section class="content-section-ainan ainan-section bg-paper">
+      <div class="ainan-page-title">
+        <h2
+          class="translatable"
+          data-en="Recent Notes"
+          data-id="Catatan Terbaru"
         >
-          Community Empowerment
-        </span>
-        <!-- TITLE -->
-        <h3
-          class="ainan-card-title translatable"
-          data-en="Beneath the Shadow of Landslides"
-          data-id="Dibawah Bayang Bayang Tanah Longsor"
-        >
-          Beneath the Shadow of Landslides
-        </h3>
-        <!-- DESCRIPTION -->
-        <p
-          class="ainan-card-description translatable"
-          data-en="Since 2012, at least one landslide has been recorded every year in Cibunian Village, Bogor Regency. These hydro-meteorological disasters not only damage infrastructure but also threaten community safety, income stability, and access to education. Addressing these risks requires collective efforts through well-planned, sustainable adaptation and mitigation measures that actively involve the community."
-          data-id="Sejak 2012, setidaknya satu kejadian tanah longsor tercatat setiap tahun di Desa Cibunian, Kabupaten Bogor. Bencana hidrometeorologi ini tidak hanya merusak infrastruktur tapi mengancam keselamatan masyarakat, kestabilan pendapatan serta akses terhadap pendidikan. Ancaman dan tantangan tersebut memerlukan upaya kolektif melalui langkah-langkah adaptasi dan mitigasi yang terencana, berkelanjutan, dan melibatkan masyarakat secara aktif."
-        >
-          Since 2012, at least one landslide has been recorded every year in Cibunian Village, Bogor Regency. These hydro-meteorological disasters not only damage infrastructure but also threaten community safety, income stability, and access to education. Addressing these risks requires collective efforts through well-planned, sustainable adaptation and mitigation measures that actively involve the community.
-        </p>
-        <!-- META INFORMATION -->
-        <div class="ainan-meta">
-          <!-- PROGRAM -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">PROGRAM</span>
-            <span class="ainan-meta-value">PPK Ormawa</span>
-          </div>
-          <!-- LOCATION -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">LOCATION</span>
-            <span class="ainan-meta-value">Cibunian, Bogor</span>
-          </div>
-          <!-- DATE -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">DATE</span>
-            <span class="ainan-meta-value">5 Jul – 21 Oct 2025</span>
-          </div>
-        </div>
-        <!-- READ MORE LINK -->
-        <a
-          href="note.html"
-          class="ainan-card-link"
-          aria-label="Read the full story about the Land of Sunda"
-        >
+          Recent Notes
           <span
             class="translatable"
-            data-en="Read the full story"
-            data-id="Baca cerita lengkap"
+            data-en="Thoughts & Field Reports"
+            data-id="Pikiran & Laporan Lapangan"
+            >Thoughts & Field Reports</span
           >
-            Read the full story
-          </span>
-          <span aria-hidden="true">→</span>
-        </a>
+        </h2>
       </div>
-    </article>
-    <!-- ========================================================
-         CARD 2 — JOURNEY THROUGH THE LAND OF SUNDA
-         ======================================================== -->
-    <article class="ainan-glass-card">
-      <div class="ainan-card-content">
-        <!-- CATEGORY -->
-        <span
-          class="ainan-card-category translatable"
-          data-en="Cultural Exchange"
-          data-id="Pertukaran Budaya"
-        >
-          Cultural Exchange
-        </span>
-        <!-- TITLE -->
-        <h3
-          class="ainan-card-title translatable"
-          data-en="Learning from Ainan"
-          data-id="Belajar dari Ainan"
-        >
-          Learning from Ainan
-        </h3>
-        <!-- DESCRIPTION -->
-        <p
-          class="ainan-card-description translatable"
-          data-en="Ainan-cho is one of the rural areas of Ehime Prefecture experiencing significant depopulation and population ageing. Through the SUIJI Service Learning Program, cultural traditions, local knowledge, environmental adaptation, and community resilience became part of a direct learning experience."
-          data-id="Ainan-cho merupakan salah satu wilayah pedesaan di Prefektur Ehime yang menghadapi depopulasi dan penuaan penduduk yang signifikan. Melalui SUIJI Service Learning Program, tradisi budaya, pengetahuan lokal, adaptasi lingkungan, dan resiliensi masyarakat menjadi bagian dari pengalaman belajar secara langsung."
-        >
-          Ainan-cho is one of the rural areas of Ehime Prefecture
-          experiencing significant depopulation and population ageing.
-          Through the SUIJI Service Learning Program, cultural traditions,
-          local knowledge, environmental adaptation, and community resilience
-          became part of a direct learning experience.
-        </p>
-        <!-- META INFORMATION -->
-        <div class="ainan-meta">
-          <!-- PROGRAM -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">PROGRAM</span>
-            <span class="ainan-meta-value">SUIJI SLP</span>
+
+      <div class="ainan-container">
+        <!-- CARD 1 -->
+        <article class="ainan-glass-card">
+          <div class="ainan-card-content">
+            <span
+              class="ainan-card-category translatable"
+              data-en="Education"
+              data-id="Pendidikan"
+            >
+              Community Empowerment
+            </span>
+            <h3
+              class="ainan-card-title translatable"
+              data-en="Bridging Science, Society, and Policy: A Strategic Investment in Indonesia’s Disaster Resilience"
+              data-id="Menjembatani Sains, Masyarakat, dan Kebijakan: Investasi Strategis untuk Ketahanan Bencana Indonesia"
+            >
+              Bridging Science, Society, and Policy: A Strategic Investment in
+              Indonesia’s Disaster Resilience
+            </h3>
+            <p
+              class="ainan-card-description translatable"
+              data-en="<i>Often, those who are most vulnerable are the most exposed to risk, while those who are most exposed are often the least able to understand it.</i> Perhaps no sentence better captures my concern about hydrometeorological disasters in Indonesia."
+              data-id="<i>Seringkali yang paling rentan adalah yang paling besar terpapar risiko, dan yang paling terpapar adalah yang paling tidak memahami.</i>Barangkali kalimat itu adalah yang paling tepat untuk menggambarkan kekhawatiran saya terhadap bencana hidrometeorologi di Indonesia."
+            >
+              <i
+                >Often, those who are most vulnerable are the most exposed to
+                risk, while those who are most exposed are often the least able
+                to understand it.</i
+              >
+              Perhaps no sentence better captures my concern about
+              hydrometeorological disasters in Indonesia.
+            </p>
+            <div class="ainan-meta excerpt-meta">
+              <div class="ainan-meta-item">
+                <span class="ainan-meta-label">DATE</span>
+                <span class="ainan-meta-value">2 Sept 2026</span>
+              </div>
+              <div class="ainan-meta-item">
+                <span class="ainan-meta-label">READ TIME</span>
+                <span class="ainan-meta-value">5 min read</span>
+              </div>
+            </div>
+            <a
+              href="features/note/note.html#article-1"
+              class="ainan-card-link"
+              aria-label="Read the full story"
+            >
+              <span
+                class="translatable"
+                data-en="Read Article"
+                data-id="Baca Artikel"
+              >
+                Read Article
+              </span>
+              <span aria-hidden="true">→</span>
+            </a>
           </div>
-          <!-- LOCATION -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">LOCATION</span>
-            <span class="ainan-meta-value">Ainan-cho, Ehime</span>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="ainan-glass-card">
+          <div class="ainan-card-content">
+            <span
+              class="ainan-card-category translatable"
+              data-en="Sustainability"
+              data-id="Keberlanjutan"
+            >
+              Sustainability
+            </span>
+            <h3
+              class="ainan-card-title translatable"
+              data-en="We Are the Asteroid: Earth’s Cycles of Extinction and the Sixth Apocalypse"
+              data-id="Kita Adalah Asteroid Itu: Siklus Kepunahan Bumi dan Kiamat Keenam"
+            >
+              We Are the Asteroid: Earth’s Cycles of Extinction and the Sixth
+              Apocalypse
+            </h3>
+            <p
+              class="ainan-card-description translatable"
+              data-en="I still remember vividly how, less than a year ago, the landscapes of Sumatra—particularly Aceh, West Sumatra, and North Sumatra—were devastated by a succession of hydrometeorological disasters. Thousands of lives were lost, while tens of thousands more were forced to leave the places they called home."
+              data-id="Saya masih mengingat dengan jelas bagaimana, belum genap satu tahun yang lalu, lanskap Pulau Sumatera—khususnya Aceh, Sumatera Barat, dan Utara—luluh lantak oleh rentetan bencana hidrometeorologis. Ribuan nyawa melayang, dan puluhan ribu lainnya dipaksa kehilangan ruang hidup. "
+            >
+              I still remember vividly how, less than a year ago, the landscapes
+              of Sumatra—particularly Aceh, West Sumatra, and North Sumatra—were
+              devastated by a succession of hydrometeorological disasters.
+              Thousands of lives were lost, while tens of thousands more were
+              forced to leave the places they called home.
+            </p>
+            <div class="ainan-meta excerpt-meta">
+              <div class="ainan-meta-item">
+                <span class="ainan-meta-label">DATE</span>
+                <span class="ainan-meta-value">05 Sep 2025</span>
+              </div>
+              <div class="ainan-meta-item">
+                <span class="ainan-meta-label">READ TIME</span>
+                <span class="ainan-meta-value">8 min read</span>
+              </div>
+            </div>
+            <a
+              href="features/note/note.html#article-2"
+              class="ainan-card-link"
+              aria-label="Read the full story"
+            >
+              <span
+                class="translatable"
+                data-en="Read Article"
+                data-id="Baca Artikel"
+              >
+                Read Article
+              </span>
+              <span aria-hidden="true">→</span>
+            </a>
           </div>
-          <!-- DATE -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">DATE</span>
-            <span class="ainan-meta-value">19 Aug – 5 Sept 2025</span>
-          </div>
-        </div>
-        <!-- READ MORE LINK -->
-        <a
-          href="note.html"
-          class="ainan-card-link"
-          aria-label="Read the full story about learning from Ainan"
-        >
-          <span
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Growing With (Organizations & Communities) -->
+    <section class="content-section bg-white">
+      <div class="container">
+        <div class="section-title">
+          <h2
             class="translatable"
-            data-en="Read the full story"
-            data-id="Baca cerita lengkap"
+            data-en="Space to Grow With"
+            data-id="Ruang Tumbuh Bersama"
           >
-            Read the full story
-          </span>
-          <span aria-hidden="true">→</span>
-        </a>
-      </div>
-    </article>
-    <!-- ========================================================
-         CARD 3 — JOURNEY THROUGH THE LAND OF SUNDA
-         ======================================================== -->
-    <article class="ainan-glass-card">
-      <div class="ainan-card-content">
-        <!-- CATEGORY -->
-        <span
-          class="ainan-card-category translatable"
-          data-en="Cultural Exchange"
-          data-id="Pertukaran Budaya"
-        >
-          Cultural Exchange
-        </span>
-        <!-- TITLE -->
-        <h3
-          class="ainan-card-title translatable"
-          data-en="A Journey Through the Land of Sunda"
-          data-id="Perjalanan di Tanah Sunda"
-        >
-          A Journey Through the Land of Sunda
-        </h3>
-        <!-- DESCRIPTION -->
-        <p
-          class="ainan-card-description translatable"
-          data-en="One of the traces of the Pajajaran Kingdom can be found in Pasir Eurih Village, Bogor Regency. Not far from the urban area, the village preserves stories passed down through generations. Its living traditions have become an integral part of everyday life, naturally blending into the community's customs, values, and way of life."
-          data-id="Salah satu jejak Kerajaan Pajajaran dapat ditemukan di Desa Pasir Eurih, Kabupaten Bogor. Tidak jauh dari kawasan perkotaan, desa ini menyimpan cerita yang diwariskan dari generasi ke generasi. Tradisi yang masih hidup telah menjadi bagian tak terpisahkan dari kehidupan sehari-hari, menyatu secara alami dengan adat, nilai, dan cara hidup masyarakat yang terus dilestarikan."
-        >
-          One of the traces of the Pajajaran Kingdom can be found in
-          Pasir Eurih Village, Bogor Regency. Not far from the urban area,
-          the village preserves stories passed down through generations.
-          Its living traditions have become an integral part of everyday life,
-          naturally blending into the community's customs, values, and way of life.
-        </p>
-        <!-- META INFORMATION -->
-        <div class="ainan-meta">
-          <!-- PROGRAM -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">PROGRAM</span>
-            <span class="ainan-meta-value">SUIJI SLP</span>
-          </div>
-          <!-- LOCATION -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">LOCATION</span>
-            <span class="ainan-meta-value">Pasir Eurih, Bogor</span>
-          </div>
-          <!-- DATE -->
-          <div class="ainan-meta-item">
-            <span class="ainan-meta-label">DATE</span>
-            <span class="ainan-meta-value">21 Feb – 5 Mar 2025</span>
-          </div>
-        </div>
-        <!-- READ MORE LINK -->
-        <a
-          href="note.html"
-          class="ainan-card-link"
-          aria-label="Read the full story about the Land of Sunda"
-        >
+            Space to Grow With
+          </h2>
           <span
-            class="translatable"
-            data-en="Read the full story"
-            data-id="Baca cerita lengkap"
+            class="footer-tagline translatable"
+            data-en="Institutions & Communities"
+            data-id="Institusi & Komunitas"
           >
-            Read the full story
+            Institutions & Communities
           </span>
-          <span aria-hidden="true">→</span>
-        </a>
+        </div>
+
+        <div class="org-grid">
+          <!-- 1. IPB University -->
+          <article class="org-card">
+            <div class="org-header">
+              <img
+                src="assets/images/ipb.png"
+                alt="IPB University Logo"
+                class="org-logo"
+              />
+              <div class="org-title-wrapper">
+                <h3 class="org-name">IPB University</h3>
+                <span
+                  class="org-role translatable"
+                  data-en="Alumnus from Applied Meteorology"
+                  data-id="Alumnus Meteorologi Terapan"
+                >
+                  Alumnus from Applied Meteorology
+                </span>
+              </div>
+            </div>
+            <p
+              class="org-desc translatable"
+              data-en="Advancing studies in the Department of Geophysics and Meteorology, specializing in applied meteorology, climatology, and spatial ecological modeling."
+              data-id="Melanjutkan studi di Departemen Geofisika dan Meteorologi, dengan spesialisasi pada meteorologi terapan, klimatologi, dan pemodelan ekologi spasial."
+            >
+              Advancing studies in the Department of Geophysics and Meteorology,
+              specializing in applied meteorology, climatology, and spatial
+              ecological modeling.
+            </p>
+            <a
+              href="https://ipb.ac.id/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="org-link"
+            >
+              <span
+                class="translatable"
+                data-en="Visit Website"
+                data-id="Kunjungi Situs"
+                >Visit Website</span
+              >
+              &rarr;
+            </a>
+          </article>
+
+          <!-- 2. BRIN -->
+          <article class="org-card">
+            <div class="org-header">
+              <img
+                src="assets/images/brin.png"
+                alt="BRIN Logo"
+                class="org-logo"
+              />
+              <div class="org-title-wrapper">
+                <h3 class="org-name">BRIN</h3>
+                <span
+                  class="org-role translatable"
+                  data-en="Research Intern"
+                  data-id="Magang Riset"
+                >
+                  Research Intern
+                </span>
+              </div>
+            </div>
+            <p
+              class="org-desc translatable"
+              data-en="Developed energy demand projections and assessed potential greenhouse gas emissions through 2060 under sustainable development scenarios in Indonesia."
+              data-id="Melakukan pemodelan proyeksi kebutuhan energi dan potensi emisi gas rumah kaca hingga tahun 2060 dengan mempertimbangkan skenario pembangunan berkelanjutan di Indonesia."
+            >
+              Developed energy demand projections and assessed potential
+              greenhouse gas emissions through 2060 under sustainable
+              development scenarios in Indonesia.
+            </p>
+            <a
+              href="https://www.brin.go.id/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="org-link"
+            >
+              <span
+                class="translatable"
+                data-en="Visit Website"
+                data-id="Kunjungi Situs"
+                >Visit Website</span
+              >
+              &rarr;
+            </a>
+          </article>
+
+          <!-- 3. IGAF IPB -->
+          <article class="org-card">
+            <div class="org-header">
+              <img
+                src="assets/images/igaf.png"
+                alt="IGAF Logo"
+                class="org-logo"
+              />
+              <div class="org-title-wrapper">
+                <h3 class="org-name">IGAF IPB</h3>
+                <span
+                  class="org-role translatable"
+                  data-en="Head of Division"
+                  data-id="Ketua Divisi"
+                >
+                  Head of Division
+                </span>
+              </div>
+            </div>
+            <p
+              class="org-desc translatable"
+              data-en="Led the Sustainable Environmental Development Division in designing and implementing environmental research and educational initiatives for students, focusing on Water, Sanitation and Hygiene (WASH) and Gender Equality, Disability and Social Inclusion (GEDSI)."
+              data-id="Memimpin Divisi Sustainable Environmental Development dalam merancang dan melaksanakan kegiatan riset serta edukasi lingkungan bagi mahasiswa, dengan fokus pada isu Water, Sanitation and Hygiene (WASH) serta Gender Equality, Disability and Social Inclusion (GEDSI)."
+            >
+              Led the Sustainable Environmental Development Division in
+              designing and implementing environmental research and educational
+              initiatives for students, focusing on Water, Sanitation and
+              Hygiene (WASH) and Gender Equality, Disability and Social
+              Inclusion (GEDSI).
+            </p>
+            <a
+              href="https://www.instagram.com/igaf_ipb"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="org-link"
+            >
+              <span
+                class="translatable"
+                data-en="Visit Instagram"
+                data-id="Kunjungi Instagram"
+                >Visit Instagram</span
+              >
+              &rarr;
+            </a>
+          </article>
+
+          <!-- 4. Asrama Kepemimpinan -->
+          <article class="org-card">
+            <div class="org-header">
+              <img
+                src="assets/images/ak.png"
+                alt="Asrama Kepemimpinan Logo"
+                class="org-logo"
+              />
+              <div class="org-title-wrapper">
+                <h3 class="org-name">Asrama Kepemimpinan</h3>
+                <span
+                  class="org-role translatable"
+                  data-en="Member"
+                  data-id="Anggota"
+                >
+                  Member
+                </span>
+              </div>
+            </div>
+            <p
+              class="org-desc translatable"
+              data-en="Growing through two terms with the Leadership Dormitory under the Directorate of Student Affairs (Ditmawa), IPB University, through a structured leadership incubation program with measurable targets and outcomes."
+              data-id="Bertumbuh bersama Asrama Kepemimpinan Ditmawa IPB University selama dua periode, melalui proses inkubasi kepemimpinan yang terstruktur dengan target dan capaian yang terukur."
+            >
+              Growing through two terms with the Leadership Dormitory under the
+              Directorate of Student Affairs (Ditmawa), IPB University, through
+              a structured leadership incubation program with measurable targets
+              and outcomes.
+            </p>
+            <a
+              href="https://www.instagram.com/ak.ipb"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="org-link"
+            >
+              <span
+                class="translatable"
+                data-en="Visit Instagram"
+                data-id="Kunjungi Instagram"
+                >Visit Instagram</span
+              >
+              &rarr;
+            </a>
+          </article>
+
+          <!-- 5. Himagreto -->
+          <article class="org-card">
+            <div class="org-header">
+              <img
+                src="assets/images/himagreto.png"
+                alt="Himagreto Logo"
+                class="org-logo"
+              />
+              <div class="org-title-wrapper">
+                <h3 class="org-name">Himagreto</h3>
+                <span
+                  class="org-role translatable"
+                  data-en="Social and Environmental Division"
+                  data-id="Divisi Sosial dan Lingkungan"
+                >
+                  Social and Environmental Division
+                </span>
+              </div>
+            </div>
+            <p
+              class="org-desc translatable"
+              data-en="Collaborated with HIMAGRETO on collective environmental and climate action and community empowerment in Pangalengan Village, Bandung, focusing on pyrolysis-based waste management, Nature-based Solutions (NbS), and climate data monitoring in rural areas."
+              data-id="Bersama HIMAGRETO, terlibat dalam aksi kolektif di bidang lingkungan dan perubahan iklim serta pemberdayaan masyarakat di Desa Pangalengan, Bandung, dengan fokus pada pengelolaan sampah berbasis pirolisis, Nature-based Solutions (NbS), dan pemantauan data iklim di wilayah pedesaan."
+            >
+              Collaborated with HIMAGRETO on collective environmental and
+              climate action and community empowerment in Pangalengan Village,
+              Bandung, focusing on pyrolysis-based waste management,
+              Nature-based Solutions (NbS), and climate data monitoring in rural
+              areas.
+            </p>
+            <a
+              href="https://www.instagram.com/sosling_himagreto/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="org-link"
+            >
+              <span
+                class="translatable"
+                data-en="Visit Instagram"
+                data-id="Kunjungi Instagram"
+                >Visit Instagram</span
+              >
+              &rarr;
+            </a>
+          </article>
+
+          <!-- 6. SMA N 1 Sampang -->
+          <article class="org-card">
+            <div class="org-header">
+              <img
+                src="assets/images/sma.png"
+                alt="SMA N 1 Sampang Logo"
+                class="org-logo"
+              />
+              <div class="org-title-wrapper">
+                <h3 class="org-name">SMA N 1 Sampang</h3>
+                <span
+                  class="org-role translatable"
+                  data-en="Alumnus"
+                  data-id="Alumnus"
+                >
+                  Alumnus
+                </span>
+              </div>
+            </div>
+            <p
+              class="org-desc translatable"
+              data-en="An alumnus of the Mathematics and Natural Sciences track, which provided the academic foundation for pursuing Earth Science Olympiads while also becoming an early space to lead organizations."
+              data-id="Alumni peminatan Matematika dan Ilmu Pengetahuan Alam yang menjadi fondasi akademik untuk mendalami olimpiade sains kebumian, sekaligus menjadi ruang awal untuk memimpin organisasi."
+            >
+              An alumnus of the Mathematics and Natural Sciences track, which
+              provided the academic foundation for pursuing Earth Science
+              Olympiads while also becoming an early space to lead
+              organizations.
+            </p>
+            <a
+              href="https://sman1sampang.sch.id/prestasi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="org-link"
+            >
+              <span
+                class="translatable"
+                data-en="Visit Website"
+                data-id="Kunjungi Situs"
+                >Visit Website</span
+              >
+              &rarr;
+            </a>
+          </article>
+        </div>
       </div>
-    </article>
-  </div>
-</section>
-<!-- SECTION 3: Growing With (Organizations & Communities) -->
-<section class="content-section bg-alt">
-  <div class="container">
-    <div class="section-title">
-      <h2
-        class="translatable"
-        data-en="Space to Grow With"
-        data-id="Ruang Tumbuh Bersama"
-      >
-        Space to Grow With
-      </h2>
-      
-      <!-- Opsional: Jika ingin ada teks kecil di kanan header -->
-      <span class="footer-tagline translatable" data-en="Institutions & Communities" data-id="Institusi & Komunitas">
-        Institutions & Communities
-      </span>
-    </div>
-    <div class="org-grid">
-      <!-- 1. IPB University -->
-      <article class="org-card">
-        <div class="org-header">
-          <img src="assets/images/ipb.png" alt="IPB University Logo" class="org-logo">
-          <div class="org-title-wrapper">
-            <h3 class="org-name">IPB University</h3>
-            <span class="org-role translatable" data-en="Alumnus from Applied Meteorology" data-id="Alumnus Meteorologi Terapan">
-              Alumnus from Applied Meteorology
+    </section>
+
+    <!-- SECTION 4: After Movies (Horizontal Scroll) -->
+    <section class="content-section bg-alt">
+      <div class="aftermovie-layout">
+        <div class="aftermovie-carousel-wrapper">
+          <div class="aftermovie-carousel" id="am-carousel">
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/va9fvW3wSvw?rel=0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">PPKO Journey - Cibunian</h4>
+            </div>
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/YYK7Y1hSRdU?si=B14g4CpLaMb0_PCM"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">STORM 2025</h4>
+            </div>
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/4Vu_Ql1dh4E?si=VKC6OjJEEfGLaIjv"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">PODCAST HARI BUMI 2025</h4>
+            </div>
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/sPL_2GFSaBI?si=b1cquwDVeeffRHgr"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">PODCAST HARI LINGKUNGAN 2023</h4>
+            </div>
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/7c47uSySnv8?si=QbFB-28BBcIsM_ZT"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">
+                PODCAST GENERASI MUDA TANRI ABENG UNIVERSITY
+              </h4>
+            </div>
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/nPgjrp63_JU?si=OEoZipLMBdZXfvs5"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">SUIJI SLP 2025 - Pasir Eurih</h4>
+            </div>
+            <div class="aftermovie-item">
+              <div class="youtube-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/KT8_fWhqbfY?si=K36uI-6Vf8Xt7vWI"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h4 class="aftermovie-title">STORM 2024</h4>
+            </div>
+          </div>
+          <div class="carousel-controls-wrapper">
+            <div class="carousel-dots" id="am-dots"></div>
+          </div>
+        </div>
+
+        <div class="aftermovie-info">
+          <h2
+            class="section-title translatable"
+            data-en="Visual Archives"
+            data-id="Arsip Visual"
+          >
+            Visual Archives
+          </h2>
+          <p
+            class="translatable"
+            data-en="A collection of after movies capturing moments of collaboration, field expeditions, and cultural exchanges."
+            data-id="Kumpulan video kilas balik yang merekam momen kolaborasi, ekspedisi lapangan, dan pertukaran budaya."
+          >
+            A collection of after movies capturing moments of collaboration,
+            field expeditions, and cultural exchanges.
+          </p>
+          <div class="swipe-hint-wrapper">
+            <span
+              class="scroll-hint translatable"
+              data-en="Swipe to explore"
+              data-id="Geser untuk melihat"
+            >
+              Swipe to explore
             </span>
+            <div class="animated-chevrons">
+              <span>&rsaquo;</span>
+              <span>&rsaquo;</span>
+            </div>
           </div>
-        </div>
-        <p class="org-desc translatable" data-en="Advancing studies in the Department of Geophysics and Meteorology, specializing in applied meteorology, climatology, and spatial ecological modeling." data-id="Melanjutkan studi di Departemen Geofisika dan Meteorologi, dengan spesialisasi pada meteorologi terapan, klimatologi, dan pemodelan ekologi spasial.">
-          Advancing studies in the Department of Geophysics and Meteorology, specializing in applied meteorology, climatology, and spatial ecological modeling.
-        </p>
-        <a href="https://ipb.ac.id/" target="_blank" rel="noopener noreferrer" class="org-link">
-          <span class="translatable" data-en="Visit Website" data-id="Kunjungi Situs">Visit Website</span> &rarr;
-        </a>
-      </article>
-      <!-- 2. BRIN -->
-      <article class="org-card">
-        <div class="org-header">
-          <img src="assets/images/brin.png" alt="BRIN Logo" class="org-logo">
-          <div class="org-title-wrapper">
-            <h3 class="org-name">BRIN</h3>
-            <span class="org-role translatable" data-en="Research Intern" data-id="Magang Riset">
-              Research Intern
-            </span>
-          </div>
-        </div>
-        <p class="org-desc translatable" data-en="Developed energy demand projections and assessed potential greenhouse gas emissions through 2060 under sustainable development scenarios in Indonesia." data-id="Melakukan pemodelan proyeksi kebutuhan energi dan potensi emisi gas rumah kaca hingga tahun 2060 dengan mempertimbangkan skenario pembangunan berkelanjutan di Indonesia.">
-          Developed energy demand projections and assessed potential greenhouse gas emissions through 2060 under sustainable development scenarios in Indonesia.
-        </p>
-        <a href="https://www.brin.go.id/" target="_blank" rel="noopener noreferrer" class="org-link">
-          <span class="translatable" data-en="Visit Website" data-id="Kunjungi Situs">Visit Website</span> &rarr;
-        </a>
-      </article>
-      <!-- 3. IGAF IPB -->
-      <article class="org-card">
-        <div class="org-header">
-          <img src="assets/images/igaf.png" alt="IGAF Logo" class="org-logo">
-          <div class="org-title-wrapper">
-            <h3 class="org-name">IGAF IPB</h3>
-            <span class="org-role translatable" data-en="Head of Division" data-id="Ketua Divisi">
-              Head of Division
-            </span>
-          </div>
-        </div>
-        <p class="org-desc translatable" data-en="Led the Sustainable Environmental Development Division in designing and implementing environmental research and educational initiatives for students, focusing on Water, Sanitation and Hygiene (WASH) and Gender Equality, Disability and Social Inclusion (GEDSI)." data-id="Memimpin Divisi Sustainable Environmental Development dalam merancang dan melaksanakan kegiatan riset serta edukasi lingkungan bagi mahasiswa, dengan fokus pada isu Water, Sanitation and Hygiene (WASH) serta Gender Equality, Disability and Social Inclusion (GEDSI).">
-          Led the Sustainable Environmental Development Division in designing and implementing environmental research and educational initiatives for students, focusing on Water, Sanitation and Hygiene (WASH) and Gender Equality, Disability and Social Inclusion (GEDSI).
-        </p>
-        <a href="https://www.instagram.com/igaf_ipb" target="_blank" rel="noopener noreferrer" class="org-link">
-          <span class="translatable" data-en="Visit Instagram" data-id="Kunjungi Instagram">Visit Instagram</span> &rarr;
-        </a>
-      </article>
-      <!-- 4. Asrama Kepemimpinan -->
-      <article class="org-card">
-        <div class="org-header">
-          <img src="assets/images/ak.png" alt="Asrama Kepemimpinan Logo" class="org-logo">
-          <div class="org-title-wrapper">
-            <h3 class="org-name">Asrama Kepemimpinan</h3>
-            <span class="org-role translatable" data-en="Member" data-id="Anggota">
-              Member
-            </span>
-          </div>
-        </div>
-        <p class="org-desc translatable" data-en="Growing through two terms with the Leadership Dormitory under the Directorate of Student Affairs (Ditmawa), IPB University, through a structured leadership incubation program with measurable targets and outcomes." data-id="Bertumbuh bersama Asrama Kepemimpinan Ditmawa IPB University selama dua periode, melalui proses inkubasi kepemimpinan yang terstruktur dengan target dan capaian yang terukur.">
-          Growing through two terms with the Leadership Dormitory under the Directorate of Student Affairs (Ditmawa), IPB University, through a structured leadership incubation program with measurable targets and outcomes.
-        </p>
-        <a href="https://www.instagram.com/ak.ipb" target="_blank" rel="noopener noreferrer" class="org-link">
-          <span class="translatable" data-en="Visit Instagram" data-id="Kunjungi Instagram">Visit Instagram</span> &rarr;
-        </a>
-      </article>
-      <!-- 5. Himagreto -->
-      <article class="org-card">
-        <div class="org-header">
-          <img src="assets/images/himagreto.png" alt="Himagreto Logo" class="org-logo">
-          <div class="org-title-wrapper">
-            <h3 class="org-name">Himagreto</h3>
-            <span class="org-role translatable" data-en="Social and Environmental Division" data-id="Divisi Sosial dan Lingkungan">
-              Social and Environmental Division
-            </span>
-          </div>
-        </div>
-        <p class="org-desc translatable" data-en="Collaborated with HIMAGRETO on collective environmental and climate action and community empowerment in Pangalengan Village, Bandung, focusing on pyrolysis-based waste management, Nature-based Solutions (NbS), and climate data monitoring in rural areas." data-id="Bersama HIMAGRETO, terlibat dalam aksi kolektif di bidang lingkungan dan perubahan iklim serta pemberdayaan masyarakat di Desa Pangalengan, Bandung, dengan fokus pada pengelolaan sampah berbasis pirolisis, Nature-based Solutions (NbS), dan pemantauan data iklim di wilayah pedesaan.">
-          Collaborated with HIMAGRETO on collective environmental and climate action and community empowerment in Pangalengan Village, Bandung, focusing on pyrolysis-based waste management, Nature-based Solutions (NbS), and climate data monitoring in rural areas.
-        </p>
-        <a href="https://www.instagram.com/sosling_himagreto/" target="_blank" rel="noopener noreferrer" class="org-link">
-          <span class="translatable" data-en="Visit Instagram" data-id="Kunjungi Instagram">Visit Instagram</span> &rarr;
-        </a>
-      </article>
-      
-      <!-- 6. SMA N 1 Sampang -->
-      <article class="org-card">
-        <div class="org-header">
-          <img src="assets/images/sma.png" alt="SMA N 1 Sampang Logo" class="org-logo">
-          <div class="org-title-wrapper">
-            <h3 class="org-name">SMA N 1 Sampang</h3>
-            <span class="org-role translatable" data-en="Alumnus" data-id="Alumnus">
-              Alumnus
-            </span>
-          </div>
-        </div>
-        <p class="org-desc translatable" data-en="An alumnus of the Mathematics and Natural Sciences track, which provided the academic foundation for pursuing Earth Science Olympiads while also becoming an early space to lead organizations." data-id="Alumni peminatan Matematika dan Ilmu Pengetahuan Alam yang menjadi fondasi akademik untuk mendalami olimpiade sains kebumian, sekaligus menjadi ruang awal untuk memimpin organisasi.">
-          An alumnus of the Mathematics and Natural Sciences track, which provided the academic foundation for pursuing Earth Science Olympiads while also becoming an early space to lead organizations.
-        </p>
-        <a href="https://sman1sampang.sch.id/prestasi/" target="_blank" rel="noopener noreferrer" class="org-link">
-          <span class="translatable" data-en="Visit Website" data-id="Kunjungi Situs">Visit Website</span> &rarr;
-        </a>
-      </article>
-    </div>
-  </div>
-</section>
-<!-- SECTION 4: After Movies (Horizontal Scroll) -->
-<section class="content-section bg-paper">
-  <div class="aftermovie-layout">
-    
-    <!-- KIRI: 3/4 Layar (Video Carousel) -->
-    <div class="aftermovie-carousel-wrapper">
-      
-      <!-- Video Container -->
-      <div class="aftermovie-carousel" id="am-carousel">
-        <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/va9fvW3wSvw?rel=0" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">PPKO Journey - Cibunian</h4>
-        </div>
-        <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/YYK7Y1hSRdU?si=B14g4CpLaMb0_PCM" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">STORM 2025</h4>
-        </div>
-        <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/4Vu_Ql1dh4E?si=VKC6OjJEEfGLaIjv" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">PODCAST HARI BUMI 2025</h4>
-        </div>
-        <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/sPL_2GFSaBI?si=b1cquwDVeeffRHgr" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">PODCAST HARI LINGKUNGAN 2023</h4>
-        </div>
-         <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/7c47uSySnv8?si=QbFB-28BBcIsM_ZT" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">PODCAST GENERASI MUDA TANRI ABENG UNIVERSITY</h4>
-        </div>
-        <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/nPgjrp63_JU?si=OEoZipLMBdZXfvs5" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">SUIJI SLP 2025 - Pasir Eurih</h4>
-        </div>
-        <div class="aftermovie-item">
-          <div class="youtube-wrapper">
-            <iframe src="https://www.youtube.com/embed/KT8_fWhqbfY?si=K36uI-6Vf8Xt7vWI" allowfullscreen></iframe>
-          </div>
-          <h4 class="aftermovie-title">STORM 2024</h4>
-        </div>
-        
-      </div>
-      <!-- Container untuk Dots & Arrows -->
-      <div class="carousel-controls-wrapper">
-        <!-- Titik Indikator -->
-        <div class="carousel-dots" id="am-dots"></div>
-        
-        <!-- Tombol Panah Kiri Kanan -->
-        
-      </div>
-    </div>
-    <!-- KANAN: 1/4 Layar (Keterangan) -->
-    <div class="aftermovie-info">
-      <h2 class="section-title translatable" data-en="Visual Archives" data-id="Arsip Visual">
-        Visual Archives
-      </h2>
-      <p class="translatable" data-en="A collection of after movies capturing moments of collaboration, field expeditions, and cultural exchanges." data-id="Kumpulan video kilas balik yang merekam momen kolaborasi, ekspedisi lapangan, dan pertukaran budaya.">
-        A collection of after movies capturing moments of collaboration, field expeditions, and cultural exchanges.
-      </p>
-      
-      <!-- HINT GESER BARU -->
-      <div class="swipe-hint-wrapper">
-        <span class="scroll-hint translatable" data-en="Swipe to explore" data-id="Geser untuk melihat">
-          Swipe to explore
-        </span>
-        <div class="animated-chevrons">
-          <span>&rsaquo;</span>
-          <span>&rsaquo;</span>
         </div>
       </div>
-      
-    </div>
-  </div>
-</section>
-<!-- =========================================================
+    </section>
+
+    <!-- =========================================================
      UNIVERSAL FOOTER
 ========================================================= -->
-<footer class="site-footer">
-  <div class="footer-container">
-    
-    <!-- BAGIAN ATAS: LOGO & TAGLINE -->
-    <div class="footer-center">
-      <h3 class="footer-brand-logo">AWS</h3>
-      <p
-        class="footer-tagline-large translatable"
-        data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
-        data-id="Menelusuri persimpangan antara iklim, ekologi spasial, dan resiliensi masyarakat."
-      >
-        Navigating the intersections of climate, spatial ecology, and community resilience.
-      </p>
-    </div>
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-center">
+          <h3 class="footer-brand-logo">AWS</h3>
+          <p
+            class="footer-tagline-large translatable"
+            data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
+            data-id="Menelusuri persimpangan antara iklim, ekologi spasial, dan resiliensi masyarakat."
+          >
+            Navigating the intersections of climate, spatial ecology, and
+            community resilience.
+          </p>
+        </div>
 
-    <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
-    <div class="footer-bottom-area">
-      
-      <div class="footer-connect-centered">
-        <span class="nav-group-title translatable" data-en="Connect" data-id="Hubungi">Connect</span>
-        <div class="connect-links">
-          <a
+        <div class="footer-bottom-area">
+          <div class="footer-connect-centered">
+            <span
+              class="nav-group-title translatable"
+              data-en="Connect"
+              data-id="Hubungi"
+              >Connect</span
+            >
+            <div class="connect-links">
+              <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <i class="fa-solid fa-envelope"></i> Email
               </a>
-          <a href="https://www.linkedin.com/in/alvinwildans" target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-linkedin-in"></i> LinkedIn
-          </a>
-          <a href="https://www.instagram.com/alvinwildans" target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-instagram"></i> Instagram
-          </a>
+              <a
+                href="https://www.linkedin.com/in/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+              </a>
+              <a
+                href="https://www.instagram.com/alvinwildans"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fa-brands fa-instagram"></i> Instagram
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-copyright">
+            <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
+          </div>
         </div>
       </div>
+    </footer>
 
-      <div class="footer-copyright">
-        <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
-      </div>
-      
-    </div>
-  </div>
-</footer>
-
-<script src="/index.js"></script>
-</body>
+    <script src="/index.js"></script>
+  </body>
 </html>
