@@ -1384,22 +1384,6 @@ i.fa-regular {
     order: 1; /* Urutan pertama paling atas */
   }
 
-  .nav-links {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.65rem 1rem;
-    font-size: 0.65rem; /* Sedikit diperbesar dari 0.58rem agar nyaman ditap di HP */
-    line-height: 1.3;
-    order: 2; /* Menu navigasi sekarang tepat di bawah logo */
-  }
-
-  .nav-links a {
-    white-space: nowrap;
-  }
-
   .auth-menu {
     width: 100%;
     display: flex;
