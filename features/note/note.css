@@ -1528,7 +1528,7 @@ i.fa-regular {
   }
 
   .nav-links a {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     padding: 0.3rem;
     white-space: nowrap;
   }
@@ -1545,7 +1545,7 @@ i.fa-regular {
   }
 
   .lang-switcher button {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     padding: 4px 8px;
     background: none;
     border: none;
