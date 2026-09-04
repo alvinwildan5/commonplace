@@ -1750,10 +1750,13 @@ i.fa-regular {
   }
 
   .reading-nav {
-    width: 100%;
-    margin-bottom: 2rem;
-    padding-bottom: 0.75rem;
-  }
+  display: flex;
+  justify-content: space-between; /* Pushes the left and right elements apart */
+  align-items: center; /* Keeps them vertically centered with each other */
+  width: 100%; /* Ensures the nav bar spans the whole screen */
+  padding: 10px 15px; /* Adjust this padding to match your design's margins */
+  box-sizing: border-box; /* Ensures padding doesn't break the width */
+}
 
   .reading-nav > * {
     max-width: 100%;
