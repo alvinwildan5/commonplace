@@ -1523,7 +1523,7 @@ i.fa-regular {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem 0.8rem;
+    gap: 0.2rem;
     padding: 0;
   }
 
@@ -1535,13 +1535,13 @@ i.fa-regular {
 
   /* 3. ALIH BAHASA (BARIS KETIGA) */
   .lang-switcher {
-    order: 3;
+    order: 2;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 0.2rem;
+    gap: 0.15rem;
   }
 
   .lang-switcher button {
