@@ -1510,7 +1510,7 @@ i.fa-regular {
     font-size: 1.25rem;
     letter-spacing: 2px;
     margin: 0;
-    line-height: 1;
+    line-height: 1.2;
   }
 
   /* 2. MENU NAVIGASI (BARIS KEDUA) */
@@ -1529,7 +1529,7 @@ i.fa-regular {
 
   .nav-links a {
     font-size: 0.75rem;
-    padding: 0.3rem;
+    padding: 0.25rem;
     white-space: nowrap;
   }
 
@@ -1546,7 +1546,7 @@ i.fa-regular {
 
   .lang-switcher button {
     font-size: 0.75rem;
-    padding: 4px 8px;
+    padding: 0.25rem;
     background: none;
     border: none;
   }
