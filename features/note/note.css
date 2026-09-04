@@ -1592,7 +1592,9 @@ i.fa-regular {
   }
 
   .layout-wrapper {
-    padding-top: 180px; /* Mencegah konten artikel menabrak header di mobile */
+    padding-top: 180px;
+    flex-direction: column; /* TAMBAHKAN INI: Agar layout berubah jadi atas-bawah */
+    gap: 32px; /* TAMBAHKAN INI: Memberi jarak antara sidebar pencarian dengan artikel */
   }
 
   /* SIDEBAR / SEARCH / TOPICS */
@@ -1708,7 +1710,7 @@ i.fa-regular {
   /* EDITORIAL CARDS */
   .ed-card {
     flex: 0 0 88%;
-    min-width: 0;
+    min-width: 250px;
     max-width: 88%;
     padding: 1.3rem;
     border-radius: 8px;
