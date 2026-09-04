@@ -880,7 +880,7 @@ img {
 
 .footer-bottom-area {
   border-top: 1px solid var(--border-color);
-  padding-top: 4rem;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -895,6 +895,7 @@ img {
 }
 
 .nav-group-title {
+  padding-top: 0.5rem;
   font-family: var(--font-sans);
   font-size: 0.75rem;
   text-transform: uppercase;
