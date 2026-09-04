@@ -1479,10 +1479,7 @@ i.fa-regular {
      HEADER MOBILE — STACKED VERTICAL
      (Logo -> Navigasi -> Bahasa -> Auth/Login)
   ======================================================================== */
-  /* ========================================================================
-     HEADER MOBILE — FULL STACKED VERTICAL
-     (Logo -> Navigasi -> Bahasa -> Auth/Login Dijamin Paling Bawah)
-  ======================================================================== */
+
   .site-header {
     width: 100%;
     position: fixed;
@@ -1499,10 +1496,10 @@ i.fa-regular {
     flex-direction: column;
     align-items: center;
     padding: 1.2rem 1rem 1rem;
-    gap: 0.8rem; /* Jarak antar baris */
+    gap: 0.8rem;
   }
 
-  /* 1. LOGO (BARIS PERTAMA) */
+  /* 1. LOGO */
   .brand-text {
     order: 1;
     width: 100%;
@@ -1513,13 +1510,12 @@ i.fa-regular {
     line-height: 1;
   }
 
-  /* 2. MENU NAVIGASI (BARIS KEDUA) */
+  /* 2. MENU NAVIGASI */
   .nav-links {
     order: 2;
     width: 100%;
     display: flex;
     flex-direction: row;
-    /* PENTING: flex-wrap diubah ke wrap agar teks panjang tidak merusak layar */
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
@@ -1533,7 +1529,7 @@ i.fa-regular {
     white-space: nowrap;
   }
 
-  /* 3. ALIH BAHASA (BARIS KETIGA) */
+  /* 3. ALIH BAHASA */
   .lang-switcher {
     order: 3;
     width: 100%;
@@ -1556,7 +1552,7 @@ i.fa-regular {
     color: var(--border-color);
   }
 
-  /* 4. AUTH / LOGIN (BARIS KEEMPAT - PALING BAWAH) */
+  /* 4. AUTH / LOGIN */
   .auth-menu {
     order: 4;
     width: 100%;
@@ -1578,8 +1574,8 @@ i.fa-regular {
 
   /* ========================================================================
      HERO SECTION ADJUSTMENT
-     (Memastikan konten tidak tertutup header yang sekarang lebih tinggi)
   ======================================================================== */
+
   .hero-section {
     position: relative;
     width: 100%;
@@ -1588,13 +1584,13 @@ i.fa-regular {
     padding: 0;
     display: block;
     overflow: hidden;
-    margin-top: 20px; /* Opsional: Jarak ekstra jika header masih menabrak hero */
+    margin-top: 20px;
   }
 
   .layout-wrapper {
     padding-top: 180px;
-    flex-direction: column; /* TAMBAHKAN INI: Agar layout berubah jadi atas-bawah */
-    gap: 32px; /* TAMBAHKAN INI: Memberi jarak antara sidebar pencarian dengan artikel */
+    flex-direction: column;
+    gap: 32px;
   }
 
   /* SIDEBAR / SEARCH / TOPICS */
@@ -1639,7 +1635,7 @@ i.fa-regular {
   }
 
   .topic-list a {
-    padding: 0.8rem 0; /* Diperbesar untuk touch UX */
+    padding: 0.8rem 0;
     font-size: 0.8rem;
     line-height: 1.4;
   }
@@ -1734,7 +1730,10 @@ i.fa-regular {
     font-size: 0.65rem;
   }
 
-  /* READING MODAL */
+  /* ========================================================================
+     READING MODAL
+  ======================================================================== */
+
   .modal-overlay {
     width: 100%;
     max-width: 100%;
@@ -1749,18 +1748,174 @@ i.fa-regular {
     border-radius: 6px;
   }
 
+  /* ========================================================================
+     READING NAV — FIXED MOBILE LAYOUT
+     Back to Notes = KIRI
+     3 DOT = KANAN
+  ======================================================================== */
+
   .reading-nav {
-  display: flex;
-  justify-content: space-between; /* Pushes the left and right elements apart */
-  align-items: center; /* Keeps them vertically centered with each other */
-  width: 100%; /* Ensures the nav bar spans the whole screen */
-  padding: 10px 15px; /* Adjust this padding to match your design's margins */
-  box-sizing: border-box; /* Ensures padding doesn't break the width */
-}
+    position: relative;
+
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    /*
+     * Elemen kiri dan kanan dipisahkan.
+     */
+    justify-content: space-between;
+
+    padding: 10px 0;
+    margin: 0;
+
+    box-sizing: border-box;
+  }
+
+  /*
+   * Tombol Back to Notes tetap di kiri.
+   */
+  .reading-nav .close-btn {
+    flex: 0 1 auto;
+
+    display: flex;
+    align-items: center;
+
+    width: auto;
+    max-width: calc(100% - 60px);
+
+    padding: 8px 0;
+    margin: 0;
+
+    white-space: nowrap;
+  }
+
+  /*
+   * CONTAINER 3 TITIK
+   *
+   * margin-left:auto memastikan tombol selalu terdorong
+   * ke sisi paling kanan navigation.
+   */
+  .reading-nav .export-menu-container {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    margin-left: auto;
+
+    flex: 0 0 auto;
+
+    width: auto;
+    max-width: none;
+  }
+
+  /*
+   * TOMBOL 3 TITIK
+   */
+  .reading-nav .tool-btn {
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+    min-height: 42px;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+  }
 
   .reading-nav > * {
     max-width: 100%;
   }
+
+  /* ========================================================================
+     EXPORT DROPDOWN — MOBILE
+     
+     PENTING:
+     Jangan gunakan right: 0 terhadap parent.
+     Dropdown dibuat fixed terhadap VIEWPORT.
+  ======================================================================== */
+
+  .reading-nav .export-dropdown {
+    position: fixed;
+
+    /*
+     * Selalu berada di dalam layar.
+     */
+    right: 14px;
+    left: auto;
+
+    /*
+     * Posisi vertikal relatif terhadap bagian atas viewport.
+     * Cukup aman untuk reading modal mobile.
+     */
+    top: 74px;
+
+    width: 220px;
+
+    /*
+     * Tidak akan melebihi lebar layar.
+     */
+    max-width: calc(100vw - 28px);
+
+    margin: 0;
+
+    z-index: 99999;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    overflow: hidden;
+  }
+
+  .reading-nav .export-dropdown.show {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown-section {
+    padding: 6px 0;
+  }
+
+  .dropdown-label {
+    font-size: 0.62rem;
+    padding: 6px 16px;
+  }
+
+  .export-dropdown button {
+    width: 100%;
+
+    font-size: 0.8rem;
+
+    padding: 12px 16px;
+
+    gap: 10px;
+
+    min-height: 44px;
+
+    box-sizing: border-box;
+  }
+
+  .export-dropdown button:hover,
+  .export-dropdown button:active {
+    background: var(--bg-alt);
+    color: var(--accent-gold);
+  }
+
+  /* ========================================================================
+     READING CONTENT
+  ======================================================================== */
 
   .reading-content,
   #editorBody {
@@ -1907,53 +2062,10 @@ i.fa-regular {
     line-height: 1.5;
   }
 
-  /* EXPORT DROPDOWN */
-  .export-menu-container {
-    position: relative;
-    display: inline-block;
-  }
+  /* ========================================================================
+     EDITOR META
+  ======================================================================== */
 
-  .export-dropdown {
-    width: 200px;
-    max-width: calc(100vw - 28px);
-    right: 0; /* Memaksa pop-up rata kanan mengikuti posisi tombol */
-    left: auto; /* Membatalkan margin kiri jika ada */
-    top: 100%;
-    margin-top: 8px;
-    /* Sedikit penyesuaian shadow agar lebih terlihat jelas di layar HP */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
-
-  .export-dropdown.show {
-    display: flex;
-  }
-
-  .dropdown-section {
-    padding: 6px 0;
-  }
-
-  .dropdown-label {
-    font-size: 0.62rem;
-    padding: 6px 16px;
-  }
-
-  .export-dropdown button {
-    font-size: 0.8rem;
-    /* Padding atas-bawah diperbesar menjadi 12px agar mudah ditekan jari (Touch Target) */
-    padding: 12px 16px;
-    gap: 10px;
-    min-height: 44px; /* Standar aksesibilitas area tap di mobile */
-  }
-
-  /* Efek hover dinonaktifkan/diminimalkan di HP karena layar sentuh tidak mengenal hover, 
-     namun kita biarkan sebagai fallback atau untuk efek saat di-tap (active) */
-  .export-dropdown button:hover,
-  .export-dropdown button:active {
-    background: var(--bg-alt);
-    color: var(--accent-gold);
-  }
-
-  /* EDITOR META */
   .editor-meta-grid {
     width: 100%;
     grid-template-columns: 1fr;
