@@ -1479,7 +1479,6 @@ i.fa-regular {
      HEADER MOBILE — STACKED VERTICAL
      (Logo -> Navigasi -> Bahasa -> Auth/Login)
   ======================================================================== */
-
   .site-header {
     width: 100%;
     position: fixed;
@@ -1495,8 +1494,9 @@ i.fa-regular {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.2rem 1rem 1rem;
-    gap: 0.8rem;
+    /* Menggunakan padding dan gap dari referensi agar jarak vertikal seragam */
+    padding: 0.5rem;
+    gap: 0.5rem;
   }
 
   /* 1. LOGO */
@@ -1507,7 +1507,7 @@ i.fa-regular {
     font-size: 1.25rem;
     letter-spacing: 2px;
     margin: 0;
-    line-height: 1;
+    line-height: 1.2;
   }
 
   /* 2. MENU NAVIGASI */
@@ -1516,17 +1516,21 @@ i.fa-regular {
     width: 100%;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Memaksa satu baris seperti referensi */
     justify-content: center;
     align-items: center;
-    gap: 0.5rem 0.8rem;
+    gap: 0.5rem; /* Jarak horizontal disamakan */
     padding: 0;
   }
 
   .nav-links a {
-    font-size: 0.65rem;
-    padding: 0.3rem;
+    font-size: 0.75rem; /* Font disamakan dengan referensi */
+    padding: 0.25rem;
     white-space: nowrap;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* 3. ALIH BAHASA */
@@ -1537,19 +1541,25 @@ i.fa-regular {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 0.2rem;
+    gap: 0.5rem; /* Jarak horizontal disamakan dengan nav-links */
   }
 
   .lang-switcher button {
-    font-size: 0.65rem;
-    padding: 4px 8px;
+    font-size: 0.75rem; /* Ukuran font disamakan dengan nav-links */
+    padding: 0.25rem; /* Padding vertikal disamakan */
     background: none;
     border: none;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 
   .lang-divider {
-    font-size: 0.7rem;
+    font-size: 0.75rem; /* Ukuran font disamakan */
     color: var(--border-color);
+    line-height: 1;
   }
 
   /* 4. AUTH / LOGIN */
@@ -1560,16 +1570,21 @@ i.fa-regular {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem; /* Jarak horizontal disamakan dengan baris di atasnya */
     margin: 0;
-    padding-top: 0.2rem;
+    padding: 0; /* Padding khusus dihapus agar mengikuti gap dari .site-nav */
   }
 
   .auth-btn {
-    font-size: 0.65rem;
-    padding: 8px 18px;
+    font-size: 0.75rem; /* Ukuran font disamakan dengan baris lainnya */
+    /* Padding vertikal 0.25rem agar sejajar tingginya, horizontal sedikit dilebarkan untuk proporsi tombol */
+    padding: 0.25rem 0.75rem;
     white-space: nowrap;
     width: auto;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* ========================================================================
