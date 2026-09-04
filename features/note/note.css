@@ -1484,75 +1484,119 @@ i.fa-regular {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     height: auto;
-    min-height: auto;
+    min-height: 0;
     padding: 0;
+    z-index: 9999;
   }
 
   .site-nav {
     width: 100%;
     display: flex;
-    flex-direction: row; /* Diubah menjadi row agar bisa bersebelahan */
-    flex-wrap: wrap; /* Mengizinkan elemen untuk turun ke baris baru */
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     padding: 0.5rem;
-    gap: 0.5rem;
+    gap: 0;
   }
 
-  /* BARIS 1: LOGO */
+  /* ========================================================================
+     BARIS 1 — LOGO
+  ======================================================================== */
+
   .brand-text {
     order: 1;
-    width: 100%; /* Memaksa logo memenuhi 1 baris penuh */
+
+    /* WAJIB 100% */
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+
     text-align: center;
+
     font-size: 1.25rem;
     letter-spacing: 2px;
-    margin: 0;
     line-height: 1.2;
+
+    margin: 0 0 0.35rem 0;
   }
 
-  /* BARIS 2: MENU NAVIGASI (Sebelah Kiri) */
+  /* ========================================================================
+     BARIS 2 — NAVIGASI
+  ======================================================================== */
+
   .nav-links {
     order: 2;
-    width: auto; /* Diubah menjadi auto agar bisa bersebelahan dengan alih bahasa */
+
+    /* Jangan biarkan flex mengambil 100% */
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+
     justify-content: center;
     align-items: center;
+
     gap: 0.5rem;
     padding: 0;
+    margin: 0;
   }
 
   .nav-links a {
     font-size: 0.75rem;
     padding: 0.25rem;
+
     white-space: nowrap;
     line-height: 1;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
-  /* BARIS 2: ALIH BAHASA (Sebelah Kanan) */
+  /* ========================================================================
+     BARIS 2 — LANGUAGE
+     Tetap satu baris dengan navigasi
+  ======================================================================== */
+
   .lang-switcher {
     order: 3;
-    width: auto; /* Lebar auto agar muat sebaris dengan nav-links */
+
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+
     display: flex;
     flex-direction: row;
+
     align-items: center;
+    justify-content: center;
+
     gap: 0.5rem;
+
+    margin: 0 0 0 0.5rem;
+    padding: 0;
   }
 
   .lang-switcher button {
     font-size: 0.75rem;
+
     padding: 0.25rem;
+
     background: none;
     border: none;
+
     line-height: 1;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     cursor: pointer;
   }
 
@@ -1562,25 +1606,46 @@ i.fa-regular {
     line-height: 1;
   }
 
-  /* BARIS 3: AUTH / LOGIN */
+  /* ========================================================================
+     BARIS 3 — AUTH / LOGIN
+     
+     INI YANG MEMASTIKAN LOGIN TURUN SENDIRI.
+     
+     flex-basis: 100% = elemen harus mengambil satu baris penuh.
+  ======================================================================== */
+
   .auth-menu {
     order: 4;
-    width: 100%; /* Memaksa menu login turun ke baris baru dan mengambil 1 baris penuh */
+
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+
     display: flex;
+
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
     gap: 0.5rem;
-    margin: 0;
+
+    margin: 0.35rem 0 0 0;
     padding: 0;
   }
 
   .auth-btn {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.75rem;
-    white-space: nowrap;
+    flex: 0 0 auto;
+
     width: auto;
+    max-width: 100%;
+
+    font-size: 0.75rem;
+
+    padding: 0.3rem 0.8rem;
+
+    white-space: nowrap;
     line-height: 1;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
