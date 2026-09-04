@@ -1498,8 +1498,8 @@ i.fa-regular {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.2rem 1rem 1rem;
-    gap: 0.8rem; /* Jarak antar baris */
+    padding: 0.5rem;
+    gap: 0.5rem; /* Jarak antar baris */
   }
 
   /* 1. LOGO (BARIS PERTAMA) */
