@@ -1709,9 +1709,8 @@ i.fa-regular {
 
   /* EDITORIAL CARDS */
   .ed-card {
-    flex: 0 0 88%;
+    flex: 0 0 93%;
     min-width: 250px;
-    max-width: 88%;
     padding: 1.3rem;
     border-radius: 16px;
     scroll-snap-align: center;
