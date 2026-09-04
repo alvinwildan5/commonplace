@@ -1444,7 +1444,7 @@ i.fa-regular {
 
 /* ==========================================================================
    MOBILE FINAL REFINEMENT (Aman untuk Semua Smartphone s/d 600px)
-========================================================================== */
+   ========================================================================== */
 @media screen and (max-width: 600px) {
   /* GLOBAL / VIEWPORT */
   html,
@@ -1476,15 +1476,14 @@ i.fa-regular {
   }
 
   /* ========================================================================
-   HEADER MOBILE — STACKED VERTICAL + WRAP
-   (Baris 1: Logo -> Baris 2: Navigasi & Bahasa -> Baris 3: Auth/Login)
-======================================================================== */
+     HEADER MOBILE — STACKED VERTICAL + WRAP
+     (Baris 1: Logo -> Baris 2: Navigasi & Bahasa -> Baris 3: Auth/Login)
+  ======================================================================== */
   .site-header {
-    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
+    right: 0; /* Menggantikan width: 100% untuk mencegah horizontal scroll */
     height: auto;
     min-height: 0;
     padding: 0;
@@ -1502,46 +1501,30 @@ i.fa-regular {
     gap: 0;
   }
 
-  /* ========================================================================
-     BARIS 1 — LOGO
-  ======================================================================== */
-
+  /* BARIS 1 — LOGO */
   .brand-text {
     order: 1;
-
-    /* WAJIB 100% */
     flex: 0 0 100%;
     width: 100%;
     max-width: 100%;
-
     text-align: center;
-
     font-size: 1.25rem;
     letter-spacing: 2px;
     line-height: 1.2;
-
     margin: 0 0 0.35rem 0;
   }
 
-  /* ========================================================================
-     BARIS 2 — NAVIGASI
-  ======================================================================== */
-
+  /* BARIS 2 — NAVIGASI */
   .nav-links {
     order: 2;
-
-    /* Jangan biarkan flex mengambil 100% */
     flex: 0 0 auto;
     width: auto;
     max-width: none;
-
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-
     justify-content: center;
     align-items: center;
-
     gap: 0.5rem;
     padding: 0;
     margin: 0;
@@ -1550,53 +1533,37 @@ i.fa-regular {
   .nav-links a {
     font-size: 0.75rem;
     padding: 0.25rem;
-
     white-space: nowrap;
     line-height: 1;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
-  /* ========================================================================
-     BARIS 2 — LANGUAGE
-     Tetap satu baris dengan navigasi
-  ======================================================================== */
-
+  /* BARIS 2 — LANGUAGE */
   .lang-switcher {
     order: 3;
-
     flex: 0 0 auto;
     width: auto;
     max-width: none;
-
     display: flex;
     flex-direction: row;
-
     align-items: center;
     justify-content: center;
-
     gap: 0.5rem;
-
     margin: 0 0 0 0.5rem;
     padding: 0;
   }
 
   .lang-switcher button {
     font-size: 0.75rem;
-
     padding: 0.25rem;
-
     background: none;
     border: none;
-
     line-height: 1;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     cursor: pointer;
   }
 
@@ -1606,46 +1573,29 @@ i.fa-regular {
     line-height: 1;
   }
 
-  /* ========================================================================
-     BARIS 3 — AUTH / LOGIN
-     
-     INI YANG MEMASTIKAN LOGIN TURUN SENDIRI.
-     
-     flex-basis: 100% = elemen harus mengambil satu baris penuh.
-  ======================================================================== */
-
+  /* BARIS 3 — AUTH / LOGIN */
   .auth-menu {
     order: 4;
-
     flex: 0 0 100% !important;
     width: 100% !important;
     max-width: 100% !important;
-
     display: flex;
-
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
     gap: 0.5rem;
-
     margin: 0.35rem 0 0 0;
     padding: 0;
   }
 
   .auth-btn {
     flex: 0 0 auto;
-
     width: auto;
     max-width: 100%;
-
     font-size: 0.75rem;
-
     padding: 0.3rem 0.8rem;
-
     white-space: nowrap;
     line-height: 1;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1654,7 +1604,6 @@ i.fa-regular {
   /* ========================================================================
      HERO SECTION ADJUSTMENT
   ======================================================================== */
-
   .hero-section {
     position: relative;
     width: 100%;
@@ -1742,7 +1691,8 @@ i.fa-regular {
     font-size: clamp(2rem, 9vw, 2.35rem);
     line-height: 1.08;
     letter-spacing: -0.7px;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: break-word; /* Bulletproof fallback untuk teks panjang */
   }
 
   .note-header-simple p {
@@ -1795,7 +1745,8 @@ i.fa-regular {
   .ed-title {
     font-size: 1.2rem;
     line-height: 1.25;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .ed-excerpt p {
@@ -1812,7 +1763,6 @@ i.fa-regular {
   /* ========================================================================
      READING MODAL
   ======================================================================== */
-
   .modal-overlay {
     width: 100%;
     max-width: 100%;
@@ -1827,89 +1777,51 @@ i.fa-regular {
     border-radius: 6px;
   }
 
-  /* ========================================================================
-     READING NAV — FIXED MOBILE LAYOUT
-     Back to Notes = KIRI
-     3 DOT = KANAN
-  ======================================================================== */
-
+  /* READING NAV — FIXED MOBILE LAYOUT */
   .reading-nav {
     position: relative;
-
     width: 100%;
     max-width: 100%;
-
     display: flex;
     align-items: center;
-
-    /*
-     * Elemen kiri dan kanan dipisahkan.
-     */
     justify-content: space-between;
-
     padding: 10px 0;
     margin: 0;
-
     box-sizing: border-box;
   }
 
-  /*
-   * Tombol Back to Notes tetap di kiri.
-   */
   .reading-nav .close-btn {
     flex: 0 1 auto;
-
     display: flex;
     align-items: center;
-
     width: auto;
     max-width: calc(100% - 60px);
-
     padding: 8px 0;
     margin: 0;
-
     white-space: nowrap;
   }
 
-  /*
-   * CONTAINER 3 TITIK
-   *
-   * margin-left:auto memastikan tombol selalu terdorong
-   * ke sisi paling kanan navigation.
-   */
   .reading-nav .export-menu-container {
     position: relative;
-
     display: flex;
     align-items: center;
-
     margin-left: auto;
-
     flex: 0 0 auto;
-
     width: auto;
     max-width: none;
   }
 
-  /*
-   * TOMBOL 3 TITIK
-   */
   .reading-nav .tool-btn {
     width: 42px;
     height: 42px;
-
     min-width: 42px;
     min-height: 42px;
-
     padding: 0;
     margin: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
-
     border-radius: 50%;
   }
 
@@ -1917,44 +1829,18 @@ i.fa-regular {
     max-width: 100%;
   }
 
-  /* ========================================================================
-     EXPORT DROPDOWN — MOBILE
-     
-     PENTING:
-     Jangan gunakan right: 0 terhadap parent.
-     Dropdown dibuat fixed terhadap VIEWPORT.
-  ======================================================================== */
-
+  /* EXPORT DROPDOWN — MOBILE */
   .reading-nav .export-dropdown {
     position: fixed;
-
-    /*
-     * Selalu berada di dalam layar.
-     */
     right: 14px;
     left: auto;
-
-    /*
-     * Posisi vertikal relatif terhadap bagian atas viewport.
-     * Cukup aman untuk reading modal mobile.
-     */
     top: 74px;
-
     width: 220px;
-
-    /*
-     * Tidak akan melebihi lebar layar.
-     */
     max-width: calc(100vw - 28px);
-
     margin: 0;
-
     z-index: 99999;
-
     box-sizing: border-box;
-
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-
     overflow: hidden;
   }
 
@@ -1974,15 +1860,10 @@ i.fa-regular {
 
   .export-dropdown button {
     width: 100%;
-
     font-size: 0.8rem;
-
     padding: 12px 16px;
-
     gap: 10px;
-
     min-height: 44px;
-
     box-sizing: border-box;
   }
 
@@ -1995,7 +1876,6 @@ i.fa-regular {
   /* ========================================================================
      READING CONTENT
   ======================================================================== */
-
   .reading-content,
   #editorBody {
     width: 100%;
@@ -2004,7 +1884,6 @@ i.fa-regular {
     line-height: 1.68;
   }
 
-  /* READING TYPOGRAPHY */
   .reading-content h1,
   #editorBody h1,
   .reading-content .ed-title {
@@ -2012,7 +1891,8 @@ i.fa-regular {
     font-size: clamp(1.8rem, 9.5vw, 2.2rem);
     line-height: 1.12;
     letter-spacing: -0.025em;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .reading-content h2,
@@ -2144,7 +2024,6 @@ i.fa-regular {
   /* ========================================================================
      EDITOR META
   ======================================================================== */
-
   .editor-meta-grid {
     width: 100%;
     grid-template-columns: 1fr;
@@ -2324,20 +2203,19 @@ i.fa-regular {
 
   .reading-content a,
   #editorBody a {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     word-break: break-word;
   }
 
   .reading-content code,
   #editorBody code {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     word-break: break-word;
   }
-  /* ==========================================================================
-   MOBILE — REDUCE SPACE ABOVE FOOTER
-========================================================================== */
 
-  /* Jika wrapper artikel memiliki margin bawah */
+  /* ==========================================================================
+     MOBILE — REDUCE SPACE ABOVE FOOTER
+  ========================================================================== */
   .note-content,
   .article-content,
   .note-article {
@@ -2345,13 +2223,12 @@ i.fa-regular {
     padding-bottom: 0 !important;
   }
 
-  /* Kurangi padding bawah modal */
   .reading-modal {
     padding-bottom: 20px !important;
   }
 
-  /* Footer jangan diberi jarak berlebihan dari elemen sebelumnya */
   .footer-container {
     padding-top: 1.8rem !important;
   }
 }
+/* <-- Penutup Kurung Kurawal untuk @media screen pastikan tidak terhapus */
