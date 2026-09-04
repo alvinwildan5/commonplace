@@ -747,79 +747,72 @@ a {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* ========================================================================
-     360–380 PX
-     Extra compression untuk layar paling sempit
-  ======================================================================== */
+  .site-nav {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
 
-  @media screen and (max-width: 380px) {
-    .site-nav {
-      padding-left: 0.9rem;
-      padding-right: 0.9rem;
-    }
+  .brand-text {
+    font-size: 1.15rem;
+    letter-spacing: 3.5px;
+  }
 
-    .brand-text {
-      font-size: 1.15rem;
-      letter-spacing: 3.5px;
-    }
+  .nav-links {
+    gap: 0.55rem 0.8rem;
+    font-size: 0.55rem;
+  }
 
-    .nav-links {
-      gap: 0.55rem 0.8rem;
-      font-size: 0.55rem;
-    }
+  .container {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
 
-    .container {
-      padding-left: 0.9rem;
-      padding-right: 0.9rem;
-    }
+  .ivy-header {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+    padding-top: 150px;
+    padding-bottom: 40px;
+  }
 
-    .ivy-header {
-      padding-left: 0.9rem;
-      padding-right: 0.9rem;
-      padding-top: 150px;
-      padding-bottom: 40px;
-    }
+  .main-title {
+    font-size: 2rem;
+    letter-spacing: -0.7px;
+  }
 
-    .main-title {
-      font-size: 2rem;
-      letter-spacing: -0.7px;
-    }
+  .subtitle-text {
+    font-size: 0.58rem;
+    letter-spacing: 1.8px;
+  }
 
-    .subtitle-text {
-      font-size: 0.58rem;
-      letter-spacing: 1.8px;
-    }
+  .header-desc {
+    font-size: 0.78rem;
+  }
 
-    .header-desc {
-      font-size: 0.78rem;
-    }
+  .library-grid {
+    max-width: 290px;
+    gap: 2.5rem;
+  }
 
-    .library-grid {
-      max-width: 290px;
-      gap: 2.5rem;
-    }
+  .book-info h3,
+  .book-info h3.serif {
+    font-size: 1.22rem;
+  }
 
-    .book-info h3,
-    .book-info h3.serif {
-      font-size: 1.22rem;
-    }
+  .book-info p {
+    font-size: 0.75rem;
+  }
 
-    .book-info p {
-      font-size: 0.75rem;
-    }
+  .footer-container {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
 
-    .footer-container {
-      padding-left: 0.9rem;
-      padding-right: 0.9rem;
-    }
+  .footer-tagline-large {
+    font-size: 1.18rem;
+  }
 
-    .footer-tagline-large {
-      font-size: 1.18rem;
-    }
-
-    .nav-group-title {
-      font-size: 0.6rem;
-      letter-spacing: 1.5px;
-    }
+  .nav-group-title {
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
   }
 }
