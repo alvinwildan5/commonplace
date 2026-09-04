@@ -1749,17 +1749,41 @@ i.fa-regular {
     border-radius: 6px;
   }
 
+  /* ========================================================================
+     READING NAV — FIXED HORIZONTAL LAYOUT (BACK di Kiri, ⋮ di Kanan)
+  ======================================================================== */
   .reading-nav {
     display: flex;
-    justify-content: space-between; /* Pushes the left and right elements apart */
-    align-items: center; /* Keeps them vertically centered with each other */
-    width: 100%; /* Ensures the nav bar spans the whole screen */
-    padding: 10px 15px; /* Adjust this padding to match your design's margins */
-    box-sizing: border-box; /* Ensures padding doesn't break the width */
+    flex-direction: row !important; /* WAJIB: Paksa berjajar menyamping */
+    flex-wrap: nowrap !important; /* WAJIB: Dilarang turun baris / merosot */
+    justify-content: space-between; /* Mendorong elemen ke ujung kiri dan kanan */
+    align-items: center; /* Meratakan posisi vertikal di tengah */
+    width: 100%;
+    padding: 10px 15px;
+    box-sizing: border-box;
   }
 
+  /* Mengontrol tombol [< BACK] di sisi kiri */
+  .reading-nav .close-btn {
+    flex: 0 0 auto; /* Ukuran pas dengan teks, tidak menyusut/melebar */
+    width: auto;
+    margin: 0;
+    white-space: nowrap; /* Mencegah teks patah */
+  }
+
+  /* Mengontrol wadah [ ⋮ ] di sisi kanan */
+  .reading-nav .export-menu-container {
+    flex: 0 0 auto; /* Ukuran pas dengan tombol 3-titik */
+    width: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Menghapus pembatasan aneh jika ada */
   .reading-nav > * {
-    max-width: 100%;
+    max-width: none;
   }
 
   .reading-content,
