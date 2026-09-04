@@ -1494,14 +1494,13 @@ i.fa-regular {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Menggunakan padding dan gap dari referensi agar jarak vertikal seragam */
     padding: 0.5rem;
     gap: 0.5rem;
   }
 
-  /* 1. LOGO */
+  /* BARIS 1: LOGO */
   .brand-text {
-    order: 1;
+    order: 1; /* Urutan Pertama */
     width: 100%;
     text-align: center;
     font-size: 1.25rem;
@@ -1510,21 +1509,21 @@ i.fa-regular {
     line-height: 1.2;
   }
 
-  /* 2. MENU NAVIGASI */
+  /* BARIS 2: MENU NAVIGASI */
   .nav-links {
-    order: 2;
+    order: 2; /* Urutan Kedua */
     width: 100%;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap; /* Memaksa satu baris seperti referensi */
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem; /* Jarak horizontal disamakan */
+    gap: 0.5rem;
     padding: 0;
   }
 
   .nav-links a {
-    font-size: 0.75rem; /* Font disamakan dengan referensi */
+    font-size: 0.75rem;
     padding: 0.25rem;
     white-space: nowrap;
     line-height: 1;
@@ -1533,20 +1532,39 @@ i.fa-regular {
     justify-content: center;
   }
 
-  /* 3. ALIH BAHASA */
-  .lang-switcher {
-    order: 3;
+  /* BARIS 3: AUTH / LOGIN */
+  .auth-menu {
+    order: 3; /* Urutan Ketiga */
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem; /* Jarak horizontal disamakan dengan nav-links */
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .auth-btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    white-space: nowrap;
+    width: auto;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* DISEMBUNYIKAN: ALIH BAHASA */
+  /* Agar tidak memakan baris ke-4, elemen ini disembunyikan */
+  .lang-switcher {
+    display: none;
   }
 
   .lang-switcher button {
-    font-size: 0.75rem; /* Ukuran font disamakan dengan nav-links */
-    padding: 0.25rem; /* Padding vertikal disamakan */
+    font-size: 0.75rem;
+    padding: 0.25rem;
     background: none;
     border: none;
     line-height: 1;
@@ -1557,7 +1575,7 @@ i.fa-regular {
   }
 
   .lang-divider {
-    font-size: 0.75rem; /* Ukuran font disamakan */
+    font-size: 0.75rem;
     color: var(--border-color);
     line-height: 1;
   }

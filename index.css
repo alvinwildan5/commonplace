@@ -1479,12 +1479,12 @@ img {
   ========================================================= */
 
   .footer-container {
-    padding: 2rem 1rem 1.5rem;
+    padding: 3rem 1rem 1.5rem; /* padding atas ditambah */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 1.5rem;
+    gap: 1rem; /* sebelumnya 1.5rem */
   }
 
   .footer-center {
@@ -1494,12 +1494,13 @@ img {
   .footer-brand-logo {
     margin: 0;
     font-size: 1.5rem;
+    line-height: 1.2;
   }
 
   .footer-tagline-large {
     font-size: 1rem;
-    line-height: 1.4;
-    margin-top: 0.5rem;
+    line-height: 1.3; /* lebih rapat */
+    margin-top: 0.35rem;
     margin-bottom: 0;
   }
 
@@ -1507,7 +1508,7 @@ img {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.8rem; /* diperkecil */
     padding-top: 0;
   }
 
@@ -1515,33 +1516,35 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.15rem; /* jarak antar link diperkecil */
     width: 100%;
   }
 
   .nav-group-title {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     display: inline-block;
+    line-height: 1.2;
   }
 
   .connect-links a {
-    min-height: 36px;
+    min-height: 32px; /* tetap nyaman diklik */
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     width: 100%;
-    font-size: 0.95rem;
-    padding: 0.25rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    padding: 0.1rem;
   }
 
   .footer-copyright {
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
   }
 
   .footer-copyright p {
-    font-size: 0.8rem;
-    line-height: 1.4;
+    font-size: 0.75rem;
+    line-height: 1.3;
     margin: 0;
   }
 
