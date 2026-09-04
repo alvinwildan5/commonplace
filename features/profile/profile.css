@@ -816,6 +816,9 @@ i.fa-regular {
   /* -------------------------------------------------------
      FORM
   ------------------------------------------------------- */
+  /* -------------------------------------------------------
+     FORM MOBILE (Menyesuaikan Gaya Underline)
+  ------------------------------------------------------- */
   .form-row {
     width: 100%;
     grid-template-columns: 1fr;
@@ -825,12 +828,7 @@ i.fa-regular {
   .form-group {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 1.25rem;
-  }
-
-  .form-group label {
-    font-size: 0.68rem;
-    line-height: 1.4;
+    margin-bottom: 2rem;
   }
 
   .form-group input,
@@ -839,14 +837,13 @@ i.fa-regular {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    padding: 11px 13px;
-    font-size: 0.8rem;
+    padding: 10px 0; /* PENTING: Kiri-kanan wajib 0 agar rata dengan garis */
+    font-size: 1rem; /* Ukuran pas untuk diketik jempol */
     line-height: 1.5;
   }
 
   .form-group textarea {
-    min-height: 120px;
-    resize: vertical;
+    min-height: 100px;
   }
 
   .submit-btn {
