@@ -1570,10 +1570,10 @@ i.fa-regular {
   }
 
   .auth-btn {
-    font-size: 0.65rem;
-    padding: 8px 18px;
-    white-space: nowrap;
-    width: auto;
+    font-size: 0.75rem;
+    padding: 9px 30px;
+    min-width: 125px;
+    border-radius: 999px;
   }
 
   /* ========================================================================
