@@ -2254,4 +2254,25 @@ i.fa-regular {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
+  /* ==========================================================================
+   MOBILE — REDUCE SPACE ABOVE FOOTER
+========================================================================== */
+
+  /* Jika wrapper artikel memiliki margin bawah */
+  .note-content,
+  .article-content,
+  .note-article {
+    margin-bottom: 1rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Kurangi padding bawah modal */
+  .reading-modal {
+    padding-bottom: 20px !important;
+  }
+
+  /* Footer jangan diberi jarak berlebihan dari elemen sebelumnya */
+  .footer-container {
+    padding-top: 1.8rem !important;
+  }
 }
