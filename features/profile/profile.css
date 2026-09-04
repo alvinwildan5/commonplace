@@ -305,12 +305,14 @@ i.fa-regular {
   font-weight: 400;
   margin-bottom: 1rem;
 }
+
 .form-header p {
   font-family: var(--font-sans);
   font-size: 0.95rem;
   color: var(--text-muted);
   margin-bottom: 3rem;
   line-height: 1.7;
+  text-align: justify;
 }
 
 .form-row {
@@ -318,11 +320,13 @@ i.fa-regular {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
+
 .form-group {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem; /* Sedikit dilonggarkan karena model garis bawah */
   display: flex;
   flex-direction: column;
 }
+
 .form-group label {
   font-family: var(--font-sans);
   font-size: 0.7rem;
@@ -330,27 +334,42 @@ i.fa-regular {
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--accent-gold);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.4rem;
 }
+
+/* --- PERUBAHAN UTAMA INPUT: Elegan, Tidak Kotak, Teks Tebal --- */
 .form-group input,
 .form-group select,
 .form-group textarea {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  padding: 14px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
-  background: var(--bg-white);
+  font-size: 1.05rem; /* Diperbesar sedikit agar presisi */
+  font-weight: 500; /* "Tebal saat diketik" */
+  padding: 8px 0; /* Padding horizontal dihilangkan agar rata kiri dengan label */
+  border: none; /* Menghapus bentuk kotak */
+  border-bottom: 1px solid var(--border-color); /* Hanya menyisakan garis bawah */
+  border-radius: 0;
+  background: transparent;
   color: var(--text-main);
   transition: var(--ease);
   outline: none;
 }
+
+/* Khusus textarea, beri sedikit ruang ekstra */
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+/* --- EFEK FOKUS: "Tipis Gold Aja" --- */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--accent-gold);
-  background: var(--bg-white);
+  border-bottom: 1px solid var(--accent-gold);
+  background: transparent;
 }
+
+/* --- TOMBOL SUBMIT: Melengkung (Pill-shape) agar tidak kaku --- */
 .submit-btn {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
@@ -363,31 +382,35 @@ i.fa-regular {
   padding: 16px 30px;
   cursor: pointer;
   transition: var(--ease);
-  border-radius: var(--radius-xs);
+  border-radius: 40px; /* Lengkungan elegan (tidak kotak) */
   width: 100%;
   margin-top: 1rem;
 }
+
 .submit-btn:hover {
-  background: var(--bg-alt);
-  color: var(--accent-gold);
+  background: var(--accent-gold); /* Warna solid gold saat di-hover */
+  color: var(--bg-white); /* Teks berubah putih agar kontras */
   border-color: var(--accent-gold);
 }
 
+/* --- STATUS MESSAGE --- */
 #statusMessage {
   margin-top: 20px;
   padding: 14px;
-  border-radius: var(--radius-xs);
+  border-radius: 16px; /* Sedikit dilengkungkan */
   font-family: var(--font-sans);
   font-size: 0.9rem;
   display: none;
   text-align: center;
   border: 1px solid transparent;
 }
+
 .success {
   background: var(--bg-alt);
   border-color: var(--border-color);
   color: var(--text-main);
 }
+
 .error {
   background: #fdfaf9;
   border-color: #e8e5df;

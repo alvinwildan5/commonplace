@@ -1713,7 +1713,7 @@ i.fa-regular {
     min-width: 250px;
     max-width: 88%;
     padding: 1.3rem;
-    border-radius: 8px;
+    border-radius: 16px;
     scroll-snap-align: center;
   }
 
@@ -1792,6 +1792,7 @@ i.fa-regular {
     max-width: 100%;
     font-size: 16.5px;
     line-height: 1.68;
+    text-align: justify;
   }
 
   /* READING TYPOGRAPHY */
