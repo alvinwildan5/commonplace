@@ -1441,28 +1441,16 @@ i.fa-regular {
   font-size: 0.75rem;
   color: var(--text-muted);
 }
+
 /* ==========================================================================
-   MOBILE FINAL REFINEMENT
-   Aman untuk smartphone sampai 600px
-   --------------------------------------------------------------------------
-   STRUCTURE:
-   HEADER
-   ├── LOGO
-   ├── NAVIGATION + LANGUAGE
-   └── AUTH / LOGIN
+   MOBILE FINAL REFINEMENT (Aman untuk Semua Smartphone s/d 600px)
 ========================================================================== */
-
 @media screen and (max-width: 600px) {
-  /* ========================================================================
-     01. GLOBAL / VIEWPORT
-  ======================================================================== */
-
+  /* GLOBAL / VIEWPORT */
   html,
   body {
     width: 100%;
     max-width: 100%;
-    margin: 0;
-    padding: 0;
     overflow-x: hidden;
   }
 
@@ -1475,7 +1463,6 @@ i.fa-regular {
   *::before,
   *::after {
     box-sizing: border-box;
-    min-width: 0;
   }
 
   img,
@@ -1488,353 +1475,139 @@ i.fa-regular {
     max-width: 100%;
   }
 
-  img,
-  video,
-  iframe {
-    display: block;
-  }
-
   /* ========================================================================
-     02. HEADER MOBILE
-     
-     WAJIB MENJADI:
-     
-     ┌──────────────────────────┐
-     │          LOGO            │
-     ├──────────────────────────┤
-     │ HOME NOTES ABOUT  EN ID  │
-     ├──────────────────────────┤
-     │          LOGIN           │
-     └──────────────────────────┘
+     HEADER MOBILE — STACKED VERTICAL
+     (Logo -> Navigasi -> Bahasa -> Auth/Login)
   ======================================================================== */
-
+  /* ========================================================================
+     HEADER MOBILE — FULL STACKED VERTICAL
+     (Logo -> Navigasi -> Bahasa -> Auth/Login Dijamin Paling Bawah)
+  ======================================================================== */
   .site-header {
+    width: 100%;
     position: fixed;
-
     top: 0;
     left: 0;
-    right: 0;
-
-    width: 100%;
-    max-width: 100%;
-
     height: auto;
-    min-height: 0;
-
-    margin: 0;
+    min-height: auto;
     padding: 0;
-
-    z-index: 99999;
-
-    overflow: visible;
   }
 
   .site-nav {
     width: 100%;
-    max-width: 100%;
-
     display: flex;
-
-    /*
-     * COLUMN = struktur utama vertikal.
-     * Ini membuat LOGIN tidak mungkin berada
-     * sejajar dengan navigation.
-     */
     flex-direction: column;
-
     align-items: center;
-    justify-content: flex-start;
-
-    padding: 0.85rem 0.8rem 0.75rem;
-
-    /*
-     * Jarak antar kelompok.
-     * Dibuat relatif rapat agar header tidak terlalu tinggi.
-     */
-    gap: 0.45rem;
-
-    margin: 0;
+    padding: 1.2rem 1rem 1rem;
+    gap: 0.8rem; /* Jarak antar baris */
   }
 
-  /* ========================================================================
-     02A. LOGO — BARIS 1
-  ======================================================================== */
-
+  /* 1. LOGO (BARIS PERTAMA) */
   .brand-text {
     order: 1;
-
-    /*
-     * Paksa mengambil satu baris penuh.
-     */
-    flex: 0 0 auto;
-
     width: 100%;
-    max-width: 100%;
-
-    display: block;
-
     text-align: center;
-
     font-size: 1.25rem;
-    line-height: 1.15;
-
     letter-spacing: 2px;
-
     margin: 0;
-    padding: 0;
+    line-height: 1;
   }
 
-  /* ========================================================================
-     02B. NAVIGATION + LANGUAGE
-     
-     Keduanya berada pada SATU BARIS.
-  ======================================================================== */
-
+  /* 2. MENU NAVIGASI (BARIS KEDUA) */
   .nav-links {
     order: 2;
-
-    /*
-     * Jangan width:100%.
-     * Navigation dan language harus bisa berada
-     * dalam satu baris.
-     */
-    flex: 0 0 auto;
-
-    width: auto;
-    max-width: calc(100% - 60px);
-
+    width: 100%;
     display: flex;
-
     flex-direction: row;
-    flex-wrap: nowrap;
-
+    /* PENTING: flex-wrap diubah ke wrap agar teks panjang tidak merusak layar */
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-
-    gap: 0.25rem;
-
-    margin: 0;
+    gap: 0.5rem 0.8rem;
     padding: 0;
   }
 
   .nav-links a {
-    flex: 0 0 auto;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: auto;
-    max-width: 100%;
-
-    padding: 0.3rem 0.25rem;
-
     font-size: 0.65rem;
-    line-height: 1.2;
-
+    padding: 0.3rem;
     white-space: nowrap;
-
-    text-decoration: none;
-
-    -webkit-tap-highlight-color: transparent;
   }
 
-  /* ========================================================================
-     02C. LANGUAGE
-     
-     Bahasa tetap berada di area navigation,
-     tetapi tidak ikut turun bersama LOGIN.
-  ======================================================================== */
-
+  /* 3. ALIH BAHASA (BARIS KETIGA) */
   .lang-switcher {
     order: 3;
-
-    flex: 0 0 auto;
-
-    width: auto;
-    max-width: 100%;
-
+    width: 100%;
     display: flex;
-
     flex-direction: row;
-
     justify-content: center;
     align-items: center;
-
-    gap: 0.1rem;
-
-    margin: 0;
-    padding: 0;
+    gap: 0.2rem;
   }
 
   .lang-switcher button {
-    flex: 0 0 auto;
-
-    width: auto;
-
-    padding: 0.3rem 0.45rem;
-
     font-size: 0.65rem;
-    line-height: 1;
-
+    padding: 4px 8px;
     background: none;
     border: none;
-
-    white-space: nowrap;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-
-    -webkit-tap-highlight-color: transparent;
   }
 
   .lang-divider {
-    flex: 0 0 auto;
-
-    font-size: 0.65rem;
-    line-height: 1;
-
+    font-size: 0.7rem;
     color: var(--border-color);
   }
 
-  /* ========================================================================
-     02D. AUTH / LOGIN — BARIS TERAKHIR
-     
-     INI BAGIAN TERPENTING.
-     
-     flex-basis + width 100% memastikan auth selalu
-     mengambil BARIS SENDIRI.
-  ======================================================================== */
-
+  /* 4. AUTH / LOGIN (BARIS KEEMPAT - PALING BAWAH) */
   .auth-menu {
     order: 4;
-
-    /*
-     * PAKSA BARIS PENUH.
-     */
-    flex: 0 0 100% !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    min-width: 0;
-
+    width: 100%;
     display: flex;
-
     flex-direction: row;
-
     justify-content: center;
     align-items: center;
-
-    gap: 0.5rem;
-
-    margin: 0.15rem 0 0;
-    padding: 0;
-
-    /*
-     * Tidak boleh mengecil atau berpindah ke samping.
-     */
-    flex-shrink: 0 !important;
+    gap: 0.6rem;
+    margin: 0;
+    padding-top: 0.2rem;
   }
 
   .auth-btn {
-    flex: 0 0 auto;
-
-    width: auto;
-    max-width: 100%;
-
-    min-width: 0;
-
-    padding: 0.45rem 1rem;
-
     font-size: 0.65rem;
-    line-height: 1.2;
-
+    padding: 8px 18px;
     white-space: nowrap;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    -webkit-tap-highlight-color: transparent;
+    width: auto;
   }
 
   /* ========================================================================
-     03. HERO
+     HERO SECTION ADJUSTMENT
+     (Memastikan konten tidak tertutup header yang sekarang lebih tinggi)
   ======================================================================== */
-
   .hero-section {
     position: relative;
-
     width: 100%;
-    max-width: 100%;
-
     height: 260px;
     min-height: 0;
-
-    margin-top: 0;
     padding: 0;
-
     display: block;
-
     overflow: hidden;
+    margin-top: 20px; /* Opsional: Jarak ekstra jika header masih menabrak hero */
   }
-
-  /* ========================================================================
-     04. MAIN LAYOUT
-     
-     Desktop:
-     sidebar | content
-     
-     Mobile:
-     sidebar
-     content
-  ======================================================================== */
 
   .layout-wrapper {
-    width: 100%;
-    max-width: 100%;
-
-    /*
-     * Jangan gunakan padding-top 180px secara membabi buta.
-     * Header sekarang otomatis mengikuti tinggi kontennya.
-     */
-    padding-top: 150px;
-
-    padding-left: 1rem;
-    padding-right: 1rem;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 32px;
+    padding-top: 180px;
+    flex-direction: column; /* TAMBAHKAN INI: Agar layout berubah jadi atas-bawah */
+    gap: 32px; /* TAMBAHKAN INI: Memberi jarak antara sidebar pencarian dengan artikel */
   }
 
-  /* ========================================================================
-     05. SIDEBAR / SEARCH / TOPICS
-  ======================================================================== */
-
+  /* SIDEBAR / SEARCH / TOPICS */
   .sidebar-nav {
     width: 100%;
-    max-width: 100%;
-
     flex: none;
-
     position: static;
-
-    min-width: 0;
   }
 
   .sidebar-search-wrapper {
     width: 100%;
     max-width: 100%;
-
-    margin-bottom: 1rem;
+    margin-bottom: 1.15rem;
   }
 
   .sidebar-search-wrapper input,
@@ -1842,21 +1615,12 @@ i.fa-regular {
   .search-input {
     width: 100%;
     max-width: 100%;
-
-    min-width: 0;
-
-    padding: 0.5rem 0 0.5rem 2rem;
-
     font-size: 0.82rem;
-    line-height: 1.4;
-
+    padding: 0.5rem 0 0.5rem 2rem;
     border: none;
     border-bottom: 1px solid #555555e2;
-
     background-color: transparent;
-
     border-radius: 0;
-
     transition: border-color 0.3s ease;
   }
 
@@ -1864,371 +1628,304 @@ i.fa-regular {
   .sidebar-search-wrapper textarea:focus,
   .search-input:focus {
     outline: none;
-
-    border-bottom-color: #c5a059;
+    border-bottom: 1px solid #c5a059;
   }
 
   .topic-list {
     width: 100%;
-    max-width: 100%;
-
     display: grid;
-
     grid-template-columns: 1fr;
-
     gap: 0;
-
-    margin: 0;
-    padding: 0;
   }
 
   .topic-list a {
-    width: 100%;
-    max-width: 100%;
-
-    padding: 0.7rem 0;
-
+    padding: 0.8rem 0; /* Diperbesar untuk touch UX */
     font-size: 0.8rem;
     line-height: 1.4;
-
-    overflow-wrap: anywhere;
-
-    -webkit-tap-highlight-color: transparent;
   }
 
   .topic-heading {
-    max-width: 100%;
-
     font-size: 1.35rem;
     line-height: 1.15;
-
-    margin-bottom: 1rem;
+    margin-bottom: 1.15rem;
   }
 
   .topic-heading::after {
     margin-left: 8px;
   }
 
-  /* ========================================================================
-     06. NOTE HEADER
-  ======================================================================== */
-
+  /* NOTE HEADER */
   .note-header-simple {
     width: 100%;
     max-width: 100%;
-
-    margin-bottom: 2rem;
-
-    min-width: 0;
+    margin-bottom: 2.3rem;
   }
 
   .note-header-simple h1 {
     width: 100%;
     max-width: 100%;
-
     font-size: clamp(2rem, 9vw, 2.35rem);
-
     line-height: 1.08;
-
     letter-spacing: -0.7px;
-
     overflow-wrap: anywhere;
-    word-break: normal;
-
-    margin-left: 0;
-    margin-right: 0;
   }
 
   .note-header-simple p {
-    width: 100%;
     max-width: 100%;
-
     font-size: 0.8rem;
     line-height: 1.6;
-
-    overflow-wrap: anywhere;
   }
 
-  /* ========================================================================
-     07. TOPIC SECTION
-  ======================================================================== */
-
+  /* TOPIC SECTION */
   .topic-section {
     width: 100%;
-    max-width: 100%;
-
-    margin-bottom: 3rem;
-
-    min-width: 0;
+    margin-bottom: 3.2rem;
   }
 
-  /* ========================================================================
-     08. CAROUSEL
-  ======================================================================== */
-
+  /* CAROUSEL */
   .carousel-container {
     width: 100%;
     max-width: 100%;
-
-    display: flex;
-    align-items: center;
-
     gap: 6px;
-
-    min-width: 0;
   }
 
   .carousel-track {
-    flex: 1 1 auto;
-
     width: 100%;
     max-width: 100%;
-
-    min-width: 0;
-
-    display: flex;
-
     gap: 10px;
-
     overflow-x: auto;
-    overflow-y: hidden;
-
     overscroll-behavior-x: contain;
-
     scroll-padding-inline: 4px;
-
     -webkit-overflow-scrolling: touch;
-
-    scrollbar-width: none;
-  }
-
-  .carousel-track::-webkit-scrollbar {
-    display: none;
   }
 
   .carousel-btn {
-    flex: 0 0 31px;
-
+    flex: 0 0 auto;
     width: 31px;
     height: 31px;
-
     min-width: 31px;
-    min-height: 31px;
-
-    padding: 0;
-
     font-size: 0.7rem;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    -webkit-tap-highlight-color: transparent;
   }
 
-  /* ========================================================================
-     09. EDITORIAL CARDS
-  ======================================================================== */
-
+  /* EDITORIAL CARDS */
   .ed-card {
     flex: 0 0 88%;
-
-    width: 88%;
-
     min-width: 250px;
     max-width: 88%;
-
     padding: 1.3rem;
-
     border-radius: 8px;
-
     scroll-snap-align: center;
-
-    overflow: hidden;
   }
 
   .ed-title {
-    width: 100%;
-    max-width: 100%;
-
     font-size: 1.2rem;
     line-height: 1.25;
-
     overflow-wrap: anywhere;
   }
 
   .ed-excerpt p {
-    max-width: 100%;
-
     font-size: 0.82rem;
     line-height: 1.6;
-
-    overflow-wrap: anywhere;
   }
 
   .ed-card small,
   .ed-card .meta,
   .ed-card .excerpt-meta {
-    max-width: 100%;
-
     font-size: 0.65rem;
-    line-height: 1.4;
   }
 
-  /* ========================================================================
-     10. READING MODAL
-  ======================================================================== */
-
+  /* READING MODAL */
   .modal-overlay {
     width: 100%;
     max-width: 100%;
-
     padding: 8px;
-
-    overflow-x: hidden;
   }
 
   .reading-modal {
     width: 100%;
     max-width: 100%;
-
     min-height: 100%;
-
-    padding: 16px 15px 20px;
-
+    padding: 16px 15px 42px;
     border-radius: 6px;
-
-    overflow-x: hidden;
   }
 
-  /* ========================================================================
-     11. READING NAVIGATION
-     
-     BACK TO NOTES                    •••
-  ======================================================================== */
-
   .reading-nav {
-    position: relative;
-
-    width: 100%;
-    max-width: 100%;
-
-    min-width: 0;
-
     display: flex;
-
-    flex-direction: row;
-
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 8px;
-
-    padding: 8px 0;
-
-    margin: 0;
-
-    box-sizing: border-box;
+    justify-content: space-between; /* Pushes the left and right elements apart */
+    align-items: center; /* Keeps them vertically centered with each other */
+    width: 100%; /* Ensures the nav bar spans the whole screen */
+    padding: 10px 15px; /* Adjust this padding to match your design's margins */
+    box-sizing: border-box; /* Ensures padding doesn't break the width */
   }
 
   .reading-nav > * {
     max-width: 100%;
-    min-width: 0;
   }
 
-  .reading-nav .close-btn {
-    flex: 1 1 auto;
-
-    width: auto;
-    max-width: calc(100% - 52px);
-
-    min-width: 0;
-
-    padding: 8px 0;
-    margin: 0;
-
-    display: flex;
-    align-items: center;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .reading-content,
+  #editorBody {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16.5px;
+    line-height: 1.68;
   }
 
-  .reading-nav .export-menu-container {
+  /* READING TYPOGRAPHY */
+  .reading-content h1,
+  #editorBody h1,
+  .reading-content .ed-title {
+    max-width: 100%;
+    font-size: clamp(1.8rem, 9.5vw, 2.2rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+  }
+
+  .reading-content h2,
+  #editorBody h2 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    margin-top: 2rem;
+  }
+
+  .reading-content h3,
+  #editorBody h3 {
+    font-size: 1.18rem;
+    line-height: 1.25;
+    margin-top: 1.6rem;
+  }
+
+  .reading-content h4,
+  #editorBody h4 {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .reading-content p,
+  #editorBody p {
+    margin-bottom: 1.15rem;
+  }
+
+  .reading-content ul,
+  .reading-content ol,
+  #editorBody ul,
+  #editorBody ol {
+    padding-left: 1.25rem;
+  }
+
+  .reading-content li,
+  #editorBody li {
+    margin-bottom: 0.45rem;
+  }
+
+  .reading-content blockquote,
+  #editorBody blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 15px;
+    font-size: 1em;
+    line-height: 1.6;
+  }
+
+  .reading-content pre,
+  #editorBody pre {
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 0.75rem;
+  }
+
+  .reading-content table,
+  #editorBody table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 0.78rem;
+  }
+
+  /* IMAGE STYLES */
+  .note-img-center-small {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+    margin: 1.5rem auto;
+    display: block;
+  }
+
+  .note-img-float-left,
+  .note-img-float-right {
+    float: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+    margin: 1.5rem 0 !important;
+    display: block !important;
+  }
+
+  .reading-content img,
+  #editorBody img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* BOTTOM CLOSE / ACTION AREA */
+  .close-btn-bottom-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .close-btn-bottom-container button {
+    max-width: 100%;
+  }
+
+  /* GENERAL MODAL */
+  .modal-box {
     position: relative;
-
-    flex: 0 0 auto;
-
-    width: auto;
-
-    display: flex;
-    align-items: center;
-
-    margin-left: auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem 1.1rem;
+    border-radius: 5px;
   }
 
-  .reading-nav .tool-btn {
-    flex: 0 0 42px;
-
-    width: 42px;
-    height: 42px;
-
-    min-width: 42px;
-    min-height: 42px;
-
-    padding: 0;
-    margin: 0;
-
-    display: inline-flex;
-
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 50%;
   }
 
-  /* ========================================================================
-     12. EXPORT DROPDOWN
-     
-     Mengikuti VIEWPORT agar tidak keluar layar.
-  ======================================================================== */
+  .modal-title {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
 
+  .modal-subtitle {
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  /* EXPORT DROPDOWN */
   .export-menu-container {
     position: relative;
-
     display: inline-block;
-
-    min-width: 0;
   }
 
   .export-dropdown {
-    position: fixed;
-
-    top: 74px;
-    right: 14px;
-    left: auto;
-
     width: 200px;
-
     max-width: calc(100vw - 28px);
-
-    margin: 0;
-
-    z-index: 999999;
-
-    box-sizing: border-box;
-
-    overflow: hidden;
-
+    right: 0; /* Memaksa pop-up rata kanan mengikuti posisi tombol */
+    left: auto; /* Membatalkan margin kiri jika ada */
+    top: 100%;
+    margin-top: 8px;
+    /* Sedikit penyesuaian shadow agar lebih terlihat jelas di layar HP */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
   .export-dropdown.show {
     display: flex;
-
-    flex-direction: column;
   }
 
   .dropdown-section {
@@ -2236,298 +1933,37 @@ i.fa-regular {
   }
 
   .dropdown-label {
-    padding: 6px 16px;
-
     font-size: 0.62rem;
-    line-height: 1.3;
+    padding: 6px 16px;
   }
 
   .export-dropdown button {
-    width: 100%;
-    max-width: 100%;
-
-    min-height: 44px;
-
-    padding: 12px 16px;
-
     font-size: 0.8rem;
-    line-height: 1.3;
-
+    /* Padding atas-bawah diperbesar menjadi 12px agar mudah ditekan jari (Touch Target) */
+    padding: 12px 16px;
     gap: 10px;
-
-    box-sizing: border-box;
+    min-height: 44px; /* Standar aksesibilitas area tap di mobile */
   }
 
+  /* Efek hover dinonaktifkan/diminimalkan di HP karena layar sentuh tidak mengenal hover, 
+     namun kita biarkan sebagai fallback atau untuk efek saat di-tap (active) */
   .export-dropdown button:hover,
   .export-dropdown button:active {
     background: var(--bg-alt);
     color: var(--accent-gold);
   }
 
-  /* ========================================================================
-     13. READING CONTENT
-  ======================================================================== */
-
-  .reading-content,
-  #editorBody {
-    width: 100%;
-    max-width: 100%;
-
-    min-width: 0;
-
-    font-size: 16.5px;
-    line-height: 1.68;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content h1,
-  #editorBody h1,
-  .reading-content .ed-title {
-    width: 100%;
-    max-width: 100%;
-
-    font-size: clamp(1.8rem, 9.5vw, 2.2rem);
-
-    line-height: 1.12;
-
-    letter-spacing: -0.025em;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content h2,
-  #editorBody h2 {
-    max-width: 100%;
-
-    font-size: 1.42rem;
-    line-height: 1.2;
-
-    margin-top: 2rem;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content h3,
-  #editorBody h3 {
-    max-width: 100%;
-
-    font-size: 1.18rem;
-    line-height: 1.25;
-
-    margin-top: 1.6rem;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content h4,
-  #editorBody h4 {
-    max-width: 100%;
-
-    font-size: 1rem;
-    line-height: 1.3;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content p,
-  #editorBody p {
-    max-width: 100%;
-
-    margin-bottom: 1.15rem;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content ul,
-  .reading-content ol,
-  #editorBody ul,
-  #editorBody ol {
-    max-width: 100%;
-
-    padding-left: 1.25rem;
-  }
-
-  .reading-content li,
-  #editorBody li {
-    max-width: 100%;
-
-    margin-bottom: 0.45rem;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content blockquote,
-  #editorBody blockquote {
-    max-width: 100%;
-
-    margin-left: 0;
-    margin-right: 0;
-
-    padding-left: 15px;
-
-    font-size: 1em;
-    line-height: 1.6;
-
-    overflow-wrap: anywhere;
-  }
-
-  .reading-content pre,
-  #editorBody pre {
-    width: 100%;
-    max-width: 100%;
-
-    overflow-x: auto;
-
-    font-size: 0.75rem;
-
-    white-space: pre;
-  }
-
-  .reading-content table,
-  #editorBody table {
-    display: block;
-
-    width: 100%;
-    max-width: 100%;
-
-    overflow-x: auto;
-
-    font-size: 0.78rem;
-
-    white-space: nowrap;
-  }
-
-  /* ========================================================================
-     14. IMAGE
-  ======================================================================== */
-
-  .note-img-center-small {
-    display: block;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    height: auto;
-
-    margin: 1.5rem auto;
-  }
-
-  .note-img-float-left,
-  .note-img-float-right {
-    float: none !important;
-
-    display: block !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    height: auto;
-
-    margin: 1.5rem 0 !important;
-  }
-
-  .reading-content img,
-  #editorBody img {
-    width: auto;
-    max-width: 100%;
-
-    height: auto;
-
-    object-fit: contain;
-  }
-
-  /* ========================================================================
-     15. BOTTOM CLOSE / ACTION
-  ======================================================================== */
-
-  .close-btn-bottom-container {
-    width: 100%;
-    max-width: 100%;
-
-    min-width: 0;
-  }
-
-  .close-btn-bottom-container button {
-    max-width: 100%;
-  }
-
-  /* ========================================================================
-     16. GENERAL MODAL
-  ======================================================================== */
-
-  .modal-box {
-    position: relative;
-
-    width: 100%;
-    max-width: 100%;
-
-    min-width: 0;
-
-    padding: 1.5rem 1.1rem;
-
-    border-radius: 5px;
-
-    overflow: hidden;
-  }
-
-  .modal-close {
-    position: absolute;
-
-    top: 8px;
-    right: 8px;
-
-    width: 36px;
-    height: 36px;
-
-    min-width: 36px;
-    min-height: 36px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-title {
-    max-width: calc(100% - 40px);
-
-    font-size: 1.5rem;
-    line-height: 1.2;
-
-    overflow-wrap: anywhere;
-  }
-
-  .modal-subtitle {
-    max-width: 100%;
-
-    font-size: 0.78rem;
-    line-height: 1.5;
-  }
-
-  /* ========================================================================
-     17. EDITOR META
-  ======================================================================== */
-
+  /* EDITOR META */
   .editor-meta-grid {
     width: 100%;
-    max-width: 100%;
-
     grid-template-columns: 1fr;
-
     gap: 1rem;
-
-    min-width: 0;
   }
 
   .field-group,
   .field-group.span-2 {
     width: 100%;
-    max-width: 100%;
-
     grid-column: auto;
-
-    min-width: 0;
   }
 
   .field-group input,
@@ -2535,142 +1971,76 @@ i.fa-regular {
   .field-group select {
     width: 100%;
     max-width: 100%;
-
-    min-width: 0;
-
     font-size: 0.85rem;
   }
 
-  /* ========================================================================
-     18. EDITOR TOOLBAR
-  ======================================================================== */
-
+  /* EDITOR TOOLBAR */
   .editor-toolbar {
     width: 100%;
     max-width: 100%;
-
     display: flex;
-
     flex-wrap: wrap;
-
     align-items: center;
-
     gap: 4px;
-
     padding: 7px;
-
-    min-width: 0;
-
-    overflow: hidden;
   }
 
   .tb-btn {
     flex: 0 0 29px;
-
     width: 29px;
     min-width: 29px;
-
     height: 29px;
-    min-height: 29px;
-
-    padding: 0;
-
     font-size: 0.72rem;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
   }
 
   .tb-select {
     flex: 0 1 auto;
-
     width: auto;
-
     max-width: 95px;
-
     min-width: 0;
-
     font-size: 0.65rem;
-
     padding: 5px 6px;
   }
 
   .tb-word-count {
     width: 100%;
-    max-width: 100%;
-
     margin-left: 0;
     margin-top: 4px;
-
     font-size: 0.65rem;
-
-    line-height: 1.3;
   }
 
-  /* ========================================================================
-     19. EDITOR BODY
-  ======================================================================== */
-
+  /* EDITOR BODY */
   .editor-body {
     width: 100%;
     max-width: 100%;
-
     min-height: 190px;
-
     max-height: 50vh;
-
     padding: 0.9rem;
-
     font-size: 16.5px;
     line-height: 1.65;
-
     overflow-x: hidden;
     overflow-y: auto;
-
-    overflow-wrap: anywhere;
   }
 
-  /* ========================================================================
-     20. IMAGE STYLE PICKER
-  ======================================================================== */
-
+  /* IMAGE STYLE PICKER */
   .image-style-picker {
     width: 100%;
     max-width: 100%;
-
     display: flex;
-
     flex-wrap: wrap;
-
     align-items: flex-start;
-
     gap: 6px;
-
-    min-width: 0;
   }
 
   .image-style-picker span {
-    flex: 0 0 100%;
-
     width: 100%;
-    max-width: 100%;
-
     margin-bottom: 2px;
-
     font-size: 0.72rem;
-    line-height: 1.3;
   }
 
   .image-style-picker button {
-    flex: 0 0 auto;
-
-    max-width: 100%;
-
     font-size: 0.62rem;
     line-height: 1.2;
-
     padding: 5px 8px;
   }
 
@@ -2678,146 +2048,73 @@ i.fa-regular {
     margin-left: 0;
   }
 
-  /* ========================================================================
-     21. EDITOR FOOTER / BUTTONS
-  ======================================================================== */
-
+  /* EDITOR FOOTER / BUTTONS */
   .editor-footer {
     width: 100%;
-    max-width: 100%;
-
-    display: flex;
-
     flex-direction: column;
-
     align-items: stretch;
-
     gap: 0.8rem;
-
-    min-width: 0;
   }
 
   .editor-footer-actions {
     width: 100%;
-    max-width: 100%;
-
     margin-left: 0;
-
     display: flex;
-
     gap: 0.6rem;
-
     justify-content: stretch;
-
-    min-width: 0;
   }
 
   .btn-primary,
   .btn-ghost {
-    flex: 1 1 0;
-
+    flex: 1;
     min-width: 0;
-    max-width: 100%;
-
     font-size: 0.72rem;
-
     padding: 9px 10px;
   }
 
-  /* ========================================================================
-     22. FOOTER
-     
-     Dibuat lebih compact:
-     - ada padding atas
-     - jarak antar baris lebih dekat
-     - tetap nyaman disentuh
-  ======================================================================== */
-
+  /* FOOTER */
   .footer-container {
     width: 100%;
-    max-width: 100%;
-
-    padding: 1.8rem 1.1rem 1.3rem;
-
-    gap: 1.25rem;
-
-    min-width: 0;
+    padding: 3rem 1.1rem 1.5rem;
+    gap: 2.2rem;
   }
 
   .footer-brand-logo {
-    max-width: 100%;
-
     font-size: 1.05rem;
-
     letter-spacing: 2px;
-
-    line-height: 1.15;
-
-    margin: 0;
+    line-height: 1.2;
   }
 
   .footer-tagline-large {
-    width: 100%;
     max-width: 100%;
-
     font-size: 1.3rem;
-
-    line-height: 1.25;
-
-    margin-top: 0.3rem;
-    margin-bottom: 0;
+    line-height: 1.3;
   }
 
   .connect-links {
     width: 100%;
-    max-width: 100%;
-
-    display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
-    gap: 0.35rem;
-
-    min-width: 0;
+    gap: 1.2rem;
   }
 
   .footer-bottom-area {
     width: 100%;
-    max-width: 100%;
-
-    padding-top: 1rem;
-
-    gap: 0.9rem;
-
-    min-width: 0;
+    padding-top: 2.5rem;
+    gap: 2rem;
   }
 
   .nav-group-title {
     font-size: 0.62rem;
-
     letter-spacing: 1.5px;
-
-    line-height: 1.2;
-
-    margin-bottom: 0.15rem;
   }
 
   .footer-copyright {
-    max-width: 100%;
-
     font-size: 0.65rem;
-
-    line-height: 1.4;
-
-    margin: 0;
+    line-height: 1.5;
   }
 
-  /* ========================================================================
-     23. GLOBAL TOUCH
-  ======================================================================== */
-
+  /* TOUCH TARGET / INTERACTION */
   .nav-links a,
   .topic-list a,
   button,
@@ -2826,122 +2123,23 @@ i.fa-regular {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* ========================================================================
-     24. PREVENT CONTENT BREAKING MOBILE
-  ======================================================================== */
-
+  /* PREVENT LONG CONTENT FROM BREAKING MOBILE WIDTH */
   .reading-content *,
   #editorBody *,
   .note-header-simple *,
   .ed-card * {
     max-width: 100%;
-
-    min-width: 0;
   }
 
   .reading-content a,
   #editorBody a {
-    max-width: 100%;
-
     overflow-wrap: anywhere;
     word-break: break-word;
   }
 
   .reading-content code,
   #editorBody code {
-    max-width: 100%;
-
     overflow-wrap: anywhere;
     word-break: break-word;
-  }
-
-  .reading-content iframe,
-  #editorBody iframe {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* ========================================================================
-     25. ARTICLE / NOTE SPACING
-     
-     Mengurangi ruang kosong sebelum footer.
-  ======================================================================== */
-
-  .note-content,
-  .article-content,
-  .note-article {
-    margin-bottom: 1rem !important;
-
-    padding-bottom: 0 !important;
-
-    max-width: 100%;
-  }
-
-  /* ========================================================================
-     26. EXTRA SMALL PHONE
-     Untuk 320–380px
-  ======================================================================== */
-
-  @media screen and (max-width: 380px) {
-    .site-nav {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-
-      gap: 0.35rem;
-    }
-
-    .brand-text {
-      font-size: 1.1rem;
-      letter-spacing: 1.5px;
-    }
-
-    .nav-links {
-      gap: 0.1rem;
-    }
-
-    .nav-links a {
-      font-size: 0.58rem;
-      padding-left: 0.2rem;
-      padding-right: 0.2rem;
-    }
-
-    .lang-switcher {
-      gap: 0;
-    }
-
-    .lang-switcher button {
-      font-size: 0.58rem;
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
-    }
-
-    .lang-divider {
-      font-size: 0.58rem;
-    }
-
-    .auth-btn {
-      font-size: 0.6rem;
-      padding: 0.4rem 0.8rem;
-    }
-
-    .layout-wrapper {
-      padding-left: 0.8rem;
-      padding-right: 0.8rem;
-    }
-
-    .ed-card {
-      min-width: 235px;
-      padding: 1.1rem;
-    }
-
-    .reading-modal {
-      padding-left: 12px;
-      padding-right: 12px;
-    }
-
-    .reading-content,
-    #editorBody {
-      font-size: 16px;
-    }
   }
 }
