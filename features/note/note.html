@@ -3,7 +3,97 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notes & Thoughts | AWS Archive</title>
+
+    <!-- ========================================== -->
+    <!-- DYNAMIC SEO META TAGS (Diperbarui)         -->
+    <!-- ========================================== -->
+    <!-- Primary Meta Tags -->
+    <title id="page-title">Notes & Thoughts | AWS Archive</title>
+    <meta
+      name="title"
+      id="meta-title"
+      content="Notes & Thoughts | AWS Archive"
+    />
+    <meta
+      name="description"
+      id="meta-description"
+      content="A collection of digital archives, notes, and thoughts by Alvin Wildan Sahli navigating intersections of climate, spatial ecology, and community resilience."
+    />
+    <meta
+      name="keywords"
+      content="Alvin Wildan Sahli, AWS Archive, Notes, Spatial Ecology, Climate, Sustainability, Education, Culture"
+    />
+    <meta name="author" content="Alvin Wildan Sahli" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical URL (Agar mesin pencari tahu URL utama) -->
+    <link
+      rel="canonical"
+      id="canonical-url"
+      href="https://yourdomain.com/notes/note.html"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" id="og-type" content="website" />
+    <meta
+      property="og:url"
+      id="og-url"
+      content="https://yourdomain.com/notes/note.html"
+    />
+    <meta
+      property="og:title"
+      id="og-title"
+      content="Notes & Thoughts | AWS Archive"
+    />
+    <meta
+      property="og:description"
+      id="og-description"
+      content="A collection of digital archives, notes, and thoughts by Alvin Wildan Sahli navigating intersections of climate, spatial ecology, and community resilience."
+    />
+    <meta
+      property="og:image"
+      id="og-image"
+      content="https://yourdomain.com/assets/default-seo-image.jpg"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      id="twitter-url"
+      content="https://yourdomain.com/notes/note.html"
+    />
+    <meta
+      property="twitter:title"
+      id="twitter-title"
+      content="Notes & Thoughts | AWS Archive"
+    />
+    <meta
+      property="twitter:description"
+      id="twitter-description"
+      content="A collection of digital archives, notes, and thoughts by Alvin Wildan Sahli navigating intersections of climate, spatial ecology, and community resilience."
+    />
+    <meta
+      property="twitter:image"
+      id="twitter-image"
+      content="https://yourdomain.com/assets/default-seo-image.jpg"
+    />
+
+    <!-- Structured Data / JSON-LD (Schema.org) -->
+    <script type="application/ld+json" id="structured-data">
+      {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Notes & Thoughts | AWS Archive",
+        "url": "https://yourdomain.com/notes/note.html",
+        "description": "A collection of digital archives, notes, and thoughts by Alvin Wildan Sahli.",
+        "author": {
+          "@type": "Person",
+          "name": "Alvin Wildan Sahli"
+        }
+      }
+    </script>
+    <!-- ========================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,11 +105,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
     <!-- CSS -->
     <link rel="stylesheet" href="../../index.css" />
     <link rel="stylesheet" href="./note.css" />
-
     <!-- LIBRARIES UNTUK EXPORT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -115,7 +203,6 @@
         </ul>
       </nav>
     </header>
-
     <div class="layout-wrapper">
       <!-- SIDEBAR -->
       <aside class="sidebar-nav">
@@ -133,12 +220,10 @@
               onkeyup="executeNoteSearch()"
             />
           </div>
-
           <!-- TOPIC NAVIGATION -->
           <ul class="topic-list" id="topic-list"></ul>
         </div>
       </aside>
-
       <!-- MAIN CONTENT -->
       <main class="main-content" id="main-content">
         <div class="note-header-simple">
@@ -151,13 +236,13 @@
           </h1>
           <p
             class="translatable"
-            data-en="A collection of digital archives organized by topic."
-            data-id="Kumpulan arsip digital yang diatur berdasarkan topik."
+            data-en="A collection of observational notes, reflections, and narratives, organized by theme for easy future reference."
+            data-id="Kumpulan catatan observasi, refleksi, dan narasi berdasarkan tema agar mudah untuk dicari kembali dikemudian hari"
           >
-            A collection of digital archives organized by topic.
+            A collection of observational notes, reflections, and narratives,
+            organized by theme for easy future reference.
           </p>
         </div>
-
         <!-- NO RESULTS MESSAGE -->
         <div id="noResultsElement" class="no-results-box" style="display: none">
           <p
@@ -170,7 +255,6 @@
         </div>
       </main>
     </div>
-
     <!-- MODAL READING OVERLAY -->
     <div id="reading-overlay" class="reading-overlay">
       <div class="reading-modal">
@@ -181,7 +265,6 @@
               >Back to Notes</span
             >
           </button>
-
           <!-- EXPORT & SHARE TOOLS (3 DOTS MENU) -->
           <div class="export-menu-container">
             <button
@@ -226,11 +309,9 @@
             </div>
           </div>
         </div>
-
         <div id="reading-content-area" class="reading-content">
           <!-- Content Injected via JS -->
         </div>
-
         <!-- TOMBOL KEMBALI DI BAWAH KANAN -->
         <div class="close-btn-bottom-container">
           <button class="close-btn-bottom" onclick="closeArticle()">
@@ -245,7 +326,6 @@
         </div>
       </div>
     </div>
-
     <!-- ================= LOGIN MODAL ================= -->
     <div id="login-overlay" class="modal-overlay">
       <div class="modal-box login-box">
@@ -275,7 +355,6 @@
         </form>
       </div>
     </div>
-
     <!-- ================= EDITOR MODAL ================= -->
     <div id="editor-overlay" class="modal-overlay">
       <div class="modal-box editor-box">
@@ -285,7 +364,6 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-
         <div class="editor-meta-grid">
           <div class="field-group">
             <label class="field-label" for="fieldTitle">Title</label>
@@ -296,7 +374,6 @@
               placeholder="Give your note a title"
             />
           </div>
-
           <div class="field-group">
             <label class="field-label" for="fieldTopicSelect">Topic</label>
             <select
@@ -310,7 +387,6 @@
               <option value="__new__">+ New topic...</option>
             </select>
           </div>
-
           <div class="field-group" id="newTopicGroup" style="display: none">
             <label class="field-label" for="fieldNewTopicName"
               >New topic name</label
@@ -338,12 +414,10 @@
               <option value="fa-seedling">Nature</option>
             </select>
           </div>
-
           <div class="field-group">
             <label class="field-label" for="fieldDate">Date</label>
             <input type="date" id="fieldDate" class="field-input" />
           </div>
-
           <div class="field-group span-2">
             <label class="field-label" for="fieldExcerpt">Excerpt</label>
             <textarea
@@ -354,7 +428,6 @@
             ></textarea>
           </div>
         </div>
-
         <!-- RICH TEXT TOOLBAR -->
         <div class="editor-toolbar">
           <div class="tb-group">
@@ -481,7 +554,7 @@
               style="margin-left: 8px"
             >
               <option value="">-- Opsi Tabel --</option>
-              <option value="insert">＋ Sisipkan Tabel</option>
+              <option value="insert">+ Sisipkan Tabel</option>
               <option value="" disabled>──────── UKURAN ────────</option>
               <option value="fit-window">▣ Sesuaikan dengan Jendela</option>
               <option value="fit-content">▣ Sesuaikan dengan Konten</option>
@@ -527,7 +600,6 @@
             >0 words &bull; ~1 min read</span
           >
         </div>
-
         <!-- IMAGE STYLE PICKER -->
         <div
           class="image-style-picker"
@@ -576,14 +648,12 @@
             Cancel
           </button>
         </div>
-
         <div
           id="editorBody"
           class="editor-body"
           contenteditable="true"
           data-placeholder="Start writing..."
         ></div>
-
         <div class="editor-footer">
           <span id="editorStatus" class="editor-status"></span>
           <div class="editor-footer-actions">
@@ -602,7 +672,6 @@
         </div>
       </div>
     </div>
-
     <!-- =========================================================
      UNIVERSAL FOOTER
 ========================================================= -->
@@ -619,7 +688,6 @@
             community resilience.
           </p>
         </div>
-
         <div class="footer-bottom-area">
           <div class="footer-connect-centered">
             <span
@@ -652,7 +720,6 @@
               </a>
             </div>
           </div>
-
           <div class="footer-copyright">
             <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
           </div>

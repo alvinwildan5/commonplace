@@ -99,6 +99,13 @@ function checkHashForArticle() {
   }
 }
 
+document.getElementById("page-title").innerText =
+  judulArtikel + " | AWS Archive";
+document.getElementById("meta-title").content = judulArtikel;
+document.getElementById("meta-description").content = deskripsiSingkatArtikel;
+document.getElementById("og-title").content = judulArtikel;
+// ...dan seterusnya untuk gambar (og-image) dan URL
+
 /* --------------------------------------------------------------------------
    1. DEEP SEARCH FILTER
 -------------------------------------------------------------------------- */
