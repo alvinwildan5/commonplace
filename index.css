@@ -650,7 +650,7 @@ img {
 
     /* Memberi petunjuk visual halus bahwa ini bisa digeser */
     box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.2);
-    display: none; /* Sembunyikan overflow shadow default */
+     /* Sembunyikan overflow shadow default */
   }
 
   .gee-frame-container iframe {
@@ -675,8 +675,7 @@ img {
     padding: 0;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    display: none; /* Sembunyikan overflow shadow default */
+    -webkit-overflow-scrolling: touch; /* Sembunyikan overflow shadow default */
   }
 
   .gee-frame-container iframe {
