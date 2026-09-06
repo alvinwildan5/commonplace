@@ -4,8 +4,66 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AWS | A Personal Archive</title>
+
+    <!-- ============================================================
+         SEO: Meta description
+         Ini yang dipakai Google sebagai cuplikan (snippet) di bawah
+         judul pada hasil pencarian. Ditulis statis dalam bahasa
+         Inggris karena itulah konten yang benar-benar dikirim server
+         sebelum JS bilingual berjalan (lihat catatan lengkap di luar
+         file ini soal batasan sistem EN/ID client-side).
+    ============================================================ -->
+    <meta
+      name="description"
+      content="A personal archive by Alvin Wildan Sahli — notes, reflections, and interactive spatial ecology dashboards on climate and disaster resilience in Indonesia."
+    />
+
+    <!-- SEO: Directive eksplisit ke crawler (nilainya sama dengan default,
+         tapi eksplisit lebih jelas dan jadi rekomendasi umum audit SEO) -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- SEO: Canonical URL — mencegah masalah duplicate content jika
+         halaman yang sama bisa diakses lewat beberapa variasi URL
+         (mis. dengan/tanpa trailing slash, http vs https, dst). -->
+    <link rel="canonical" href="https://aws-commonplace.pages.dev/" />
+
+    <!-- ============================================================
+         SEO: Open Graph — dipakai Facebook, LinkedIn, WhatsApp, dll.
+         saat link ini dibagikan, untuk menampilkan kartu pratinjau
+         (judul, deskripsi, gambar) alih-alih hanya menampilkan URL polos.
+    ============================================================ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aws-commonplace.pages.dev/" />
+    <meta property="og:title" content="AWS | A Personal Archive" />
+    <meta
+      property="og:description"
+      content="A personal archive by Alvin Wildan Sahli — notes, reflections, and interactive spatial ecology dashboards on climate and disaster resilience in Indonesia."
+    />
+    <meta
+      property="og:image"
+      content="https://aws-commonplace.pages.dev/assets/images/main.JPG"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="id_ID" />
+
+    <!-- SEO: Twitter/X Card — kartu pratinjau versi Twitter/X, formatnya
+         beda dari Open Graph sehingga perlu tag terpisah. -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AWS | A Personal Archive" />
+    <meta
+      name="twitter:description"
+      content="A personal archive by Alvin Wildan Sahli — notes, reflections, and interactive spatial ecology dashboards on climate and disaster resilience in Indonesia."
+    />
+    <meta
+      name="twitter:image"
+      content="https://aws-commonplace.pages.dev/assets/images/main.JPG"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- SEO/Performance: preconnect ke CDN Font Awesome, karena ikon-ikon
+         di footer memakainya sejak render pertama. -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
@@ -19,6 +77,41 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/index.css" />
+
+    <!-- ============================================================
+         SEO: Structured Data (JSON-LD) — Person schema.
+         Semua field di bawah murni menyalin ulang informasi yang SUDAH
+         ada dan terlihat di halaman ini (nama, tagline footer, riwayat
+         alumni di kartu organisasi, link sosial di footer) — tidak ada
+         fakta baru yang ditambahkan. Ini membantu Google memahami bahwa
+         halaman ini merepresentasikan satu entitas orang yang jelas,
+         dan berpotensi memicu Knowledge Panel / rich result.
+    ============================================================ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alvin Wildan Sahli",
+        "url": "https://aws-commonplace.pages.dev/",
+        "image": "https://aws-commonplace.pages.dev/assets/images/bw.png",
+        "description": "Navigating the intersections of climate, spatial ecology, and community resilience.",
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "IPB University"
+          },
+          {
+            "@type": "HighSchool",
+            "name": "SMA N 1 Sampang"
+          }
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/in/alvinwildans",
+          "https://www.instagram.com/alvinwildans"
+        ],
+        "email": "mailto:alvinwildansahli@gmail.com"
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -165,10 +258,72 @@
       </div>
     </section>
 
+    <section class="content-section bg-alt interactive-map-section">
+      <div class="container">
+        <div class="section-title">
+          <h2
+            class="section-title translatable"
+            data-en="Interactive Dashboard"
+            data-id="Dasbor Interaktif"
+          >
+            Interactive Dashboard
+          </h2>
+          <span
+            class="footer-tagline translatable"
+            data-en="Spatial Ecology & Monitoring"
+            data-id="Ekologi Spasial & Pemantauan"
+          >
+            Spatial Ecology & Monitoring
+          </span>
+        </div>
+
+        <div class="gee-editorial-wrapper" id="gee-reveal">
+          <div class="gee-meta">
+            <h3
+              class="gee-title translatable"
+              data-en="Lusi Mangrove Dynamics"
+              data-id="Dinamika Mangrove Lusi"
+            >
+              Lusi Mangrove Dynamics
+            </h3>
+            <p
+              class="gee-desc translatable"
+              data-en="Real-time spatial analysis of seasonal changes and mangrove area detection. Hosted via Google Earth Engine, allowing for dynamic filtering of meteorological and ecological parameters."
+              data-id="Analisis spasial real-time terkait perubahan musiman dan deteksi tutupan mangrove. Terintegrasi melalui Google Earth Engine yang memungkinkan penyaringan parameter ekologis dan meteorologis secara dinamis."
+            >
+              Real-time spatial analysis of seasonal changes and mangrove area
+              detection. Hosted via Google Earth Engine, allowing for dynamic
+              filtering of meteorological and ecological parameters.
+            </p>
+          </div>
+
+          <div class="gee-frame-container">
+            <iframe
+              src="https://alvinwildans-ipb.projects.earthengine.app/view/lusi-mangrove"
+              title="Lusi Mangrove Dashboard"
+              loading="lazy"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+
+          <div class="gee-caption">
+            <span
+              class="translatable"
+              data-en="Platform: Google Earth Engine | Architecture: GEE Apps"
+              data-id="Platform: Google Earth Engine | Arsitektur: GEE Apps"
+            >
+              Platform: Google Earth Engine | Architecture: GEE Apps
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- =========================================================
      COMMUNITY QUOTE — SEPARATE SECTION
 ========================================================= -->
-    <section class="community-quote-section bg-alt">
+    <section class="community-quote-section bg-paper">
       <div class="container community-quote-container">
         <blockquote class="community-quote">
           <p
@@ -182,7 +337,6 @@
         </blockquote>
       </div>
     </section>
-
     <!-- ============================================================
      SECTION 2: AINAN — FEATURED NOTES / RECENT ARTICLES
      ============================================================ -->
@@ -623,66 +777,80 @@
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/va9fvW3wSvw?rel=0"
+                  title="PPKO Journey - Cibunian"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">PPKO Journey - Cibunian</h4>
+              <h3 class="aftermovie-title">PPKO Journey - Cibunian</h3>
             </div>
             <div class="aftermovie-item">
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/YYK7Y1hSRdU?si=B14g4CpLaMb0_PCM"
+                  title="STORM 2025"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">STORM 2025</h4>
+              <h3 class="aftermovie-title">STORM 2025</h3>
             </div>
             <div class="aftermovie-item">
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/4Vu_Ql1dh4E?si=VKC6OjJEEfGLaIjv"
+                  title="PODCAST HARI BUMI 2025"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">PODCAST HARI BUMI 2025</h4>
+              <h3 class="aftermovie-title">PODCAST HARI BUMI 2025</h3>
             </div>
             <div class="aftermovie-item">
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/sPL_2GFSaBI?si=b1cquwDVeeffRHgr"
+                  title="PODCAST HARI LINGKUNGAN 2023"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">PODCAST HARI LINGKUNGAN 2023</h4>
+              <h3 class="aftermovie-title">PODCAST HARI LINGKUNGAN 2023</h3>
             </div>
             <div class="aftermovie-item">
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/7c47uSySnv8?si=QbFB-28BBcIsM_ZT"
+                  title="PODCAST GENERASI MUDA TANRI ABENG UNIVERSITY"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">
+              <h3 class="aftermovie-title">
                 PODCAST GENERASI MUDA TANRI ABENG UNIVERSITY
-              </h4>
+              </h3>
             </div>
             <div class="aftermovie-item">
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/nPgjrp63_JU?si=OEoZipLMBdZXfvs5"
+                  title="SUIJI SLP 2025 - Pasir Eurih"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">SUIJI SLP 2025 - Pasir Eurih</h4>
+              <h3 class="aftermovie-title">SUIJI SLP 2025 - Pasir Eurih</h3>
             </div>
             <div class="aftermovie-item">
               <div class="youtube-wrapper">
                 <iframe
                   src="https://www.youtube.com/embed/KT8_fWhqbfY?si=K36uI-6Vf8Xt7vWI"
+                  title="STORM 2024"
+                  loading="lazy"
                   allowfullscreen
                 ></iframe>
               </div>
-              <h4 class="aftermovie-title">STORM 2024</h4>
+              <h3 class="aftermovie-title">STORM 2024</h3>
             </div>
           </div>
           <div class="carousel-controls-wrapper">
