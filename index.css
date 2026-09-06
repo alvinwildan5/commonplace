@@ -629,128 +629,63 @@ img {
    MOBILE
    360px — 420px
    ----------------------------------------- */
-
+/* -----------------------------------------
+   MOBILE
+   360px — 420px
+   ----------------------------------------- */
 @media screen and (min-width: 360px) and (max-width: 420px) {
-  .interactive-map-section {
-    width: 100%;
-    padding: 2.5rem 0;
-  }
+  /* ... (biarkan kode CSS Anda yang lain tetap sama) ... */
 
-  .interactive-map-section .container {
-    width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .interactive-map-section .section-title h2 {
-    font-size: 1.5rem;
-    line-height: 1.3;
-    padding-bottom: 0.7rem;
-  }
-
-  .interactive-map-section .footer-tagline {
-    font-size: 0.7rem;
-    letter-spacing: 1.2px;
-  }
-
-  .gee-editorial-wrapper {
-    width: 100%;
-    margin-top: 1.5rem;
-
-    gap: 1rem;
-
-    padding: 0;
-  }
-
-  .gee-meta {
-    width: 100%;
-  }
-
-  .gee-title {
-    font-size: 1.35rem;
-    line-height: 1.3;
-    margin-bottom: 0.5rem;
-  }
-
-  .gee-desc {
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-
-  /*
-     Jangan menggunakan 70vh di mobile.
-     Gunakan tinggi tetap agar iframe GEE
-     mendapatkan viewport yang cukup.
-  */
+  /* BUNGKUSAN IFRAME: Izinkan Scroll Horizontal */
   .gee-frame-container {
     width: 100%;
-    height: 600px;
-    min-height: 600px;
+    height: 550px;
+    min-height: 550px;
+    padding: 0; /* Hapus padding agar ruang maksimal */
 
-    padding: 0.35rem;
+    /* KUNCI: Membuatnya bisa digeser ke samping */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll untuk iOS */
+
+    /* Memberi petunjuk visual halus bahwa ini bisa digeser */
+    box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.2);
+    display: none; /* Sembunyikan overflow shadow default */
   }
 
   .gee-frame-container iframe {
-    width: 100%;
+    /* PAKSA lebar iframe lebih besar dari layar HP */
+    width: 900px;
+    max-width: none !important; /* Jangan batasi lebar */
     height: 100%;
-
     min-height: 0;
-
     border: 1px solid var(--border-dark);
   }
 
-  .gee-caption {
-    margin-top: 0.25rem;
-
-    text-align: center;
-
-    font-size: 0.58rem;
-    line-height: 1.5;
-    letter-spacing: 0.8px;
-  }
+  /* ... (biarkan kode caption tetap sama) ... */
 }
 
 /* -----------------------------------------
    VERY SMALL SCREEN
    ----------------------------------------- */
-
 @media screen and (max-width: 359px) {
-  .interactive-map-section {
-    padding: 2rem 0;
-  }
-
-  .interactive-map-section .container {
-    padding-left: 0.85rem;
-    padding-right: 0.85rem;
-  }
-
-  .interactive-map-section .section-title h2 {
-    font-size: 1.4rem;
-  }
-
-  .gee-editorial-wrapper {
-    margin-top: 1.25rem;
-    gap: 1rem;
-  }
-
-  .gee-title {
-    font-size: 1.25rem;
-  }
-
-  .gee-desc {
-    font-size: 0.88rem;
-  }
-
+  /* Terapkan trik yang sama untuk layar sangat kecil */
   .gee-frame-container {
-    height: 560px;
-    min-height: 560px;
-    padding: 0.3rem;
+    width: 100%;
+    height: 500px;
+    min-height: 500px;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    display: none; /* Sembunyikan overflow shadow default */
   }
 
-  .gee-caption {
-    text-align: center;
-    font-size: 0.55rem;
-    letter-spacing: 0.6px;
+  .gee-frame-container iframe {
+    width: 800px; /* Cukup 800px agar tidak terlalu panjang digeser */
+    max-width: none !important;
+    height: 100%;
+    border: 1px solid var(--border-dark);
   }
 }
 
