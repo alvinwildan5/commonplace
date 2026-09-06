@@ -1340,28 +1340,25 @@ i.fa-regular {
   margin-left: auto;
 }
 
-/* ==========================================================================
-   FOOTER 
-========================================================================== */
+/* ========================================================= 
+   10. UNIVERSAL FOOTER STYLES 
+========================================================= */
 .site-footer {
   background-color: var(--bg-white);
   color: var(--text-main);
-  margin-top: 4rem;
   border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  width: 100%;
-  clear: both;
 }
 
 .footer-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem 2rem 3rem;
+  padding: 6rem 2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 5rem;
 }
 
 .footer-center {
@@ -1370,44 +1367,45 @@ i.fa-regular {
 
 .footer-brand-logo {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
-  letter-spacing: 0.28em;
+  font-size: 1.5rem;
+  letter-spacing: 0.3em;
   color: var(--accent-gold);
-  margin-bottom: 1.8rem;
+  margin-bottom: 2rem;
   text-transform: uppercase;
 }
 
 .footer-tagline-large {
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
   max-width: 800px;
   margin: 0 auto;
-  line-height: 1.35;
+  line-height: 1.4;
+  color: var(--text-main);
   font-weight: 400;
-  letter-spacing: -0.015em;
 }
 
 .footer-bottom-area {
   border-top: 1px solid var(--border-color);
-  padding-top: 3.5rem;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3.5rem;
+  gap: 4rem;
 }
 
 .footer-connect-centered {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.7rem;
+  gap: 2rem;
 }
 
 .nav-group-title {
+  padding-top: 0.5rem;
   font-family: var(--font-sans);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 3px;
   color: var(--accent-gold);
   font-weight: 500;
 }
@@ -1416,30 +1414,34 @@ i.fa-regular {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 3rem;
+  gap: 4rem;
 }
 
 .connect-links a {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 1px;
   color: var(--text-muted);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   transition: var(--ease);
+}
+
+.connect-links a i {
+  font-size: 1.1rem;
 }
 
 .connect-links a:hover {
   color: var(--accent-gold);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .footer-copyright {
   text-align: center;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
