@@ -634,6 +634,9 @@ img {
    360px — 420px
    ----------------------------------------- */
 @media screen and (min-width: 360px) and (max-width: 420px) {
+  .interactive-map-section {
+    display: none !important;
+  }
   /* ... (biarkan kode CSS Anda yang lain tetap sama) ... */
 
   /* BUNGKUSAN IFRAME: Izinkan Scroll Horizontal */
@@ -661,14 +664,15 @@ img {
     min-height: 0;
     border: 1px solid var(--border-dark);
   }
-
-  /* ... (biarkan kode caption tetap sama) ... */
 }
 
 /* -----------------------------------------
    VERY SMALL SCREEN
    ----------------------------------------- */
 @media screen and (max-width: 359px) {
+  .interactive-map-section {
+    display: none !important;
+  }
   /* Terapkan trik yang sama untuk layar sangat kecil */
   .gee-frame-container {
     width: 100%;
