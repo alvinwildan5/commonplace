@@ -99,13 +99,6 @@ function checkHashForArticle() {
   }
 }
 
-document.getElementById("page-title").innerText =
-  judulArtikel + " | AWS Archive";
-document.getElementById("meta-title").content = judulArtikel;
-document.getElementById("meta-description").content = deskripsiSingkatArtikel;
-document.getElementById("og-title").content = judulArtikel;
-// ...dan seterusnya untuk gambar (og-image) dan URL
-
 /* --------------------------------------------------------------------------
    1. DEEP SEARCH FILTER
 -------------------------------------------------------------------------- */
@@ -274,11 +267,21 @@ window.openArticle = function (articleId, updateHash = true) {
   const titleEl = modalContent.querySelector(".ed-title");
   if (titleEl) currentArticleTitle = titleEl.innerText;
 
+  const excerptText = article.querySelector(".ed-excerpt p")?.textContent || "";
+  updateSeoMetaTags(currentArticleTitle, excerptText);
+
   document.getElementById("reading-overlay").classList.add("active");
   document.body.style.overflow = "hidden";
   document.getElementById("exportDropdown").classList.remove("show");
 
   if (updateHash) window.history.pushState(null, null, `#${articleId}`);
+  function updateSeoMetaTags(title, description) {
+    const fullTitle = `${title} | AWS Archive`;
+    document.getElementById("page-title").innerText = fullTitle;
+    document.getElementById("meta-title").content = fullTitle;
+    document.getElementById("meta-description").content = description;
+    document.getElementById("og-title").content = fullTitle;
+  }
 };
 
 window.closeArticle = function () {
