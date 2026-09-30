@@ -395,42 +395,207 @@ img {
 .community-quote-section {
   position: relative;
   width: 100%;
-  padding: 8rem 0;
+  padding: 7rem 0 7.5rem;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
+  overflow: hidden; /* subtle atmospheric movement */
+  background:
+    radial-gradient(
+      circle at 18% 35%,
+      rgba(184, 155, 114, 0.055),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 82% 68%,
+      rgba(184, 155, 114, 0.035),
+      transparent 28%
+    ),
+    var(--bg-paper);
+} /* Decorative editorial line */
+.community-quote-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(184, 155, 114, 0.18) 25%,
+    rgba(184, 155, 114, 0.35) 50%,
+    rgba(184, 155, 114, 0.18) 75%,
+    transparent 100%
+  );
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.45;
+} /* Very subtle animated grain / light movement */
+.community-quote-section::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(
+      circle at 30% 40%,
+      rgba(184, 155, 114, 0.055),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(184, 155, 114, 0.04),
+      transparent 22%
+    );
+  animation: quoteAtmosphere 12s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
 }
-
+@keyframes quoteAtmosphere {
+  0% {
+    transform: translate3d(-1%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1%, 0.5%, 0) scale(1.015);
+  }
+  100% {
+    transform: translate3d(-0.5%, 1%, 0) scale(1.025);
+  }
+} /* ========================================================= CONTAINER ========================================================= */
 .community-quote-container {
-  max-width: 950px;
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 2rem;
   text-align: center;
-}
-
+} /* ========================================================= QUOTE ========================================================= */
 .community-quote {
-  max-width: 850px;
-  margin: 0 auto;
   position: relative;
-}
-
-.community-quote::before {
-  content: "“";
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+} /* ========================================================= LARGE QUOTE MARK ========================================================= */
+.quote-mark {
   display: block;
-  font-size: 6rem;
+  margin-bottom: 2.1rem;
+  font-family: var(--font-serif);
+  font-size: 4.6rem;
+  line-height: 0.65;
   color: var(--accent-gold);
-  line-height: 0;
-  margin-bottom: 3rem;
-  font-family: var(--font-serif);
+  opacity: 0.9;
+  transform: translateY(0);
+  animation: quoteMarkFloat 5s ease-in-out infinite;
 }
-
+@keyframes quoteMarkFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+} /* ========================================================= QUOTE TEXT ========================================================= */
 .community-quote p {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  font-family: var(
+    --font-serif
+  ); /* Sedikit diperkecil dari 3.2rem maksimum agar lebih proporsional dengan halaman. */
+  font-size: clamp(1.65rem, 2.8vw, 2.7rem);
   font-style: italic;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.48;
+  letter-spacing: -0.012em;
   color: var(--text-main);
+  text-wrap: pretty;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+} /* ========================================================= ATTRIBUTION ========================================================= */
+.quote-attribution {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 2.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.quote-attribution-line {
+  width: 30px;
+  height: 1px;
+  background: var(--accent-gold);
+  transform-origin: center;
+  animation: quoteLinePulse 4s ease-in-out infinite;
+}
+@keyframes quoteLinePulse {
+  0%,
+  100% {
+    transform: scaleX(0.65);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+.quote-attribution cite {
+  font-style: normal;
+  color: var(--accent-gold-deep, var(--accent-gold));
+  white-space: nowrap;
+} /* ========================================================= DESKTOP HOVER — VERY SUBTLE ========================================================= */
+@media (hover: hover) and (min-width: 801px) {
+  .community-quote {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .community-quote:hover {
+    transform: translateY(-2px);
+  }
+  .community-quote:hover .quote-mark {
+    color: var(--accent-gold-deep, var(--accent-gold));
+  }
+} /* ========================================================= MOBILE ========================================================= */
+@media screen and (max-width: 700px) {
+  .community-quote-section {
+    padding: 4.8rem 0 5.2rem;
+  }
+  .community-quote-container {
+    padding: 0 1.15rem;
+  }
+  .community-quote {
+    max-width: 100%;
+    padding: 0 0.2rem;
+  }
+  .quote-mark {
+    margin-bottom: 1.5rem;
+    font-size: 3.5rem;
+  }
+  .community-quote p {
+    max-width: 100%;
+    font-size: clamp(1.25rem, 5.4vw, 1.55rem);
+    line-height: 1.52;
+    letter-spacing: -0.005em;
+  }
+  .quote-attribution {
+    margin-top: 1.8rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+  }
+  .quote-attribution-line {
+    width: 22px;
+  }
+} /* ========================================================= REDUCED MOTION ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .community-quote-section::after,
+  .quote-mark,
+  .quote-attribution-line {
+    animation: none !important;
+  }
+  .community-quote {
+    transform: none !important;
+  }
 }
 
 /* =========================================================
@@ -650,7 +815,7 @@ img {
 
     /* Memberi petunjuk visual halus bahwa ini bisa digeser */
     box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.2);
-     /* Sembunyikan overflow shadow default */
+    /* Sembunyikan overflow shadow default */
   }
 
   .gee-frame-container iframe {

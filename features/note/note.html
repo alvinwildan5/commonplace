@@ -3,11 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- ========================================== -->
-    <!-- DYNAMIC SEO META TAGS (Diperbarui)         -->
-    <!-- ========================================== -->
-    <!-- Primary Meta Tags -->
+    <!-- DYNAMIC SEO META TAGS -->
     <title id="page-title">Notes & Thoughts | AWS Archive</title>
     <meta
       name="title"
@@ -25,15 +21,11 @@
     />
     <meta name="author" content="Alvin Wildan Sahli" />
     <meta name="robots" content="index, follow" />
-
-    <!-- Canonical URL (Agar mesin pencari tahu URL utama) -->
     <link
       rel="canonical"
       id="canonical-url"
       href="https://yourdomain.com/notes/note.html"
     />
-
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" id="og-type" content="website" />
     <meta
       property="og:url"
@@ -55,8 +47,6 @@
       id="og-image"
       content="https://yourdomain.com/assets/default-seo-image.jpg"
     />
-
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta
       property="twitter:url"
@@ -78,8 +68,6 @@
       id="twitter-image"
       content="https://yourdomain.com/assets/default-seo-image.jpg"
     />
-
-    <!-- Structured Data / JSON-LD (Schema.org) -->
     <script type="application/ld+json" id="structured-data">
       {
         "@context": "https://schema.org",
@@ -87,14 +75,9 @@
         "name": "Notes & Thoughts | AWS Archive",
         "url": "https://yourdomain.com/notes/note.html",
         "description": "A collection of digital archives, notes, and thoughts by Alvin Wildan Sahli.",
-        "author": {
-          "@type": "Person",
-          "name": "Alvin Wildan Sahli"
-        }
+        "author": { "@type": "Person", "name": "Alvin Wildan Sahli" }
       }
     </script>
-    <!-- ========================================== -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -105,10 +88,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-    <!-- CSS -->
     <link rel="stylesheet" href="../../index.css" />
     <link rel="stylesheet" href="./note.css" />
-    <!-- LIBRARIES UNTUK EXPORT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   </head>
@@ -154,10 +135,9 @@
                 id="btn-id"
                 onclick="switchLanguage('id')"
               >
-                ID
-              </button>
-              <span class="lang-divider">|</span>
-              <button
+                ID</button
+              ><span class="lang-divider">|</span
+              ><button
                 class="lang-btn active"
                 id="btn-en"
                 onclick="switchLanguage('en')"
@@ -167,29 +147,28 @@
             </div>
           </li>
           <li class="auth-menu">
+            <!-- Tombol Login (Ikon Kunci / Key) -->
             <button
-              class="auth-btn translatable"
+              class="auth-btn"
               id="loginTriggerBtn"
               onclick="openLogin()"
-              data-en="Login"
-              data-id="Login"
-              title="Login"
+              title="Owner Login"
             >
-              <i class="fa-solid fa-user-lock"></i>
+              <i class="fa-solid fa-key"></i>
             </button>
+
+            <!-- Tombol Tulis (Ikon Ujung Pena / Pen Nib) -->
             <button
-              class="auth-btn write-btn translatable"
+              class="auth-btn write-btn"
               id="writeTriggerBtn"
               onclick="openEditor()"
-              data-en="Write"
-              data-id="Tulis"
               style="display: none"
+              title="Write a Note"
             >
-              <i class="fa-solid fa-pen"></i>
-              <span class="translatable" data-en="Write" data-id="Tulis"
-                >Write</span
-              >
+              <i class="fa-solid fa-pen-nib"></i>
             </button>
+
+            <!-- Tombol Logout (Ikon Keluar) -->
             <button
               class="auth-btn logout-btn"
               id="logoutTriggerBtn"
@@ -214,9 +193,9 @@
               type="text"
               id="noteSearch"
               class="sidebar-search-input translatable"
-              data-en="Search notes..."
-              data-id="Cari catatan..."
-              placeholder="Search notes..."
+              data-en="Search notes or quotes..."
+              data-id="Cari catatan atau kutipan..."
+              placeholder="Search notes or quotes..."
               onkeyup="executeNoteSearch()"
             />
           </div>
@@ -236,36 +215,40 @@
           </h1>
           <p
             class="translatable"
-            data-en="A collection of observational notes, reflections, and narratives, organized by theme for easy future reference."
-            data-id="Kumpulan catatan observasi, refleksi, dan narasi berdasarkan tema agar mudah untuk dicari kembali dikemudian hari"
+            data-en="A collection of observational notes, reflections, and narratives. Find quotes easily using the search bar."
+            data-id="Kumpulan catatan observasi, refleksi, dan narasi. Temukan kutipan dengan mudah menggunakan fitur pencarian."
           >
-            A collection of observational notes, reflections, and narratives,
-            organized by theme for easy future reference.
+            A collection of observational notes, reflections, and narratives.
+            Find quotes easily using the search bar.
           </p>
         </div>
         <!-- NO RESULTS MESSAGE -->
         <div id="noResultsElement" class="no-results-box" style="display: none">
           <p
             class="translatable"
-            data-en="No notes match your search criteria."
-            data-id="Tidak ada catatan yang cocok dengan kata kunci pencarian Anda."
+            data-en="No notes or quotes match your search criteria."
+            data-id="Tidak ada catatan atau kutipan yang cocok dengan kata kunci pencarian Anda."
           >
-            No notes match your search criteria.
+            No notes or quotes match your search criteria.
           </p>
         </div>
       </main>
     </div>
-    <!-- MODAL READING OVERLAY -->
+
+    <!-- MODALS (READING, LOGIN, EDITOR) -->
+    <!-- (Struktur dibiarkan sama persis dengan aslinya untuk menjaga kompatibilitas JS) -->
     <div id="reading-overlay" class="reading-overlay">
       <div class="reading-modal">
         <div class="reading-nav">
           <button class="close-btn" onclick="closeArticle()">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span class="translatable" data-en="Back to Notes" data-id="Kembali"
+            <i class="fa-solid fa-arrow-left"></i
+            ><span
+              class="translatable"
+              data-en="Back to Notes"
+              data-id="Kembali"
               >Back to Notes</span
             >
           </button>
-          <!-- EXPORT & SHARE TOOLS (3 DOTS MENU) -->
           <div class="export-menu-container">
             <button
               class="tool-btn"
@@ -281,14 +264,11 @@
                   data-en="Share"
                   data-id="Bagikan"
                   >Share</span
-                >
-                <button onclick="shareLink('wa')">
-                  <i class="fa-brands fa-whatsapp"></i> WhatsApp
-                </button>
-                <button onclick="shareLink('x')">
-                  <i class="fa-brands fa-x-twitter"></i> X (Twitter)
-                </button>
-                <button onclick="copyArticleLink()">
+                ><button onclick="shareLink('wa')">
+                  <i class="fa-brands fa-whatsapp"></i> WhatsApp</button
+                ><button onclick="shareLink('x')">
+                  <i class="fa-brands fa-x-twitter"></i> X (Twitter)</button
+                ><button onclick="copyArticleLink()">
                   <i class="fa-solid fa-link"></i> Copy Link
                 </button>
               </div>
@@ -298,21 +278,16 @@
                   data-en="Export"
                   data-id="Unduh"
                   >Export</span
-                >
-                <button onclick="downloadNote('word')">
-                  <i class="fa-solid fa-file-word"></i> Word (Auto-Format)
-                </button>
-                <button onclick="downloadNote('png')">
+                ><button onclick="downloadNote('word')">
+                  <i class="fa-solid fa-file-word"></i> Word (Auto-Format)</button
+                ><button onclick="downloadNote('png')">
                   <i class="fa-solid fa-image"></i> PNG (Image)
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div id="reading-content-area" class="reading-content">
-          <!-- Content Injected via JS -->
-        </div>
-        <!-- TOMBOL KEMBALI DI BAWAH KANAN -->
+        <div id="reading-content-area" class="reading-content"></div>
         <div class="close-btn-bottom-container">
           <button class="close-btn-bottom" onclick="closeArticle()">
             <span
@@ -320,13 +295,12 @@
               data-en="Finish Reading"
               data-id="Selesai Membaca"
               >Finish Reading</span
-            >
-            <i class="fa-solid fa-arrow-right"></i>
+            ><i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
       </div>
     </div>
-    <!-- ================= LOGIN MODAL ================= -->
+
     <div id="login-overlay" class="modal-overlay">
       <div class="modal-box login-box">
         <button class="modal-close" onclick="closeLogin()">
@@ -335,7 +309,7 @@
         <h2 class="modal-title">Owner Login</h2>
         <p class="modal-subtitle">
           Dengan login, Anda dapat menulis catatan baru sesuai topik yang anda
-          inginkan. Hubungi pemilik untuk mendapatkan akses.
+          inginkan.
         </p>
         <form id="loginForm" onsubmit="return handleLogin(event);">
           <label class="field-label" for="ownerPassword">Password</label>
@@ -355,7 +329,7 @@
         </form>
       </div>
     </div>
-    <!-- ================= EDITOR MODAL ================= -->
+
     <div id="editor-overlay" class="modal-overlay">
       <div class="modal-box editor-box">
         <div class="editor-header">
@@ -366,8 +340,8 @@
         </div>
         <div class="editor-meta-grid">
           <div class="field-group">
-            <label class="field-label" for="fieldTitle">Title</label>
-            <input
+            <label class="field-label" for="fieldTitle">Title</label
+            ><input
               type="text"
               id="fieldTitle"
               class="field-input title-input"
@@ -375,13 +349,13 @@
             />
           </div>
           <div class="field-group">
-            <label class="field-label" for="fieldTopicSelect">Topic</label>
-            <select
+            <label class="field-label" for="fieldTopicSelect">Topic</label
+            ><select
               id="fieldTopicSelect"
               class="field-input"
               onchange="handleTopicSelectChange()"
             >
-              <option value="culture">Culture &amp; History</option>
+              <option value="culture">Culture & History</option>
               <option value="sustainability" selected>Sustainability</option>
               <option value="education">Education</option>
               <option value="__new__">+ New topic...</option>
@@ -390,20 +364,17 @@
           <div class="field-group" id="newTopicGroup" style="display: none">
             <label class="field-label" for="fieldNewTopicName"
               >New topic name</label
-            >
-            <input
+            ><input
               type="text"
               id="fieldNewTopicName"
               class="field-input"
               placeholder="e.g. Technology"
-            />
-            <label
+            /><label
               class="field-label"
               for="fieldNewTopicIcon"
               style="margin-top: 0.6rem"
               >Icon</label
-            >
-            <select id="fieldNewTopicIcon" class="field-input">
+            ><select id="fieldNewTopicIcon" class="field-input">
               <option value="fa-lightbulb">Idea</option>
               <option value="fa-flask">Science</option>
               <option value="fa-code">Technology</option>
@@ -415,12 +386,12 @@
             </select>
           </div>
           <div class="field-group">
-            <label class="field-label" for="fieldDate">Date</label>
-            <input type="date" id="fieldDate" class="field-input" />
+            <label class="field-label" for="fieldDate">Date</label
+            ><input type="date" id="fieldDate" class="field-input" />
           </div>
           <div class="field-group span-2">
-            <label class="field-label" for="fieldExcerpt">Excerpt</label>
-            <textarea
+            <label class="field-label" for="fieldExcerpt">Excerpt</label
+            ><textarea
               id="fieldExcerpt"
               class="field-input"
               rows="2"
@@ -441,9 +412,8 @@
               <option value="H1">Heading 1</option>
               <option value="H2">Heading 2</option>
               <option value="H3">Heading 3</option>
-              <option value="BLOCKQUOTE">Kutipan</option>
-            </select>
-            <select
+              <option value="BLOCKQUOTE">Kutipan</option></select
+            ><select
               class="tb-select"
               id="tbFont"
               onmousedown="saveSelection()"
@@ -455,9 +425,10 @@
               <option value="'Inter', -apple-system, sans-serif">
                 Sans (Modern)
               </option>
-              <option value="'JetBrains Mono', monospace">Mono (Kode)</option>
-            </select>
-            <select
+              <option value="'JetBrains Mono', monospace">
+                Mono (Kode)
+              </option></select
+            ><select
               class="tb-select"
               id="tbLineSpacing"
               onmousedown="saveSelection()"
@@ -472,34 +443,35 @@
           <span class="tb-divider"></span>
           <div class="tb-group">
             <button type="button" class="tb-btn" onclick="execToolbar('bold')">
-              <i class="fa-solid fa-bold"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-bold"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('italic')"
             >
-              <i class="fa-solid fa-italic"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-italic"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('underline')"
             >
-              <i class="fa-solid fa-underline"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-underline"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('strikeThrough')"
               title="Strikethrough"
             >
-              <i class="fa-solid fa-strikethrough"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-strikethrough"></i></button
+            ><button
               type="button"
               class="tb-btn highlight-btn"
+              onmousedown="
+                saveSelection();
+                event.preventDefault();
+              "
               onclick="applyCustomHighlight()"
+              title="Highlight"
             >
               <i class="fa-solid fa-highlighter"></i>
             </button>
@@ -512,33 +484,29 @@
               onclick="execToolbar('insertUnorderedList')"
               title="Bullet List"
             >
-              <i class="fa-solid fa-list-ul"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-list-ul"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('insertOrderedList')"
               title="Numbered List"
             >
-              <i class="fa-solid fa-list-ol"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-list-ol"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('justifyLeft')"
               title="Align Left"
             >
-              <i class="fa-solid fa-align-left"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-align-left"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('justifyCenter')"
               title="Align Center"
             >
-              <i class="fa-solid fa-align-center"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-align-center"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="execToolbar('justifyFull')"
@@ -555,20 +523,18 @@
             >
               <option value="">-- Opsi Tabel --</option>
               <option value="insert">+ Sisipkan Tabel</option>
-              <option value="" disabled>──────── UKURAN ────────</option>
-              <option value="fit-window">▣ Sesuaikan dengan Jendela</option>
-              <option value="fit-content">▣ Sesuaikan dengan Konten</option>
-              <option value="" disabled>──────── GARIS BATAS ────────</option>
-              <option value="border-full">▦ Semua Garis Batas</option>
-              <option value="border-horizontal">
-                ☰ Garis Batas Horizontal
-              </option>
-              <option value="border-vertical">▥ Garis Batas Vertikal</option>
-              <option value="border-none">□ Tanpa Garis Batas</option>
-              <option value="" disabled>──────── GABUNGKAN SEL ────────</option>
-              <option value="merge-right">→ Gabungkan Sel ke Kanan</option>
-              <option value="merge-down">↓ Gabungkan Sel ke Bawah</option>
-              <option value="unmerge">↶ Pisahkan Sel</option>
+              <option value="" disabled>────────</option>
+              <option value="fit-window">▣ Sesuaikan Jendela</option>
+              <option value="fit-content">▣ Sesuaikan Konten</option>
+              <option value="" disabled>────────</option>
+              <option value="border-full">▦ Semua Garis</option>
+              <option value="border-horizontal">☰ Horizontal</option>
+              <option value="border-vertical">▥ Vertikal</option>
+              <option value="border-none">□ Tanpa Garis</option>
+              <option value="" disabled>────────</option>
+              <option value="merge-right">→ Gabung Kanan</option>
+              <option value="merge-down">↓ Gabung Bawah</option>
+              <option value="unmerge">↶ Pisahkan</option>
             </select>
           </div>
           <div class="tb-group">
@@ -578,17 +544,15 @@
               onclick="triggerImageInsert()"
               title="Insert image"
             >
-              <i class="fa-solid fa-image"></i>
-            </button>
-            <button
+              <i class="fa-solid fa-image"></i></button
+            ><button
               type="button"
               class="tb-btn"
               onclick="triggerLinkInsert()"
               title="Insert link"
             >
-              <i class="fa-solid fa-link"></i>
-            </button>
-            <input
+              <i class="fa-solid fa-link"></i></button
+            ><input
               type="file"
               id="imageFileInput"
               accept="image/*"
@@ -597,50 +561,43 @@
             />
           </div>
           <span class="tb-word-count" id="tbWordCount"
-            >0 words &bull; ~1 min read</span
+            >0 words • ~1 min read</span
           >
         </div>
-        <!-- IMAGE STYLE PICKER -->
         <div
           class="image-style-picker"
           id="imageStylePicker"
           style="display: none"
         >
-          <span>Image style:</span>
-          <button type="button" onclick="insertPendingImage('note-img-full')">
-            Full width
-          </button>
-          <button
+          <span>Image style:</span
+          ><button type="button" onclick="insertPendingImage('note-img-full')">
+            Full width</button
+          ><button
             type="button"
             onclick="insertPendingImage('note-img-rounded')"
           >
-            Rounded
-          </button>
-          <button
+            Rounded</button
+          ><button
             type="button"
             onclick="insertPendingImage('note-img-bordered')"
           >
-            Bordered
-          </button>
-          <button
+            Bordered</button
+          ><button
             type="button"
             onclick="insertPendingImage('note-img-center-small')"
           >
-            Centered, small
-          </button>
-          <button
+            Centered, small</button
+          ><button
             type="button"
             onclick="insertPendingImage('note-img-float-left')"
           >
-            Float left
-          </button>
-          <button
+            Float left</button
+          ><button
             type="button"
             onclick="insertPendingImage('note-img-float-right')"
           >
-            Float right
-          </button>
-          <button
+            Float right</button
+          ><button
             type="button"
             class="cancel-style"
             onclick="cancelPendingImage()"
@@ -658,9 +615,8 @@
           <span id="editorStatus" class="editor-status"></span>
           <div class="editor-footer-actions">
             <button type="button" class="btn-ghost" onclick="closeEditor()">
-              Cancel
-            </button>
-            <button
+              Cancel</button
+            ><button
               type="button"
               class="btn-primary"
               onclick="publishArticle()"
@@ -672,9 +628,7 @@
         </div>
       </div>
     </div>
-    <!-- =========================================================
-     UNIVERSAL FOOTER
-========================================================= -->
+
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-center">
@@ -701,27 +655,24 @@
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                ><i class="fa-solid fa-envelope"></i> Email</a
               >
-                <i class="fa-solid fa-envelope"></i> Email
-              </a>
               <a
                 href="https://www.linkedin.com/in/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
+                ><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a
               >
-                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
-              </a>
               <a
                 href="https://www.instagram.com/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
+                ><i class="fa-brands fa-instagram"></i> Instagram</a
               >
-                <i class="fa-brands fa-instagram"></i> Instagram
-              </a>
             </div>
           </div>
           <div class="footer-copyright">
-            <p>&copy; 2026 Alvin Wildan Sahli. All rights reserved.</p>
+            <p>© 2026 Alvin Wildan Sahli. All rights reserved.</p>
           </div>
         </div>
       </div>
