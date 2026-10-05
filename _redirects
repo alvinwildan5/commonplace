@@ -2,14 +2,24 @@
 # AWS COMMONPLACE — NOTES ROUTING
 # ==============================================================
 
-# Notes homepage
+# --------------------------------------------------------------
+# LEGACY NOTE URL → PUBLIC NOTE URL
+# --------------------------------------------------------------
+
+/features/note/note /note 301
+/features/note/note/ /note 301
+/features/note/note.html /note 301
+/features/note/note.html/ /note 301
+
+# --------------------------------------------------------------
+# NOTES HOMEPAGE
+# --------------------------------------------------------------
+
 /note /features/note/note.html 200
 /note/ /features/note/note.html 200
 
-# Individual article routes
-# Example:
-# /note/less-is-more
-# /note/climate-change-and-indonesia
-# /note/mitigasi-bencana-hidrometeorologi
-/note/* /features/note/note.html 200
+# --------------------------------------------------------------
+# INDIVIDUAL ARTICLES
+# --------------------------------------------------------------
 
+/note/* /features/note/note.html 200
