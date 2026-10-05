@@ -2,6 +2,7 @@
    NOTES SCRIPT — CMS EDITION (SUPABASE INTEGRATED)
    + VIEW ALL FEATURE
    + ROBUST RICH TEXT HIGHLIGHT
+   + CLEAN URL ROUTING
 ========================================================================== */
 
 /* ==========================================================================
@@ -12,6 +13,19 @@ const OWNER_PASSWORD_HASH =
   "69bfe17dbd9743d9a11023421d37589c19c461539012b540c0a242b4fdfb5aab";
 
 const AUTH_KEY = "aws_notes_auth";
+
+/*
+   PUBLIC NOTES ROUTE
+
+   https://aws-commonplace.pages.dev/note
+   https://aws-commonplace.pages.dev/note/less-is-more
+*/
+const NOTE_BASE_PATH = "/note";
+
+const DEFAULT_PAGE_TITLE = "Notes & Thoughts | AWS Archive";
+
+const DEFAULT_DESCRIPTION =
+  "A collection of digital archives, notes, and thoughts by Alvin Wildan Sahli navigating intersections of climate, spatial ecology, and community resilience.";
 
 const TOPIC_CONFIG = {
   culture: {
@@ -40,12 +54,18 @@ const TOPIC_CONFIG = {
 ========================================================================== */
 
 let pendingImageDataUrl = null;
+
 let editingArticleId = null;
+
 let globalArticlesCache = [];
+
 let scrollSpyObserver = null;
 
 let savedSelectionRange = null;
+
 let lastSelectionRange = null;
+
+let savedImageSelectionRange = null;
 
 let currentArticleTitle = "Document";
 
@@ -63,6 +83,270 @@ const supabaseClient = window.supabase.createClient(
 );
 
 /* ==========================================================================
+   ROUTING
+========================================================================== */
+
+/**
+ * Normalize pathname.
+ *
+ * /note/
+ * becomes
+ * /note
+ */
+function normalizePathname(pathname) {
+  if (!pathname) {
+    return "/";
+  }
+
+  let path = pathname;
+
+  if (path.length > 1) {
+    path = path.replace(/\/+$/, "");
+  }
+
+  return path;
+}
+
+/**
+ * Convert article title to a public URL slug.
+ *
+ * Example:
+ *
+ * "Less Is More"
+ * =>
+ * "less-is-more"
+ */
+function slugify(text) {
+  return String(text || "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+/**
+ * Get public article URL.
+ *
+ * Example:
+ *
+ * /note/less-is-more
+ */
+function getArticleRoute(articleId) {
+  const article = globalArticlesCache.find((item) => item.id === articleId);
+
+  if (!article) {
+    return `${NOTE_BASE_PATH}/${encodeURIComponent(articleId)}`;
+  }
+
+  const slug = slugify(article.title);
+
+  if (!slug) {
+    return `${NOTE_BASE_PATH}/${encodeURIComponent(articleId)}`;
+  }
+
+  return `${NOTE_BASE_PATH}/${encodeURIComponent(slug)}`;
+}
+
+/**
+ * Decode route component safely.
+ */
+function decodeRouteValue(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch (error) {
+    console.warn("Could not decode route value:", error);
+
+    return value;
+  }
+}
+
+/**
+ * Find article ID from public URL.
+ *
+ * /note
+ * =>
+ * null
+ *
+ * /note/less-is-more
+ * =>
+ * article ID
+ *
+ * Legacy hash route is also supported:
+ *
+ * /note#article-custom-123
+ */
+function getArticleIdFromLocation() {
+  const pathname = normalizePathname(window.location.pathname);
+
+  const base = normalizePathname(NOTE_BASE_PATH);
+
+  /* ==========================================================
+     HOMEPAGE
+  =========================================================== */
+
+  if (pathname === base) {
+    const hash = window.location.hash || "";
+
+    if (hash.startsWith("#article-")) {
+      return decodeRouteValue(hash.substring(1));
+    }
+
+    return null;
+  }
+
+  /* ==========================================================
+     PUBLIC ARTICLE ROUTE
+  =========================================================== */
+
+  if (pathname.startsWith(`${base}/`)) {
+    const encodedSlug = pathname.substring(`${base}/`.length);
+
+    if (!encodedSlug) {
+      return null;
+    }
+
+    const slug = decodeRouteValue(encodedSlug);
+
+    /*
+       First match by slugified title.
+    */
+    const article = globalArticlesCache.find(
+      (item) => slugify(item.title) === slug,
+    );
+
+    if (article) {
+      return article.id;
+    }
+
+    /*
+       Fallback:
+       allow old ID-based route.
+    */
+    const articleById = globalArticlesCache.find((item) => item.id === slug);
+
+    return articleById ? articleById.id : null;
+  }
+
+  return null;
+}
+
+/**
+ * Navigate to article route.
+ */
+function navigateToArticle(articleId, replace = false) {
+  if (!articleId) {
+    return;
+  }
+
+  const route = getArticleRoute(articleId);
+
+  const state = {
+    type: "article",
+    articleId,
+  };
+
+  if (replace) {
+    window.history.replaceState(state, "", route);
+  } else {
+    window.history.pushState(state, "", route);
+  }
+}
+
+/**
+ * Navigate to public Notes homepage.
+ */
+function navigateToNotes(replace = false) {
+  const route = NOTE_BASE_PATH;
+
+  const state = {
+    type: "notes",
+  };
+
+  if (replace) {
+    window.history.replaceState(state, "", route);
+  } else {
+    window.history.pushState(state, "", route);
+  }
+}
+
+/**
+ * Hide reading overlay.
+ */
+function hideReadingOverlay() {
+  const overlay = document.getElementById("reading-overlay");
+
+  if (overlay) {
+    overlay.classList.remove("active");
+  }
+
+  document.body.style.overflow = "auto";
+
+  const dropdown = document.getElementById("exportDropdown");
+
+  if (dropdown) {
+    dropdown.classList.remove("show");
+  }
+
+  currentArticleTitle = "Document";
+
+  restoreDefaultSeoMetaTags();
+}
+
+/**
+ * Execute current browser route.
+ *
+ * IMPORTANT:
+ * This runs only AFTER Supabase
+ * articles have been loaded.
+ */
+function handleCurrentRoute() {
+  const articleId = getArticleIdFromLocation();
+
+  if (!articleId) {
+    hideReadingOverlay();
+
+    return;
+  }
+
+  const articleElement = document.getElementById(articleId);
+
+  if (!articleElement) {
+    console.warn("Article route not found:", articleId);
+
+    navigateToNotes(true);
+
+    hideReadingOverlay();
+
+    return;
+  }
+
+  openArticle(articleId, false);
+}
+
+/**
+ * Legacy compatibility.
+ */
+function checkHashForArticle() {
+  handleCurrentRoute();
+}
+
+/**
+ * Browser Back / Forward.
+ */
+window.addEventListener("popstate", () => {
+  handleCurrentRoute();
+});
+
+/**
+ * Legacy hash route.
+ */
+window.addEventListener("hashchange", () => {
+  handleCurrentRoute();
+});
+
+/* ==========================================================================
    DOM READY
 ========================================================================== */
 
@@ -71,6 +355,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   switchLanguage(savedLanguage);
 
+  /*
+       MUST load Supabase first.
+       This makes direct article URLs work.
+    */
   await loadSavedArticlesIntoDom();
 
   initCarousels();
@@ -80,8 +368,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   refreshAuthUI();
 
   /* ------------------------------------------------------------
-     DATE DEFAULT
-  ------------------------------------------------------------ */
+       DATE DEFAULT
+    ------------------------------------------------------------ */
 
   const dateField = document.getElementById("fieldDate");
 
@@ -90,8 +378,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* ------------------------------------------------------------
-     EDITOR BODY INPUT
-  ------------------------------------------------------------ */
+       EDITOR BODY INPUT
+    ------------------------------------------------------------ */
 
   const editorBody = document.getElementById("editorBody");
 
@@ -133,36 +421,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       updateWordCount();
     });
-
-    /* ----------------------------------------------------------
-       Keep latest valid text selection.
-
-       This is important because clicking a toolbar button
-       can cause the browser selection to collapse.
-    ---------------------------------------------------------- */
-
-    document.addEventListener("selectionchange", () => {
-      const sel = window.getSelection();
-
-      if (!sel || sel.rangeCount === 0 || sel.isCollapsed) {
-        return;
-      }
-
-      const range = sel.getRangeAt(0);
-
-      const editor = document.getElementById("editorBody");
-
-      if (!editor) return;
-
-      if (editor.contains(range.commonAncestorContainer)) {
-        lastSelectionRange = range.cloneRange();
-      }
-    });
   }
 
   /* ------------------------------------------------------------
-     HEADER SCROLL
-  ------------------------------------------------------------ */
+       SELECTION CHANGE
+    ------------------------------------------------------------ */
+
+  document.addEventListener("selectionchange", () => {
+    const sel = window.getSelection();
+
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) {
+      return;
+    }
+
+    const range = sel.getRangeAt(0);
+
+    const editor = document.getElementById("editorBody");
+
+    if (!editor) {
+      return;
+    }
+
+    if (editor.contains(range.commonAncestorContainer)) {
+      lastSelectionRange = range.cloneRange();
+    }
+  });
+
+  /* ------------------------------------------------------------
+       HEADER SCROLL
+    ------------------------------------------------------------ */
 
   const header = document.querySelector(".site-header");
 
@@ -176,38 +463,56 @@ document.addEventListener("DOMContentLoaded", async () => {
           header.classList.remove("scrolled");
         }
       },
-      { passive: true },
+      {
+        passive: true,
+      },
     );
   }
 
   /* ------------------------------------------------------------
-     HASH
-  ------------------------------------------------------------ */
+       INTERNAL ARTICLE LINKS
+    ------------------------------------------------------------ */
 
-  checkHashForArticle();
+  document.addEventListener("click", (event) => {
+    const routeLink = event.target.closest("[data-note-route]");
 
-  window.addEventListener("hashchange", checkHashForArticle);
+    if (!routeLink) {
+      return;
+    }
+
+    /*
+           Preserve:
+           Ctrl + Click
+           Cmd + Click
+           Shift + Click
+           Middle click
+        */
+    if (
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+
+    const articleId = routeLink.getAttribute("data-article-id");
+
+    if (!articleId) {
+      return;
+    }
+
+    event.preventDefault();
+
+    openArticle(articleId, true);
+  });
+
+  /* ------------------------------------------------------------
+       INITIAL ROUTE
+    ------------------------------------------------------------ */
+
+  handleCurrentRoute();
 });
-
-/* ==========================================================================
-   HASH / ARTICLE DEEP LINK
-========================================================================== */
-
-function checkHashForArticle() {
-  if (!window.location.hash) return;
-
-  const articleId = window.location.hash.substring(1);
-
-  const exists =
-    articleId.startsWith("article-") ||
-    globalArticlesCache.some((article) => article.id === articleId);
-
-  if (!exists) return;
-
-  setTimeout(() => {
-    openArticle(articleId, false);
-  }, 500);
-}
 
 /* ==========================================================================
    SEARCH
@@ -216,7 +521,9 @@ function checkHashForArticle() {
 window.executeNoteSearch = function () {
   const searchInput = document.getElementById("noteSearch");
 
-  if (!searchInput) return;
+  if (!searchInput) {
+    return;
+  }
 
   const filterText = searchInput.value.toLowerCase().trim();
 
@@ -273,20 +580,20 @@ function initCarousels() {
 function initSingleCarousel(container) {
   let track = container.querySelector(".carousel-track");
 
-  if (!track) return;
+  if (!track) {
+    return;
+  }
 
-  /* ------------------------------------------------------------
-     Remove previous generated clones
-  ------------------------------------------------------------ */
-
+  /*
+     Remove previous generated clones.
+  */
   track.querySelectorAll('[aria-hidden="true"]').forEach((element) => {
     element.remove();
   });
 
-  /* ------------------------------------------------------------
-     Clone track itself to remove stale events
-  ------------------------------------------------------------ */
-
+  /*
+     Clone track to remove stale events.
+  */
   const freshTrack = track.cloneNode(true);
 
   track.replaceWith(freshTrack);
@@ -297,14 +604,16 @@ function initSingleCarousel(container) {
 
   const totalOriginal = originalItems.length;
 
-  if (totalOriginal === 0) return;
+  if (totalOriginal === 0) {
+    return;
+  }
 
   const prevBtn = container.querySelector(".prev-btn");
 
   const nextBtn = container.querySelector(".next-btn");
 
   /* ------------------------------------------------------------
-     Safe clone
+     SAFE CLONE
   ------------------------------------------------------------ */
 
   const createSafeClone = (item) => {
@@ -342,7 +651,9 @@ function initSingleCarousel(container) {
   ------------------------------------------------------------ */
 
   const getScrollStep = () => {
-    if (!originalItems[0]) return 0;
+    if (!originalItems[0]) {
+      return 0;
+    }
 
     const itemWidth = originalItems[0].offsetWidth;
 
@@ -358,7 +669,9 @@ function initSingleCarousel(container) {
   setTimeout(() => {
     const step = getScrollStep();
 
-    if (!step) return;
+    if (!step) {
+      return;
+    }
 
     track.style.scrollBehavior = "auto";
 
@@ -378,7 +691,9 @@ function initSingleCarousel(container) {
   track.addEventListener("scroll", () => {
     const step = getScrollStep();
 
-    if (!step) return;
+    if (!step) {
+      return;
+    }
 
     const scrollLeft = track.scrollLeft;
 
@@ -412,7 +727,9 @@ function initSingleCarousel(container) {
   const scrollByArrow = (direction) => {
     const step = getScrollStep();
 
-    if (!step) return;
+    if (!step) {
+      return;
+    }
 
     track.scrollBy({
       left: direction * step,
@@ -425,7 +742,9 @@ function initSingleCarousel(container) {
 
     prevBtn.replaceWith(newPrev);
 
-    newPrev.addEventListener("click", () => scrollByArrow(-1));
+    newPrev.addEventListener("click", () => {
+      scrollByArrow(-1);
+    });
   }
 
   if (nextBtn) {
@@ -433,7 +752,9 @@ function initSingleCarousel(container) {
 
     nextBtn.replaceWith(newNext);
 
-    newNext.addEventListener("click", () => scrollByArrow(1));
+    newNext.addEventListener("click", () => {
+      scrollByArrow(1);
+    });
   }
 }
 
@@ -441,14 +762,18 @@ function initSingleCarousel(container) {
    ARTICLE READING
 ========================================================================== */
 
-window.openArticle = function (articleId, updateHash = true) {
+window.openArticle = function (articleId, updateRoute = true) {
   const article = document.getElementById(articleId);
 
-  if (!article) return;
+  if (!article) {
+    console.warn("Cannot open article:", articleId);
+
+    return;
+  }
 
   /* ------------------------------------------------------------
-     Active topic
-  ------------------------------------------------------------ */
+       ACTIVE TOPIC
+    ------------------------------------------------------------ */
 
   const parentSection = article.closest(".topic-section");
 
@@ -469,8 +794,8 @@ window.openArticle = function (articleId, updateHash = true) {
   }
 
   /* ------------------------------------------------------------
-     Content clone
-  ------------------------------------------------------------ */
+       CONTENT CLONE
+    ------------------------------------------------------------ */
 
   const contentToExport = document.getElementById(`content-${articleId}`);
 
@@ -491,8 +816,8 @@ window.openArticle = function (articleId, updateHash = true) {
   modalContent.innerHTML = clone.innerHTML;
 
   /* ------------------------------------------------------------
-     Current title
-  ------------------------------------------------------------ */
+       CURRENT TITLE
+    ------------------------------------------------------------ */
 
   const titleEl = modalContent.querySelector(".ed-title");
 
@@ -501,16 +826,19 @@ window.openArticle = function (articleId, updateHash = true) {
   }
 
   /* ------------------------------------------------------------
-     SEO description
-  ------------------------------------------------------------ */
+       DESCRIPTION
+    ------------------------------------------------------------ */
 
   const excerptText = article.querySelector(".ed-excerpt p")?.textContent || "";
 
-  updateSeoMetaTags(currentArticleTitle, excerptText);
+  const articleUrl = new URL(getArticleRoute(articleId), window.location.origin)
+    .href;
+
+  updateSeoMetaTags(currentArticleTitle, excerptText, articleUrl, articleId);
 
   /* ------------------------------------------------------------
-     OPEN MODAL
-  ------------------------------------------------------------ */
+       OPEN MODAL
+    ------------------------------------------------------------ */
 
   const readingOverlay = document.getElementById("reading-overlay");
 
@@ -527,11 +855,24 @@ window.openArticle = function (articleId, updateHash = true) {
   }
 
   /* ------------------------------------------------------------
-     HASH
-  ------------------------------------------------------------ */
+       RESET SCROLL
+    ------------------------------------------------------------ */
 
-  if (updateHash) {
-    window.history.pushState(null, null, `#${articleId}`);
+  window.scrollTo({
+    top: 0,
+    behavior: "auto",
+  });
+
+  if (modalContent) {
+    modalContent.scrollTop = 0;
+  }
+
+  /* ------------------------------------------------------------
+       PUBLIC ROUTE
+    ------------------------------------------------------------ */
+
+  if (updateRoute) {
+    navigateToArticle(articleId);
   }
 };
 
@@ -539,8 +880,15 @@ window.openArticle = function (articleId, updateHash = true) {
    SEO META
 ========================================================================== */
 
-function updateSeoMetaTags(title, description) {
+function updateSeoMetaTags(title, description, articleUrl, articleId = null) {
+  const cleanDescription = String(description || "")
+    .replace(/\s+/g, " ")
+    .trim();
+
   const fullTitle = `${title} | AWS Archive`;
+
+  const url =
+    articleUrl || new URL(NOTE_BASE_PATH, window.location.origin).href;
 
   const pageTitle = document.getElementById("page-title");
 
@@ -548,16 +896,26 @@ function updateSeoMetaTags(title, description) {
 
   const metaDescription = document.getElementById("meta-description");
 
+  const canonical = document.getElementById("canonical-url");
+
+  const ogType = document.getElementById("og-type");
+
+  const ogUrl = document.getElementById("og-url");
+
   const ogTitle = document.getElementById("og-title");
 
   const ogDescription = document.getElementById("og-description");
+
+  const twitterUrl = document.getElementById("twitter-url");
 
   const twitterTitle = document.getElementById("twitter-title");
 
   const twitterDescription = document.getElementById("twitter-description");
 
+  const structuredData = document.getElementById("structured-data");
+
   if (pageTitle) {
-    pageTitle.innerText = fullTitle;
+    pageTitle.textContent = fullTitle;
   }
 
   if (metaTitle) {
@@ -565,7 +923,19 @@ function updateSeoMetaTags(title, description) {
   }
 
   if (metaDescription) {
-    metaDescription.content = description;
+    metaDescription.content = cleanDescription || DEFAULT_DESCRIPTION;
+  }
+
+  if (canonical) {
+    canonical.href = url;
+  }
+
+  if (ogType) {
+    ogType.content = articleId ? "article" : "website";
+  }
+
+  if (ogUrl) {
+    ogUrl.content = url;
   }
 
   if (ogTitle) {
@@ -573,7 +943,11 @@ function updateSeoMetaTags(title, description) {
   }
 
   if (ogDescription) {
-    ogDescription.content = description;
+    ogDescription.content = cleanDescription || DEFAULT_DESCRIPTION;
+  }
+
+  if (twitterUrl) {
+    twitterUrl.content = url;
   }
 
   if (twitterTitle) {
@@ -581,7 +955,127 @@ function updateSeoMetaTags(title, description) {
   }
 
   if (twitterDescription) {
-    twitterDescription.content = description;
+    twitterDescription.content = cleanDescription || DEFAULT_DESCRIPTION;
+  }
+
+  if (structuredData) {
+    const schema = articleId
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: title,
+          name: title,
+          description: cleanDescription || DEFAULT_DESCRIPTION,
+          url,
+          identifier: articleId,
+          author: {
+            "@type": "Person",
+            name: "Alvin Wildan Sahli",
+          },
+        }
+      : {
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          name: DEFAULT_PAGE_TITLE,
+          url,
+          description: DEFAULT_DESCRIPTION,
+          author: {
+            "@type": "Person",
+            name: "Alvin Wildan Sahli",
+          },
+        };
+
+    structuredData.textContent = JSON.stringify(schema);
+  }
+}
+
+/* ==========================================================================
+   RESTORE DEFAULT SEO
+========================================================================== */
+
+function restoreDefaultSeoMetaTags() {
+  const baseUrl = new URL(NOTE_BASE_PATH, window.location.origin).href;
+
+  const pageTitle = document.getElementById("page-title");
+
+  const metaTitle = document.getElementById("meta-title");
+
+  const metaDescription = document.getElementById("meta-description");
+
+  const canonical = document.getElementById("canonical-url");
+
+  const ogType = document.getElementById("og-type");
+
+  const ogUrl = document.getElementById("og-url");
+
+  const ogTitle = document.getElementById("og-title");
+
+  const ogDescription = document.getElementById("og-description");
+
+  const twitterUrl = document.getElementById("twitter-url");
+
+  const twitterTitle = document.getElementById("twitter-title");
+
+  const twitterDescription = document.getElementById("twitter-description");
+
+  const structuredData = document.getElementById("structured-data");
+
+  if (pageTitle) {
+    pageTitle.textContent = DEFAULT_PAGE_TITLE;
+  }
+
+  if (metaTitle) {
+    metaTitle.content = DEFAULT_PAGE_TITLE;
+  }
+
+  if (metaDescription) {
+    metaDescription.content = DEFAULT_DESCRIPTION;
+  }
+
+  if (canonical) {
+    canonical.href = baseUrl;
+  }
+
+  if (ogType) {
+    ogType.content = "website";
+  }
+
+  if (ogUrl) {
+    ogUrl.content = baseUrl;
+  }
+
+  if (ogTitle) {
+    ogTitle.content = DEFAULT_PAGE_TITLE;
+  }
+
+  if (ogDescription) {
+    ogDescription.content = DEFAULT_DESCRIPTION;
+  }
+
+  if (twitterUrl) {
+    twitterUrl.content = baseUrl;
+  }
+
+  if (twitterTitle) {
+    twitterTitle.content = DEFAULT_PAGE_TITLE;
+  }
+
+  if (twitterDescription) {
+    twitterDescription.content = DEFAULT_DESCRIPTION;
+  }
+
+  if (structuredData) {
+    structuredData.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      name: DEFAULT_PAGE_TITLE,
+      url: baseUrl,
+      description: DEFAULT_DESCRIPTION,
+      author: {
+        "@type": "Person",
+        name: "Alvin Wildan Sahli",
+      },
+    });
   }
 }
 
@@ -590,23 +1084,13 @@ function updateSeoMetaTags(title, description) {
 ========================================================================== */
 
 window.closeArticle = function () {
-  const overlay = document.getElementById("reading-overlay");
+  /*
+       Replace instead of push:
+       prevents duplicate /note entries in history.
+    */
+  navigateToNotes(true);
 
-  if (overlay) {
-    overlay.classList.remove("active");
-  }
-
-  document.body.style.overflow = "auto";
-
-  const dropdown = document.getElementById("exportDropdown");
-
-  if (dropdown) {
-    dropdown.classList.remove("show");
-  }
-
-  const currentPath = window.location.pathname + window.location.search;
-
-  window.history.pushState(null, null, currentPath);
+  hideReadingOverlay();
 };
 
 /* ==========================================================================
@@ -616,7 +1100,9 @@ window.closeArticle = function () {
 window.toggleExportMenu = function () {
   const dropdown = document.getElementById("exportDropdown");
 
-  if (!dropdown) return;
+  if (!dropdown) {
+    return;
+  }
 
   dropdown.classList.toggle("show");
 };
@@ -643,11 +1129,11 @@ window.shareLink = function (platform) {
   if (platform === "wa") {
     const whatsappUrl = `https://api.whatsapp.com/send?text=*${title}*%0A${url}`;
 
-    window.open(whatsappUrl, "_blank");
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   } else if (platform === "x") {
     const xUrl = `https://twitter.com/intent/tweet?text=${title}&url=${url}`;
 
-    window.open(xUrl, "_blank");
+    window.open(xUrl, "_blank", "noopener,noreferrer");
   }
 
   const dropdown = document.getElementById("exportDropdown");
@@ -695,7 +1181,9 @@ window.downloadNote = function (format) {
 
   const originalElement = document.getElementById("reading-content-area");
 
-  if (!originalElement) return;
+  if (!originalElement) {
+    return;
+  }
 
   const filename = currentArticleTitle
     .substring(0, 30)
@@ -703,8 +1191,8 @@ window.downloadNote = function (format) {
     .toLowerCase();
 
   /* ==============================================================
-     PDF / PNG
-  ============================================================== */
+       PDF / PNG
+    ============================================================== */
 
   if (format === "pdf" || format === "png") {
     const hiddenContainer = document.createElement("div");
@@ -727,8 +1215,8 @@ window.downloadNote = function (format) {
     document.body.appendChild(hiddenContainer);
 
     /* ----------------------------------------------------------
-       PDF
-    ---------------------------------------------------------- */
+         PDF
+      ---------------------------------------------------------- */
 
     if (format === "pdf") {
       const opt = {
@@ -785,55 +1273,57 @@ window.downloadNote = function (format) {
           });
       }, 300);
 
-      /* ----------------------------------------------------------
-       PNG
-    ---------------------------------------------------------- */
-    } else {
-      hiddenContainer.style.padding = "40px";
-
-      setTimeout(() => {
-        if (typeof html2canvas !== "function") {
-          console.error("html2canvas library is unavailable.");
-
-          document.body.removeChild(hiddenContainer);
-
-          return;
-        }
-
-        html2canvas(hiddenContainer, {
-          useCORS: true,
-          scale: 2,
-          backgroundColor: "#ffffff",
-        })
-          .then((canvas) => {
-            const link = document.createElement("a");
-
-            link.download = `${filename}.png`;
-
-            link.href = canvas.toDataURL("image/png");
-
-            link.click();
-
-            if (document.body.contains(hiddenContainer)) {
-              document.body.removeChild(hiddenContainer);
-            }
-          })
-          .catch((error) => {
-            console.error("PNG export failed:", error);
-
-            if (document.body.contains(hiddenContainer)) {
-              document.body.removeChild(hiddenContainer);
-            }
-          });
-      }, 300);
+      return;
     }
+
+    /* ----------------------------------------------------------
+         PNG
+      ---------------------------------------------------------- */
+
+    hiddenContainer.style.padding = "40px";
+
+    setTimeout(() => {
+      if (typeof html2canvas !== "function") {
+        console.error("html2canvas library is unavailable.");
+
+        document.body.removeChild(hiddenContainer);
+
+        return;
+      }
+
+      html2canvas(hiddenContainer, {
+        useCORS: true,
+        scale: 2,
+        backgroundColor: "#ffffff",
+      })
+        .then((canvas) => {
+          const link = document.createElement("a");
+
+          link.download = `${filename}.png`;
+
+          link.href = canvas.toDataURL("image/png");
+
+          link.click();
+
+          if (document.body.contains(hiddenContainer)) {
+            document.body.removeChild(hiddenContainer);
+          }
+        })
+        .catch((error) => {
+          console.error("PNG export failed:", error);
+
+          if (document.body.contains(hiddenContainer)) {
+            document.body.removeChild(hiddenContainer);
+          }
+        });
+    }, 300);
 
     return;
   }
 
   /* ==============================================================
-     WORD
-  ============================================================== */
+       WORD
+    ============================================================== */
 
   if (format === "word") {
     const exportClone = originalElement.cloneNode(true);
@@ -865,55 +1355,57 @@ window.downloadNote = function (format) {
     });
 
     const header = `
-      <html
-        xmlns:o="urn:schemas-microsoft-com:office:office"
-        xmlns:w="urn:schemas-microsoft-com:office:word"
-        xmlns="http://www.w3.org/TR/REC-html40"
-      >
-        <head>
-          <meta charset="utf-8">
+        <html
+          xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:w="urn:schemas-microsoft-com:office:word"
+          xmlns="http://www.w3.org/TR/REC-html40"
+        >
+          <head>
+            <meta charset="utf-8">
 
-          <title>Export</title>
+            <title>Export</title>
 
-          <style>
-            @page WordSection1 {
-              size: 8.5in 11.0in;
-              margin: 1.0in 1.0in 1.0in 1.0in;
-              mso-header-margin: 0.5in;
-              mso-footer-margin: 0.5in;
-              mso-paper-source: 0;
-            }
+            <style>
 
-            div.WordSection1 {
-              page: WordSection1;
-            }
+              @page WordSection1 {
+                size: 8.5in 11.0in;
+                margin: 1.0in 1.0in 1.0in 1.0in;
+                mso-header-margin: 0.5in;
+                mso-footer-margin: 0.5in;
+                mso-paper-source: 0;
+              }
 
-            table {
-              border-collapse: collapse;
-              width: 100%;
-              margin-bottom: 1rem;
-            }
+              div.WordSection1 {
+                page: WordSection1;
+              }
 
-            table,
-            th,
-            td {
-              border: 1px solid black;
-              padding: 8px;
-            }
-          </style>
-        </head>
+              table {
+                border-collapse: collapse;
+                width: 100%;
+                margin-bottom: 1rem;
+              }
 
-        <body>
+              table,
+              th,
+              td {
+                border: 1px solid black;
+                padding: 8px;
+              }
 
-          <div class="WordSection1">
-    `;
+            </style>
+          </head>
+
+          <body>
+
+            <div class="WordSection1">
+      `;
 
     const footer = `
-          </div>
+            </div>
 
-        </body>
-      </html>
-    `;
+          </body>
+        </html>
+      `;
 
     const sourceHTML = header + exportClone.innerHTML + footer;
 
@@ -984,7 +1476,9 @@ window.switchLanguage = function (lang) {
 window.toggleViewAll = function (topicSlug) {
   const section = document.getElementById(topicSlug);
 
-  if (!section) return;
+  if (!section) {
+    return;
+  }
 
   const isViewAll = section.classList.toggle("view-all-mode");
 
@@ -1276,7 +1770,7 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
 
       <button
         class="see-all-btn"
-        onclick="toggleViewAll('${topicSlug}')"
+        onclick="toggleViewAll('${escapeHtml(topicSlug)}')"
         type="button"
       >
 
@@ -1293,7 +1787,6 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
       </button>
 
     </div>
-
 
     <div class="carousel-container">
 
@@ -1338,7 +1831,7 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <a href="#${topicSlug}">
+      <a href="#${escapeHtml(topicSlug)}">
 
         <i
           class="fa-solid ${iconClass || "fa-tag"}"
@@ -1366,14 +1859,17 @@ function buildArticleElement(data) {
 
   article.id = data.id;
 
+  const articleRoute = getArticleRoute(data.id);
+
   article.innerHTML = `
 
     <div
       class="export-content"
-      id="content-${data.id}"
+      id="content-${escapeHtml(data.id)}"
     >
 
       <div class="ed-meta">
+
         ${escapeHtml(data.dateDisplay || "")}
 
         •
@@ -1381,20 +1877,20 @@ function buildArticleElement(data) {
         <span class="read-time">
           ${escapeHtml(data.readTime || "")}
         </span>
-      </div>
 
+      </div>
 
       <h3 class="ed-title">
         ${escapeHtml(data.title || "")}
       </h3>
 
-
       <div class="ed-excerpt">
+
         <p>
           ${escapeHtml(data.excerpt || "")}
         </p>
-      </div>
 
+      </div>
 
       <div class="ed-full-text">
         ${data.bodyHTML || ""}
@@ -1402,17 +1898,16 @@ function buildArticleElement(data) {
 
     </div>
 
-
     <div class="ed-actions">
 
-      <button
+      <a
         class="ed-btn"
-        type="button"
-        onclick="openArticle('${data.id}')"
+        href="${articleRoute}"
+        data-note-route="true"
+        data-article-id="${escapeHtml(data.id)}"
       >
         Open Note
-      </button>
-
+      </a>
 
       <div
         class="ed-manage"
@@ -1422,22 +1917,29 @@ function buildArticleElement(data) {
         <button
           class="ed-manage-btn"
           type="button"
-          onclick="editArticle('${data.id}')"
+          onclick="editArticle('${escapeHtml(data.id)}')"
           title="Edit"
           aria-label="Edit"
         >
-          <i class="fa-solid fa-pen"></i>
-        </button>
 
+          <i
+            class="fa-solid fa-pen"
+          ></i>
+
+        </button>
 
         <button
           class="ed-manage-btn"
           type="button"
-          onclick="deleteArticle('${data.id}')"
+          onclick="deleteArticle('${escapeHtml(data.id)}')"
           title="Delete"
           aria-label="Delete"
         >
-          <i class="fa-solid fa-trash"></i>
+
+          <i
+            class="fa-solid fa-trash"
+          ></i>
+
         </button>
 
       </div>
@@ -1579,7 +2081,9 @@ window.handleTopicSelectChange = function () {
 window.execToolbar = function (command) {
   const body = document.getElementById("editorBody");
 
-  if (!body) return;
+  if (!body) {
+    return;
+  }
 
   body.focus();
 
@@ -1595,13 +2099,17 @@ window.execToolbar = function (command) {
 window.triggerLinkInsert = function () {
   const url = prompt("Enter URL:", "https://");
 
-  if (!url) return;
+  if (!url) {
+    return;
+  }
 
   restoreSelection();
 
   const body = document.getElementById("editorBody");
 
-  if (!body) return;
+  if (!body) {
+    return;
+  }
 
   body.focus();
 
@@ -1634,13 +2142,6 @@ function updateWordCount() {
    SELECTION MANAGEMENT
 ========================================================================== */
 
-/**
- * Save current editor selection.
- *
- * The key point:
- * Toolbar controls steal focus from contenteditable.
- * Therefore selection must be cloned before the click occurs.
- */
 window.saveSelection = function () {
   const selection = window.getSelection();
 
@@ -1665,9 +2166,6 @@ window.saveSelection = function () {
   savedSelectionRange = range.cloneRange();
 };
 
-/**
- * Restore previously saved selection.
- */
 function restoreSelection() {
   const editor = document.getElementById("editorBody");
 
@@ -1698,9 +2196,6 @@ function restoreSelection() {
   }
 }
 
-/**
- * Clear stored selections.
- */
 function clearSavedSelection() {
   savedSelectionRange = null;
 
@@ -1711,9 +2206,6 @@ function clearSavedSelection() {
    HIGHLIGHT
 ========================================================================== */
 
-/**
- * Find all text nodes intersecting the current range.
- */
 function getTextNodesInRange(range, root) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -1721,9 +2213,6 @@ function getTextNodesInRange(range, root) {
         return NodeFilter.FILTER_REJECT;
       }
 
-      /*
-             Skip script/style/template
-          */
       const parent = node.parentElement;
 
       if (!parent) {
@@ -1734,11 +2223,6 @@ function getTextNodesInRange(range, root) {
         return NodeFilter.FILTER_REJECT;
       }
 
-      /*
-             Existing highlight itself is
-             allowed here; the caller decides
-             how to deal with it.
-          */
       try {
         if (range.intersectsNode(node)) {
           return NodeFilter.FILTER_ACCEPT;
@@ -1762,9 +2246,6 @@ function getTextNodesInRange(range, root) {
   return nodes;
 }
 
-/**
- * Returns highlight ancestor of a node.
- */
 function getHighlightAncestor(node, editor) {
   let current = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
 
@@ -1779,23 +2260,15 @@ function getHighlightAncestor(node, editor) {
   return null;
 }
 
-/**
- * Check whether the selection is completely
- * inside one existing highlight.
- */
 function getEntireHighlightForSelection(range, editor) {
-  let startAncestor = getHighlightAncestor(range.startContainer, editor);
+  const startAncestor = getHighlightAncestor(range.startContainer, editor);
 
-  let endAncestor = getHighlightAncestor(range.endContainer, editor);
+  const endAncestor = getHighlightAncestor(range.endContainer, editor);
 
   if (startAncestor && startAncestor === endAncestor) {
     return startAncestor;
   }
 
-  /*
-     When the range is collapsed or starts
-     exactly at a highlight boundary.
-  */
   const commonAncestor = range.commonAncestorContainer;
 
   const commonElement =
@@ -1812,15 +2285,16 @@ function getEntireHighlightForSelection(range, editor) {
   return null;
 }
 
-/**
- * Remove a complete highlight wrapper.
- */
 function unwrapHighlight(highlight) {
-  if (!highlight) return;
+  if (!highlight) {
+    return;
+  }
 
   const parent = highlight.parentNode;
 
-  if (!parent) return;
+  if (!parent) {
+    return;
+  }
 
   while (highlight.firstChild) {
     parent.insertBefore(highlight.firstChild, highlight);
@@ -1831,23 +2305,13 @@ function unwrapHighlight(highlight) {
   parent.normalize();
 }
 
-/**
- * Apply highlight safely to all selected
- * text nodes.
- *
- * Unlike surroundContents() on the whole
- * selection, this avoids invalid markup when
- * the selection crosses paragraphs.
- */
 window.applyCustomHighlight = function () {
   const editor = document.getElementById("editorBody");
 
-  if (!editor) return;
+  if (!editor) {
+    return;
+  }
 
-  /*
-       Restore the selection saved before
-       toolbar focus.
-    */
   if (!restoreSelection()) {
     return;
   }
@@ -1860,17 +2324,10 @@ window.applyCustomHighlight = function () {
 
   const range = selection.getRangeAt(0);
 
-  /*
-       Safety check:
-       selection must be inside editor.
-    */
   if (!editor.contains(range.commonAncestorContainer)) {
     return;
   }
 
-  /*
-       Empty/whitespace selection
-    */
   if (!range.toString().trim()) {
     return;
   }
@@ -1882,10 +2339,6 @@ window.applyCustomHighlight = function () {
   const existingHighlight = getEntireHighlightForSelection(range, editor);
 
   if (existingHighlight) {
-    /*
-         Preserve cursor/selection position
-         before unwrapping.
-      */
     const newRange = document.createRange();
 
     newRange.selectNodeContents(existingHighlight);
@@ -1917,11 +2370,6 @@ window.applyCustomHighlight = function () {
 
   const createdHighlights = [];
 
-  /*
-       Important:
-       process from last node to first node
-       so text offsets remain stable.
-    */
   for (let i = textNodes.length - 1; i >= 0; i--) {
     const textNode = textNodes[i];
 
@@ -1937,9 +2385,6 @@ window.applyCustomHighlight = function () {
       endOffset = range.endOffset;
     }
 
-    /*
-         Ignore empty ranges.
-      */
     if (endOffset <= startOffset) {
       continue;
     }
@@ -1948,11 +2393,6 @@ window.applyCustomHighlight = function () {
 
     highlight.className = "journal-highlight";
 
-    /*
-         Inline style ensures the highlight
-         remains visible even if note.css
-         does not yet contain the class.
-      */
     highlight.style.background =
       "linear-gradient(120deg, rgba(184,155,114,0.28), rgba(184,155,114,0.46))";
 
@@ -1977,10 +2417,6 @@ window.applyCustomHighlight = function () {
 
       createdHighlights.push(highlight);
     } catch (error) {
-      /*
-           Fallback:
-           create wrapper manually.
-        */
       try {
         const fragment = nodeRange.extractContents();
 
@@ -1998,10 +2434,6 @@ window.applyCustomHighlight = function () {
   if (createdHighlights.length === 0) {
     return;
   }
-
-  /* ----------------------------------------------------------
-       Restore cursor after last highlight
-    ---------------------------------------------------------- */
 
   const lastHighlight = createdHighlights[0];
 
@@ -2026,12 +2458,12 @@ window.applyCustomHighlight = function () {
    IMAGE INSERT
 ========================================================================== */
 
-let savedImageSelectionRange = null;
-
 window.triggerImageInsert = function () {
   const body = document.getElementById("editorBody");
 
-  if (!body) return;
+  if (!body) {
+    return;
+  }
 
   body.focus();
 
@@ -2051,7 +2483,9 @@ window.triggerImageInsert = function () {
 window.handleImageFileChosen = function (event) {
   const file = event.target.files[0];
 
-  if (!file) return;
+  if (!file) {
+    return;
+  }
 
   if (!file.type.startsWith("image/")) {
     alert("Please select a valid image file.");
@@ -2091,7 +2525,9 @@ window.insertPendingImage = function (styleClass) {
 
   const body = document.getElementById("editorBody");
 
-  if (!body) return;
+  if (!body) {
+    return;
+  }
 
   body.focus();
 
@@ -2109,7 +2545,7 @@ window.insertPendingImage = function (styleClass) {
 
   const imgHtml = `
       <img
-        class="note-img ${styleClass}"
+        class="note-img ${escapeHtml(styleClass)}"
         src="${pendingImageDataUrl}"
         alt=""
       />
@@ -2133,18 +2569,6 @@ window.cancelPendingImage = function () {
     picker.style.display = "none";
   }
 };
-
-/* ==========================================================================
-   SLUGIFY
-========================================================================== */
-
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
 
 /* ==========================================================================
    EDIT ARTICLE
@@ -2250,6 +2674,14 @@ window.deleteArticle = async function (articleId) {
   }
 
   initScrollSpy();
+
+  const currentRouteId = getArticleIdFromLocation();
+
+  if (currentRouteId === articleId) {
+    navigateToNotes(true);
+
+    hideReadingOverlay();
+  }
 };
 
 /* ==========================================================================
@@ -2286,7 +2718,9 @@ window.publishArticle = async function () {
     ------------------------------------------------------------ */
 
   let topicId;
+
   let topicLabel;
+
   let topicIcon;
 
   if (topicSelectVal === "__new__") {
@@ -2334,7 +2768,7 @@ window.publishArticle = async function () {
   const readTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
 
   /* ------------------------------------------------------------
-       ID
+       INTERNAL ID
     ------------------------------------------------------------ */
 
   const id = editingArticleId || `article-custom-${Date.now()}`;
@@ -2366,7 +2800,7 @@ window.publishArticle = async function () {
   };
 
   /* ------------------------------------------------------------
-       DB PAYLOAD
+       DATABASE PAYLOAD
     ------------------------------------------------------------ */
 
   const dbPayload = {
@@ -2395,7 +2829,7 @@ window.publishArticle = async function () {
 
   /* ==========================================================
        UPDATE
-    ========================================================== */
+    =========================================================== */
 
   if (editingArticleId) {
     const { error } = await supabaseClient
@@ -2414,10 +2848,6 @@ window.publishArticle = async function () {
     if (idx > -1) {
       globalArticlesCache.splice(idx, 1);
     }
-
-    /* ==========================================================
-       INSERT
-    ========================================================== */
   } else {
     const { error } = await supabaseClient.from("articles").insert([dbPayload]);
 
@@ -2512,6 +2942,19 @@ window.publishArticle = async function () {
   editingArticleId = null;
 
   closeEditor();
+
+  /*
+       New public URL is generated
+       from article title.
+    */
+  navigateToArticle(dataApp.id);
+
+  /*
+       Open article after publish/update.
+    */
+  setTimeout(() => {
+    openArticle(dataApp.id, false);
+  }, 50);
 };
 
 /* ==========================================================================
@@ -2531,7 +2974,9 @@ function setEditorStatus(message) {
 ========================================================================== */
 
 window.applyBlockType = function (tag) {
-  if (!tag) return;
+  if (!tag) {
+    return;
+  }
 
   restoreSelection();
 
@@ -2545,7 +2990,9 @@ window.applyBlockType = function (tag) {
 ========================================================================== */
 
 window.applyFont = function (fontFamily) {
-  if (!fontFamily) return;
+  if (!fontFamily) {
+    return;
+  }
 
   restoreSelection();
 
@@ -2575,7 +3022,9 @@ window.applyLineHeight = function (value) {
 
   const editor = document.getElementById("editorBody");
 
-  if (!editor) return;
+  if (!editor) {
+    return;
+  }
 
   const blockParent = node?.closest?.(
     "p, h1, h2, h3, h4, h5, h6, blockquote, li, td, div",
@@ -2708,7 +3157,7 @@ window.handleTableAction = function (value) {
   switch (value) {
     /* ==========================================================
          BORDER FULL
-      ========================================================== */
+      =========================================================== */
 
     case "border-full":
       table.style.border = "1px solid #ccc";
@@ -2721,7 +3170,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          HORIZONTAL
-      ========================================================== */
+      =========================================================== */
 
     case "border-horizontal":
       table.style.border = "none";
@@ -2742,7 +3191,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          VERTICAL
-      ========================================================== */
+      =========================================================== */
 
     case "border-vertical":
       table.style.border = "none";
@@ -2763,7 +3212,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          NONE
-      ========================================================== */
+      =========================================================== */
 
     case "border-none":
       table.style.border = "none";
@@ -2776,7 +3225,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          FIT WINDOW
-      ========================================================== */
+      =========================================================== */
 
     case "fit-window":
       table.style.width = "100%";
@@ -2787,7 +3236,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          FIT CONTENT
-      ========================================================== */
+      =========================================================== */
 
     case "fit-content":
       table.style.width = "auto";
@@ -2798,7 +3247,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          MERGE RIGHT
-      ========================================================== */
+      =========================================================== */
 
     case "merge-right":
       if (!cell) {
@@ -2827,7 +3276,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          MERGE DOWN
-      ========================================================== */
+      =========================================================== */
 
     case "merge-down":
       if (!cell) {
@@ -2900,7 +3349,7 @@ window.handleTableAction = function (value) {
 
     /* ==========================================================
          UNMERGE
-      ========================================================== */
+      =========================================================== */
 
     case "unmerge":
       if (!cell) {
