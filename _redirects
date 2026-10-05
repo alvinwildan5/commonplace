@@ -2,13 +2,14 @@
 # AWS COMMONPLACE — NOTES ROUTING
 # ==============================================================
 
-# OLD NOTES URL → NEW CLEAN URL
-/features/note/note /note 301
-/features/note/note.html /note 301
+# Notes homepage
+/note /features/note/note.html 200
+/note/ /features/note/note.html 200
 
-# NOTES HOMEPAGE
-/note /note/index.html 200
-/note/ /note/index.html 200
+# Individual article routes
+# Example:
+# /note/less-is-more
+# /note/climate-change-and-indonesia
+# /note/mitigasi-bencana-hidrometeorologi
+/note/* /features/note/note.html 200
 
-# INDIVIDUAL ARTICLES
-/note/* /note/index.html 200
