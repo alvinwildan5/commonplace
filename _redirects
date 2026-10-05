@@ -1,29 +1,15 @@
 # ==============================================================
-# AWS COMMONPLACE — ROUTING
+# AWS COMMONPLACE — NOTES ROUTING
 # ==============================================================
 
-# --------------------------------------------------------------
-# NOTES — HARUS SEBELUM GLOBAL RULE
-# --------------------------------------------------------------
-
-# Homepage
+# Notes homepage
 /note /features/note/note.html 200
 /note/ /features/note/note.html 200
 
-# Individual articles
+# Individual article routes
+# Example:
+# /note/less-is-more
+# /note/climate-change-and-indonesia
+# /note/mitigasi-bencana-hidrometeorologi
 /note/* /features/note/note.html 200
 
-
-# --------------------------------------------------------------
-# OLD NOTES URL → CLEAN URL
-# --------------------------------------------------------------
-
-/features/note/note /note 301
-/features/note/note.html /note 301
-
-
-# --------------------------------------------------------------
-# GLOBAL HOMEPAGE FALLBACK
-# --------------------------------------------------------------
-
-/* /index.html 200
