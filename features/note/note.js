@@ -2394,7 +2394,7 @@ window.applyCustomHighlight = function () {
     highlight.className = "journal-highlight";
 
     highlight.style.background =
-      "linear-gradient(120deg, rgba(184,155,114,0.28), rgba(184,155,114,0.46))";
+      "linear-gradient(120deg, rgba(218, 223, 124, 0.28), rgba(187, 211, 49, 0.46))";
 
     highlight.style.color = "inherit";
 
