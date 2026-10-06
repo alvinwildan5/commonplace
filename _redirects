@@ -64,3 +64,12 @@
 # ==============================================================
 
 /profile /features/profile/profile.html 200
+
+
+* text=auto
+*.html text
+*.css text
+*.js text
+*.json text
+*.md text
+*.txt text
