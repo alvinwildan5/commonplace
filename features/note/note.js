@@ -2989,14 +2989,264 @@ window.applyBlockType = function (tag) {
    FONT
 ========================================================================== */
 
-window.applyFont = function (fontFamily) {
-  if (!fontFamily) {
+/* ==========================================================================
+   FONT — ROBUST VERSION
+   Supports:
+   - Google Fonts
+   - CSS font stacks
+   - Existing <font face="">
+   - Inline span styles
+========================================================================== */
+
+const FONT_FAMILY_MAP = {
+  /* ------------------------------------------------------------
+     CLASSIC
+  ------------------------------------------------------------ */
+
+  "'Playfair Display', 'Georgia', serif": "'Playfair Display', Georgia, serif",
+
+  "Playfair Display": "'Playfair Display', Georgia, serif",
+
+  /* ------------------------------------------------------------
+     MODERN
+  ------------------------------------------------------------ */
+
+  "'Inter', -apple-system, sans-serif":
+    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+
+  Inter: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+
+  /* ------------------------------------------------------------
+     MONOSPACE
+  ------------------------------------------------------------ */
+
+  "'JetBrains Mono', monospace": "'JetBrains Mono', monospace",
+
+  "JetBrains Mono": "'JetBrains Mono', monospace",
+
+  /* ------------------------------------------------------------
+     HANDWRITING
+  ------------------------------------------------------------ */
+
+  "'Cedarville Cursive', cursive": "'Cedarville Cursive', cursive",
+
+  "Cedarville Cursive": "'Cedarville Cursive', cursive",
+
+  "'Dancing Script', cursive": "'Dancing Script', cursive",
+
+  "Dancing Script": "'Dancing Script', cursive",
+
+  "'Caveat', cursive": "'Caveat', cursive",
+
+  Caveat: "'Caveat', cursive",
+};
+
+/* ==========================================================================
+   NORMALIZE FONT VALUE
+========================================================================== */
+
+function normalizeFontFamily(value) {
+  const raw = String(value || "").trim();
+
+  if (!raw) {
+    return "";
+  }
+
+  return FONT_FAMILY_MAP[raw] || raw;
+}
+
+/* ==========================================================================
+   EXTRACT PRIMARY FONT NAME
+   document.execCommand("fontName") works more reliably with
+   the actual font family name rather than a complete CSS stack.
+========================================================================== */
+
+function getPrimaryFontName(fontStack) {
+  const value = String(fontStack || "").trim();
+
+  if (!value) {
+    return "";
+  }
+
+  /*
+     Extract first font family from:
+
+     "'Cedarville Cursive', cursive"
+     =>
+     Cedarville Cursive
+  */
+
+  const firstPart = value.split(",")[0].trim();
+
+  return firstPart.replace(/^["']|["']$/g, "").trim();
+}
+
+/* ==========================================================================
+   CONVERT LEGACY <FONT FACE=""> TO INLINE STYLE
+========================================================================== */
+
+function normalizeLegacyFontTags(editor) {
+  if (!editor) {
     return;
   }
 
-  restoreSelection();
+  editor.querySelectorAll("font[face]").forEach((fontElement) => {
+    const face = fontElement.getAttribute("face");
 
-  document.execCommand("fontName", false, fontFamily);
+    if (!face) {
+      return;
+    }
+
+    const normalized = normalizeFontFamily(face);
+
+    fontElement.style.fontFamily = normalized;
+
+    /*
+       Preserve the text/content but remove old
+       presentational <font> dependency.
+    */
+
+    const span = document.createElement("span");
+
+    span.style.fontFamily = normalized;
+
+    while (fontElement.firstChild) {
+      span.appendChild(fontElement.firstChild);
+    }
+
+    fontElement.replaceWith(span);
+  });
+}
+
+/* ==========================================================================
+   APPLY FONT
+========================================================================== */
+
+window.applyFont = function (fontFamily) {
+  const editor = document.getElementById("editorBody");
+
+  if (!editor) {
+    return;
+  }
+
+  /* ------------------------------------------------------------
+     NORMALIZE FONT
+  ------------------------------------------------------------ */
+
+  const normalizedStack = normalizeFontFamily(fontFamily);
+
+  if (!normalizedStack) {
+    return;
+  }
+
+  const primaryFont = getPrimaryFontName(normalizedStack);
+
+  if (!primaryFont) {
+    return;
+  }
+
+  /* ------------------------------------------------------------
+     RESTORE USER SELECTION
+  ------------------------------------------------------------ */
+
+  if (!restoreSelection()) {
+    return;
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+
+  if (!editor.contains(range.commonAncestorContainer)) {
+    return;
+  }
+
+  if (!range.toString().trim()) {
+    return;
+  }
+
+  /* ------------------------------------------------------------
+     APPLY FONT USING BROWSER COMMAND
+  ------------------------------------------------------------ */
+
+  try {
+    /*
+       Force browser to use CSS styling instead of relying
+       exclusively on deprecated <font face=""> markup.
+    */
+
+    document.execCommand("styleWithCSS", false, true);
+
+    const commandSuccess = document.execCommand("fontName", false, primaryFont);
+
+    /*
+       Disable styleWithCSS again so the rest of the editor
+       does not inherit unexpected behavior.
+    */
+
+    document.execCommand("styleWithCSS", false, false);
+
+    if (!commandSuccess) {
+      console.warn("fontName command was not accepted:", primaryFont);
+    }
+  } catch (error) {
+    console.error("Font application failed:", error);
+
+    return;
+  }
+
+  /* ------------------------------------------------------------
+     NORMALIZE RESULT
+  ------------------------------------------------------------ */
+
+  normalizeLegacyFontTags(editor);
+
+  /* ------------------------------------------------------------
+     FORCE INLINE FONT FAMILY
+     This catches browsers that produce <span style="">
+     inconsistently.
+  ------------------------------------------------------------ */
+
+  const currentSelection = window.getSelection();
+
+  if (currentSelection && currentSelection.rangeCount > 0) {
+    const selectedRange = currentSelection.getRangeAt(0);
+
+    const affectedNodes = getTextNodesInRange(selectedRange, editor);
+
+    affectedNodes.forEach((textNode) => {
+      let parent = textNode.parentElement;
+
+      if (!parent || parent === editor) {
+        return;
+      }
+
+      /*
+         Do not overwrite heading/list/table structure.
+         Only add font to inline wrappers.
+      */
+
+      if (
+        parent.tagName === "SPAN" ||
+        parent.tagName === "FONT" ||
+        parent.tagName === "A"
+      ) {
+        parent.style.fontFamily = normalizedStack;
+      }
+    });
+
+    lastSelectionRange = selectedRange.cloneRange();
+
+    savedSelectionRange = selectedRange.cloneRange();
+  }
+
+  /* ------------------------------------------------------------
+     WORD COUNT
+  ------------------------------------------------------------ */
 
   updateWordCount();
 };
