@@ -310,14 +310,12 @@ i.fa-regular {
   font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 0.8rem;
-  text-align: center;
 }
 .note-header-simple p {
   color: var(--text-muted);
   font-family: var(--font-sans);
   font-size: 0.95rem;
   line-height: 1.6;
-  text-align: center;
 }
 .no-results-box {
   text-align: center;
