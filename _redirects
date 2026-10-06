@@ -1,75 +1,15 @@
 # ==============================================================
-# AWS COMMONPLACE — CLEAN PUBLIC ROUTING
-# ==============================================================
-
-
-# ==============================================================
-# LEGACY URL → CLEAN PUBLIC URL
-# ==============================================================
-
-# NOTES
-/features/note/note.html /note 301
-/features/note/note /note 301
-/features/note/note/ /note 301
-
-# LIBRARY
-/features/library/library.html /library 301
-/features/library/library /library 301
-/features/library/library/ /library 301
-
-# PROFILE
-/features/profile/profile.html /profile 301
-/features/profile/profile /profile 301
-/features/profile/profile/ /profile 301
-
-
-# ==============================================================
-# TRAILING SLASH → CANONICAL URL
-# ==============================================================
-
-# NOTES
-/note/ /note 301
-
-# LIBRARY
-/library/ /library 301
-
-# PROFILE
-/profile/ /profile 301
-
-
-# ==============================================================
-# NOTES — PUBLIC ROUTES
+# AWS COMMONPLACE — NOTES ROUTING
 # ==============================================================
 
 # Notes homepage
 /note /features/note/note.html 200
+/note/ /features/note/note.html 200
 
-# Individual articles
+# Individual article routes
 # Example:
-# /note/less-is-more-part-1
+# /note/less-is-more
 # /note/climate-change-and-indonesia
 # /note/mitigasi-bencana-hidrometeorologi
 /note/* /features/note/note.html 200
 
-
-# ==============================================================
-# LIBRARY — PUBLIC ROUTE
-# ==============================================================
-
-/library /features/library/library.html 200
-
-
-# ==============================================================
-# PROFILE — PUBLIC ROUTE
-# ==============================================================
-
-/profile /features/profile/profile.html 200
-
-
-* text=auto
-*.html text
-*.css text
-*.js text
-*.json text
-*.md text
-*.txt text
