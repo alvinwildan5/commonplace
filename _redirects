@@ -1,15 +1,42 @@
 # ==============================================================
-# AWS COMMONPLACE — NOTES ROUTING
+# AWS COMMONPLACE — CLEAN PUBLIC ROUTING
+# ==============================================================
+
+
+# ==============================================================
+# NOTES
 # ==============================================================
 
 # Notes homepage
 /note /features/note/note.html 200
+
+# Notes homepage with trailing slash
 /note/ /features/note/note.html 200
 
-# Individual article routes
-# Example:
-# /note/less-is-more
+# Individual articles
+# /note/less-is-more-part-1
 # /note/climate-change-and-indonesia
 # /note/mitigasi-bencana-hidrometeorologi
 /note/* /features/note/note.html 200
 
+
+# ==============================================================
+# LIBRARY
+# ==============================================================
+
+# Library homepage
+/library /features/library/library.html 200
+
+# Library homepage with trailing slash
+/library/ /features/library/library.html 200
+
+
+# ==============================================================
+# PROFILE
+# ==============================================================
+
+# Profile homepage
+/profile /features/profile/profile.html 200
+
+# Profile homepage with trailing slash
+/profile/ /features/profile/profile.html 200
