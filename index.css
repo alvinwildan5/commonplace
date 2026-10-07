@@ -1,32 +1,134 @@
 /* ==========================================================================
-   AWS | A PERSONAL ARCHIVE - EDITORIAL / APEKSI VISUAL SYSTEM
-   ========================================================================== */
+   AWS | A PERSONAL ARCHIVE — CURATED COMMONPLACE BOOK
+   HISTORICAL EDITORIAL / ARCHIVAL / ETCHED GOLD VISUAL SYSTEM
+
+   FUNCTION PRESERVED:
+   - Fixed desktop hero + parallax
+   - Mobile hero behavior
+   - Community quote animation
+   - GEE interactive dashboard + iframe
+   - Recent Notes / AINAN section
+   - Organizations grid
+   - Aftermovie carousel
+   - Contact / form accessibility
+   - Footer
+   - All existing responsive breakpoints
+   - Reduced motion support
+   - Existing class hooks and JS compatibility
+
+   STYLE UPDATE ONLY:
+   - Warm cream archival paper
+   - Muted antique gold
+   - Sepia
+   - Charcoal black
+   - Muted steel blue as rare accent
+   - Classical serif typography
+   - Minimal sans-serif UI
+   - Linear filigree ornament
+   - Etched-gold AWS identity
+========================================================================== */
+
 
 /* =========================================================
    1. IMPORTS & VARIABLES
 ========================================================= */
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap");
 
 :root {
-  /* Palet APEKSI Editorial: Ivory/Putih dan Muted Gold */
-  --bg-paper: #fcfbf9; /* Ivory bersih */
-  --bg-white: #ffffff;
-  --bg-alt: #f4f2ec; /* Ivory sedikit lebih gelap untuk selingan section */
-  --text-main: #2a2c2a; /* Hitam arang elegan */
-  --text-muted: #6b6d6b;
-  --accent-gold: #b89b72; /* Muted Gold (menggantikan Crimson) */
-  --border-color: #e8e5df;
-  --border-dark: #2a2c2a;
+
+  /* -------------------------------------------------------
+     ARCHIVAL PAPER PALETTE
+  ------------------------------------------------------- */
+
+  --bg-paper: #f4efe5;
+  --bg-white: #faf7ef;
+  --bg-alt: #ebe4d5;
+
+  /* Slightly warmer paper variants */
+  --paper-light: #f8f4eb;
+  --paper-deep: #e8dfcd;
+
+  /* -------------------------------------------------------
+     TEXT
+  ------------------------------------------------------- */
+
+  --text-main: #292923;
+  --text-muted: #6b695f;
+  --text-soft: #817d72;
+
+  /* -------------------------------------------------------
+     MUTED ANTIQUE GOLD
+  ------------------------------------------------------- */
+
+  --accent-gold: #a88d5f;
+  --accent-gold-deep: #876d43;
+  --accent-gold-light: #c7b48c;
+
+  /* -------------------------------------------------------
+     SEPIA
+  ------------------------------------------------------- */
+
+  --accent-sepia: #826b50;
+  --sepia-soft: #b7a388;
+
+  /* -------------------------------------------------------
+     RARE COOL ACCENT
+  ------------------------------------------------------- */
+
+  --accent-steel-blue: #637986;
+
+  /* -------------------------------------------------------
+     BORDERS
+  ------------------------------------------------------- */
+
+  --border-color: rgba(98, 88, 69, 0.18);
+  --border-light: rgba(98, 88, 69, 0.11);
+  --border-dark: rgba(41, 41, 35, 0.45);
+
+  /* -------------------------------------------------------
+     TYPOGRAPHY
+  ------------------------------------------------------- */
+
   --font-serif:
-    "Playfair Display", Georgia, serif; /* Serif Editorial Premium */
-  --font-sans: "Inter", -apple-system, sans-serif; /* Sans-serif tipis */
-  --radius-xs: 0px; /* Sudut tajam editorial */
-  --ease: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    "Cormorant Garamond",
+    "Garamond",
+    "Baskerville",
+    Georgia,
+    serif;
+
+  --font-sans:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  /* -------------------------------------------------------
+     FORM / GEOMETRY
+  ------------------------------------------------------- */
+
+  --radius-xs: 0px;
+
+  --ease:
+    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* -------------------------------------------------------
+     PAPER SHADOW
+  ------------------------------------------------------- */
+
+  --shadow-paper:
+    0 12px 35px rgba(57, 49, 36, 0.055);
+
+  --shadow-paper-hover:
+    0 18px 45px rgba(57, 49, 36, 0.09);
 }
 
-/* ========================================================= 
-   2. GLOBAL RESETS & TYPOGRAPHY 
+
+/* =========================================================
+   2. GLOBAL RESETS & TYPOGRAPHY
 ========================================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -36,15 +138,53 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
+
+  background-color: var(--bg-paper);
 }
 
 body {
+
+  /* -------------------------------------------------------
+     SUBTLE ARCHIVAL PAPER TEXTURE
+     No image required.
+     Multiple layers create fine paper grain.
+  ------------------------------------------------------- */
+
   background-color: var(--bg-paper);
+
+  background-image:
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(164, 139, 99, 0.045) 0,
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 80% 75%,
+      rgba(132, 107, 77, 0.035) 0,
+      transparent 28%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.012) 0,
+      rgba(72, 61, 45, 0.012) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0)
+    );
+
   color: var(--text-main);
+
   font-family: var(--font-serif);
   line-height: 1.8;
   font-size: 1.15rem;
+
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
   overflow-x: hidden;
 }
 
@@ -75,6 +215,18 @@ img {
   display: block;
 }
 
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(99, 121, 134, 0.16);
+  color: var(--text-main);
+}
+
 .container {
   width: 100%;
   max-width: 1200px;
@@ -82,592 +234,1462 @@ img {
   padding: 0 2rem;
 }
 
+
+/* =========================================================
+   BACKGROUND UTILITIES
+========================================================= */
+
 .bg-white {
   background-color: var(--bg-white);
-}
-.bg-alt {
-  background-color: var(--bg-alt);
-}
-.bg-paper {
-  background-color: var(--bg-paper);
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.15)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.009) 0,
+      rgba(72, 61, 45, 0.009) 1px,
+      transparent 1px,
+      transparent 4px
+    );
 }
 
-/* ========================================================= 
-   3. HEADER & NAVIGATION 
+.bg-alt {
+  background-color: var(--bg-alt);
+
+  background-image:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(168, 141, 95, 0.055),
+      transparent 30%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.01) 0,
+      rgba(72, 61, 45, 0.01) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+.bg-paper {
+  background-color: var(--bg-paper);
+
+  background-image:
+    radial-gradient(
+      circle at 25% 15%,
+      rgba(168, 141, 95, 0.035),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 75% 80%,
+      rgba(130, 107, 80, 0.025),
+      transparent 25%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.012) 0,
+      rgba(72, 61, 45, 0.012) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+
+/* =========================================================
+   LINEAR FILIGREE UTILITY
+   Historical book-style ornament.
+   No circular/radial framing.
 ========================================================= */
+
+.filigree-line {
+  position: relative;
+}
+
+.filigree-line::after {
+  content: "";
+  display: block;
+
+  width: 100%;
+  height: 1px;
+
+  margin-top: 0.85rem;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(168, 141, 95, 0.18) 8%,
+      rgba(168, 141, 95, 0.58) 34%,
+      rgba(168, 141, 95, 0.58) 66%,
+      rgba(168, 141, 95, 0.18) 92%,
+      transparent 100%
+    );
+
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   3. HEADER & NAVIGATION
+========================================================= */
+
 .site-header {
   position: fixed;
+
   top: 0;
   left: 0;
+
   width: 100%;
+
   z-index: 100;
-  background: var(--bg-white);
+
+  background-color: rgba(250, 247, 239, 0.94);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.009) 0,
+      rgba(72, 61, 45, 0.009) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
   border-bottom: 1px solid var(--border-color);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
   transition: var(--ease);
+}
+
+/* Fine historical divider */
+.site-header::after {
+  content: "";
+
+  position: absolute;
+
+  left: 5%;
+  right: 5%;
+  bottom: -1px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(168, 141, 95, 0.45) 18%,
+      rgba(168, 141, 95, 0.45) 82%,
+      transparent
+    );
+
+  pointer-events: none;
 }
 
 .site-nav {
   display: flex;
+
   justify-content: space-between;
   align-items: center;
+
   padding: 1.2rem 2rem;
+
   max-width: 1400px;
+
   margin: 0 auto;
 }
 
+
+/* =========================================================
+   BRAND / AWS ETCHED GOLD
+========================================================= */
+
 .brand-text {
-  font-family: "University Roman", Didot, serif;
+
+  font-family:
+    "Cormorant Garamond",
+    "Garamond",
+    Georgia,
+    serif;
+
   font-size: 2rem;
-  font-weight: 500;
-  letter-spacing: -3px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+
   line-height: 1;
+
   text-transform: uppercase;
 
-  /* Warna Solid Gold Elegan */
-  color: #c5a059;
+  /*
+     Etched-gold appearance.
+     No circular badge.
+  */
+
+  background:
+    linear-gradient(
+      180deg,
+      #cfbd98 0%,
+      #a88d5f 35%,
+      #826b43 68%,
+      #b39a6d 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.42),
+    0 -0.5px 0 rgba(88, 69, 39, 0.35);
+
+  position: relative;
+
+  display: inline-block;
 }
+
+/* Fine linear engraving beneath AWS */
+.brand-text::after {
+  content: "";
+
+  position: absolute;
+
+  left: -6px;
+  right: -6px;
+
+  bottom: -7px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      var(--accent-gold) 18%,
+      var(--accent-gold) 82%,
+      transparent
+    );
+
+  opacity: 0.65;
+}
+
+
+/* Optional selectors for existing/future profile identity markup */
+
+.profile-initial,
+.profile-avatar,
+.profile-badge {
+  color: var(--accent-gold);
+
+  background:
+    linear-gradient(
+      145deg,
+      #d2c09b,
+      #a88d5f 45%,
+      #806741
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.42),
+    0 1px 1px rgba(75, 58, 36, 0.28);
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+========================================================= */
 
 .nav-links {
   display: flex;
+
   align-items: center;
+
   gap: 3rem;
+
   font-family: var(--font-sans);
+
   font-size: 0.75rem;
+
   text-transform: uppercase;
+
   letter-spacing: 2px;
-  font-weight: 300;
+
+  font-weight: 400;
 }
 
 .nav-links a {
   color: var(--text-muted);
-  padding-bottom: 4px;
+
+  padding-bottom: 5px;
+
   border-bottom: 1px solid transparent;
+
+  position: relative;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
   color: var(--text-main);
+
   border-bottom-color: var(--accent-gold);
 }
 
+
+/* Subtle ornamental continuation of underline */
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -4px;
+
+  width: 20px;
+
+  height: 1px;
+
+  transform: translateX(-50%);
+
+  background: var(--accent-gold);
+
+  opacity: 0.55;
+}
+
+
 .lang-switcher button {
   background: none;
+
   border: none;
+
   color: var(--text-muted);
+
   cursor: pointer;
+
   font-size: 0.7rem;
+
   letter-spacing: 1px;
+
   transition: var(--ease);
+
   font-family: var(--font-sans);
 }
 
 .lang-switcher button.active {
-  color: var(--accent-gold);
+  color: var(--accent-gold-deep);
+
   font-weight: 500;
 }
 
 .lang-divider {
   margin: 0 8px;
+
   color: var(--border-color);
 }
+
 
 /* =========================================================
    4. HERO
    FIXED BACKGROUND + SCROLL FADE / PARALLAX
 ========================================================= */
 
+
 /* HERO PLACEHOLDER */
+
 .hero-placeholder {
   width: 100%;
+
   height: 85vh;
+
   min-height: 680px;
+
   pointer-events: none;
 }
+
 
 /* HERO BASE */
+
 .hero-section {
   position: fixed;
+
   inset: 0;
+
   width: 100%;
+
   height: 85vh;
+
   min-height: 680px;
+
   z-index: 0;
+
   display: flex;
+
   align-items: center;
+
   overflow: hidden;
+
   background-color: var(--bg-paper);
+
+  background-image:
+    linear-gradient(
+      rgba(244, 239, 229, 0.15),
+      rgba(244, 239, 229, 0.15)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.012) 0,
+      rgba(72, 61, 45, 0.012) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
   isolation: isolate;
+
   pointer-events: none;
 }
 
-/* HERO IMAGE */
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
+
 .hero-split-image {
+
   position: absolute;
+
   top: 0;
   right: 0;
+
   width: 68%;
   height: 100%;
+
   z-index: 0;
+
   overflow: hidden;
+
   pointer-events: none;
 }
 
+
+/* Warm sepia fade */
+
 .hero-split-image::after {
+
   content: "";
+
   position: absolute;
+
   inset: 0;
+
   z-index: 2;
+
   pointer-events: none;
-  background: linear-gradient(
-    to right,
-    rgba(252, 251, 249, 1) 0%,
-    rgba(252, 251, 249, 0.96) 12%,
-    rgba(252, 251, 249, 0.72) 25%,
-    rgba(252, 251, 249, 0.2) 42%,
-    rgba(252, 251, 249, 0) 60%
-  );
+
+  background:
+
+    linear-gradient(
+      to right,
+      rgba(244, 239, 229, 1) 0%,
+      rgba(244, 239, 229, 0.97) 12%,
+      rgba(244, 239, 229, 0.78) 25%,
+      rgba(244, 239, 229, 0.30) 42%,
+      rgba(244, 239, 229, 0.05) 60%,
+      rgba(130, 107, 80, 0.05) 100%
+    ),
+
+    linear-gradient(
+      to bottom,
+      rgba(72, 57, 41, 0.04),
+      rgba(72, 57, 41, 0)
+    );
 }
 
 .hero-split-image img {
+
   position: absolute;
+
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   max-width: none;
+
   object-fit: cover;
+
   object-position: center center;
+
   transform: scale(1.03);
-  filter: saturate(0.82) contrast(0.96) brightness(1.04);
+
+  filter:
+    grayscale(0.16)
+    sepia(0.13)
+    saturate(0.72)
+    contrast(0.94)
+    brightness(1.03);
+
   user-select: none;
+
   pointer-events: none;
+
   transition: transform 0.1s linear;
 }
 
-/* HERO CONTENT */
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
 .hero-content {
+
   position: relative;
+
   z-index: 2;
+
   display: flex;
+
   align-items: center;
+
   height: 100%;
+
   pointer-events: none;
 }
 
+
 /* HERO TEXT */
+
 .hero-split-text {
+
   position: relative;
+
   width: 55%;
+
   max-width: 650px;
+
   padding: 4rem 0;
+
   z-index: 3;
+
   opacity: 1;
+
   will-change: transform, opacity;
+
   pointer-events: auto;
 }
 
+
 /* HERO EYEBROW */
+
 .hero-eyebrow {
+
   display: block;
+
   margin-bottom: 0.8rem;
+
   font-family: var(--font-sans);
+
   font-size: 0.68rem;
-  font-weight: 400;
+
+  font-weight: 500;
+
   text-transform: uppercase;
+
   letter-spacing: 3px;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
 }
 
+
 /* HERO TITLE */
+
 .hero-title {
+
   margin: 0;
+
   font-family: var(--font-serif);
+
   font-size: clamp(3.8rem, 6.2vw, 6.2rem);
-  font-weight: 400;
+
+  font-weight: 500;
+
   line-height: 0.98;
-  letter-spacing: -2px;
+
+  letter-spacing: -1.5px;
+
   color: var(--text-main);
+
   max-width: 600px;
 }
 
-/* GOLD DIVIDER */
-.gold-divider {
-  width: 60px;
-  height: 2px;
-  margin: 2rem 0 1.5rem;
-  background-color: var(--accent-gold);
-  transform-origin: left center;
-  will-change: transform;
+
+/* Optional antique-gold title emphasis */
+
+.hero-title .gold,
+.hero-title .accent {
+  color: var(--accent-gold-deep);
 }
 
+
+/* GOLD DIVIDER */
+
+.gold-divider {
+
+  width: 80px;
+
+  height: 1px;
+
+  margin: 2rem 0 1.5rem;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      var(--accent-gold),
+      transparent
+    );
+
+  transform-origin: left center;
+
+  will-change: transform;
+
+  position: relative;
+}
+
+
+/* Fine linear ornament */
+
+.gold-divider::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 55px;
+
+  width: 14px;
+  height: 1px;
+
+  background: var(--accent-gold-light);
+
+  transform: translateY(-50%);
+}
+
+
 /* HERO SUBTITLE */
+
 .hero-subtitle {
+
   display: block;
+
   font-family: var(--font-sans);
+
   font-size: 0.78rem;
+
   font-weight: 300;
+
   text-transform: uppercase;
+
   letter-spacing: 3px;
+
   color: var(--text-muted);
 }
 
-/* MENUTUP HERO */
+
+/* =========================================================
+   HERO LAYERING
+========================================================= */
+
 .content-section,
 .archive-intro-section,
 .community-quote-section,
 .ainan-section,
 .site-footer {
+
   position: relative;
+
   z-index: 10;
 }
 
+
 /* HERO IMAGE PARALLAX CLASS (JS) */
+
 .hero-split-image img.hero-image-parallax {
+
   will-change: transform;
 }
 
-/* ========================================================= 
-   5. ARCHIVE INTRODUCTION 
+
+/* =========================================================
+   5. ARCHIVE INTRODUCTION
 ========================================================= */
+
 .archive-intro-section {
+
   background-color: var(--bg-white);
+
+  background-image:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(168, 141, 95, 0.035),
+      transparent 24%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.009) 0,
+      rgba(72, 61, 45, 0.009) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
   padding: 7rem 0;
 }
 
+
 .content-section {
+
   position: relative;
+
   z-index: 10;
+
   padding: 3rem 0;
 }
 
+
+/* INTRO GRID */
+
 .intro-layout {
+
   display: grid;
+
   grid-template-columns: 1fr 1fr;
+
   gap: 5rem;
+
   align-items: center;
 }
 
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
 .section-title {
+
+  font-family: var(--font-serif);
+
   font-size: 2.2rem;
+
   color: var(--text-main);
-  border-bottom: 1px solid var(--accent-gold);
+
+  border-bottom: none;
+
   padding-bottom: 1rem;
+
   margin-bottom: 2.5rem;
-  font-weight: 400;
+
+  font-weight: 500;
+
+  position: relative;
 }
 
+
+/* Main linear divider */
+
+.section-title::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep) 0,
+      var(--accent-gold) 12%,
+      rgba(168, 141, 95, 0.32) 48%,
+      transparent 100%
+    );
+}
+
+
+/* Small secondary engraved line */
+
+.section-title::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -4px;
+
+  width: 48px;
+
+  height: 1px;
+
+  background: var(--accent-gold);
+
+  opacity: 0.65;
+}
+
+
+/* =========================================================
+   INTRO TEXT
+========================================================= */
+
 .intro-text p {
+
   margin-bottom: 1.8rem;
+
   text-align: justify;
+
   hyphens: auto;
+
   color: var(--text-muted);
 }
 
+
+/* DROP CAP */
+
 .drop-cap::first-letter {
+
   float: left;
+
   font-size: 5rem;
+
   line-height: 0.8;
+
   padding-right: 12px;
+
   padding-top: 10px;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
   font-family: var(--font-serif);
+
   font-style: italic;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
+
+/* =========================================================
+   INTRO IMAGE
+========================================================= */
+
 .intro-image {
+
   position: relative;
+
   width: min(420px, 100%);
+
   margin-left: auto;
 }
 
 .intro-image img {
-  filter: grayscale(100%) contrast(1.1);
-  box-shadow: 15px 15px 0 var(--bg-alt); /* Efek editorial offset */
+
+  filter:
+    grayscale(74%)
+    sepia(17%)
+    contrast(1.04);
+
+  box-shadow:
+    14px 14px 0 rgba(168, 141, 95, 0.12);
+
   transition: filter 0.6s ease;
 }
 
 .intro-image:hover img {
-  filter: grayscale(0%) contrast(1.1);
+
+  filter:
+    grayscale(18%)
+    sepia(10%)
+    contrast(1.05);
 }
 
-/* ========================================================= 
-   6. COMMUNITY QUOTE 
+
+/* =========================================================
+   6. COMMUNITY QUOTE
 ========================================================= */
+
 .community-quote-section {
+
   position: relative;
+
   width: 100%;
+
   padding: 7rem 0 7.5rem;
+
   border-top: 1px solid var(--border-color);
+
   border-bottom: 1px solid var(--border-color);
-  overflow: hidden; /* subtle atmospheric movement */
+
+  overflow: hidden;
+
   background:
+
     radial-gradient(
       circle at 18% 35%,
-      rgba(184, 155, 114, 0.055),
+      rgba(168, 141, 95, 0.06),
       transparent 30%
     ),
+
     radial-gradient(
       circle at 82% 68%,
-      rgba(184, 155, 114, 0.035),
+      rgba(130, 107, 80, 0.035),
       transparent 28%
     ),
+
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.01) 0,
+      rgba(72, 61, 45, 0.01) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+
     var(--bg-paper);
-} /* Decorative editorial line */
+}
+
+
+/* Decorative historical line */
+
 .community-quote-section::before {
+
   content: "";
+
   position: absolute;
+
   top: 50%;
+
   left: 0;
+
   width: 100%;
+
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(184, 155, 114, 0.18) 25%,
-    rgba(184, 155, 114, 0.35) 50%,
-    rgba(184, 155, 114, 0.18) 75%,
-    transparent 100%
-  );
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(168, 141, 95, 0.11) 18%,
+      rgba(168, 141, 95, 0.3) 50%,
+      rgba(168, 141, 95, 0.11) 82%,
+      transparent 100%
+    );
+
   transform: translateY(-50%);
+
   pointer-events: none;
-  opacity: 0.45;
-} /* Very subtle animated grain / light movement */
+
+  opacity: 0.5;
+}
+
+
+/* Atmospheric movement */
+
 .community-quote-section::after {
+
   content: "";
+
   position: absolute;
+
   inset: -20%;
+
   background:
     radial-gradient(
       circle at 30% 40%,
-      rgba(184, 155, 114, 0.055),
+      rgba(168, 141, 95, 0.04),
       transparent 24%
     ),
+
     radial-gradient(
       circle at 70% 60%,
-      rgba(184, 155, 114, 0.04),
+      rgba(130, 107, 80, 0.035),
       transparent 22%
     );
-  animation: quoteAtmosphere 12s ease-in-out infinite alternate;
+
+  animation:
+    quoteAtmosphere
+    12s
+    ease-in-out
+    infinite
+    alternate;
+
   pointer-events: none;
+
   z-index: 0;
 }
+
+
 @keyframes quoteAtmosphere {
+
   0% {
-    transform: translate3d(-1%, -1%, 0) scale(1);
+    transform:
+      translate3d(-1%, -1%, 0)
+      scale(1);
   }
+
   50% {
-    transform: translate3d(1%, 0.5%, 0) scale(1.015);
+    transform:
+      translate3d(1%, 0.5%, 0)
+      scale(1.015);
   }
+
   100% {
-    transform: translate3d(-0.5%, 1%, 0) scale(1.025);
+    transform:
+      translate3d(-0.5%, 1%, 0)
+      scale(1.025);
   }
-} /* ========================================================= CONTAINER ========================================================= */
-.community-quote-container {
-  position: relative;
-  z-index: 2;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  text-align: center;
-} /* ========================================================= QUOTE ========================================================= */
-.community-quote {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 2rem;
-} /* ========================================================= LARGE QUOTE MARK ========================================================= */
-.quote-mark {
-  display: block;
-  margin-bottom: 2.1rem;
-  font-family: var(--font-serif);
-  font-size: 4.6rem;
-  line-height: 0.65;
-  color: var(--accent-gold);
-  opacity: 0.9;
-  transform: translateY(0);
-  animation: quoteMarkFloat 5s ease-in-out infinite;
 }
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.community-quote-container {
+
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  padding: 0 2rem;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   QUOTE
+========================================================= */
+
+.community-quote {
+
+  position: relative;
+
+  max-width: 800px;
+
+  margin: 0 auto;
+
+  padding: 0 2rem;
+}
+
+
+/* =========================================================
+   LARGE QUOTE MARK
+========================================================= */
+
+.quote-mark {
+
+  display: block;
+
+  margin-bottom: 2.1rem;
+
+  font-family: var(--font-serif);
+
+  font-size: 4.6rem;
+
+  line-height: 0.65;
+
+  color: var(--accent-gold);
+
+  opacity: 0.9;
+
+  transform: translateY(0);
+
+  animation:
+    quoteMarkFloat
+    5s
+    ease-in-out
+    infinite;
+}
+
+
 @keyframes quoteMarkFloat {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-4px);
   }
-} /* ========================================================= QUOTE TEXT ========================================================= */
+}
+
+
+/* =========================================================
+   QUOTE TEXT
+========================================================= */
+
 .community-quote p {
+
   position: relative;
+
   max-width: 780px;
+
   margin: 0 auto;
-  font-family: var(
-    --font-serif
-  ); /* Sedikit diperkecil dari 3.2rem maksimum agar lebih proporsional dengan halaman. */
+
+  font-family: var(--font-serif);
+
   font-size: clamp(1.65rem, 2.8vw, 2.7rem);
+
   font-style: italic;
-  font-weight: 400;
+
+  font-weight: 500;
+
   line-height: 1.48;
-  letter-spacing: -0.012em;
+
+  letter-spacing: -0.008em;
+
   color: var(--text-main);
+
   text-wrap: pretty;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-} /* ========================================================= ATTRIBUTION ========================================================= */
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+
+/* =========================================================
+   ATTRIBUTION
+========================================================= */
+
 .quote-attribution {
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 12px;
+
   margin-top: 2.4rem;
+
   font-family: var(--font-sans);
+
   font-size: 0.65rem;
+
   letter-spacing: 0.14em;
+
   text-transform: uppercase;
+
   color: var(--text-muted);
 }
+
 .quote-attribution-line {
+
   width: 30px;
+
   height: 1px;
+
   background: var(--accent-gold);
+
   transform-origin: center;
-  animation: quoteLinePulse 4s ease-in-out infinite;
+
+  animation:
+    quoteLinePulse
+    4s
+    ease-in-out
+    infinite;
 }
+
 @keyframes quoteLinePulse {
+
   0%,
   100% {
     transform: scaleX(0.65);
     opacity: 0.45;
   }
+
   50% {
     transform: scaleX(1);
     opacity: 1;
   }
 }
+
 .quote-attribution cite {
+
   font-style: normal;
-  color: var(--accent-gold-deep, var(--accent-gold));
+
+  color: var(
+    --accent-gold-deep,
+    var(--accent-gold)
+  );
+
   white-space: nowrap;
-} /* ========================================================= DESKTOP HOVER — VERY SUBTLE ========================================================= */
+}
+
+
+/* =========================================================
+   DESKTOP HOVER — VERY SUBTLE
+========================================================= */
+
 @media (hover: hover) and (min-width: 801px) {
+
   .community-quote {
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      transform
+      0.6s
+      cubic-bezier(0.16, 1, 0.3, 1);
   }
+
   .community-quote:hover {
     transform: translateY(-2px);
   }
+
   .community-quote:hover .quote-mark {
-    color: var(--accent-gold-deep, var(--accent-gold));
+    color:
+      var(
+        --accent-gold-deep,
+        var(--accent-gold)
+      );
   }
-} /* ========================================================= MOBILE ========================================================= */
+}
+
+
+/* =========================================================
+   MOBILE — COMMUNITY QUOTE
+========================================================= */
+
 @media screen and (max-width: 700px) {
+
   .community-quote-section {
     padding: 4.8rem 0 5.2rem;
   }
+
   .community-quote-container {
     padding: 0 1.15rem;
   }
+
   .community-quote {
     max-width: 100%;
     padding: 0 0.2rem;
   }
+
   .quote-mark {
     margin-bottom: 1.5rem;
     font-size: 3.5rem;
   }
+
   .community-quote p {
     max-width: 100%;
-    font-size: clamp(1.25rem, 5.4vw, 1.55rem);
+
+    font-size:
+      clamp(
+        1.25rem,
+        5.4vw,
+        1.55rem
+      );
+
     line-height: 1.52;
+
     letter-spacing: -0.005em;
   }
+
   .quote-attribution {
+
     margin-top: 1.8rem;
+
     font-size: 0.55rem;
+
     letter-spacing: 0.12em;
   }
+
   .quote-attribution-line {
     width: 22px;
   }
-} /* ========================================================= REDUCED MOTION ========================================================= */
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+
   .community-quote-section::after,
   .quote-mark,
   .quote-attribution-line {
     animation: none !important;
   }
+
   .community-quote {
     transform: none !important;
   }
 }
 
+
 /* =========================================================
    INTERACTIVE DASHBOARD — GEE
-   Editorial / APEKSI Style
-   ========================================================= */
+   Editorial / Commonplace Book Style
+========================================================= */
 
 .interactive-map-section {
+
   position: relative;
+
   z-index: 10;
+
   width: 100%;
+
   padding: 6rem 0;
+
   background-color: var(--bg-alt);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.01) 0,
+      rgba(72, 61, 45, 0.01) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
   border-top: 1px solid var(--border-color);
+
   border-bottom: 1px solid var(--border-color);
 }
 
+
 /* -----------------------------------------
    SECTION HEADER
-   ----------------------------------------- */
+----------------------------------------- */
 
 .interactive-map-section .section-title {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-start;
+
   margin-bottom: 0;
 }
 
 .interactive-map-section .section-title h2 {
+
   margin: 0;
+
   padding-bottom: 1rem;
+
   width: 100%;
+
   font-family: var(--font-serif);
+
   font-size: 2.2rem;
-  font-weight: 400;
+
+  font-weight: 500;
+
   line-height: 1.3;
+
   color: var(--text-main);
-  border-bottom: 1px solid var(--accent-gold);
+
+  border-bottom: none;
+
+  position: relative;
+}
+
+
+/* Override section title border with linear ornament */
+
+.interactive-map-section .section-title h2::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      rgba(168, 141, 95, 0.5) 45%,
+      transparent
+    );
 }
 
 .interactive-map-section .footer-tagline {
+
   display: block;
+
   margin-top: 0.5rem;
+
   margin-bottom: 0;
+
   font-family: var(--font-sans);
+
   font-size: 0.8rem;
+
   font-weight: 400;
+
   letter-spacing: 2px;
+
   line-height: 1.4;
+
   text-transform: uppercase;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
 }
+
 
 /* -----------------------------------------
    MAIN WRAPPER
-   ----------------------------------------- */
+----------------------------------------- */
 
 .gee-editorial-wrapper {
+
   position: relative;
+
   width: 100%;
+
   margin-top: 3rem;
 
   display: flex;
+
   flex-direction: column;
+
   gap: 1.5rem;
 
-  /* IMPORTANT:
-     Dashboard sekarang langsung terlihat.
-     Tidak bergantung pada JavaScript untuk opacity.
-  */
   opacity: 1;
+
   visibility: visible;
+
   transform: none;
 
   transition:
@@ -675,63 +1697,100 @@ img {
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+
 /* Optional reveal class */
+
 .gee-editorial-wrapper.is-visible {
+
   opacity: 1;
+
   visibility: visible;
+
   transform: translateY(0);
 }
 
+
 /* -----------------------------------------
    DASHBOARD DESCRIPTION
-   ----------------------------------------- */
+----------------------------------------- */
 
 .gee-meta {
+
   width: 100%;
+
   max-width: 800px;
 }
 
 .gee-title {
+
   margin: 0 0 0.6rem;
 
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
-  font-weight: 400;
+
+  font-size:
+    clamp(
+      1.8rem,
+      2.5vw,
+      2.2rem
+    );
+
+  font-weight: 500;
+
   line-height: 1.3;
 
   color: var(--text-main);
 }
 
 .gee-desc {
+
   margin: 0;
 
   font-family: var(--font-sans);
+
   font-size: 0.95rem;
+
   font-weight: 300;
+
   line-height: 1.7;
 
   color: var(--text-muted);
 }
 
+
 /* -----------------------------------------
    GEE FRAME
-   ----------------------------------------- */
+----------------------------------------- */
 
 .gee-frame-container {
+
   position: relative;
 
   width: 100%;
+
   height: 80vh;
+
   min-height: 600px;
 
   padding: 0.75rem;
 
-  background-color: var(--bg-paper);
+  background-color: var(--paper-light);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.009) 0,
+      rgba(72, 61, 45, 0.009) 1px,
+      transparent 1px,
+      transparent 4px
+    );
 
   border: 1px solid var(--border-color);
+
   border-radius: 0;
 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    0 10px 30px
+    rgba(57, 49, 36, 0.045);
 
   overflow: hidden;
 
@@ -741,38 +1800,47 @@ img {
 }
 
 .gee-frame-container:hover {
+
   border-color: var(--accent-gold);
 
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 15px 40px
+    rgba(57, 49, 36, 0.075);
 }
+
 
 /* -----------------------------------------
    GEE IFRAME
-   ----------------------------------------- */
+----------------------------------------- */
 
 .gee-frame-container iframe {
+
   display: block;
 
   width: 100%;
+
   height: 100%;
 
   min-height: 0;
 
   margin: 0;
+
   padding: 0;
 
   border: 1px solid var(--border-dark);
 
-  background-color: #ffffff;
+  background-color: #ede8dd;
 
   overflow: hidden;
 }
 
+
 /* -----------------------------------------
    CAPTION
-   ----------------------------------------- */
+----------------------------------------- */
 
 .gee-caption {
+
   width: 100%;
 
   margin-top: 0.5rem;
@@ -780,601 +1848,1455 @@ img {
   text-align: right;
 
   font-family: var(--font-sans);
+
   font-size: 0.7rem;
+
   font-weight: 400;
+
   line-height: 1.5;
 
   letter-spacing: 2px;
+
   text-transform: uppercase;
 
   color: var(--text-muted);
 }
 
+
 /* -----------------------------------------
    MOBILE
    360px — 420px
-   ----------------------------------------- */
-/* -----------------------------------------
-   MOBILE
-   360px — 420px
-   ----------------------------------------- */
+----------------------------------------- */
+
 @media screen and (min-width: 360px) and (max-width: 420px) {
-  /* ... (biarkan kode CSS Anda yang lain tetap sama) ... */
 
-  /* BUNGKUSAN IFRAME: Izinkan Scroll Horizontal */
+  /* BUNGKUSAN IFRAME:
+     Izinkan Scroll Horizontal */
+
   .gee-frame-container {
+
     width: 100%;
+
     height: 550px;
+
     min-height: 550px;
-    padding: 0; /* Hapus padding agar ruang maksimal */
 
-    /* KUNCI: Membuatnya bisa digeser ke samping */
+    padding: 0;
+
     overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll untuk iOS */
 
-    /* Memberi petunjuk visual halus bahwa ini bisa digeser */
-    box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.2);
-    /* Sembunyikan overflow shadow default */
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    box-shadow:
+      inset -10px 0 10px -10px
+      rgba(41, 41, 35, 0.2);
   }
 
   .gee-frame-container iframe {
-    /* PAKSA lebar iframe lebih besar dari layar HP */
+
     width: 900px;
-    max-width: none !important; /* Jangan batasi lebar */
+
+    max-width: none !important;
+
     height: 100%;
+
     min-height: 0;
+
     border: 1px solid var(--border-dark);
   }
 }
+
 
 /* -----------------------------------------
    VERY SMALL SCREEN
-   ----------------------------------------- */
+----------------------------------------- */
+
 @media screen and (max-width: 359px) {
-  /* Terapkan trik yang sama untuk layar sangat kecil */
+
   .gee-frame-container {
+
     width: 100%;
+
     height: 500px;
+
     min-height: 500px;
+
     padding: 0;
+
     overflow-x: auto;
+
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch; /* Sembunyikan overflow shadow default */
+
+    -webkit-overflow-scrolling: touch;
   }
 
   .gee-frame-container iframe {
-    width: 800px; /* Cukup 800px agar tidak terlalu panjang digeser */
+
+    width: 800px;
+
     max-width: none !important;
+
     height: 100%;
+
     border: 1px solid var(--border-dark);
   }
 }
 
+
 /* -----------------------------------------
    ACCESSIBILITY
-   ----------------------------------------- */
+----------------------------------------- */
 
 .gee-frame-container iframe:focus {
-  outline: 3px solid var(--accent-gold);
+
+  outline:
+    3px solid var(--accent-steel-blue);
+
   outline-offset: 3px;
 }
 
-/* ========================================================= 
-   7. RECENT NOTES SECTION (WITH PHOTO BG & NO GAP) 
+
+/* =========================================================
+   7. RECENT NOTES SECTION
+   PHOTO BG + PAPER / ARCHIVAL CARD
 ========================================================= */
+
 .ainan-section {
+
   position: relative;
+
   width: 100%;
+
   padding: 8rem 0;
-  /* Background foto dengan efek parallax & overlay ivory editorial */
+
+  /*
+     Existing photo retained.
+     Warm editorial treatment added through
+     multiple overlays.
+  */
+
   background-image:
-    linear-gradient(rgba(252, 251, 249, 0.829), rgba(252, 251, 249, 0)),
+
+    linear-gradient(
+      rgba(244, 239, 229, 0.88),
+      rgba(244, 239, 229, 0.50)
+    ),
+
+    linear-gradient(
+      rgba(244, 239, 229, 0.12),
+      rgba(244, 239, 229, 0.34)
+    ),
+
     url("./assets/images/notes.jpg");
+
   background-size: cover;
+
   background-position: center;
+
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Efek Parallax */
+
+  background-attachment: fixed;
+
   border-top: 1px solid var(--border-color);
+
   border-bottom: 1px solid var(--border-color);
 }
 
+
+/* Fine texture above photographic background */
+
+.ainan-section::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.018) 0,
+      rgba(72, 61, 45, 0.018) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  mix-blend-mode: multiply;
+
+  opacity: 0.45;
+}
+
+
 .ainan-container {
-  width: min(1400px, calc(100% - 80px));
+
+  width: min(
+    1400px,
+    calc(100% - 80px)
+  );
+
   margin: 0 auto;
+
   position: relative;
+
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-end;
+
   gap: 4rem;
+
   z-index: 2;
 }
 
-/* Sticky Title - Diubah agar sejajar & tidak ada gap 1 halaman */
+
+/* =========================================================
+   STICKY TITLE
+========================================================= */
+
 .ainan-page-title {
+
   position: sticky;
-  top: 150px; /* Titik henti saat discroll */
-  height: 0; /* KUNCI: Menghilangkan jeda kosong ke bawah */
+
+  top: 150px;
+
+  height: 0;
+
   width: 100%;
+
   z-index: 5;
+
   display: block;
+
   pointer-events: none;
+
   overflow: visible;
 }
 
 .ainan-page-title h2 {
-  margin-left: max(40px, calc((100% - 1400px) / 2));
-  width: min(520px, 40vw);
+
+  margin-left:
+    max(
+      40px,
+      calc((100% - 1400px) / 2)
+    );
+
+  width:
+    min(
+      520px,
+      40vw
+    );
+
   font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 4vw, 4rem);
-  font-weight: 400;
+
+  font-size:
+    clamp(
+      2.4rem,
+      4vw,
+      4rem
+    );
+
+  font-weight: 500;
+
   line-height: 1.1;
+
   color: var(--text-main);
-  pointer-events: auto; /* Teks tetap bisa di-copy/blok */
+
+  pointer-events: auto;
+
+  position: relative;
+}
+
+
+/* Linear engraving */
+
+.ainan-page-title h2::after {
+
+  content: "";
+
+  display: block;
+
+  width: 80px;
+
+  height: 1px;
+
+  margin-top: 0.85rem;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      transparent
+    );
 }
 
 .ainan-page-title h2 span {
+
   display: block;
+
   margin-top: 0.5rem;
+
   font-family: var(--font-sans);
+
   font-size: 0.9rem;
+
   font-weight: 300;
+
   letter-spacing: 2px;
+
   text-transform: uppercase;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
 }
 
-/* Editorial Excerpt Card (Premium Subtle Glass) */
+
+/* =========================================================
+   EDITORIAL NOTE CARD
+   No heavy glass effect.
+   Warm paper / archival card instead.
+========================================================= */
+
 .ainan-glass-card {
+
   position: relative;
+
   z-index: 20;
-  width: min(550px, 100%);
+
+  width:
+    min(
+      550px,
+      100%
+    );
+
   padding: 3.5rem 3rem;
-  /* Efek tembus pandang elegan untuk menonjolkan parallax */
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(232, 229, 223, 0.8);
+
+  /*
+     Existing glass behavior retained but visually
+     transformed into warm paper translucency.
+  */
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(250, 247, 239, 0.94),
+      rgba(244, 239, 229, 0.91)
+    );
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid
+    rgba(130, 107, 80, 0.20);
+
   border-radius: var(--radius-xs);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+
+  box-shadow:
+    var(--shadow-paper);
+
   transition:
     transform 0.4s var(--ease),
     box-shadow 0.4s var(--ease),
     border-color 0.4s var(--ease);
+
+  overflow: hidden;
 }
+
+
+/* ---------------------------------------------------------
+   NOTE CARD ATMOSPHERIC IMAGE
+   Existing notes.jpg becomes default image.
+   Custom --note-image can be supplied by existing markup
+   without changing this stylesheet.
+
+   Example:
+   style="--note-image:url('./assets/images/compass.jpg')"
+--------------------------------------------------------- */
+
+.ainan-glass-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 120px;
+
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(41, 41, 35, 0.07),
+      rgba(244, 239, 229, 0.02) 48%,
+      rgba(244, 239, 229, 0.96) 100%
+    ),
+
+    var(
+      --note-image,
+      url("./assets/images/notes.jpg")
+    );
+
+  background-size:
+    cover,
+    cover;
+
+  background-position:
+    center,
+    center;
+
+  background-repeat: no-repeat;
+
+  filter:
+    sepia(0.24)
+    grayscale(0.16)
+    saturate(0.7)
+    contrast(0.94);
+
+  opacity: 0.72;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* Fine upper-edge linear ornament */
+
+.ainan-glass-card::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 116px;
+
+  left: 3rem;
+  right: 3rem;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(168, 141, 95, 0.56) 15%,
+      rgba(168, 141, 95, 0.30) 50%,
+      rgba(168, 141, 95, 0.56) 85%,
+      transparent
+    );
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+
+/* Keep card contents above image */
+
+.ainan-glass-card > * {
+
+  position: relative;
+
+  z-index: 2;
+}
+
 
 .ainan-glass-card:hover {
+
   transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-  border-color: var(--accent-gold);
+
+  box-shadow:
+    var(--shadow-paper-hover);
+
+  border-color:
+    rgba(168, 141, 95, 0.55);
 }
+
+
+/* =========================================================
+   NOTE CATEGORY
+========================================================= */
 
 .ainan-card-category {
+
   display: block;
+
   margin-bottom: 1.2rem;
+
   font-family: var(--font-sans);
+
   font-size: 0.7rem;
+
   font-weight: 500;
+
   letter-spacing: 2px;
+
   text-transform: uppercase;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
 }
+
+
+/* =========================================================
+   NOTE TITLE
+========================================================= */
 
 .ainan-card-title {
+
   margin: 0 0 1.5rem;
+
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
-  font-weight: 400;
+
+  font-size:
+    clamp(
+      1.8rem,
+      2.5vw,
+      2.2rem
+    );
+
+  font-weight: 500;
+
   line-height: 1.3;
+
+  color: var(--text-main);
 }
 
+
+/* =========================================================
+   NOTE DESCRIPTION
+========================================================= */
+
 .ainan-card-description {
+
   margin: 0 0 2rem;
+
   font-family: var(--font-sans);
+
   font-size: 0.95rem;
+
   line-height: 1.8;
+
   color: var(--text-muted);
 }
 
-/* Excerpt Meta (Horizontal Format) */
+
+/* =========================================================
+   EXCERPT META
+========================================================= */
+
 .excerpt-meta {
+
   display: flex;
+
   align-items: center;
+
   gap: 2rem;
+
   margin-bottom: 2rem;
+
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(42, 44, 42, 0.1);
+
+  border-top:
+    1px solid
+    rgba(42, 42, 35, 0.12);
 }
 
 .ainan-meta-item {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-start;
 }
 
 .ainan-meta-label {
+
   font-family: var(--font-sans);
+
   font-size: 0.65rem;
+
   font-weight: 500;
+
   letter-spacing: 1.5px;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
   margin-bottom: 4px;
 }
 
 .ainan-meta-value {
+
   font-family: var(--font-sans);
+
   font-size: 0.85rem;
+
   font-weight: 400;
+
   color: var(--text-main);
 }
+
+
+/* =========================================================
+   NOTE LINK
+========================================================= */
 
 .ainan-card-link {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 12px;
+
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--accent-gold);
+
+  border-bottom: none;
+
   font-family: var(--font-sans);
+
   font-size: 0.8rem;
+
   font-weight: 500;
+
   letter-spacing: 1px;
+
   text-transform: uppercase;
+
   color: var(--text-main);
+
   transition: var(--ease);
+
+  position: relative;
 }
+
+
+/* Linear gold underline */
+
+.ainan-card-link::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      var(--accent-gold),
+      transparent
+    );
+}
+
 
 .ainan-card-link:hover {
+
   gap: 18px;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
 }
 
-/* ========================================================= 
-   8. SPACE TO GROW (ORGANIZATIONS GRID) 
+
+/* =========================================================
+   8. SPACE TO GROW — ORGANIZATIONS GRID
 ========================================================= */
+
 .section-title {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-start;
 }
 
 .footer-tagline {
+
   font-family: var(--font-sans);
+
   font-size: 0.8rem;
+
   letter-spacing: 2px;
+
   text-transform: uppercase;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
   margin-top: 0.5rem;
+
   margin-bottom: 0rem;
+
   display: block;
 }
 
+
+/* =========================================================
+   ORGANIZATION GRID
+========================================================= */
+
 .org-grid {
+
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(340px, 1fr)
+    );
+
   gap: 2.5rem;
 }
 
+
+/* =========================================================
+   ORGANIZATION CARD
+========================================================= */
+
 .org-card {
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(250, 247, 239, 0.98),
+      rgba(244, 239, 229, 0.96)
+    );
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.009) 0,
+      rgba(72, 61, 45, 0.009) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
+  border:
+    1px solid
+    var(--border-color);
+
   padding: 2.5rem;
+
   border-radius: var(--radius-xs);
+
   display: flex;
+
   flex-direction: column;
+
   transition: var(--ease);
+
+  box-shadow:
+    0 6px 20px
+    rgba(57, 49, 36, 0.025);
 }
 
 .org-card:hover {
+
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
-  border-color: var(--accent-gold);
+
+  box-shadow:
+    0 12px 30px
+    rgba(57, 49, 36, 0.065);
+
+  border-color:
+    rgba(168, 141, 95, 0.55);
 }
+
+
+/* =========================================================
+   ORGANIZATION HEADER
+========================================================= */
 
 .org-header {
+
   display: flex;
+
   align-items: center;
+
   gap: 1.5rem;
+
   margin-bottom: 1.5rem;
+
   padding-bottom: 1.5rem;
+
   border-bottom: 1px solid var(--border-color);
+
+  position: relative;
 }
 
+
+/* Fine secondary line */
+
+.org-header::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -4px;
+
+  width: 42px;
+
+  height: 1px;
+
+  background:
+    var(--accent-gold);
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   ORGANIZATION LOGO
+========================================================= */
+
 .org-logo {
+
   width: 55px;
+
   height: 55px;
+
   object-fit: contain;
+
   flex-shrink: 0;
-  filter: grayscale(100%);
-  opacity: 0.8;
+
+  filter:
+    grayscale(100%)
+    sepia(10%);
+
+  opacity: 0.76;
+
   transition: var(--ease);
 }
 
 .org-card:hover .org-logo {
-  filter: grayscale(0%);
+
+  filter:
+    grayscale(35%)
+    sepia(12%);
+
   opacity: 1;
 }
 
+
+/* =========================================================
+   ORGANIZATION TITLE
+========================================================= */
+
 .org-title-wrapper {
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
 }
 
 .org-name {
+
   font-family: var(--font-serif);
+
   font-size: 1.3rem;
+
   line-height: 1.2;
+
   margin-bottom: 0.4rem;
+
   color: var(--text-main);
+
+  font-weight: 500;
 }
 
 .org-role {
+
   font-family: var(--font-sans);
+
   font-size: 0.7rem;
+
   text-transform: uppercase;
+
   letter-spacing: 1.5px;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
   font-weight: 500;
 }
 
 .org-desc {
+
   font-family: var(--font-sans);
+
   font-size: 0.95rem;
+
   color: var(--text-muted);
+
   line-height: 1.7;
+
   flex-grow: 1;
+
   margin-bottom: 2rem;
 }
 
+
 .org-link {
+
   font-family: var(--font-sans);
+
   font-size: 0.75rem;
+
   text-transform: uppercase;
+
   letter-spacing: 2px;
+
   color: var(--text-main);
+
   font-weight: 500;
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 8px;
+
   align-self: flex-start;
+
   transition: var(--ease);
+
+  position: relative;
+
+  padding-bottom: 5px;
+}
+
+
+/* Linear underline */
+
+.org-link::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      transparent
+    );
 }
 
 .org-link:hover {
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
   gap: 14px;
 }
 
-/* ========================================================= 
-   9. AFTER MOVIES (CAROUSEL) 
+
+/* =========================================================
+   9. AFTER MOVIES — CAROUSEL
 ========================================================= */
+
 .aftermovie-layout {
+
   display: flex;
+
   align-items: center;
+
   gap: 4rem;
+
   max-width: 1400px;
+
   margin: 0 auto;
+
   padding: 0 2rem 0 0;
 }
 
 .aftermovie-carousel-wrapper {
+
   width: 70%;
+
   overflow: hidden;
 }
 
 .aftermovie-carousel {
+
   display: flex;
+
   gap: 2rem;
+
   overflow-x: auto;
+
   scroll-snap-type: x mandatory;
+
   padding: 1rem 0 2rem 2rem;
+
   scrollbar-width: none;
+
   -ms-overflow-style: none;
 }
 
 .aftermovie-carousel::-webkit-scrollbar {
+
   display: none;
 }
 
+
 .aftermovie-item {
+
   flex: 0 0 calc(40%);
+
   scroll-snap-align: start;
 }
 
+
+/* =========================================================
+   YOUTUBE WRAPPER
+========================================================= */
+
 .youtube-wrapper {
+
   width: 100%;
+
   aspect-ratio: 16 / 9;
-  background: #000;
+
+  background: var(--text-main);
+
   border-radius: var(--radius-xs);
+
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  box-shadow:
+    0 10px 30px
+    rgba(57, 49, 36, 0.08);
+
   position: relative;
+
+  border:
+    1px solid
+    rgba(168, 141, 95, 0.18);
 }
 
 .youtube-wrapper iframe {
+
   position: absolute;
+
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   border: none;
 }
 
+
 .aftermovie-title {
+
   font-family: var(--font-sans);
+
   font-size: 0.85rem;
+
   text-transform: uppercase;
+
   letter-spacing: 1px;
+
   margin-top: 1.5rem;
+
   color: var(--text-main);
+
   font-weight: 500;
 }
 
+
 .aftermovie-info {
+
   width: 30%;
+
   display: flex;
+
   flex-direction: column;
 }
 
 .aftermovie-info p {
+
   font-family: var(--font-sans);
+
   font-size: 1rem;
+
   color: var(--text-muted);
+
   line-height: 1.7;
+
   margin-bottom: 2rem;
 }
 
+
 .scroll-hint {
+
   font-family: var(--font-sans);
+
   font-size: 0.7rem;
+
   text-transform: uppercase;
+
   letter-spacing: 2px;
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
 }
 
+
 .animated-chevrons {
+
   display: flex;
+
   align-items: center;
+
   color: var(--accent-gold);
+
   font-size: 1.2rem;
+
   margin-left: 8px;
 }
 
 .animated-chevrons span {
+
   display: inline-block;
-  animation: swipeForward 1.5s infinite ease-in-out;
+
+  animation:
+    swipeForward
+    1.5s
+    infinite
+    ease-in-out;
 }
+
 .animated-chevrons span:nth-child(2) {
+
   animation-delay: 0.15s;
+
   margin-left: -4px;
 }
 
+
 @keyframes swipeForward {
+
   0%,
   100% {
+
     transform: translateX(0);
+
     opacity: 0.2;
   }
+
   50% {
+
     transform: translateX(6px);
+
     opacity: 1;
   }
 }
 
-/* ========================================================= 
-   10. UNIVERSAL FOOTER STYLES 
+
+/* =========================================================
+   10. UNIVERSAL FOOTER STYLES
 ========================================================= */
+
 .site-footer {
+
   background-color: var(--bg-white);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 61, 45, 0.009) 0,
+      rgba(72, 61, 45, 0.009) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
   color: var(--text-main);
+
   border-top: 1px solid var(--border-color);
+
   display: flex;
+
   flex-direction: column;
+
+  position: relative;
 }
 
+
+/* Top linear ornament */
+
+.site-footer::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 8%;
+  right: 8%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(168, 141, 95, 0.45) 20%,
+      rgba(168, 141, 95, 0.45) 80%,
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
 .footer-container {
+
   width: 100%;
+
   max-width: 1200px;
+
   margin: 0 auto;
+
   padding: 6rem 2rem 3rem;
+
   display: flex;
+
   flex-direction: column;
+
   gap: 5rem;
 }
 
+
 .footer-center {
+
   text-align: center;
 }
 
+
 .footer-brand-logo {
+
   font-family: var(--font-serif);
+
   font-size: 1.5rem;
-  letter-spacing: 0.3em;
-  color: var(--accent-gold);
+
+  letter-spacing: 0.25em;
+
+  color: var(--accent-gold-deep);
+
   margin-bottom: 2rem;
+
   text-transform: uppercase;
+
+  font-weight: 600;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45);
 }
+
 
 .footer-tagline-large {
+
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
+
+  font-size:
+    clamp(
+      1.8rem,
+      3vw,
+      2.8rem
+    );
+
   max-width: 800px;
+
   margin: 0 auto;
+
   line-height: 1.4;
+
   color: var(--text-main);
-  font-weight: 400;
-}
 
-.footer-bottom-area {
-  border-top: 1px solid var(--border-color);
-  padding-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
-}
-
-.footer-connect-centered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.nav-group-title {
-  padding-top: 0.5rem;
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--accent-gold);
   font-weight: 500;
 }
 
-.connect-links {
+
+.footer-bottom-area {
+
+  border-top:
+    1px solid
+    var(--border-color);
+
+  padding-top: 2rem;
+
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+
+  flex-direction: column;
+
+  align-items: center;
+
   gap: 4rem;
 }
 
-.connect-links a {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-muted);
+
+.footer-connect-centered {
+
   display: flex;
+
+  flex-direction: column;
+
   align-items: center;
-  gap: 12px;
-  transition: var(--ease);
+
+  gap: 2rem;
 }
 
+
+.nav-group-title {
+
+  padding-top: 0.5rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.75rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 3px;
+
+  color: var(--accent-gold-deep);
+
+  font-weight: 500;
+}
+
+
+.connect-links {
+
+  display: flex;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 4rem;
+}
+
+
+.connect-links a {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.85rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  color: var(--text-muted);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  transition: var(--ease);
+
+  position: relative;
+
+  padding-bottom: 5px;
+}
+
+
+/* Fine linear underline */
+
+.connect-links a::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold),
+      transparent
+    );
+
+  opacity: 0.45;
+}
+
+
 .connect-links a i {
+
   font-size: 1.1rem;
 }
 
+
 .connect-links a:hover {
-  color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
   transform: translateY(-2px);
 }
 
+
 .footer-copyright {
+
   text-align: center;
+
   font-family: var(--font-sans);
+
   font-size: 0.8rem;
+
   color: var(--text-muted);
 }
 
-/* ==========================================================================
-   MOBILE REFINEMENT — 360px TO 420px ONLY
-   Final override for compact mobile screens (WCAG 2.1 AA)
-========================================================================== */
+
+/* =========================================================
+   MOBILE REFINEMENT — 360px TO 420px
+   Existing functionality preserved
+========================================================= */
 
 @media screen and (min-width: 360px) and (max-width: 420px) {
-  /* =========================================================
+
+  /* =======================================================
      GLOBAL ACCESSIBILITY
-  ========================================================= */
+  ======================================================= */
 
   *,
   *::before,
@@ -1384,33 +3306,55 @@ img {
 
   html,
   body {
+
     width: 100%;
+
     max-width: 100vw;
+
     overflow-x: hidden;
+
     margin: 0;
+
     padding: 0;
   }
 
   body {
+
     font-size: 1rem;
+
     line-height: 1.5;
+
     overflow-wrap: break-word;
+
     -webkit-text-size-adjust: 100%;
   }
 
+
+  /* =======================================================
+     CONTAINER
+  ======================================================= */
+
   .container {
+
     width: 100%;
+
     max-width: 100%;
+
     padding-left: 1rem;
+
     padding-right: 1rem;
   }
+
 
   img,
   video,
   iframe {
+
     max-width: 100%;
+
     height: auto;
   }
+
 
   p,
   h1,
@@ -1419,642 +3363,1257 @@ img {
   h4,
   span,
   a {
+
     hyphens: none;
   }
 
-  /* =========================================================
+
+  /* =======================================================
      KEYBOARD FOCUS
-  ========================================================= */
+  ======================================================= */
 
   a:focus-visible,
   button:focus-visible,
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline: 3px solid currentColor;
+
+    outline:
+      3px solid
+      var(--accent-steel-blue);
+
     outline-offset: 3px;
   }
 
-  /* =========================================================
-     HEADER & NAVIGATION (SINGLE LINE OVERRIDE)
-  ========================================================= */
+
+  /* =======================================================
+     HEADER & NAVIGATION
+     SINGLE LINE OVERRIDE
+  ======================================================= */
 
   .site-header {
+
     width: 100%;
+
     position: fixed;
+
     top: 0;
+
     height: auto;
+
     padding: 0;
+
+    background-color:
+      rgba(250, 247, 239, 0.97);
   }
 
+
   .site-nav {
+
     width: 100%;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     padding: 0.5rem;
+
     gap: 0.5rem;
   }
 
+
   .nav-logo {
+
     width: 100%;
+
     text-align: center;
   }
 
+
   .brand-text {
+
     font-size: 1.25rem;
-    letter-spacing: 2px;
+
+    letter-spacing: 0.18em;
+
     display: inline-block;
+
     min-height: auto;
+
     line-height: 1.2;
+
     margin: 0;
   }
 
+
+  .brand-text::after {
+
+    left: 0;
+
+    right: 0;
+
+    bottom: -4px;
+  }
+
+
   .nav-links {
+
     display: flex;
-    flex-wrap: nowrap; /* Memaksa menu menjadi satu baris */
-    justify-content: space-evenly; /* Menyebarkan menu agar tidak menumpuk */
+
+    flex-wrap: nowrap;
+
+    justify-content: space-evenly;
+
     align-items: center;
+
     gap: 0.2rem;
+
     width: 100%;
+
     padding: 0;
   }
 
+
   .nav-links li {
+
     list-style: none;
+
     margin: 0;
   }
+
 
   .nav-links a,
   .lang-btn {
+
     min-height: 36px;
-    min-width: auto; /* Auto agar bisa fleksibel muat di layar kecil */
+
+    min-width: auto;
+
     display: inline-flex;
+
     align-items: center;
+
     justify-content: center;
-    font-size: 0.75rem; /* Diperkecil agar muat sebaris pada 360px */
+
+    font-size: 0.75rem;
+
     padding: 0.25rem;
+
     white-space: nowrap;
+
     line-height: 1;
   }
 
+
   .lang-switcher {
+
     display: flex;
+
     align-items: center;
+
     gap: 0.15rem;
   }
 
+
   .lang-divider {
+
     font-size: 0.75rem;
   }
 
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
   .hero-section {
+
     position: relative;
+
     width: 100%;
+
     height: 260px;
+
     min-height: 0;
+
     padding: 0;
+
     display: block;
+
     overflow: hidden;
   }
 
+
   .hero-split-image {
+
     position: absolute;
+
     inset: 0;
+
     width: 100%;
+
     height: 100%;
+
     object-fit: cover;
+
     object-position: center;
+
     z-index: 1;
   }
 
-  /* TEXT BERADA DI DEPAN IMAGE */
+
+  .hero-split-image::after {
+
+    background:
+
+      linear-gradient(
+        to bottom,
+        rgba(244, 239, 229, 0.03) 0%,
+        rgba(244, 239, 229, 0.08) 50%,
+        rgba(41, 41, 35, 0.58) 100%
+      );
+  }
+
+
+  /*
+     TEXT BERADA DI DEPAN IMAGE
+  */
+
   .hero-content {
+
     position: relative;
+
     z-index: 2;
+
     width: 100%;
+
     height: 100%;
+
     padding: 0;
+
     display: flex;
-    /* Ubah ini untuk menurunkan semua teks ke bawah */
+
     align-items: flex-end;
   }
 
+
   .hero-split-text {
+
     width: 100%;
-    /* Atur padding bawah di sini untuk menentukan seberapa turun teksnya */
-    padding: 1rem 1rem 1.5rem 1rem;
+
+    padding:
+      1rem
+      1rem
+      1.5rem
+      1rem;
+
     text-align: left;
-    /* translateY dihapus karena sudah diatur oleh align-items: flex-end */
   }
 
-  /* Tambahan untuk menyesuaikan Eyebrow di Mobile */
+
+  /* =======================================================
+     HERO EYEBROW
+  ======================================================= */
+
   .hero-eyebrow {
+
     font-size: 0.6rem;
+
     margin-bottom: 0.5rem;
+
     letter-spacing: 2px;
+
+    color: var(--accent-gold-light);
+
+    text-shadow:
+      0 1px 4px rgba(41, 41, 35, 0.35);
   }
+
+
+  /* =======================================================
+     HERO TITLE
+  ======================================================= */
 
   .hero-title {
+
     font-size: 2.25rem;
+
     line-height: 1.1;
+
     letter-spacing: -0.5px;
+
     margin-bottom: 0.5rem;
+
+    color:
+      #f5efe3;
+
+    text-shadow:
+      0 2px 12px
+      rgba(41, 41, 35, 0.40);
   }
 
+
   .gold-divider {
+
     display: none !important;
   }
 
+
   .hero-subtitle {
+
     font-size: 0.75rem;
+
     line-height: 1.4;
+
     letter-spacing: 1px;
+
     margin: 0;
+
+    color:
+      rgba(250, 247, 239, 0.82);
+
+    text-shadow:
+      0 1px 7px
+      rgba(41, 41, 35, 0.35);
   }
 
-  /* =========================================================
-     MAIN LAYOUT & STACKING (INTRO/COMMONPLACE)
-  ========================================================= */
+
+  /* =======================================================
+     MAIN LAYOUT & STACKING
+  ======================================================= */
 
   .intro-layout {
+
     display: flex;
+
     flex-direction: column;
+
     gap: 1.5rem;
+
     width: 100%;
   }
+
 
   .intro-image {
+
     width: 100%;
+
     max-width: 260px;
+
     margin: 0 auto;
+
     order: -1;
-    display: none; /* Disembunyikan untuk layar kecil */
+
+    display: none;
   }
+
 
   .intro-text {
+
     width: 100%;
   }
 
+
   .intro-text p {
+
     font-size: 1rem;
+
     line-height: 1.5;
+
     margin-bottom: 1rem;
+
     text-align: justify;
+
     word-break: normal;
   }
 
+
   .drop-cap::first-letter {
+
     font-size: 3rem;
+
     line-height: 1;
+
     padding-right: 8px;
+
     padding-top: 4px;
+
     float: left;
   }
 
-  /* =========================================================
+
+  /* =======================================================
      COMMUNITY QUOTE
-  ========================================================= */
+  ======================================================= */
 
   .community-quote-section {
+
     padding-top: 2.5rem;
+
     padding-bottom: 2.5rem;
   }
 
+
   .community-quote {
+
     padding-left: 1rem;
+
     padding-right: 1rem;
+
     margin: 0;
   }
 
+
   .community-quote p {
+
     font-size: 1.15rem;
+
     line-height: 1.5;
   }
 
-  /* =========================================================
-     AINAN SECTION (RECENT NOTES)
-  ========================================================= */
+
+  /* =======================================================
+     AINAN SECTION — RECENT NOTES
+  ======================================================= */
 
   .ainan-section {
+
     padding-top: 2.5rem;
+
     padding-bottom: 2.5rem;
+
     display: flex;
+
     flex-direction: column;
+
     position: relative;
+
+    background-attachment: scroll;
   }
 
+
   .ainan-page-title {
+
     width: 100%;
+
     margin-bottom: 1.5rem;
+
     text-align: center;
+
     position: relative;
+
     z-index: 2;
+
     padding: 0 1rem;
   }
 
+
   .ainan-page-title h2 {
+
     font-size: 1.75rem;
+
     line-height: 1.3;
+
     margin: 0;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     gap: 0.25rem;
   }
 
+
+  .ainan-page-title h2::after {
+
+    margin-top: 0.5rem;
+
+    width: 55px;
+
+    align-self: center;
+  }
+
+
   .ainan-page-title h2 span {
+
     font-size: 0.9rem;
+
     font-weight: normal;
+
     letter-spacing: 0.5px;
+
     opacity: 0.8;
   }
 
+
   .ainan-container {
+
     width: 100%;
+
     padding: 0 1rem;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 1.25rem;
+
     position: relative;
+
     z-index: 2;
   }
 
+
   .ainan-glass-card {
+
     display: block;
+
     width: 100%;
+
     padding: 1.5rem 1.25rem;
+
     margin: 0;
+
     position: relative;
+
+    background:
+      rgba(250, 247, 239, 0.94);
+
+    backdrop-filter: blur(9px);
+
+    -webkit-backdrop-filter: blur(9px);
   }
 
+
+  .ainan-glass-card::before {
+
+    height: 95px;
+  }
+
+
+  .ainan-glass-card::after {
+
+    top: 92px;
+
+    left: 1.25rem;
+
+    right: 1.25rem;
+  }
+
+
   .ainan-card-content {
+
     display: flex;
+
     flex-direction: column;
   }
 
+
   .ainan-card-category {
+
     display: inline-block;
+
     font-size: 0.8rem;
+
     letter-spacing: 1px;
+
     margin-bottom: 0.5rem;
+
     text-transform: uppercase;
   }
 
+
   .ainan-card-title {
+
     font-size: 1.25rem;
+
     line-height: 1.3;
+
     margin-bottom: 0.75rem;
   }
 
+
   .ainan-card-description {
+
     font-size: 0.95rem;
+
     line-height: 1.5;
+
     margin-bottom: 1rem;
   }
 
+
   .ainan-card-link {
+
     min-height: 44px;
+
     display: inline-flex;
+
     align-items: center;
+
     font-weight: 600;
   }
 
-  /* =========================================================
+
+  /* =======================================================
      ORGANIZATIONS
-  ========================================================= */
+  ======================================================= */
 
   .org-grid {
+
     display: flex;
+
     flex-direction: column;
+
     gap: 1rem;
   }
 
+
   .org-card {
+
     padding: 1.25rem;
+
     width: 100%;
   }
 
+
   .org-header {
+
     display: flex;
+
     flex-direction: row;
+
     align-items: center;
+
     gap: 1rem;
+
     margin-bottom: 0.75rem;
   }
 
+
   .org-logo {
+
     width: 48px;
+
     height: auto;
+
     flex-shrink: 0;
   }
 
+
   .org-title-wrapper {
+
     min-width: 0;
   }
 
+
   .org-name {
+
     font-size: 1.05rem;
+
     line-height: 1.3;
+
     overflow-wrap: break-word;
+
     margin: 0;
   }
 
+
   .org-role {
+
     font-size: 0.85rem;
+
     display: block;
+
     margin-top: 0.25rem;
   }
 
+
   .org-desc {
+
     font-size: 0.9rem;
+
     line-height: 1.5;
+
     margin-bottom: 1rem;
   }
 
+
   .org-link {
+
     min-height: 44px;
+
     display: inline-flex;
+
     align-items: center;
   }
 
-  /* =========================================================
-     AFTERMOVIE CAROUSEL (PADDING REDUCED)
-  ========================================================= */
+
+  /* =======================================================
+     AFTERMOVIE CAROUSEL
+  ======================================================= */
+
   .content-section {
+
     position: relative;
+
     z-index: 10;
+
     padding: 1rem 0;
   }
 
+
   .section-title {
+
     margin-bottom: 0.5rem;
+
     font-size: 1.5rem;
   }
 
-  .aftermovie-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem; /* Gap diperkecil */
-    width: 100%;
-    padding: 0 0.5rem; /* Padding horizontal diperkecil */
-  }
 
-  .aftermovie-info {
+  .aftermovie-layout {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.75rem;
+
     width: 100%;
-    text-align: center;
-    order: 1;
+
     padding: 0 0.5rem;
   }
 
+
+  .aftermovie-info {
+
+    width: 100%;
+
+    text-align: center;
+
+    order: 1;
+
+    padding: 0 0.5rem;
+  }
+
+
   .aftermovie-info h2 {
+
     margin-bottom: 0.5rem;
+
     font-size: 1.5rem;
   }
 
+
   .aftermovie-info p {
+
     width: 100%;
+
     font-size: 0.95rem;
+
     line-height: 1.4;
+
     margin: 0 auto;
   }
 
+
   .aftermovie-carousel-wrapper {
+
     width: 100%;
+
     order: 2;
   }
 
+
   .aftermovie-carousel {
+
     display: flex;
+
     flex-direction: row;
+
     flex-wrap: nowrap;
+
     overflow-x: auto;
-    gap: 0.75rem; /* Gap antar video diperkecil */
+
+    gap: 0.75rem;
+
     scroll-snap-type: x mandatory;
-    padding-bottom: 0.5rem; /* Padding bawah diperkecil */
+
+    padding-bottom: 0.5rem;
+
     -webkit-overflow-scrolling: touch;
   }
 
+
   .aftermovie-item {
-    flex: 0 0 92%; /* Video lebih lebar karena padding berkurang */
+
+    flex: 0 0 92%;
+
     max-width: 92%;
+
     scroll-snap-align: center;
   }
 
+
   .youtube-wrapper {
+
     position: relative;
+
     width: 100%;
+
     padding-bottom: 56.25%;
+
     height: 0;
+
     overflow: hidden;
-    border-radius: 6px;
-    background: #000;
+
+    border-radius: 0;
+
+    background: var(--text-main);
   }
 
+
   .youtube-wrapper iframe {
+
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     width: 100%;
+
     height: 100%;
+
     border: none;
   }
 
+
   .aftermovie-title {
+
     font-size: 0.9rem;
+
     line-height: 1.3;
+
     margin-top: 0.5rem;
+
     text-align: center;
   }
 
-  /* =========================================================
-     CONTACT & FORM (Safety Baseline)
-  ========================================================= */
+
+  /* =======================================================
+     CONTACT & FORM
+  ======================================================= */
 
   .contact-item {
+
     display: flex;
+
     flex-direction: column;
+
     align-items: flex-start;
+
     gap: 0.5rem;
+
     margin-bottom: 1.25rem;
   }
 
+
   .contact-info {
+
     min-width: 0;
+
     width: 100%;
+
     overflow-wrap: break-word;
   }
+
 
   input,
   select,
   textarea {
+
     width: 100%;
+
     min-height: 44px;
+
     font-size: 1rem;
+
     line-height: 1.5;
+
     padding: 0.75rem;
+
+    background:
+      rgba(250, 247, 239, 0.92);
+
+    border:
+      1px solid
+      var(--border-color);
+
+    color: var(--text-main);
   }
+
 
   button,
   .submit-btn {
+
     min-height: 44px;
+
     padding: 0.75rem 1rem;
+
     font-size: 1rem;
+
     width: 100%;
+
+    background:
+      var(--text-main);
+
+    color:
+      var(--bg-white);
+
+    border:
+      1px solid
+      var(--text-main);
   }
 
-  /* =========================================================
-     FOOTER (COMPACT)
-  ========================================================= */
+
+  /* =======================================================
+     FOOTER
+  ======================================================= */
 
   .footer-container {
-    padding: 3rem 1rem 1.5rem; /* padding atas ditambah */
+
+    padding:
+      3rem
+      1rem
+      1.5rem;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     text-align: center;
-    gap: 1rem; /* sebelumnya 1.5rem */
+
+    gap: 1rem;
   }
 
+
   .footer-center {
+
     width: 100%;
   }
 
+
   .footer-brand-logo {
+
     margin: 0;
+
     font-size: 1.5rem;
+
     line-height: 1.2;
   }
 
+
   .footer-tagline-large {
+
     font-size: 1rem;
-    line-height: 1.3; /* lebih rapat */
+
+    line-height: 1.3;
+
     margin-top: 0.35rem;
+
     margin-bottom: 0;
   }
 
+
   .footer-bottom-area {
+
     width: 100%;
+
     display: flex;
+
     flex-direction: column;
-    gap: 0.8rem; /* diperkecil */
+
+    gap: 0.8rem;
+
     padding-top: 0;
   }
 
+
   .connect-links {
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
-    gap: 0.15rem; /* jarak antar link diperkecil */
+
+    gap: 0.15rem;
+
     width: 100%;
   }
+
 
   .nav-group-title {
+
     margin-bottom: 0.25rem;
+
     display: inline-block;
+
     line-height: 1.2;
   }
 
+
   .connect-links a {
-    min-height: 32px; /* tetap nyaman diklik */
+
+    min-height: 32px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 0.5rem;
+
     width: 100%;
+
     font-size: 0.9rem;
+
     line-height: 1.2;
+
     padding: 0.1rem;
   }
 
+
   .footer-copyright {
+
     margin-top: 0.25rem;
   }
 
+
   .footer-copyright p {
+
     font-size: 0.75rem;
+
     line-height: 1.3;
+
     margin: 0;
   }
 
-  /* =========================================================
-   FORCE HERO TO START IMMEDIATELY AFTER HEADER
-========================================================= */
+
+  /* =======================================================
+     FORCE HERO TO START IMMEDIATELY AFTER HEADER
+  ======================================================= */
 
   .site-header {
+
     height: auto !important;
+
     min-height: 0 !important;
+
     margin: 0 !important;
+
     padding: 0 !important;
   }
 
+
   .site-nav {
+
     height: auto !important;
+
     min-height: 0 !important;
+
     margin: 0 !important;
+
     padding: 0.5rem !important;
   }
 
+
   .hero-section {
+
     height: 300px !important;
+
     min-height: 300px !important;
+
     margin: 0 !important;
+
     padding: 0 !important;
   }
-  /* =========================================================
-   HERO — MOBILE: REMOVE DESKTOP PLACEHOLDER SPACE
-========================================================= */
+
+
+  /* =======================================================
+     HERO — REMOVE DESKTOP PLACEHOLDER SPACE
+  ======================================================= */
 
   .hero-placeholder {
+
     display: none !important;
+
     width: 0 !important;
+
     height: 0 !important;
+
     min-height: 0 !important;
+
     margin: 0 !important;
+
     padding: 0 !important;
   }
 
-  /* Hero langsung mengikuti navigation */
+
+  /* =======================================================
+     HERO — MOBILE FINAL
+  ======================================================= */
+
   .hero-section {
+
     position: relative !important;
+
     inset: auto !important;
+
     top: auto !important;
+
     right: auto !important;
+
     bottom: auto !important;
+
     left: auto !important;
 
     width: 100% !important;
+
     height: 300px !important;
+
     min-height: 300px !important;
 
     margin: 0 !important;
+
     padding: 0 !important;
 
     display: block !important;
+
     overflow: hidden;
+
     z-index: 1;
   }
+
+
   .hero-split-image {
+
     position: absolute !important;
+
     inset: 0 !important;
 
     width: 100% !important;
+
     height: 100% !important;
 
     min-height: 0 !important;
+
     max-height: none !important;
 
     z-index: 1;
+
     overflow: hidden;
   }
 
+
   .hero-split-image img {
+
     width: 100% !important;
+
     height: 100% !important;
 
     max-width: none !important;
 
     object-fit: cover !important;
+
     object-position: center !important;
+
+    filter:
+      grayscale(0.18)
+      sepia(0.15)
+      saturate(0.70)
+      contrast(0.94)
+      brightness(0.95);
+  }
+}
+
+
+/* =========================================================
+   OPTIONAL SMALL-SCREEN PAPER / GOLD REFINEMENTS
+   Applies only to narrow mobile UI without altering layout.
+========================================================= */
+
+@media screen and (max-width: 420px) {
+
+  .section-title::before,
+  .section-title::after,
+  .org-header::after {
+    opacity: 0.5;
+  }
+
+  .quote-mark {
+    color: var(--accent-gold-deep);
+  }
+
+  .gee-title,
+  .ainan-card-title,
+  .org-name {
+    font-weight: 500;
+  }
+}
+
+
+/* =========================================================
+   PRINT / PAPER PRESERVATION
+   Keeps the visual identity when printed.
+========================================================= */
+
+@media print {
+
+  body,
+  .bg-paper,
+  .bg-white,
+  .bg-alt,
+  .site-footer,
+  .archive-intro-section,
+  .interactive-map-section,
+  .ainan-section {
+
+    background:
+      #f4efe5 !important;
+
+    color:
+      #292923 !important;
+  }
+
+  .site-header {
+    position: relative !important;
+
+    box-shadow: none !important;
+
+    backdrop-filter: none !important;
+
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .hero-section {
+    position: relative !important;
+  }
+
+  .ainan-section {
+    background-attachment: initial !important;
+  }
+
+  .community-quote-section::after,
+  .quote-mark,
+  .quote-attribution-line {
+    animation: none !important;
   }
 }
