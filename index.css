@@ -4617,3 +4617,1417 @@ textarea {
     animation: none !important;
   }
 }
+
+
+/* ==========================================================================
+   AWS — COMMONPLACE BOOK
+   FINAL CLEAN EDITORIAL OVERRIDE
+   --------------------------------------------------------------------------
+   PURPOSE:
+   - Keep all existing functionality and structure
+   - Bright, clean overall appearance
+   - White / ivory / cream as dominant surfaces
+   - Brown / sepia only on selected sections
+   - Muted etched gold accents
+   - Classical serif + minimalist sans-serif
+   - Linear filigree ornaments
+   - Different image for each Recent Notes card
+========================================================================== */
+
+
+/* =========================================================
+   1. LIGHTER GLOBAL PALETTE
+========================================================= */
+
+:root {
+
+  /* Main surfaces */
+  --bg-paper: #f7f4ed;
+  --bg-white: #fffdf8;
+  --bg-alt: #eee8db;
+
+  /* Additional clean surfaces */
+  --paper-white: #fffefa;
+  --paper-cream: #f5f0e5;
+  --paper-warm: #ece3d2;
+
+  /* Text */
+  --text-main: #292a27;
+  --text-muted: #68675f;
+  --text-soft: #858176;
+
+  /* Gold */
+  --accent-gold: #aa9367;
+  --accent-gold-deep: #8d7448;
+  --accent-gold-light: #c9b891;
+
+  /* Sepia / brown */
+  --accent-sepia: #8c7658;
+  --brown-soft: #9c876a;
+  --brown-section: #e5dbc9;
+
+  /* Rare cool accent */
+  --accent-steel-blue: #71838d;
+
+  /* Borders */
+  --border-color: rgba(92, 80, 61, 0.15);
+  --border-light: rgba(92, 80, 61, 0.09);
+  --border-dark: rgba(42, 42, 37, 0.38);
+
+  /* Typography */
+  --font-serif:
+    "Cormorant Garamond",
+    "Garamond",
+    "Baskerville",
+    Georgia,
+    serif;
+
+  --font-sans:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --radius-xs: 0px;
+
+  --ease:
+    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Shadows */
+  --shadow-soft:
+    0 10px 32px rgba(66, 55, 40, 0.045);
+
+  --shadow-card:
+    0 12px 35px rgba(66, 55, 40, 0.06);
+
+  --shadow-card-hover:
+    0 18px 42px rgba(66, 55, 40, 0.09);
+}
+
+
+/* =========================================================
+   2. GLOBAL — BRIGHT PAPER
+========================================================= */
+
+html {
+  background: var(--bg-white);
+}
+
+body {
+
+  color: var(--text-main);
+
+  background-color: var(--bg-paper);
+
+  background-image:
+    radial-gradient(
+      circle at 18% 8%,
+      rgba(170, 147, 103, 0.028),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 86% 76%,
+      rgba(150, 126, 91, 0.018),
+      transparent 24%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(80, 68, 50, 0.008) 0,
+      rgba(80, 68, 50, 0.008) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+
+/* =========================================================
+   3. SURFACE VARIATIONS
+   White / cream / warm cream
+========================================================= */
+
+.bg-white {
+  background-color: var(--paper-white);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.006) 0,
+      rgba(70, 60, 45, 0.006) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+.bg-paper {
+  background-color: var(--bg-paper);
+
+  background-image:
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(170, 147, 103, 0.025),
+      transparent 26%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.008) 0,
+      rgba(70, 60, 45, 0.008) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+
+/*
+   IMPORTANT:
+   bg-alt is deliberately slightly warmer,
+   but no longer dark.
+*/
+
+.bg-alt {
+  background-color: var(--paper-cream);
+
+  background-image:
+    radial-gradient(
+      circle at 14% 18%,
+      rgba(170, 147, 103, 0.045),
+      transparent 28%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.008) 0,
+      rgba(70, 60, 45, 0.008) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+
+/* =========================================================
+   4. HEADER
+   Very clean ivory surface
+========================================================= */
+
+.site-header {
+
+  background-color:
+    rgba(255, 253, 248, 0.95);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.006) 0,
+      rgba(70, 60, 45, 0.006) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  border-bottom:
+    1px solid
+    rgba(100, 86, 66, 0.13);
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-header::after {
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(170, 147, 103, 0.34) 20%,
+      rgba(170, 147, 103, 0.34) 80%,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   5. AWS BRAND — ETCHED GOLD
+========================================================= */
+
+.brand-text {
+
+  background:
+    linear-gradient(
+      180deg,
+      #d1c09d 0%,
+      #aa9367 34%,
+      #927847 63%,
+      #b59e72 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.70),
+    0 -0.5px 0 rgba(90, 70, 40, 0.20);
+}
+
+.brand-text::after {
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(170, 147, 103, 0.72) 20%,
+      rgba(170, 147, 103, 0.72) 80%,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   6. NAVIGATION
+========================================================= */
+
+.nav-links a {
+  color: #6e6b63;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--text-main);
+
+  border-bottom-color:
+    var(--accent-gold);
+}
+
+.lang-switcher button {
+  color: #77746b;
+}
+
+.lang-switcher button.active {
+  color: var(--accent-gold-deep);
+}
+
+
+/* =========================================================
+   7. HERO
+   Keep photographic hero, but make it lighter
+========================================================= */
+
+.hero-section {
+
+  background-color: var(--bg-paper);
+
+  background-image:
+    linear-gradient(
+      rgba(247, 244, 237, 0.10),
+      rgba(247, 244, 237, 0.10)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.007) 0,
+      rgba(70, 60, 45, 0.007) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+.hero-split-image::after {
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(247, 244, 237, 1) 0%,
+      rgba(247, 244, 237, 0.97) 12%,
+      rgba(247, 244, 237, 0.74) 25%,
+      rgba(247, 244, 237, 0.22) 42%,
+      rgba(247, 244, 237, 0.02) 60%,
+      rgba(130, 107, 80, 0.035) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(70, 55, 38, 0.015),
+      rgba(70, 55, 38, 0)
+    );
+}
+
+.hero-split-image img {
+
+  filter:
+    grayscale(0.08)
+    sepia(0.07)
+    saturate(0.78)
+    contrast(0.94)
+    brightness(1.05);
+}
+
+
+/* =========================================================
+   8. HERO TYPOGRAPHY
+========================================================= */
+
+.hero-eyebrow {
+  color: var(--accent-gold-deep);
+}
+
+.hero-title {
+  color: var(--text-main);
+}
+
+.hero-subtitle {
+  color: var(--text-muted);
+}
+
+.gold-divider {
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      var(--accent-gold),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   9. SECTION TITLES
+========================================================= */
+
+.section-title {
+  color: var(--text-main);
+
+  border-bottom: none !important;
+}
+
+.section-title::after {
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep) 0,
+      rgba(170, 147, 103, 0.70) 18%,
+      rgba(170, 147, 103, 0.25) 55%,
+      transparent 100%
+    );
+}
+
+.section-title::before {
+
+  background:
+    var(--accent-gold);
+
+  opacity: 0.62;
+}
+
+
+/* =========================================================
+   10. ARCHIVE INTRO
+   Clean white section
+========================================================= */
+
+.archive-intro-section {
+
+  background-color: var(--paper-white);
+
+  background-image:
+    radial-gradient(
+      circle at 84% 18%,
+      rgba(170, 147, 103, 0.028),
+      transparent 25%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.006) 0,
+      rgba(70, 60, 45, 0.006) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+.intro-text p {
+  color: var(--text-muted);
+}
+
+.drop-cap::first-letter {
+  color: var(--accent-gold-deep);
+}
+
+
+/* =========================================================
+   11. COMMUNITY QUOTE
+   Light cream — not brown
+========================================================= */
+
+.community-quote-section {
+
+  background:
+
+    radial-gradient(
+      circle at 18% 35%,
+      rgba(170, 147, 103, 0.045),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 82% 68%,
+      rgba(120, 105, 83, 0.025),
+      transparent 26%
+    ),
+
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.006) 0,
+      rgba(70, 60, 45, 0.006) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+
+    var(--bg-paper);
+}
+
+.community-quote-section::before {
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(170, 147, 103, 0.12) 18%,
+      rgba(170, 147, 103, 0.24) 50%,
+      rgba(170, 147, 103, 0.12) 82%,
+      transparent
+    );
+}
+
+.quote-mark {
+  color: var(--accent-gold);
+}
+
+.community-quote p {
+  color: var(--text-main);
+}
+
+.quote-attribution {
+  color: var(--text-muted);
+}
+
+.quote-attribution cite {
+  color: var(--accent-gold-deep);
+}
+
+
+/* =========================================================
+   12. GEE SECTION
+   This is one of the places where a slightly deeper
+   cream / sepia background is intentionally allowed.
+========================================================= */
+
+.interactive-map-section {
+
+  background-color:
+    #e8dfcf;
+
+  background-image:
+    radial-gradient(
+      circle at 10% 15%,
+      rgba(255, 255, 255, 0.38),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 85%,
+      rgba(153, 128, 94, 0.055),
+      transparent 28%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.008) 0,
+      rgba(70, 60, 45, 0.008) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  border-top:
+    1px solid
+    rgba(100, 86, 66, 0.15);
+
+  border-bottom:
+    1px solid
+    rgba(100, 86, 66, 0.15);
+}
+
+.interactive-map-section .footer-tagline {
+  color: var(--accent-gold-deep);
+}
+
+.gee-title {
+  color: var(--text-main);
+}
+
+.gee-desc {
+  color: var(--text-muted);
+}
+
+
+/* GEE frame remains paper white */
+
+.gee-frame-container {
+
+  background-color:
+    var(--paper-white);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.006) 0,
+      rgba(70, 60, 45, 0.006) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  border-color:
+    rgba(100, 86, 66, 0.16);
+
+  box-shadow:
+    0 10px 30px
+    rgba(66, 55, 40, 0.055);
+}
+
+.gee-frame-container:hover {
+
+  border-color:
+    rgba(170, 147, 103, 0.70);
+
+  box-shadow:
+    0 15px 40px
+    rgba(66, 55, 40, 0.08);
+}
+
+.gee-frame-container iframe {
+
+  background-color:
+    #f4f0e6;
+
+  border-color:
+    rgba(42, 42, 37, 0.32);
+}
+
+.gee-caption {
+  color: var(--text-muted);
+}
+
+
+/* =========================================================
+   13. RECENT NOTES SECTION
+   THIS SECTION CAN BE VISUALLY RICHER
+========================================================= */
+
+.ainan-section {
+
+  background-image:
+
+    linear-gradient(
+      rgba(248, 244, 236, 0.90),
+      rgba(248, 244, 236, 0.60)
+    ),
+
+    linear-gradient(
+      rgba(120, 95, 66, 0.025),
+      rgba(120, 95, 66, 0.055)
+    ),
+
+    url("./assets/images/notes.jpg");
+
+  border-top:
+    1px solid
+    rgba(100, 86, 66, 0.14);
+
+  border-bottom:
+    1px solid
+    rgba(100, 86, 66, 0.14);
+}
+
+.ainan-section::after {
+  opacity: 0.25;
+}
+
+
+/* =========================================================
+   14. RECENT NOTES TITLE
+========================================================= */
+
+.ainan-page-title h2 {
+  color: var(--text-main);
+}
+
+.ainan-page-title h2 span {
+  color: var(--accent-gold-deep);
+}
+
+.ainan-page-title h2::after {
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   15. NOTE CARD
+   Bright archival paper card
+========================================================= */
+
+.ainan-glass-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 253, 248, 0.97),
+      rgba(247, 243, 234, 0.95)
+    );
+
+  border:
+    1px solid
+    rgba(105, 89, 66, 0.15);
+
+  box-shadow:
+    var(--shadow-card);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+
+/* =========================================================
+   16. DIFFERENT IMAGE PER NOTE CARD
+   --------------------------------------------------------------------------
+   Card 1 = Compass
+   Card 2 = Bridge
+   Card 3 = Hands
+   Card 4 = Notebook / Archive
+   Card 5+ = subtle fallback variations
+
+   Change only the filenames if your actual assets differ.
+========================================================= */
+
+.ainan-glass-card:nth-child(1)::before {
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(54, 46, 36, 0.07),
+      rgba(247, 243, 234, 0.02) 45%,
+      rgba(247, 243, 234, 0.96) 100%
+    ),
+
+    url("./assets/images/compass.jpg");
+}
+
+.ainan-glass-card:nth-child(2)::before {
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(54, 46, 36, 0.07),
+      rgba(247, 243, 234, 0.02) 45%,
+      rgba(247, 243, 234, 0.96) 100%
+    ),
+
+    url("./assets/images/bridge.jpg");
+}
+
+.ainan-glass-card:nth-child(3)::before {
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(54, 46, 36, 0.07),
+      rgba(247, 243, 234, 0.02) 45%,
+      rgba(247, 243, 234, 0.96) 100%
+    ),
+
+    url("./assets/images/hands.jpg");
+}
+
+.ainan-glass-card:nth-child(4)::before {
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(54, 46, 36, 0.07),
+      rgba(247, 243, 234, 0.02) 45%,
+      rgba(247, 243, 234, 0.96) 100%
+    ),
+
+    url("./assets/images/archive.jpg");
+}
+
+.ainan-glass-card:nth-child(5)::before {
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(54, 46, 36, 0.07),
+      rgba(247, 243, 234, 0.02) 45%,
+      rgba(247, 243, 234, 0.96) 100%
+    ),
+
+    url("./assets/images/library.jpg");
+}
+
+.ainan-glass-card:nth-child(n + 6)::before {
+  background-image:
+
+    linear-gradient(
+      to bottom,
+      rgba(54, 46, 36, 0.07),
+      rgba(247, 243, 234, 0.02) 45%,
+      rgba(247, 243, 234, 0.96) 100%
+    ),
+
+    url("./assets/images/notes.jpg");
+}
+
+
+/* =========================================================
+   17. NOTE IMAGE TREATMENT
+========================================================= */
+
+.ainan-glass-card::before {
+
+  height: 125px;
+
+  background-size:
+    cover,
+    cover;
+
+  background-position:
+    center,
+    center;
+
+  background-repeat: no-repeat;
+
+  filter:
+    grayscale(0.12)
+    sepia(0.12)
+    saturate(0.68)
+    contrast(0.95)
+    brightness(1.05);
+
+  opacity: 0.64;
+}
+
+.ainan-glass-card::after {
+
+  top: 121px;
+
+  left: 3rem;
+
+  right: 3rem;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(170, 147, 103, 0.62) 16%,
+      rgba(170, 147, 103, 0.25) 50%,
+      rgba(170, 147, 103, 0.62) 84%,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   18. NOTE CONTENT
+========================================================= */
+
+.ainan-card-category {
+  color: var(--accent-gold-deep);
+}
+
+.ainan-card-title {
+  color: var(--text-main);
+}
+
+.ainan-card-description {
+  color: var(--text-muted);
+}
+
+.excerpt-meta {
+  border-top-color:
+    rgba(42, 42, 37, 0.10);
+}
+
+.ainan-meta-label {
+  color: var(--accent-gold-deep);
+}
+
+.ainan-meta-value {
+  color: var(--text-main);
+}
+
+.ainan-card-link {
+  color: var(--text-main);
+}
+
+.ainan-card-link::after {
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      var(--accent-gold),
+      transparent
+    );
+}
+
+.ainan-card-link:hover {
+  color: var(--accent-gold-deep);
+}
+
+
+/* =========================================================
+   19. ORGANIZATIONS
+   Clean white cards
+========================================================= */
+
+.org-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffdf8,
+      #f8f4eb
+    );
+
+  border-color:
+    rgba(100, 86, 66, 0.13);
+
+  box-shadow:
+    0 7px 24px
+    rgba(66, 55, 40, 0.035);
+}
+
+.org-card:hover {
+
+  border-color:
+    rgba(170, 147, 103, 0.55);
+
+  box-shadow:
+    0 14px 35px
+    rgba(66, 55, 40, 0.075);
+}
+
+.org-header {
+  border-bottom-color:
+    rgba(100, 86, 66, 0.12);
+}
+
+.org-header::after {
+  background:
+    var(--accent-gold);
+}
+
+.org-role {
+  color: var(--accent-gold-deep);
+}
+
+.org-desc {
+  color: var(--text-muted);
+}
+
+.org-link {
+  color: var(--text-main);
+}
+
+.org-link::after {
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold-deep),
+      transparent
+    );
+}
+
+.org-link:hover {
+  color: var(--accent-gold-deep);
+}
+
+
+/* =========================================================
+   20. AFTERMOVIE
+   White / ivory section
+========================================================= */
+
+.aftermovie-layout {
+  color: var(--text-main);
+}
+
+.aftermovie-info p {
+  color: var(--text-muted);
+}
+
+.scroll-hint {
+  color: var(--accent-gold-deep);
+}
+
+.animated-chevrons {
+  color: var(--accent-gold);
+}
+
+.youtube-wrapper {
+
+  background:
+    #33312c;
+
+  border-color:
+    rgba(100, 86, 66, 0.12);
+
+  box-shadow:
+    0 10px 30px
+    rgba(66, 55, 40, 0.07);
+}
+
+.aftermovie-title {
+  color: var(--text-main);
+}
+
+
+/* =========================================================
+   21. FOOTER
+   Clean cream / ivory — not dark
+========================================================= */
+
+.site-footer {
+
+  background-color:
+    #f1ebdf;
+
+  background-image:
+
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.42),
+      transparent 35%
+    ),
+
+    repeating-linear-gradient(
+      0deg,
+      rgba(70, 60, 45, 0.006) 0,
+      rgba(70, 60, 45, 0.006) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  color: var(--text-main);
+
+  border-top:
+    1px solid
+    rgba(100, 86, 66, 0.14);
+}
+
+.site-footer::before {
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(170, 147, 103, 0.40) 20%,
+      rgba(170, 147, 103, 0.40) 80%,
+      transparent
+    );
+}
+
+.footer-brand-logo {
+  color: var(--accent-gold-deep);
+}
+
+.footer-tagline-large {
+  color: var(--text-main);
+}
+
+.footer-bottom-area {
+  border-top-color:
+    rgba(100, 86, 66, 0.13);
+}
+
+.nav-group-title {
+  color: var(--accent-gold-deep);
+}
+
+.connect-links a {
+  color: var(--text-muted);
+}
+
+.connect-links a::after {
+
+  background:
+    linear-gradient(
+      to right,
+      var(--accent-gold),
+      transparent
+    );
+}
+
+.connect-links a:hover {
+  color: var(--accent-gold-deep);
+}
+
+.footer-copyright {
+  color: var(--text-muted);
+}
+
+
+/* =========================================================
+   22. FORM ELEMENTS
+   Keep clean and light
+========================================================= */
+
+input,
+select,
+textarea {
+
+  background-color:
+    rgba(255, 253, 248, 0.92);
+
+  color:
+    var(--text-main);
+
+  border:
+    1px solid
+    rgba(100, 86, 66, 0.17);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+
+  border-color:
+    rgba(170, 147, 103, 0.72);
+
+  outline:
+    2px solid
+    rgba(170, 147, 103, 0.15);
+}
+
+button,
+.submit-btn {
+
+  background:
+    var(--text-main);
+
+  color:
+    var(--paper-white);
+
+  border:
+    1px solid
+    var(--text-main);
+
+  transition: var(--ease);
+}
+
+button:hover,
+.submit-btn:hover {
+
+  background:
+    #48473f;
+
+  border-color:
+    #48473f;
+}
+
+
+/* =========================================================
+   23. STEEL-BLUE ACCENT
+   VERY LIMITED USE
+========================================================= */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+
+  outline-color:
+    var(--accent-steel-blue);
+}
+
+.gee-frame-container iframe:focus {
+
+  outline:
+    3px solid
+    var(--accent-steel-blue);
+}
+
+
+/* =========================================================
+   24. MOBILE — KEEP EXISTING FUNCTION
+   ONLY VISUAL REFINEMENTS
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  .site-header {
+    background-color:
+      rgba(255, 253, 248, 0.97);
+  }
+
+  .hero-split-image::after {
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(244, 239, 229, 0.02) 0%,
+        rgba(244, 239, 229, 0.04) 40%,
+        rgba(52, 46, 38, 0.46) 100%
+      );
+  }
+
+  .hero-title {
+
+    color:
+      #fffaf0;
+
+    text-shadow:
+      0 2px 12px
+      rgba(40, 35, 28, 0.32);
+  }
+
+  .hero-eyebrow {
+
+    color:
+      #dbc9a2;
+
+    text-shadow:
+      0 1px 5px
+      rgba(40, 35, 28, 0.28);
+  }
+
+  .hero-subtitle {
+
+    color:
+      rgba(255, 250, 240, 0.84);
+
+    text-shadow:
+      0 1px 6px
+      rgba(40, 35, 28, 0.28);
+  }
+
+  .ainan-section {
+
+    background-image:
+
+      linear-gradient(
+        rgba(248, 244, 236, 0.90),
+        rgba(248, 244, 236, 0.66)
+      ),
+
+      url("./assets/images/notes.jpg");
+
+    background-attachment:
+      scroll;
+  }
+
+  .ainan-glass-card {
+
+    background:
+      rgba(255, 253, 248, 0.96);
+
+    box-shadow:
+      0 9px 28px
+      rgba(66, 55, 40, 0.06);
+  }
+
+  .ainan-glass-card::before {
+
+    height:
+      96px;
+
+    opacity:
+      0.58;
+  }
+
+  .ainan-glass-card::after {
+
+    top:
+      93px;
+
+    left:
+      1.25rem;
+
+    right:
+      1.25rem;
+  }
+
+  .interactive-map-section {
+
+    background-color:
+      #e9e1d1;
+  }
+
+  .site-footer {
+
+    background-color:
+      #f1ebdf;
+  }
+}
+
+
+/* =========================================================
+   25. MOBILE 360–420
+   Preserve existing dimensions / functions
+========================================================= */
+
+@media screen and (min-width: 360px) and (max-width: 420px) {
+
+  .ainan-glass-card:nth-child(1)::before {
+    background-image:
+
+      linear-gradient(
+        to bottom,
+        rgba(54, 46, 36, 0.06),
+        rgba(247, 243, 234, 0.02) 45%,
+        rgba(247, 243, 234, 0.97) 100%
+      ),
+
+      url("./assets/images/compass.jpg");
+  }
+
+  .ainan-glass-card:nth-child(2)::before {
+    background-image:
+
+      linear-gradient(
+        to bottom,
+        rgba(54, 46, 36, 0.06),
+        rgba(247, 243, 234, 0.02) 45%,
+        rgba(247, 243, 234, 0.97) 100%
+      ),
+
+      url("./assets/images/bridge.jpg");
+  }
+
+  .ainan-glass-card:nth-child(3)::before {
+    background-image:
+
+      linear-gradient(
+        to bottom,
+        rgba(54, 46, 36, 0.06),
+        rgba(247, 243, 234, 0.02) 45%,
+        rgba(247, 243, 234, 0.97) 100%
+      ),
+
+      url("./assets/images/hands.jpg");
+  }
+
+  .ainan-glass-card:nth-child(4)::before {
+    background-image:
+
+      linear-gradient(
+        to bottom,
+        rgba(54, 46, 36, 0.06),
+        rgba(247, 243, 234, 0.02) 45%,
+        rgba(247, 243, 234, 0.97) 100%
+      ),
+
+      url("./assets/images/archive.jpg");
+  }
+
+  .ainan-glass-card:nth-child(5)::before {
+    background-image:
+
+      linear-gradient(
+        to bottom,
+        rgba(54, 46, 36, 0.06),
+        rgba(247, 243, 234, 0.02) 45%,
+        rgba(247, 243, 234, 0.97) 100%
+      ),
+
+      url("./assets/images/library.jpg");
+  }
+
+  .ainan-glass-card {
+
+    background:
+      rgba(255, 253, 248, 0.97);
+  }
+
+  .org-card {
+
+    background:
+      linear-gradient(
+        180deg,
+        #fffdf8,
+        #f8f4eb
+      );
+  }
+
+  .community-quote-section {
+
+    background:
+      var(--bg-paper);
+  }
+
+  .interactive-map-section {
+
+    background:
+      #e9e1d1;
+  }
+
+  .site-footer {
+
+    background:
+      #f1ebdf;
+  }
+}
+
+
+/* =========================================================
+   26. VERY SMALL SCREEN
+   Preserve existing functionality
+========================================================= */
+
+@media screen and (max-width: 359px) {
+
+  .ainan-glass-card {
+
+    background:
+      rgba(255, 253, 248, 0.97);
+  }
+
+  .interactive-map-section {
+
+    background:
+      #e9e1d1;
+  }
+
+  .site-footer {
+
+    background:
+      #f1ebdf;
+  }
+}
+
+
+/* =========================================================
+   27. REDUCED MOTION
+   Preserve accessibility
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .brand-text,
+  .ainan-glass-card,
+  .org-card,
+  .connect-links a,
+  .ainan-card-link {
+
+    transition:
+      none !important;
+  }
+}
