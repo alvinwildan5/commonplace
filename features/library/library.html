@@ -3,32 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Library | AWS Archive</title>
 
+    <!-- =========================================================
+         TYPOGRAPHY
+         Shared visual language:
+         Cormorant Garamond + Inter
+    ========================================================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Link untuk font alternatif yang elegan -->
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
 
-    <!-- Tautkan ke file CSS yang baru -->
-    <link rel="stylesheet" href="./library.css" />
+    <!-- =========================================================
+         SHARED SITE SYSTEM
+         MUST LOAD BEFORE PAGE-SPECIFIC CSS
+    ========================================================== -->
     <link rel="stylesheet" href="../../index.css" />
+
+    <!-- Library-specific styles -->
+    <link rel="stylesheet" href="./library.css" />
   </head>
-  <body>
-    <!-- HEADER -->
+
+  <body class="library-page">
+    <!-- =========================================================
+         HEADER
+         Styling inherited entirely from ../../index.css
+    ========================================================== -->
     <header class="site-header">
       <nav class="site-nav">
         <div class="nav-logo">
           <a href="../../index.html" class="brand-text">AWS</a>
         </div>
+
         <ul class="nav-links">
           <li>
             <a
@@ -36,41 +53,53 @@
               class="translatable"
               data-en="Notes"
               data-id="Catatan"
-              >Notes</a
             >
+              Notes
+            </a>
           </li>
+
           <li>
             <a
               href="../library/library.html"
               class="active translatable"
               data-en="Library"
               data-id="Perpustakaan"
-              >Library</a
             >
+              Library
+            </a>
           </li>
+
           <li>
             <a
               href="../profile/profile.html"
               class="translatable"
               data-en="Profile"
               data-id="Profil"
-              >Profile</a
             >
+              Profile
+            </a>
           </li>
+
           <li class="lang-menu">
             <div class="lang-switcher">
               <button
+                type="button"
                 class="lang-btn"
                 id="btn-id"
                 onclick="switchLanguage('id')"
+                aria-label="Switch to Indonesian"
               >
                 ID
               </button>
+
               <span class="lang-divider">|</span>
+
               <button
+                type="button"
                 class="lang-btn active"
                 id="btn-en"
                 onclick="switchLanguage('en')"
+                aria-label="Switch to English"
               >
                 EN
               </button>
@@ -80,33 +109,43 @@
       </nav>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="ivy-header" id="dynamic-header">
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+    <section
+      class="ivy-header"
+      id="dynamic-header"
+      aria-labelledby="library-title"
+    >
       <div class="ivy-container">
         <div class="subtitle-wrapper reveal-item">
           <span
             class="subtitle-text translatable"
-            data-id="Arsip Referensi & Literatur"
-            data-en="Reference & Literature Archive"
+            data-id="Arsip Referensi &amp; Literatur"
+            data-en="Reference &amp; Literature Archive"
           >
-            Reference & Literature Archive
+            Reference &amp; Literature Archive
           </span>
         </div>
+
         <div class="title-wrapper reveal-item">
           <h1
             class="main-title translatable"
+            id="library-title"
             data-id="Pustaka Digital"
             data-en="Digital Library"
           >
             Digital Library
           </h1>
         </div>
-        <div class="gold-divider reveal-item"></div>
+
+        <div class="gold-divider reveal-item" aria-hidden="true"></div>
+
         <div class="desc-wrapper reveal-item">
           <p
             class="header-desc translatable"
-            data-id="Koleksi buku, makalah penelitian, catatan kuliah, dan referensi teknis pilihan"
-            data-en="A curated collection of books, research papers, lecture notes, and technical references"
+            data-id="Koleksi buku, makalah penelitian, catatan kuliah, dan referensi teknis pilihan."
+            data-en="A curated collection of books, research papers, lecture notes, and technical references."
           >
             A curated collection of books, research papers, lecture notes, and
             technical references.
@@ -115,10 +154,14 @@
       </div>
     </section>
 
-    <!-- MAIN CONTENT -->
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
     <main class="container">
-      <!-- SEARCH BAR -->
-      <section class="library-controls reveal-item">
+      <!-- =======================================================
+           SEARCH
+      ======================================================== -->
+      <section class="library-controls reveal-item" aria-label="Library search">
         <div class="search-minimal-wrapper">
           <svg
             class="search-minimal-icon"
@@ -128,154 +171,220 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            aria-hidden="true"
           >
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
+
           <input
-            type="text"
+            type="search"
             id="librarySearch"
             class="search-minimal-input translatable"
             data-id="Cari judul buku, penulis, atau topik..."
             data-en="Search titles, authors, or topics..."
             placeholder="Search titles, authors, or topics..."
+            autocomplete="off"
             onkeyup="executeLibrarySearch()"
+            aria-label="Search library"
           />
         </div>
       </section>
 
-      <!-- LIBRARY GRID -->
-      <section class="library-grid" id="libraryGridContainer">
-        <!-- Card 1 -->
+      <!-- =======================================================
+           LIBRARY GRID
+      ======================================================== -->
+      <section
+        class="library-grid"
+        id="libraryGridContainer"
+        aria-label="Library collection"
+      >
+        <!-- =====================================================
+             BOOK 1
+        ====================================================== -->
         <a
           href="https://drive.google.com/file/d/1TwjVEdINnhv36mhEVnuLjjBkm_EQ6vBD/view?usp=drive_link"
           target="_blank"
+          rel="noopener noreferrer"
           class="book-card reveal-item"
+          aria-label="Open Does ASEAN Matter? A View from Within"
         >
           <div class="book-cover">
             <img
               src="../../assets/images/does asean matter.jpg"
-              alt="Does ASEAN Matter?"
+              alt="Cover of Does ASEAN Matter? A View from Within"
+              loading="lazy"
+              decoding="async"
             />
+
             <div class="book-overlay">
               <span
                 class="translatable"
                 data-id="Buka Dokumen"
                 data-en="Open Archive"
-                >Open Archive</span
               >
+                Open Archive
+              </span>
             </div>
           </div>
+
           <div class="book-info">
             <span
               class="book-category translatable"
               data-id="Hubungan Internasional"
               data-en="International Relations"
-              >International Relations</span
             >
+              International Relations
+            </span>
+
             <h3 class="serif">Does ASEAN Matter? A View from Within</h3>
+
             <p>Marty Natalegawa (2018)</p>
           </div>
         </a>
 
-        <!-- Card 2 -->
+        <!-- =====================================================
+             BOOK 2
+        ====================================================== -->
         <a
           href="https://drive.google.com/file/d/1mL0b049GjyB1iV6pf8_b9LDrxAyNK9Vj/view?usp=drive_link"
           target="_blank"
+          rel="noopener noreferrer"
           class="book-card reveal-item"
+          aria-label="Open Creating a Learning Society"
         >
           <div class="book-cover">
             <img
               src="../../assets/images/creating a learning society.jpg"
-              alt="Creating a Learning Society"
+              alt="Cover of Creating a Learning Society"
+              loading="lazy"
+              decoding="async"
             />
+
             <div class="book-overlay">
               <span
                 class="translatable"
                 data-id="Buka Dokumen"
                 data-en="Open Archive"
-                >Open Archive</span
               >
+                Open Archive
+              </span>
             </div>
           </div>
+
           <div class="book-info">
             <span
               class="book-category translatable"
               data-id="Kajian Pendidikan"
               data-en="Educational Studies"
-              >Educational Studies</span
             >
+              Educational Studies
+            </span>
+
             <h3 class="serif">Creating a Learning Society</h3>
-            <p>Stephen Gorard & Gareth Rees (2002)</p>
+
+            <p>Stephen Gorard &amp; Gareth Rees (2002)</p>
           </div>
         </a>
 
-        <!-- Card 3 -->
+        <!-- =====================================================
+             BOOK 3
+        ====================================================== -->
         <a
           href="https://drive.google.com/file/d/1SzsTY3Y1mCMqd7bYHcH9ThrwWLixcJcS/view?usp=drive_link"
           target="_blank"
+          rel="noopener noreferrer"
           class="book-card reveal-item"
+          aria-label="Open Majapahit Inspiration for The World"
         >
           <div class="book-cover">
             <img
               src="../../assets/images/majapahit.jpg"
-              alt="Majapahit Inspiration for The World"
+              alt="Cover of Majapahit Inspiration for The World"
+              loading="lazy"
+              decoding="async"
             />
+
             <div class="book-overlay">
               <span
                 class="translatable"
                 data-id="Buka Dokumen"
                 data-en="Open Archive"
-                >Open Archive</span
               >
+                Open Archive
+              </span>
             </div>
           </div>
+
           <div class="book-info">
             <span
               class="book-category translatable"
               data-id="Sejarah"
               data-en="History"
-              >History</span
             >
+              History
+            </span>
+
             <h3 class="serif">Majapahit Inspiration for The World</h3>
+
             <p>Adrian Vickers et al. (2014)</p>
           </div>
         </a>
-        <!-- Card 4 -->
+
+        <!-- =====================================================
+             BOOK 4
+        ====================================================== -->
         <a
           href="https://drive.google.com/file/d/1vqP4gkbwur9MANTUcE_K2KX1Sm0JiJkh/view?usp=drive_link"
           target="_blank"
+          rel="noopener noreferrer"
           class="book-card reveal-item"
+          aria-label="Open Climate Change in the Indonesian Mind"
         >
           <div class="book-cover">
             <img
               src="../../assets/images/Climate change in the Indonesian mind.png"
-              alt="Climate Change in the Indonesian Mind"
+              alt="Cover of Climate Change in the Indonesian Mind"
+              loading="lazy"
+              decoding="async"
             />
+
             <div class="book-overlay">
               <span
                 class="translatable"
                 data-id="Buka Dokumen"
                 data-en="Open Archive"
-                >Open Archive</span
               >
+                Open Archive
+              </span>
             </div>
           </div>
+
           <div class="book-info">
             <span
               class="book-category translatable"
               data-id="Perubahan Iklim"
               data-en="Climate Change"
-              >Climate Change</span
             >
+              Climate Change
+            </span>
+
             <h3 class="serif">Climate Change in the Indonesian Mind</h3>
+
             <p>Anthony Leiserowitz et al. (2023)</p>
           </div>
         </a>
       </section>
 
-      <!-- NO RESULTS MESSAGE -->
-      <div id="noResultsElement" class="no-results-box">
+      <!-- =======================================================
+           NO RESULTS
+      ======================================================== -->
+      <div
+        id="noResultsElement"
+        class="no-results-box"
+        role="status"
+        aria-live="polite"
+      >
         <p
           class="translatable"
           data-id="Tidak ada pustaka yang cocok dengan kriteria pencarian Anda."
@@ -287,13 +396,14 @@
     </main>
 
     <!-- =========================================================
-     UNIVERSAL FOOTER
-    ========================================================= -->
+         FOOTER
+         Styling inherited entirely from ../../index.css
+    ========================================================== -->
     <footer class="site-footer">
       <div class="footer-container">
-        <!-- BAGIAN ATAS: LOGO & TAGLINE -->
         <div class="footer-center">
           <h3 class="footer-brand-logo">AWS</h3>
+
           <p
             class="footer-tagline-large translatable"
             data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
@@ -304,36 +414,42 @@
           </p>
         </div>
 
-        <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
         <div class="footer-bottom-area">
           <div class="footer-connect-centered">
             <span
               class="nav-group-title translatable"
               data-en="Connect"
               data-id="Hubungi"
-              >Connect</span
             >
+              Connect
+            </span>
+
             <div class="connect-links">
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-solid fa-envelope"></i> Email
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                <span>Email</span>
               </a>
+
               <a
                 href="https://www.linkedin.com/in/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+                <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+                <span>LinkedIn</span>
               </a>
+
               <a
                 href="https://www.instagram.com/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-brands fa-instagram"></i> Instagram
+                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                <span>Instagram</span>
               </a>
             </div>
           </div>
@@ -344,7 +460,10 @@
         </div>
       </div>
     </footer>
-    <!-- Tautkan ke file JS -->
+
+    <!-- =========================================================
+         PAGE SCRIPT
+    ========================================================== -->
     <script src="./library.js"></script>
   </body>
 </html>

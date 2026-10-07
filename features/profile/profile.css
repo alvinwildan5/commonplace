@@ -4,63 +4,59 @@
 
    PROFILE-SPECIFIC STYLES ONLY
 
-   Shared site components such as:
-   - Header
-   - Navigation
-   - Language switcher
-   - Footer
-   - Footer connections
+   SHARED SYSTEM
+   --------------------------------------------------------------------------
+   Header
+   Navigation
+   AWS Brand
+   Language Switcher
+   Footer
+   Footer Connections
+   Global Palette
+   Global Typography
+   Global Container
 
-   are controlled entirely by index.css.
+   are inherited from:
+
+       ../../index.css
+
+   IMPORTANT
+   --------------------------------------------------------------------------
+   This stylesheet intentionally does NOT redefine:
+   - .site-header
+   - .site-nav
+   - .brand-text
+   - .nav-links
+   - .lang-switcher
+   - .lang-btn
+   - .lang-divider
+   - .site-footer
+   - .footer-container
+   - .footer-center
+   - .footer-brand-logo
+   - .footer-tagline-large
+   - .footer-bottom-area
+   - .footer-connect-centered
+   - .nav-group-title
+   - .connect-links
+   - .footer-copyright
+   - :root palette
 ========================================================================== */
 
 /* ==========================================================================
-   1. PROFILE VARIABLES
+   1. PROFILE PAGE BASE
+   Uses global variables from index.css.
 ========================================================================== */
 
-:root {
-  --profile-bg-paper: #faf8f2;
-  --profile-bg-white: #fffdf8;
-  --profile-bg-alt: #f1ece0;
+.content-container {
+  position: relative;
 
-  --profile-text-main: #292821;
-  --profile-text-muted: #716e64;
-
-  --profile-accent-gold: #b89b72;
-  --profile-accent-gold-deep: #8e7045;
-
-  --profile-border: #dfd8c9;
-
-  --profile-font-serif: "Playfair Display", Georgia, serif;
-
-  --profile-font-sans:
-    Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
-  --profile-ease: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 0;
 }
 
 /* ==========================================================================
-   2. PROFILE PAGE BASE
-========================================================================== */
-
-body {
-  background-color: var(--profile-bg-paper);
-
-  color: var(--profile-text-main);
-
-  font-family: var(--profile-font-serif);
-
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(74, 61, 42, 0.006) 0,
-    rgba(74, 61, 42, 0.006) 1px,
-    transparent 1px,
-    transparent 5px
-  );
-}
-
-/* ==========================================================================
-   3. HERO / PORTRAIT TITLE
+   2. HERO / PORTRAIT TITLE
+   Victorian personal archive.
 ========================================================================== */
 
 .ivy-header {
@@ -80,6 +76,10 @@ body {
   );
 }
 
+/* ==========================================================================
+   HERO ARCHITECTURAL FRAME
+========================================================================== */
+
 .ivy-header::before {
   content: "";
 
@@ -92,10 +92,15 @@ body {
   bottom: 25px;
 
   border-top: 1px solid rgba(168, 141, 95, 0.28);
+
   border-bottom: 1px solid rgba(168, 141, 95, 0.28);
 
   pointer-events: none;
 }
+
+/* ==========================================================================
+   HERO CENTRAL ORNAMENT
+========================================================================== */
 
 .ivy-header::after {
   content: "❦";
@@ -111,22 +116,25 @@ body {
   height: 25px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  background: var(--profile-bg-paper);
+  background: var(--bg-paper);
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 1.15rem;
+
+  line-height: 1;
 
   z-index: 1;
 }
 
 /* ==========================================================================
-   4. HERO TYPOGRAPHY
+   3. HERO TYPOGRAPHY
 ========================================================================== */
 
 .hero-kicker {
@@ -134,9 +142,9 @@ body {
 
   z-index: 2;
 
-  margin-bottom: 1rem;
+  margin: 0 0 1rem;
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.58rem;
 
@@ -148,8 +156,14 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
+
+  opacity: 0.86;
 }
+
+/* ==========================================================================
+   MAIN TITLE
+========================================================================== */
 
 .main-title {
   position: relative;
@@ -158,7 +172,7 @@ body {
 
   margin: 0;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: clamp(3.2rem, 6vw, 5.4rem);
 
@@ -168,8 +182,14 @@ body {
 
   letter-spacing: -0.035em;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
+
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
 }
+
+/* ==========================================================================
+   GOLD DIVIDER
+========================================================================== */
 
 .gold-divider {
   position: relative;
@@ -177,6 +197,7 @@ body {
   z-index: 2;
 
   width: 86px;
+
   height: 1px;
 
   margin: 1.7rem auto;
@@ -184,8 +205,8 @@ body {
   background: linear-gradient(
     to right,
     transparent,
-    var(--profile-accent-gold) 20%,
-    var(--profile-accent-gold) 80%,
+    var(--accent-gold) 20%,
+    var(--accent-gold) 80%,
     transparent
   );
 }
@@ -202,12 +223,20 @@ body {
 
   padding: 0 8px;
 
-  background: var(--profile-bg-paper);
+  background: var(--bg-paper);
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
+
+  font-family: var(--font-serif);
 
   font-size: 0.42rem;
+
+  line-height: 1;
 }
+
+/* ==========================================================================
+   HERO SUBTITLE
+========================================================================== */
 
 .subtitle-text {
   position: relative;
@@ -216,7 +245,7 @@ body {
 
   margin: 0;
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.66rem;
 
@@ -228,8 +257,12 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
 }
+
+/* ==========================================================================
+   HERO DESCRIPTION
+========================================================================== */
 
 .header-desc {
   position: relative;
@@ -240,15 +273,17 @@ body {
 
   margin: 1.5rem auto 0;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 0.98rem;
 
   font-style: italic;
 
+  font-weight: 400;
+
   line-height: 1.9;
 
-  color: var(--profile-text-muted);
+  color: var(--text-muted);
 }
 
 .header-desc::before {
@@ -256,9 +291,13 @@ body {
 
   margin-right: 3px;
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
+
+  font-family: var(--font-serif);
 
   font-size: 1.8rem;
+
+  line-height: 1;
 
   vertical-align: -0.25em;
 }
@@ -268,15 +307,19 @@ body {
 
   margin-left: 3px;
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
+
+  font-family: var(--font-serif);
 
   font-size: 1.8rem;
+
+  line-height: 1;
 
   vertical-align: -0.25em;
 }
 
 /* ==========================================================================
-   5. PROFILE LAYOUT
+   4. MAIN PROFILE LAYOUT
 ========================================================================== */
 
 .main-layout {
@@ -294,6 +337,10 @@ body {
 
   padding-bottom: 9rem;
 }
+
+/* ==========================================================================
+   VERTICAL ARCHIVAL DIVIDER
+========================================================================== */
 
 .main-layout::before {
   content: "";
@@ -319,8 +366,12 @@ body {
 }
 
 /* ==========================================================================
-   6. PROFILE PORTRAIT
+   5. PORTRAIT / PROFILE IDENTITY
 ========================================================================== */
+
+.profile-container {
+  min-width: 0;
+}
 
 .profile-sticky {
   position: sticky;
@@ -329,6 +380,10 @@ body {
 
   z-index: 2;
 }
+
+/* ==========================================================================
+   PORTRAIT FRAME
+========================================================================== */
 
 .profile-photo {
   position: relative;
@@ -354,6 +409,10 @@ body {
     0 14px 38px rgba(57, 49, 36, 0.075);
 }
 
+/* ==========================================================================
+   INNER PORTRAIT FRAME
+========================================================================== */
+
 .profile-photo::before {
   content: "";
 
@@ -368,6 +427,10 @@ body {
   z-index: 2;
 }
 
+/* ==========================================================================
+   PORTRAIT TOP ORNAMENT
+========================================================================== */
+
 .profile-photo::after {
   content: "❦";
 
@@ -380,16 +443,22 @@ body {
 
   padding: 0 8px;
 
-  background: var(--profile-bg-paper);
+  background: var(--bg-paper);
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 0.7rem;
 
+  line-height: 1;
+
   z-index: 3;
 }
+
+/* ==========================================================================
+   PORTRAIT IMAGE
+========================================================================== */
 
 .profile-photo img {
   width: 100%;
@@ -399,17 +468,21 @@ body {
 
   filter: grayscale(100%) sepia(8%) contrast(1.04) brightness(0.98);
 
-  transition: var(--profile-ease);
+  transition: var(--ease);
 }
 
 .profile-photo:hover img {
   filter: grayscale(22%) sepia(4%) contrast(1.05);
 }
 
-.profile-caption {
-  margin-bottom: 0.75rem;
+/* ==========================================================================
+   BIOGRAPHICAL CAPTION
+========================================================================== */
 
-  font-family: var(--profile-font-sans);
+.profile-caption {
+  margin: 0 0 0.75rem;
+
+  font-family: var(--font-sans);
 
   font-size: 0.56rem;
 
@@ -421,13 +494,19 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-text-muted);
+  color: var(--text-muted);
+
+  opacity: 0.85;
 }
 
-.profile-name {
-  margin-bottom: 0.7rem;
+/* ==========================================================================
+   PROFILE NAME
+========================================================================== */
 
-  font-family: var(--profile-font-serif);
+.profile-name {
+  margin: 0 0 0.7rem;
+
+  font-family: var(--font-serif);
 
   font-size: clamp(2rem, 3vw, 2.5rem);
 
@@ -437,13 +516,17 @@ body {
 
   letter-spacing: -0.02em;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 }
 
-.profile-title {
-  margin-bottom: 3.1rem;
+/* ==========================================================================
+   PROFILE TITLE / ARCHIVAL DESIGNATION
+========================================================================== */
 
-  font-family: var(--profile-font-sans);
+.profile-title {
+  margin: 0 0 3.1rem;
+
+  font-family: var(--font-sans);
 
   font-size: 0.63rem;
 
@@ -455,11 +538,11 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
 }
 
 /* ==========================================================================
-   7. CONTACT / CORRESPONDENCE
+   6. CONTACT / CORRESPONDENCE
 ========================================================================== */
 
 .contact-section {
@@ -469,13 +552,13 @@ body {
 .contact-section h3 {
   position: relative;
 
-  margin-bottom: 1.7rem;
+  margin: 0 0 1.7rem;
 
   padding-bottom: 0.75rem;
 
   border-bottom: 1px solid rgba(168, 141, 95, 0.28);
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.64rem;
 
@@ -487,7 +570,7 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
 }
 
 .contact-section h3::after {
@@ -501,13 +584,13 @@ body {
   width: 34px;
   height: 1px;
 
-  background: var(--profile-accent-gold);
+  background: var(--accent-gold);
 }
 
 .contact-intro {
   margin: -0.5rem 0 1.7rem;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 0.82rem;
 
@@ -515,7 +598,7 @@ body {
 
   line-height: 1.75;
 
-  color: var(--profile-text-muted);
+  color: var(--text-muted);
 }
 
 .contact-item {
@@ -535,7 +618,7 @@ body {
 
   margin-top: 3px;
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 
   font-size: 0.95rem;
 
@@ -553,7 +636,7 @@ body {
 .contact-label {
   margin-bottom: 4px;
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.61rem;
 
@@ -565,34 +648,30 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-text-muted);
+  color: var(--text-muted);
 }
 
 .contact-info a {
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.82rem;
 
+  font-weight: 400;
+
   line-height: 1.45;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 
   overflow-wrap: anywhere;
 }
 
 .contact-info a:hover {
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
 }
 
 /* ==========================================================================
-   8. BIOGRAPHICAL ESSAY
+   7. BIOGRAPHICAL ESSAY
 ========================================================================== */
-
-.content-container {
-  position: relative;
-
-  min-width: 0;
-}
 
 .bio-section {
   position: relative;
@@ -600,10 +679,14 @@ body {
   max-width: 760px;
 }
 
-.bio-heading {
-  margin-bottom: 2.5rem;
+/* ==========================================================================
+   BIOGRAPHY HEADING
+========================================================================== */
 
-  font-family: var(--profile-font-serif);
+.bio-heading {
+  margin: 0 0 2.5rem;
+
+  font-family: var(--font-serif);
 
   font-size: clamp(2.25rem, 4vw, 3.35rem);
 
@@ -613,7 +696,7 @@ body {
 
   letter-spacing: -0.025em;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 }
 
 .bio-heading::after {
@@ -623,25 +706,31 @@ body {
 
   margin-top: 0.95rem;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 0.78rem;
+
+  font-weight: 400;
 
   line-height: 1;
 
   letter-spacing: 0.16em;
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 
   opacity: 0.8;
 }
+
+/* ==========================================================================
+   BIOGRAPHY PARAGRAPHS
+========================================================================== */
 
 .bio-section p {
   max-width: 720px;
 
   margin: 0;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 1.04rem;
 
@@ -655,19 +744,23 @@ body {
 
   text-justify: inter-word;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 }
 
 .bio-section p + p {
   margin-top: 2rem;
 }
 
+/* ==========================================================================
+   FIRST PARAGRAPH / DROP CAP
+========================================================================== */
+
 .bio-section p:first-of-type::first-letter {
   float: left;
 
   margin: 0.08rem 0.6rem 0 0;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 4.5rem;
 
@@ -675,15 +768,35 @@ body {
 
   line-height: 0.78;
 
-  color: var(--profile-accent-gold);
-}
-
-.bio-section p:last-child {
-  color: var(--profile-text-muted);
+  color: var(--accent-gold);
 }
 
 /* ==========================================================================
-   9. DIVIDER
+   FINAL PARAGRAPH
+========================================================================== */
+
+.bio-section p:last-child {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   EMPHASIS
+========================================================================== */
+
+.bio-section em {
+  font-style: italic;
+
+  color: var(--text-main);
+}
+
+.bio-section strong {
+  font-weight: 600;
+
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   8. DIVIDER
 ========================================================================== */
 
 .section-divider {
@@ -707,7 +820,7 @@ body {
 }
 
 /* ==========================================================================
-   10. FORM / CORRESPONDENCE
+   9. CORRESPONDENCE FORM
 ========================================================================== */
 
 .ivy-form-container {
@@ -723,9 +836,9 @@ body {
 }
 
 .section-eyebrow {
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.75rem;
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.58rem;
 
@@ -737,13 +850,13 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
 }
 
 .form-header h2 {
-  margin-bottom: 1rem;
+  margin: 0 0 1rem;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: clamp(2rem, 3.5vw, 2.8rem);
 
@@ -751,13 +864,13 @@ body {
 
   line-height: 1.16;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 }
 
 .form-header h2::after {
   content: "  ❦";
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 
   font-size: 0.75em;
 }
@@ -765,9 +878,9 @@ body {
 .form-header p {
   max-width: 690px;
 
-  margin-bottom: 3.2rem;
+  margin: 0 0 3.2rem;
 
-  font-family: var(--profile-font-serif);
+  font-family: var(--font-serif);
 
   font-size: 0.92rem;
 
@@ -777,8 +890,12 @@ body {
 
   text-align: justify;
 
-  color: var(--profile-text-muted);
+  color: var(--text-muted);
 }
+
+/* ==========================================================================
+   FORM ROW
+========================================================================== */
 
 .form-row {
   display: grid;
@@ -799,7 +916,7 @@ body {
 .form-group label {
   margin-bottom: 0.65rem;
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.61rem;
 
@@ -811,8 +928,12 @@ body {
 
   text-transform: uppercase;
 
-  color: var(--profile-accent-gold-deep);
+  color: var(--accent-gold-deep);
 }
+
+/* ==========================================================================
+   FORM FIELDS
+========================================================================== */
 
 .form-group input,
 .form-group select,
@@ -831,15 +952,17 @@ body {
 
   background: transparent;
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.91rem;
 
+  font-weight: 400;
+
   line-height: 1.6;
 
-  transition: var(--profile-ease);
+  transition: var(--ease);
 }
 
 .form-group input::placeholder,
@@ -852,7 +975,17 @@ body {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-bottom-color: var(--profile-accent-gold);
+  border-bottom-color: var(--accent-gold);
+
+  background: linear-gradient(
+    to bottom,
+    transparent 70%,
+    rgba(168, 141, 95, 0.035)
+  );
+}
+
+.form-group select {
+  cursor: pointer;
 }
 
 .form-group textarea {
@@ -862,6 +995,10 @@ body {
 
   line-height: 1.75;
 }
+
+/* ==========================================================================
+   SUBMIT BUTTON
+========================================================================== */
 
 .submit-btn {
   position: relative;
@@ -882,9 +1019,9 @@ body {
     rgba(239, 232, 216, 0.96)
   );
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.7rem;
 
@@ -898,7 +1035,9 @@ body {
 
   cursor: pointer;
 
-  transition: var(--profile-ease);
+  transition: var(--ease);
+
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .submit-btn::before {
@@ -906,7 +1045,7 @@ body {
 
   margin-right: 12px;
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 }
 
 .submit-btn::after {
@@ -914,30 +1053,32 @@ body {
 
   margin-left: 12px;
 
-  color: var(--profile-accent-gold);
+  color: var(--accent-gold);
 }
 
 .submit-btn:hover {
-  border-color: var(--profile-accent-gold);
+  border-color: var(--accent-gold);
 
   background: linear-gradient(
     145deg,
-    var(--profile-accent-gold),
-    var(--profile-accent-gold-deep)
+    var(--accent-gold),
+    var(--accent-gold-deep)
   );
 
-  color: var(--profile-bg-white);
+  color: var(--bg-white);
 
   transform: translateY(-2px);
+
+  box-shadow: 0 8px 18px rgba(126, 100, 57, 0.15);
 }
 
 .submit-btn:hover::before,
 .submit-btn:hover::after {
-  color: var(--profile-bg-white);
+  color: var(--bg-white);
 }
 
 /* ==========================================================================
-   11. STATUS
+   10. STATUS MESSAGE
 ========================================================================== */
 
 #statusMessage {
@@ -951,7 +1092,7 @@ body {
 
   border-radius: 2px;
 
-  font-family: var(--profile-font-sans);
+  font-family: var(--font-sans);
 
   font-size: 0.78rem;
 
@@ -965,7 +1106,7 @@ body {
 
   border-color: rgba(168, 141, 95, 0.25);
 
-  color: var(--profile-text-main);
+  color: var(--text-main);
 }
 
 .error {
@@ -977,7 +1118,7 @@ body {
 }
 
 /* ==========================================================================
-   12. PROFILE RESPONSIVE
+   11. TABLET
 ========================================================================== */
 
 @media screen and (max-width: 900px) {
@@ -1000,11 +1141,14 @@ body {
   }
 }
 
+/* ==========================================================================
+   12. MOBILE
+========================================================================== */
+
 @media screen and (max-width: 600px) {
-  .container {
-    padding-left: 1.1rem;
-    padding-right: 1.1rem;
-  }
+  /* ------------------------------------------------------------------------
+     HERO
+  ------------------------------------------------------------------------ */
 
   .ivy-header {
     padding: 158px 1.1rem 48px;
@@ -1038,6 +1182,12 @@ body {
     line-height: 1.03;
   }
 
+  .gold-divider {
+    width: 68px;
+
+    margin: 1.4rem auto;
+  }
+
   .subtitle-text {
     font-size: 0.57rem;
 
@@ -1047,10 +1197,16 @@ body {
   .header-desc {
     max-width: 325px;
 
+    margin-top: 1.2rem;
+
     font-size: 0.82rem;
 
     line-height: 1.75;
   }
+
+  /* ------------------------------------------------------------------------
+     MAIN LAYOUT
+  ------------------------------------------------------------------------ */
 
   .main-layout {
     grid-template-columns: 1fr;
@@ -1065,6 +1221,10 @@ body {
   .main-layout::before {
     display: none;
   }
+
+  /* ------------------------------------------------------------------------
+     PROFILE
+  ------------------------------------------------------------------------ */
 
   .profile-sticky {
     position: relative;
@@ -1082,10 +1242,14 @@ body {
 
   .profile-caption {
     font-size: 0.52rem;
+
+    letter-spacing: 0.18em;
   }
 
   .profile-name {
     font-size: 1.75rem;
+
+    line-height: 1.15;
   }
 
   .profile-title {
@@ -1095,6 +1259,10 @@ body {
 
     letter-spacing: 0.17em;
   }
+
+  /* ------------------------------------------------------------------------
+     CONTACT
+  ------------------------------------------------------------------------ */
 
   .contact-section h3 {
     text-align: center;
@@ -1110,6 +1278,10 @@ body {
     max-width: 330px;
 
     margin: -0.3rem auto 1.6rem;
+
+    font-size: 0.78rem;
+
+    line-height: 1.7;
 
     text-align: center;
   }
@@ -1128,13 +1300,45 @@ body {
     text-align: center;
   }
 
+  .contact-label {
+    font-size: 0.58rem;
+  }
+
+  .contact-info a {
+    font-size: 0.76rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     BIOGRAPHY
+  ------------------------------------------------------------------------ */
+
+  .bio-section {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
   .bio-heading {
+    width: 100%;
+
+    margin-bottom: 2rem;
+
     font-size: 1.85rem;
+
+    line-height: 1.18;
 
     text-align: center;
   }
 
+  .bio-heading::after {
+    margin-top: 0.9rem;
+  }
+
   .bio-section p {
+    width: 100%;
+
+    max-width: 100%;
+
     font-size: 0.89rem;
 
     line-height: 1.82;
@@ -1148,14 +1352,26 @@ body {
 
   .bio-section p:first-of-type::first-letter {
     font-size: 3.5rem;
+
+    margin-right: 0.5rem;
   }
+
+  /* ------------------------------------------------------------------------
+     DIVIDER
+  ------------------------------------------------------------------------ */
 
   .section-divider {
     margin: 3.7rem 0;
   }
 
+  /* ------------------------------------------------------------------------
+     FORM
+  ------------------------------------------------------------------------ */
+
   .ivy-form-container {
     width: 100%;
+
+    max-width: 100%;
   }
 
   .section-eyebrow {
@@ -1169,11 +1385,17 @@ body {
   }
 
   .form-header p {
+    width: 100%;
+
+    max-width: 100%;
+
     font-size: 0.77rem;
 
     line-height: 1.72;
 
     text-align: justify;
+
+    margin-bottom: 2.5rem;
   }
 
   .form-row {
@@ -1196,17 +1418,28 @@ body {
     padding: 13px 18px;
 
     font-size: 0.65rem;
+
+    letter-spacing: 0.12em;
   }
 }
 
-@media screen and (min-width: 360px) and (max-width: 420px) {
-  .container {
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
-  }
+/* ==========================================================================
+   13. VERY SMALL MOBILE
+========================================================================== */
 
+@media screen and (min-width: 360px) and (max-width: 420px) {
   .ivy-header {
     padding: 151px 0.9rem 42px;
+  }
+
+  .ivy-header::before {
+    left: 2.5%;
+
+    right: 2.5%;
+  }
+
+  .ivy-header::after {
+    top: 106px;
   }
 
   .main-title {
@@ -1241,6 +1474,12 @@ body {
 
   .profile-title {
     font-size: 0.54rem;
+
+    letter-spacing: 0.14em;
+  }
+
+  .contact-info a {
+    font-size: 0.72rem;
   }
 
   .bio-heading {
@@ -1249,6 +1488,8 @@ body {
 
   .bio-section p {
     font-size: 0.84rem;
+
+    line-height: 1.78;
   }
 
   .form-header h2 {
@@ -1273,7 +1514,7 @@ body {
 }
 
 /* ==========================================================================
-   13. REDUCED MOTION
+   14. REDUCED MOTION
 ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1293,7 +1534,7 @@ body {
 }
 
 /* ==========================================================================
-   14. PRINT
+   15. PRINT
 ========================================================================== */
 
 @media print {

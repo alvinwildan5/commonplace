@@ -1,244 +1,221 @@
 /* ==========================================================================
-   LIBRARY - EDITORIAL / APEKSI VISUAL SYSTEM
-   ========================================================================== */
+   LIBRARY — EDITORIAL / ARCHIVAL PAGE SYSTEM
+   AWS COMMONPLACE
 
-/* =========================================================
-   1. VARIABLES & BASE STYLES
-========================================================= */
-:root {
-  /* Palet APEKSI Editorial: Ivory/Putih dan Muted Gold */
-  --bg-paper: #fcfbf9;
-  --bg-white: #ffffff;
-  --bg-alt: #f4f2ec;
-  --text-main: #2a2c2a;
-  --text-muted: #6b6d6b;
-  --accent-gold: #b89b72; /* Menggantikan Crimson */
-  --accent-gold-dark: #9e835b;
-  --border-color: #e8e5df;
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "Inter", -apple-system, sans-serif;
-  --radius-xs: 0px; /* Sharp edges untuk gaya editorial premium */
-  --ease: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+   PROFILE-SPECIFIC / PAGE-SPECIFIC STYLES ONLY
+   --------------------------------------------------------------------------
+   Shared visual system is inherited from:
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+       ../../index.css
 
-body {
-  background-color: var(--bg-paper);
-  color: var(--text-main);
-  font-family: var(--font-serif);
-  line-height: 1.7;
-  font-size: 1.15rem;
-  -webkit-font-smoothing: antialiased;
-}
+   Shared components intentionally NOT redefined here:
+   - .site-header
+   - .site-nav
+   - .brand-text
+   - .nav-links
+   - .lang-switcher
+   - .lang-btn
+   - .lang-divider
+   - .site-footer
+   - .footer-container
+   - .footer-center
+   - .footer-brand-logo
+   - .footer-tagline-large
+   - .footer-bottom-area
+   - .footer-connect-centered
+   - .nav-group-title
+   - .connect-links
+   - .footer-copyright
+   - :root
+   - global palette
+   - global typography
+   - global container
+========================================================================== */
 
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: var(--ease);
-}
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
+/* ==========================================================================
+   1. LIBRARY HERO
+========================================================================== */
 
-/* =========================================================
-   2. HEADER
-========================================================= */
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  background: var(--bg-white);
-  border-bottom: 1px solid var(--border-color);
-  transition: var(--ease);
-}
-
-.site-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.brand-text {
-  font-family: "Bodoni Moda", Didot, serif;
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 10px;
-  color: #b89b72;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.nav-links {
-  display: flex;
-  gap: 3rem;
-  list-style: none;
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 300;
-}
-
-.nav-links a {
-  color: var(--text-muted);
-  padding-bottom: 4px;
-  border-bottom: 1px solid transparent;
-  transition: var(--ease);
-}
-
-.nav-links a.active,
-.nav-links a:hover {
-  color: var(--text-main);
-  border-bottom-color: var(--accent-gold);
-  font-weight: 400;
-}
-
-.lang-switcher button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  transition: var(--ease);
-}
-.lang-switcher button.active {
-  font-weight: 500;
-  color: var(--accent-gold);
-}
-.lang-divider {
-  margin: 0 8px;
-  color: var(--border-color);
-}
-
-/* =========================================================
-   3. HERO SECTION (IVY HEADER)
-========================================================= */
 .ivy-header {
-  padding: 200px 2rem 100px; /* Space for fixed header */
-  background-color: var(--bg-paper);
-  display: flex;
-  justify-content: center;
+  position: relative;
+  width: 100%;
+  padding: 190px 2rem 88px;
   text-align: center;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 253, 248, 0.96) 0%,
+    rgba(244, 239, 229, 0.92) 68%,
+    rgba(232, 223, 205, 0.58) 100%
+  );
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.ivy-header::before {
+  content: "";
+  position: absolute;
+  inset: 26px 2rem 24px;
+  pointer-events: none;
+  border-top: 1px solid rgba(168, 141, 95, 0.18);
+  border-bottom: 1px solid rgba(168, 141, 95, 0.12);
+}
+
+.ivy-header::after {
+  content: "◆";
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  color: var(--accent-gold-light);
+  font-family: var(--font-serif);
+  font-size: 0.7rem;
+  line-height: 1;
+  opacity: 0.8;
 }
 
 .ivy-container {
-  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.subtitle-wrapper {
+  margin-bottom: 0.8rem;
 }
 
 .subtitle-text {
+  display: inline-block;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 4px;
-  color: var(--accent-gold);
+  letter-spacing: 3.2px;
+  color: var(--accent-gold-deep);
+}
+
+.title-wrapper {
+  margin: 0 auto;
 }
 
 .main-title {
+  margin: 0.7rem 0 1.45rem;
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 0.98;
   font-weight: 400;
+  letter-spacing: -0.02em;
   color: var(--text-main);
-  margin: 1rem 0 1.5rem;
 }
 
 .gold-divider {
-  width: 60px;
-  height: 2px;
-  background-color: var(--accent-gold);
+  width: 64px;
+  height: 1px;
   margin: 0 auto;
+  background: var(--accent-gold);
 }
 
 .desc-wrapper {
-  margin-top: 2rem;
-}
-.header-desc {
-  font-family: var(--font-sans);
-  font-size: 1.05rem;
-  color: var(--text-muted);
-  line-height: 1.8;
-  max-width: 600px;
-  margin: 0 auto;
+  margin-top: 1.9rem;
 }
 
-/* =========================================================
-   4. LIBRARY CONTROLS (SEARCH BAR)
-========================================================= */
+.header-desc {
+  max-width: 650px;
+  margin: 0 auto;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  line-height: 1.85;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   2. LIBRARY SEARCH / CONTROLS
+========================================================================== */
+
 .library-controls {
-  margin-bottom: 4rem;
+  width: 100%;
   display: flex;
   justify-content: center;
+  margin: 0;
+  padding: 3.7rem 0 4rem;
 }
 
 .search-minimal-wrapper {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.search-minimal-wrapper input {
-  border-radius: 8px;
+  max-width: 560px;
 }
 
 .search-minimal-icon {
   position: absolute;
-  left: 20px;
   top: 50%;
+  left: 19px;
+  width: 17px;
+  height: 17px;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  color: var(--text-muted);
+  color: var(--text-soft);
+  pointer-events: none;
 }
 
 .search-minimal-input {
   width: 100%;
-  padding: 14px 20px 14px 50px;
+  min-height: 52px;
+  padding: 13px 18px 13px 48px;
+
   font-family: var(--font-sans);
-  font-size: 0.9rem;
-  border: 1px solid var(--border-color);
-  background: var(--bg-white);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+
   color: var(--text-main);
+  background: rgba(250, 247, 239, 0.94);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
   outline: none;
+
+  box-shadow: var(--shadow-paper);
   transition: var(--ease);
+}
+
+.search-minimal-input::placeholder {
+  color: var(--text-soft);
+  opacity: 0.9;
+}
+
+.search-minimal-input:hover {
+  border-color: rgba(98, 88, 69, 0.25);
 }
 
 .search-minimal-input:focus {
   border-color: var(--accent-gold);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-}
-.search-minimal-input::placeholder {
-  color: #a0a0a0;
+  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.08);
 }
 
-/* =========================================================
-   5. LIBRARY GRID & CARDS
-========================================================= */
+.search-minimal-input:focus-visible {
+  outline: 1px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   3. LIBRARY GRID
+========================================================================== */
+
 .library-grid {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 4rem 2.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4.6rem 2.2rem;
   padding-bottom: 6rem;
 }
 
 .book-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   cursor: pointer;
   background: transparent;
   transition: var(--ease);
@@ -247,572 +224,490 @@ a {
 .book-cover {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3; /* Memastikan rasio buku proporsional */
+  aspect-ratio: 2 / 3;
+  margin-bottom: 1.45rem;
   overflow: hidden;
-  border-radius: var(--radius-xs);
+
+  background: var(--paper-deep);
   border: 1px solid var(--border-color);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1.5rem;
-  background-color: var(--bg-alt);
-  transition: var(--ease);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-paper);
+
+  transition:
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .book-cover img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  display: block;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: saturate(0.96);
+
+  transition:
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s ease;
 }
 
 .book-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(42, 44, 42, 0.75); /* Dark elegant overlay */
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  background: rgba(41, 41, 35, 0.68);
   opacity: 0;
-  transition: opacity 0.4s ease;
+
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .book-overlay span {
-  color: var(--bg-white);
+  padding: 10px 18px;
+
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
+  line-height: 1;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 2px;
-  border: 1px solid var(--accent-gold);
-  padding: 10px 20px;
-  border-radius: var(--radius-xs);
+
+  color: var(--bg-white);
+  border: 1px solid var(--accent-gold-light);
+  background: rgba(41, 41, 35, 0.18);
+
   transition: var(--ease);
 }
 
 .book-card:hover .book-cover {
   border-color: var(--accent-gold);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-paper-hover);
+  transform: translateY(-4px);
 }
+
 .book-card:hover .book-cover img {
-  transform: scale(1.05);
+  transform: scale(1.045);
+  filter: saturate(1);
 }
+
 .book-card:hover .book-overlay {
   opacity: 1;
 }
-.book-card:hover .book-overlay span:hover {
-  background: var(--accent-gold);
-  color: var(--bg-white);
+
+.book-card:hover .book-overlay span {
+  background: rgba(168, 141, 95, 0.12);
 }
 
+.book-card:focus-visible {
+  outline: none;
+}
+
+.book-card:focus-visible .book-cover {
+  outline: 1px solid var(--accent-gold);
+  outline-offset: 5px;
+}
+
+/* ==========================================================================
+   4. BOOK INFORMATION
+========================================================================== */
+
 .book-info {
-  flex-grow: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  min-width: 0;
 }
 
 .book-category {
+  display: block;
+  margin-bottom: 0.7rem;
+
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
+  line-height: 1.4;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--accent-gold);
-  font-weight: 500;
-  margin-bottom: 0.8rem;
+
+  color: var(--accent-gold-deep);
 }
 
 .book-info h3,
 .book-info h3.serif {
+  min-height: 2.55em;
+  margin: 0 0 0.55rem;
+
   font-family: var(--font-serif);
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 1.3;
-  margin-bottom: 0.5rem;
+  font-size: 1.34rem;
+  line-height: 1.24;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+
   color: var(--text-main);
-  transition: var(--ease);
+  transition: color 0.35s ease;
 }
 
-.book-card:hover .book-info h3 {
-  color: var(--accent-gold);
+.book-card:hover .book-info h3,
+.book-card:focus-visible .book-info h3 {
+  color: var(--accent-gold-deep);
 }
 
 .book-info p {
+  margin: 0;
+
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.74rem;
+  line-height: 1.65;
+  font-weight: 400;
+
   color: var(--text-muted);
 }
 
 .no-results-box {
-  text-align: center;
-  padding: 4rem 0;
-  font-family: var(--font-sans);
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  border: 1px solid var(--border-color);
-  background: var(--bg-white);
   display: none;
-}
-
-/* =========================================================
-   6. UNIVERSAL FOOTER STYLES
-========================================================= */
-.site-footer {
-  background-color: var(--bg-white);
-  color: var(--text-main);
-  margin-top: 4rem;
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-}
-
-.footer-container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 6rem 2rem 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
-}
+  margin: 0 auto 5rem;
+  padding: 3.8rem 1.5rem;
 
-.footer-center {
   text-align: center;
-}
 
-.footer-brand-logo {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  letter-spacing: 0.3em;
-  color: var(--accent-gold);
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-}
-
-.footer-tagline-large {
-  font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.4;
-  font-weight: 400;
-}
-
-.footer-bottom-area {
-  border-top: 1px solid var(--border-color);
-  padding-top: 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
-}
-
-.footer-connect-centered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.nav-group-title {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--accent-gold);
-  font-weight: 500;
-}
+  font-size: 0.82rem;
+  line-height: 1.7;
 
-.connect-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 4rem;
-}
-
-.connect-links a {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: var(--ease);
-}
-
-.connect-links a i {
-  font-size: 1.1rem;
-}
-
-.connect-links a:hover {
-  color: var(--accent-gold);
-  transform: translateY(-2px);
-}
-
-.footer-copyright {
-  text-align: center;
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  background: rgba(250, 247, 239, 0.75);
+  border: 1px solid var(--border-light);
 }
 
 /* ==========================================================================
-   8. MOBILE FINAL REFINEMENT — 360px–420px
-   HEADER & FOOTER mengikuti template sebelumnya
-   LIBRARY optimized for compact mobile screens
+   5. RESPONSIVE — TABLET / SMALL DESKTOP
 ========================================================================== */
 
-@media screen and (min-width: 360px) and (max-width: 420px) {
-  /* ========================================================================
-     GLOBAL
-  ======================================================================== */
-
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  body {
-    font-size: 16px;
-    line-height: 1.65;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  img,
-  video,
-  iframe {
-    max-width: 100%;
-  }
-
-  /* ========================================================================
-     HEADER
-     Template sebelumnya:
-     Brand → Auth → Navigation
-  ======================================================================== */
-
-  .site-header {
-    width: 100%;
-    height: auto;
-    min-height: 60px;
-    padding: 0;
-  }
-
-  .site-nav {
-    width: 100%;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 0.8rem 1rem 0.5rem;
-  }
-
-  .brand-text {
-    font-family: "University Roman", Didot, serif;
-    font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: -3px;
-    line-height: 1;
-    text-transform: uppercase;
-
-    /* Warna Solid Gold Elegan */
-    color: #c5a059;
-  }
-  .auth-menu {
-    width: 100%;
-    margin-left: 0;
-    justify-content: center;
-    order: 2;
-  }
-
-  .auth-btn {
-    padding: 7px 11px;
-    font-size: 0.6rem;
-    line-height: 1.2;
-  }
-
-  .nav-links {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.65rem 0.95rem;
-    font-size: 0.58rem;
-    line-height: 1.3;
-    order: 3;
-  }
-
-  .nav-links a {
-    white-space: nowrap;
-  }
-
-  /* ========================================================================
-     CONTAINER
-  ======================================================================== */
-
-  .container {
-    width: 100%;
-    max-width: 100%;
-    padding-left: 1.1rem;
-    padding-right: 1.1rem;
-  }
-
-  /* ========================================================================
-     IVY / LIBRARY HEADER
-  ======================================================================== */
-
-  .ivy-header {
-    width: 100%;
-    max-width: 100%;
-    padding: 155px 1.1rem 45px;
-    text-align: center;
-  }
-
-  .main-title {
-    width: 100%;
-    max-width: 100%;
-    font-size: clamp(2rem, 9.5vw, 2.45rem);
-    line-height: 1.05;
-    letter-spacing: -0.8px;
-    overflow-wrap: anywhere;
-  }
-
-  .subtitle-text {
-    max-width: 100%;
-    font-size: 0.62rem;
-    line-height: 1.5;
-    letter-spacing: 2.2px;
-  }
-
-  .header-desc {
-    width: 100%;
-    max-width: 340px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 0.82rem;
-    line-height: 1.65;
-  }
-
-  /* ========================================================================
-     LIBRARY CONTROLS
-  ======================================================================== */
-
-  .library-controls {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 2.4rem;
-  }
-
-  .library-controls > * {
-    max-width: 100%;
-  }
-
-  .library-controls input,
-  .library-controls select,
-  .library-controls button {
-    font-size: 0.75rem;
-  }
-
-  /* ========================================================================
-     LIBRARY GRID
-     Tetap 1 kolom agar cover + judul + metadata terbaca.
-  ======================================================================== */
-
+@media screen and (max-width: 1100px) {
   .library-grid {
-    width: 100%;
-    max-width: 330px;
-    margin-left: auto;
-    margin-right: auto;
-
-    grid-template-columns: 1fr;
-    gap: 2.8rem;
-  }
-
-  /* ========================================================================
-     BOOK ITEM / COVER
-  ======================================================================== */
-
-  .book-item,
-  .book-card {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .book-cover,
-  .book-image,
-  .book-item img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  /* ========================================================================
-     BOOK INFORMATION
-  ======================================================================== */
-
-  .book-info {
-    width: 100%;
-    max-width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4rem 2rem;
   }
 
   .book-info h3,
   .book-info h3.serif {
-    width: 100%;
-    max-width: 100%;
     font-size: 1.28rem;
-    line-height: 1.2;
-    letter-spacing: -0.2px;
-    overflow-wrap: anywhere;
   }
+}
 
-  .book-info p {
-    width: 100%;
-    max-width: 100%;
-    font-size: 0.78rem;
-    line-height: 1.6;
-  }
+/* ==========================================================================
+   6. RESPONSIVE — TABLET / MOBILE
+========================================================================== */
 
-  .book-info small {
-    font-size: 0.65rem;
-    line-height: 1.4;
-  }
-
-  /* ========================================================================
-     FOOTER
-     Mengikuti template footer sebelumnya
-  ======================================================================== */
-
-  .footer-container {
-    width: 100%;
-    padding: 3rem 1.1rem 1.5rem;
-    gap: 2.2rem;
-  }
-
-  .footer-brand-logo {
-    font-size: 1.05rem;
-    letter-spacing: 2px;
-    line-height: 1.2;
-  }
-
-  .footer-tagline-large {
-    max-width: 100%;
-    font-size: 1.3rem;
-    line-height: 1.3;
-  }
-
-  .connect-links {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-  }
-
-  .footer-bottom-area {
-    width: 100%;
-    padding-top: 2.5rem;
-    gap: 2rem;
-  }
-
-  .nav-group-title {
-    font-size: 0.62rem;
-    letter-spacing: 1.5px;
-  }
-
-  .footer-copyright {
-    font-size: 0.65rem;
-    line-height: 1.5;
-  }
-
-  /* ========================================================================
-     LINKS / TEXT OVERFLOW
-  ======================================================================== */
-
-  h1,
-  h2,
-  h3,
-  h4,
-  p,
-  a,
-  span {
-    overflow-wrap: break-word;
-  }
-
-  a {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .site-nav {
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
-  }
-
-  .brand-text {
-    font-size: 1.15rem;
-    letter-spacing: 3.5px;
-  }
-
-  .nav-links {
-    gap: 0.55rem 0.8rem;
-    font-size: 0.55rem;
-  }
-
-  .container {
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
-  }
-
+@media screen and (max-width: 800px) {
   .ivy-header {
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
-    padding-top: 150px;
-    padding-bottom: 40px;
+    padding: 170px 1.5rem 72px;
+  }
+
+  .ivy-header::before {
+    inset-left: 1rem;
+    inset-right: 1rem;
   }
 
   .main-title {
-    font-size: 2rem;
-    letter-spacing: -0.7px;
+    font-size: clamp(2.65rem, 9vw, 4rem);
+  }
+
+  .header-desc {
+    max-width: 590px;
+    font-size: 0.86rem;
+  }
+
+  .library-controls {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3.6rem 1.8rem;
+  }
+}
+
+/* ==========================================================================
+   7. RESPONSIVE — MOBILE
+========================================================================== */
+
+@media screen and (max-width: 600px) {
+  .ivy-header {
+    padding: 150px 1.1rem 58px;
+  }
+
+  .ivy-header::before {
+    inset: 20px 0.9rem 18px;
+  }
+
+  .ivy-header::after {
+    bottom: 17px;
   }
 
   .subtitle-text {
+    font-size: 0.58rem;
+    letter-spacing: 2.1px;
+  }
+
+  .main-title {
+    margin-top: 0.65rem;
+    margin-bottom: 1.15rem;
+    font-size: clamp(2.35rem, 11vw, 3.1rem);
+    line-height: 1.02;
+  }
+
+  .gold-divider {
+    width: 52px;
+  }
+
+  .desc-wrapper {
+    margin-top: 1.5rem;
+  }
+
+  .header-desc {
+    max-width: 330px;
+    font-size: 0.78rem;
+    line-height: 1.72;
+  }
+
+  .library-controls {
+    padding: 2.4rem 0 2.8rem;
+  }
+
+  .search-minimal-input {
+    min-height: 48px;
+    padding-left: 45px;
+    padding-right: 15px;
+    font-size: 0.74rem;
+  }
+
+  .search-minimal-icon {
+    left: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .library-grid {
+    grid-template-columns: 1fr;
+    width: min(100%, 320px);
+    margin: 0 auto;
+    gap: 3.8rem;
+    padding-bottom: 4rem;
+  }
+
+  .book-cover {
+    margin-bottom: 1.3rem;
+  }
+
+  .book-info h3,
+  .book-info h3.serif {
+    min-height: 0;
+    font-size: 1.24rem;
+    line-height: 1.25;
+  }
+
+  .book-category {
     font-size: 0.58rem;
     letter-spacing: 1.8px;
   }
 
+  .book-info p {
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .no-results-box {
+    margin-bottom: 3.5rem;
+    padding: 3rem 1rem;
+    font-size: 0.76rem;
+  }
+}
+
+/* ==========================================================================
+   8. RESPONSIVE — 360px–420px
+========================================================================== */
+
+@media screen and (min-width: 360px) and (max-width: 420px) {
+  .ivy-header {
+    padding: 148px 0.9rem 45px;
+  }
+
+  .ivy-header::before {
+    inset: 18px 0.7rem 15px;
+  }
+
+  .subtitle-text {
+    max-width: 100%;
+    font-size: 0.55rem;
+    line-height: 1.5;
+    letter-spacing: 1.65px;
+  }
+
+  .main-title {
+    width: 100%;
+    font-size: 2rem;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
   .header-desc {
-    font-size: 0.78rem;
+    width: 100%;
+    max-width: 300px;
+    font-size: 0.74rem;
+    line-height: 1.68;
+  }
+
+  .library-controls {
+    padding-top: 2rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .search-minimal-wrapper {
+    width: 100%;
+  }
+
+  .search-minimal-input {
+    min-height: 46px;
+    padding: 11px 13px 11px 42px;
+    font-size: 0.7rem;
+  }
+
+  .search-minimal-icon {
+    left: 14px;
+    width: 15px;
+    height: 15px;
   }
 
   .library-grid {
-    max-width: 290px;
-    gap: 2.5rem;
+    width: min(100%, 290px);
+    gap: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .book-cover {
+    margin-bottom: 1.1rem;
+  }
+
+  .book-category {
+    margin-bottom: 0.55rem;
+    font-size: 0.54rem;
+    letter-spacing: 1.5px;
   }
 
   .book-info h3,
   .book-info h3.serif {
-    font-size: 1.22rem;
+    font-size: 1.16rem;
+    line-height: 1.22;
   }
 
   .book-info p {
-    font-size: 0.75rem;
+    font-size: 0.69rem;
+    line-height: 1.5;
   }
 
-  .footer-container {
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
+  .no-results-box {
+    padding: 2.5rem 0.9rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* ==========================================================================
+   9. VERY SMALL SCREENS
+========================================================================== */
+
+@media screen and (max-width: 359px) {
+  .ivy-header {
+    padding: 145px 0.8rem 42px;
   }
 
-  .footer-tagline-large {
-    font-size: 1.18rem;
+  .main-title {
+    font-size: 1.85rem;
   }
 
-  .nav-group-title {
-    font-size: 0.6rem;
-    letter-spacing: 1.5px;
+  .subtitle-text {
+    font-size: 0.52rem;
+    letter-spacing: 1.45px;
+  }
+
+  .header-desc {
+    font-size: 0.71rem;
+  }
+
+  .library-grid {
+    width: min(100%, 280px);
+  }
+
+  .book-info h3,
+  .book-info h3.serif {
+    font-size: 1.1rem;
+  }
+}
+
+/* ==========================================================================
+   10. REDUCED MOTION
+========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .book-card,
+  .book-cover,
+  .book-cover img,
+  .book-overlay,
+  .book-overlay span,
+  .book-info h3,
+  .search-minimal-input {
+    transition: none;
+  }
+
+  .book-card:hover .book-cover,
+  .book-card:hover .book-cover img {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   11. PRINT
+========================================================================== */
+
+@media print {
+  .ivy-header {
+    padding: 60px 0 35px;
+    background: none;
+    border-bottom: 1px solid #999;
+  }
+
+  .ivy-header::before,
+  .ivy-header::after {
+    display: none;
+  }
+
+  .library-controls {
+    display: none;
+  }
+
+  .library-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .book-overlay {
+    display: none;
+  }
+
+  .book-card:hover .book-cover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .book-card:hover .book-cover img {
+    transform: none;
   }
 }
