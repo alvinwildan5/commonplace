@@ -1537,8 +1537,9 @@ i.fa-regular {
 
   background: radial-gradient(
     ellipse at center top,
-    rgba(255, 253, 248, 0.99),
-    rgba(247, 243, 234, 0.99)
+    #fffefa 0%,
+    #fdfbf6 55%,
+    #faf8f2 100%
   );
 
   transition: var(--ease);
