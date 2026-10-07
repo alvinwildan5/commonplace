@@ -28,7 +28,6 @@
    - Etched-gold AWS identity
 ========================================================================== */
 
-
 /* =========================================================
    1. IMPORTS & VARIABLES
 ========================================================= */
@@ -36,7 +35,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap");
 
 :root {
-
   /* -------------------------------------------------------
      ARCHIVAL PAPER PALETTE
   ------------------------------------------------------- */
@@ -90,19 +88,10 @@
      TYPOGRAPHY
   ------------------------------------------------------- */
 
-  --font-serif:
-    "Cormorant Garamond",
-    "Garamond",
-    "Baskerville",
-    Georgia,
-    serif;
+  --font-serif: "Cormorant Garamond", "Garamond", "Baskerville", Georgia, serif;
 
   --font-sans:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* -------------------------------------------------------
      FORM / GEOMETRY
@@ -110,20 +99,16 @@
 
   --radius-xs: 0px;
 
-  --ease:
-    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* -------------------------------------------------------
      PAPER SHADOW
   ------------------------------------------------------- */
 
-  --shadow-paper:
-    0 12px 35px rgba(57, 49, 36, 0.055);
+  --shadow-paper: 0 12px 35px rgba(57, 49, 36, 0.055);
 
-  --shadow-paper-hover:
-    0 18px 45px rgba(57, 49, 36, 0.09);
+  --shadow-paper-hover: 0 18px 45px rgba(57, 49, 36, 0.09);
 }
-
 
 /* =========================================================
    2. GLOBAL RESETS & TYPOGRAPHY
@@ -143,7 +128,6 @@ html {
 }
 
 body {
-
   /* -------------------------------------------------------
      SUBTLE ARCHIVAL PAPER TEXTURE
      No image required.
@@ -170,11 +154,7 @@ body {
       transparent 1px,
       transparent 4px
     ),
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.2),
-      rgba(255, 255, 255, 0)
-    );
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
 
   color: var(--text-main);
 
@@ -234,7 +214,6 @@ textarea {
   padding: 0 2rem;
 }
 
-
 /* =========================================================
    BACKGROUND UTILITIES
 ========================================================= */
@@ -243,10 +222,7 @@ textarea {
   background-color: var(--bg-white);
 
   background-image:
-    linear-gradient(
-      rgba(255, 255, 255, 0.15),
-      rgba(255, 255, 255, 0.15)
-    ),
+    linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)),
     repeating-linear-gradient(
       0deg,
       rgba(72, 61, 45, 0.009) 0,
@@ -297,7 +273,6 @@ textarea {
     );
 }
 
-
 /* =========================================================
    LINEAR FILIGREE UTILITY
    Historical book-style ornament.
@@ -317,20 +292,18 @@ textarea {
 
   margin-top: 0.85rem;
 
-  background:
-    linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(168, 141, 95, 0.18) 8%,
-      rgba(168, 141, 95, 0.58) 34%,
-      rgba(168, 141, 95, 0.58) 66%,
-      rgba(168, 141, 95, 0.18) 92%,
-      transparent 100%
-    );
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(168, 141, 95, 0.18) 8%,
+    rgba(168, 141, 95, 0.58) 34%,
+    rgba(168, 141, 95, 0.58) 66%,
+    rgba(168, 141, 95, 0.18) 92%,
+    transparent 100%
+  );
 
   opacity: 0.7;
 }
-
 
 /* =========================================================
    3. HEADER & NAVIGATION
@@ -348,14 +321,13 @@ textarea {
 
   background-color: rgba(250, 247, 239, 0.94);
 
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(72, 61, 45, 0.009) 0,
-      rgba(72, 61, 45, 0.009) 1px,
-      transparent 1px,
-      transparent 4px
-    );
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.009) 0,
+    rgba(72, 61, 45, 0.009) 1px,
+    transparent 1px,
+    transparent 4px
+  );
 
   border-bottom: 1px solid var(--border-color);
 
@@ -377,14 +349,13 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      transparent,
-      rgba(168, 141, 95, 0.45) 18%,
-      rgba(168, 141, 95, 0.45) 82%,
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(168, 141, 95, 0.45) 18%,
+    rgba(168, 141, 95, 0.45) 82%,
+    transparent
+  );
 
   pointer-events: none;
 }
@@ -402,18 +373,12 @@ textarea {
   margin: 0 auto;
 }
 
-
 /* =========================================================
    BRAND / AWS ETCHED GOLD
 ========================================================= */
 
 .brand-text {
-
-  font-family:
-    "Cormorant Garamond",
-    "Garamond",
-    Georgia,
-    serif;
+  font-family: "Cormorant Garamond", "Garamond", Georgia, serif;
 
   font-size: 2rem;
 
@@ -430,14 +395,13 @@ textarea {
      No circular badge.
   */
 
-  background:
-    linear-gradient(
-      180deg,
-      #cfbd98 0%,
-      #a88d5f 35%,
-      #826b43 68%,
-      #b39a6d 100%
-    );
+  background: linear-gradient(
+    180deg,
+    #cfbd98 0%,
+    #a88d5f 35%,
+    #826b43 68%,
+    #b39a6d 100%
+  );
 
   -webkit-background-clip: text;
   background-clip: text;
@@ -466,18 +430,16 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      transparent,
-      var(--accent-gold) 18%,
-      var(--accent-gold) 82%,
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--accent-gold) 18%,
+    var(--accent-gold) 82%,
+    transparent
+  );
 
   opacity: 0.65;
 }
-
 
 /* Optional selectors for existing/future profile identity markup */
 
@@ -486,13 +448,7 @@ textarea {
 .profile-badge {
   color: var(--accent-gold);
 
-  background:
-    linear-gradient(
-      145deg,
-      #d2c09b,
-      #a88d5f 45%,
-      #806741
-    );
+  background: linear-gradient(145deg, #d2c09b, #a88d5f 45%, #806741);
 
   -webkit-background-clip: text;
   background-clip: text;
@@ -503,7 +459,6 @@ textarea {
     0 1px 0 rgba(255, 255, 255, 0.42),
     0 1px 1px rgba(75, 58, 36, 0.28);
 }
-
 
 /* =========================================================
    NAVIGATION LINKS
@@ -544,7 +499,6 @@ textarea {
   border-bottom-color: var(--accent-gold);
 }
 
-
 /* Subtle ornamental continuation of underline */
 
 .nav-links a:hover::after,
@@ -566,7 +520,6 @@ textarea {
 
   opacity: 0.55;
 }
-
 
 .lang-switcher button {
   background: none;
@@ -598,12 +551,10 @@ textarea {
   color: var(--border-color);
 }
 
-
 /* =========================================================
    4. HERO
    FIXED BACKGROUND + SCROLL FADE / PARALLAX
 ========================================================= */
-
 
 /* HERO PLACEHOLDER */
 
@@ -616,7 +567,6 @@ textarea {
 
   pointer-events: none;
 }
-
 
 /* HERO BASE */
 
@@ -642,10 +592,7 @@ textarea {
   background-color: var(--bg-paper);
 
   background-image:
-    linear-gradient(
-      rgba(244, 239, 229, 0.15),
-      rgba(244, 239, 229, 0.15)
-    ),
+    linear-gradient(rgba(244, 239, 229, 0.15), rgba(244, 239, 229, 0.15)),
     repeating-linear-gradient(
       0deg,
       rgba(72, 61, 45, 0.012) 0,
@@ -659,13 +606,11 @@ textarea {
   pointer-events: none;
 }
 
-
 /* =========================================================
    HERO IMAGE
 ========================================================= */
 
 .hero-split-image {
-
   position: absolute;
 
   top: 0;
@@ -681,11 +626,9 @@ textarea {
   pointer-events: none;
 }
 
-
 /* Warm sepia fade */
 
 .hero-split-image::after {
-
   content: "";
 
   position: absolute;
@@ -697,26 +640,19 @@ textarea {
   pointer-events: none;
 
   background:
-
     linear-gradient(
       to right,
       rgba(244, 239, 229, 1) 0%,
       rgba(244, 239, 229, 0.97) 12%,
       rgba(244, 239, 229, 0.78) 25%,
-      rgba(244, 239, 229, 0.30) 42%,
+      rgba(244, 239, 229, 0.3) 42%,
       rgba(244, 239, 229, 0.05) 60%,
       rgba(130, 107, 80, 0.05) 100%
     ),
-
-    linear-gradient(
-      to bottom,
-      rgba(72, 57, 41, 0.04),
-      rgba(72, 57, 41, 0)
-    );
+    linear-gradient(to bottom, rgba(72, 57, 41, 0.04), rgba(72, 57, 41, 0));
 }
 
 .hero-split-image img {
-
   position: absolute;
 
   inset: 0;
@@ -732,11 +668,7 @@ textarea {
 
   transform: scale(1.03);
 
-  filter:
-    grayscale(0.16)
-    sepia(0.13)
-    saturate(0.72)
-    contrast(0.94)
+  filter: grayscale(0.16) sepia(0.13) saturate(0.72) contrast(0.94)
     brightness(1.03);
 
   user-select: none;
@@ -746,13 +678,11 @@ textarea {
   transition: transform 0.1s linear;
 }
 
-
 /* =========================================================
    HERO CONTENT
 ========================================================= */
 
 .hero-content {
-
   position: relative;
 
   z-index: 2;
@@ -766,11 +696,9 @@ textarea {
   pointer-events: none;
 }
 
-
 /* HERO TEXT */
 
 .hero-split-text {
-
   position: relative;
 
   width: 55%;
@@ -788,11 +716,9 @@ textarea {
   pointer-events: auto;
 }
 
-
 /* HERO EYEBROW */
 
 .hero-eyebrow {
-
   display: block;
 
   margin-bottom: 0.8rem;
@@ -810,11 +736,9 @@ textarea {
   color: var(--accent-gold-deep);
 }
 
-
 /* HERO TITLE */
 
 .hero-title {
-
   margin: 0;
 
   font-family: var(--font-serif);
@@ -832,7 +756,6 @@ textarea {
   max-width: 600px;
 }
 
-
 /* Optional antique-gold title emphasis */
 
 .hero-title .gold,
@@ -840,24 +763,21 @@ textarea {
   color: var(--accent-gold-deep);
 }
 
-
 /* GOLD DIVIDER */
 
 .gold-divider {
-
   width: 80px;
 
   height: 1px;
 
   margin: 2rem 0 1.5rem;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold-deep),
-      var(--accent-gold),
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep),
+    var(--accent-gold),
+    transparent
+  );
 
   transform-origin: left center;
 
@@ -866,11 +786,9 @@ textarea {
   position: relative;
 }
 
-
 /* Fine linear ornament */
 
 .gold-divider::after {
-
   content: "";
 
   position: absolute;
@@ -886,11 +804,9 @@ textarea {
   transform: translateY(-50%);
 }
 
-
 /* HERO SUBTITLE */
 
 .hero-subtitle {
-
   display: block;
 
   font-family: var(--font-sans);
@@ -906,7 +822,6 @@ textarea {
   color: var(--text-muted);
 }
 
-
 /* =========================================================
    HERO LAYERING
 ========================================================= */
@@ -916,27 +831,22 @@ textarea {
 .community-quote-section,
 .ainan-section,
 .site-footer {
-
   position: relative;
 
   z-index: 10;
 }
 
-
 /* HERO IMAGE PARALLAX CLASS (JS) */
 
 .hero-split-image img.hero-image-parallax {
-
   will-change: transform;
 }
-
 
 /* =========================================================
    5. ARCHIVE INTRODUCTION
 ========================================================= */
 
 .archive-intro-section {
-
   background-color: var(--bg-white);
 
   background-image:
@@ -956,9 +866,7 @@ textarea {
   padding: 7rem 0;
 }
 
-
 .content-section {
-
   position: relative;
 
   z-index: 10;
@@ -966,11 +874,9 @@ textarea {
   padding: 3rem 0;
 }
 
-
 /* INTRO GRID */
 
 .intro-layout {
-
   display: grid;
 
   grid-template-columns: 1fr 1fr;
@@ -980,13 +886,11 @@ textarea {
   align-items: center;
 }
 
-
 /* =========================================================
    SECTION TITLE
 ========================================================= */
 
 .section-title {
-
   font-family: var(--font-serif);
 
   font-size: 2.2rem;
@@ -1004,11 +908,9 @@ textarea {
   position: relative;
 }
 
-
 /* Main linear divider */
 
 .section-title::after {
-
   content: "";
 
   position: absolute;
@@ -1021,21 +923,18 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold-deep) 0,
-      var(--accent-gold) 12%,
-      rgba(168, 141, 95, 0.32) 48%,
-      transparent 100%
-    );
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep) 0,
+    var(--accent-gold) 12%,
+    rgba(168, 141, 95, 0.32) 48%,
+    transparent 100%
+  );
 }
-
 
 /* Small secondary engraved line */
 
 .section-title::before {
-
   content: "";
 
   position: absolute;
@@ -1053,13 +952,11 @@ textarea {
   opacity: 0.65;
 }
 
-
 /* =========================================================
    INTRO TEXT
 ========================================================= */
 
 .intro-text p {
-
   margin-bottom: 1.8rem;
 
   text-align: justify;
@@ -1069,11 +966,9 @@ textarea {
   color: var(--text-muted);
 }
 
-
 /* DROP CAP */
 
 .drop-cap::first-letter {
-
   float: left;
 
   font-size: 5rem;
@@ -1090,17 +985,14 @@ textarea {
 
   font-style: italic;
 
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
 }
-
 
 /* =========================================================
    INTRO IMAGE
 ========================================================= */
 
 .intro-image {
-
   position: relative;
 
   width: min(420px, 100%);
@@ -1109,33 +1001,22 @@ textarea {
 }
 
 .intro-image img {
+  filter: grayscale(74%) sepia(17%) contrast(1.04);
 
-  filter:
-    grayscale(74%)
-    sepia(17%)
-    contrast(1.04);
-
-  box-shadow:
-    14px 14px 0 rgba(168, 141, 95, 0.12);
+  box-shadow: 14px 14px 0 rgba(168, 141, 95, 0.12);
 
   transition: filter 0.6s ease;
 }
 
 .intro-image:hover img {
-
-  filter:
-    grayscale(18%)
-    sepia(10%)
-    contrast(1.05);
+  filter: grayscale(18%) sepia(10%) contrast(1.05);
 }
-
 
 /* =========================================================
    6. COMMUNITY QUOTE
 ========================================================= */
 
 .community-quote-section {
-
   position: relative;
 
   width: 100%;
@@ -1149,19 +1030,16 @@ textarea {
   overflow: hidden;
 
   background:
-
     radial-gradient(
       circle at 18% 35%,
       rgba(168, 141, 95, 0.06),
       transparent 30%
     ),
-
     radial-gradient(
       circle at 82% 68%,
       rgba(130, 107, 80, 0.035),
       transparent 28%
     ),
-
     repeating-linear-gradient(
       0deg,
       rgba(72, 61, 45, 0.01) 0,
@@ -1169,15 +1047,12 @@ textarea {
       transparent 1px,
       transparent 5px
     ),
-
     var(--bg-paper);
 }
-
 
 /* Decorative historical line */
 
 .community-quote-section::before {
-
   content: "";
 
   position: absolute;
@@ -1190,15 +1065,14 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(168, 141, 95, 0.11) 18%,
-      rgba(168, 141, 95, 0.3) 50%,
-      rgba(168, 141, 95, 0.11) 82%,
-      transparent 100%
-    );
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(168, 141, 95, 0.11) 18%,
+    rgba(168, 141, 95, 0.3) 50%,
+    rgba(168, 141, 95, 0.11) 82%,
+    transparent 100%
+  );
 
   transform: translateY(-50%);
 
@@ -1207,11 +1081,9 @@ textarea {
   opacity: 0.5;
 }
 
-
 /* Atmospheric movement */
 
 .community-quote-section::after {
-
   content: "";
 
   position: absolute;
@@ -1224,54 +1096,38 @@ textarea {
       rgba(168, 141, 95, 0.04),
       transparent 24%
     ),
-
     radial-gradient(
       circle at 70% 60%,
       rgba(130, 107, 80, 0.035),
       transparent 22%
     );
 
-  animation:
-    quoteAtmosphere
-    12s
-    ease-in-out
-    infinite
-    alternate;
+  animation: quoteAtmosphere 12s ease-in-out infinite alternate;
 
   pointer-events: none;
 
   z-index: 0;
 }
 
-
 @keyframes quoteAtmosphere {
-
   0% {
-    transform:
-      translate3d(-1%, -1%, 0)
-      scale(1);
+    transform: translate3d(-1%, -1%, 0) scale(1);
   }
 
   50% {
-    transform:
-      translate3d(1%, 0.5%, 0)
-      scale(1.015);
+    transform: translate3d(1%, 0.5%, 0) scale(1.015);
   }
 
   100% {
-    transform:
-      translate3d(-0.5%, 1%, 0)
-      scale(1.025);
+    transform: translate3d(-0.5%, 1%, 0) scale(1.025);
   }
 }
-
 
 /* =========================================================
    CONTAINER
 ========================================================= */
 
 .community-quote-container {
-
   position: relative;
 
   z-index: 2;
@@ -1285,13 +1141,11 @@ textarea {
   text-align: center;
 }
 
-
 /* =========================================================
    QUOTE
 ========================================================= */
 
 .community-quote {
-
   position: relative;
 
   max-width: 800px;
@@ -1301,13 +1155,11 @@ textarea {
   padding: 0 2rem;
 }
 
-
 /* =========================================================
    LARGE QUOTE MARK
 ========================================================= */
 
 .quote-mark {
-
   display: block;
 
   margin-bottom: 2.1rem;
@@ -1324,16 +1176,10 @@ textarea {
 
   transform: translateY(0);
 
-  animation:
-    quoteMarkFloat
-    5s
-    ease-in-out
-    infinite;
+  animation: quoteMarkFloat 5s ease-in-out infinite;
 }
 
-
 @keyframes quoteMarkFloat {
-
   0%,
   100% {
     transform: translateY(0);
@@ -1344,13 +1190,11 @@ textarea {
   }
 }
 
-
 /* =========================================================
    QUOTE TEXT
 ========================================================= */
 
 .community-quote p {
-
   position: relative;
 
   max-width: 780px;
@@ -1373,17 +1217,14 @@ textarea {
 
   text-wrap: pretty;
 
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
-
 
 /* =========================================================
    ATTRIBUTION
 ========================================================= */
 
 .quote-attribution {
-
   display: flex;
 
   align-items: center;
@@ -1406,7 +1247,6 @@ textarea {
 }
 
 .quote-attribution-line {
-
   width: 30px;
 
   height: 1px;
@@ -1415,15 +1255,10 @@ textarea {
 
   transform-origin: center;
 
-  animation:
-    quoteLinePulse
-    4s
-    ease-in-out
-    infinite;
+  animation: quoteLinePulse 4s ease-in-out infinite;
 }
 
 @keyframes quoteLinePulse {
-
   0%,
   100% {
     transform: scaleX(0.65);
@@ -1437,29 +1272,20 @@ textarea {
 }
 
 .quote-attribution cite {
-
   font-style: normal;
 
-  color: var(
-    --accent-gold-deep,
-    var(--accent-gold)
-  );
+  color: var(--accent-gold-deep, var(--accent-gold));
 
   white-space: nowrap;
 }
-
 
 /* =========================================================
    DESKTOP HOVER — VERY SUBTLE
 ========================================================= */
 
 @media (hover: hover) and (min-width: 801px) {
-
   .community-quote {
-    transition:
-      transform
-      0.6s
-      cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .community-quote:hover {
@@ -1467,21 +1293,15 @@ textarea {
   }
 
   .community-quote:hover .quote-mark {
-    color:
-      var(
-        --accent-gold-deep,
-        var(--accent-gold)
-      );
+    color: var(--accent-gold-deep, var(--accent-gold));
   }
 }
-
 
 /* =========================================================
    MOBILE — COMMUNITY QUOTE
 ========================================================= */
 
 @media screen and (max-width: 700px) {
-
   .community-quote-section {
     padding: 4.8rem 0 5.2rem;
   }
@@ -1503,12 +1323,7 @@ textarea {
   .community-quote p {
     max-width: 100%;
 
-    font-size:
-      clamp(
-        1.25rem,
-        5.4vw,
-        1.55rem
-      );
+    font-size: clamp(1.25rem, 5.4vw, 1.55rem);
 
     line-height: 1.52;
 
@@ -1516,7 +1331,6 @@ textarea {
   }
 
   .quote-attribution {
-
     margin-top: 1.8rem;
 
     font-size: 0.55rem;
@@ -1529,13 +1343,11 @@ textarea {
   }
 }
 
-
 /* =========================================================
    REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
   .community-quote-section::after,
   .quote-mark,
   .quote-attribution-line {
@@ -1547,14 +1359,12 @@ textarea {
   }
 }
 
-
 /* =========================================================
    INTERACTIVE DASHBOARD — GEE
    Editorial / Commonplace Book Style
 ========================================================= */
 
 .interactive-map-section {
-
   position: relative;
 
   z-index: 10;
@@ -1565,27 +1375,24 @@ textarea {
 
   background-color: var(--bg-alt);
 
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(72, 61, 45, 0.01) 0,
-      rgba(72, 61, 45, 0.01) 1px,
-      transparent 1px,
-      transparent 5px
-    );
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.01) 0,
+    rgba(72, 61, 45, 0.01) 1px,
+    transparent 1px,
+    transparent 5px
+  );
 
   border-top: 1px solid var(--border-color);
 
   border-bottom: 1px solid var(--border-color);
 }
 
-
 /* -----------------------------------------
    SECTION HEADER
 ----------------------------------------- */
 
 .interactive-map-section .section-title {
-
   display: flex;
 
   flex-direction: column;
@@ -1596,7 +1403,6 @@ textarea {
 }
 
 .interactive-map-section .section-title h2 {
-
   margin: 0;
 
   padding-bottom: 1rem;
@@ -1618,11 +1424,9 @@ textarea {
   position: relative;
 }
 
-
 /* Override section title border with linear ornament */
 
 .interactive-map-section .section-title h2::after {
-
   content: "";
 
   position: absolute;
@@ -1635,17 +1439,15 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold-deep),
-      rgba(168, 141, 95, 0.5) 45%,
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep),
+    rgba(168, 141, 95, 0.5) 45%,
+    transparent
+  );
 }
 
 .interactive-map-section .footer-tagline {
-
   display: block;
 
   margin-top: 0.5rem;
@@ -1667,13 +1469,11 @@ textarea {
   color: var(--accent-gold-deep);
 }
 
-
 /* -----------------------------------------
    MAIN WRAPPER
 ----------------------------------------- */
 
 .gee-editorial-wrapper {
-
   position: relative;
 
   width: 100%;
@@ -1697,11 +1497,9 @@ textarea {
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
 /* Optional reveal class */
 
 .gee-editorial-wrapper.is-visible {
-
   opacity: 1;
 
   visibility: visible;
@@ -1709,30 +1507,22 @@ textarea {
   transform: translateY(0);
 }
 
-
 /* -----------------------------------------
    DASHBOARD DESCRIPTION
 ----------------------------------------- */
 
 .gee-meta {
-
   width: 100%;
 
   max-width: 800px;
 }
 
 .gee-title {
-
   margin: 0 0 0.6rem;
 
   font-family: var(--font-serif);
 
-  font-size:
-    clamp(
-      1.8rem,
-      2.5vw,
-      2.2rem
-    );
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
 
   font-weight: 500;
 
@@ -1742,7 +1532,6 @@ textarea {
 }
 
 .gee-desc {
-
   margin: 0;
 
   font-family: var(--font-sans);
@@ -1756,13 +1545,11 @@ textarea {
   color: var(--text-muted);
 }
 
-
 /* -----------------------------------------
    GEE FRAME
 ----------------------------------------- */
 
 .gee-frame-container {
-
   position: relative;
 
   width: 100%;
@@ -1775,22 +1562,19 @@ textarea {
 
   background-color: var(--paper-light);
 
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(72, 61, 45, 0.009) 0,
-      rgba(72, 61, 45, 0.009) 1px,
-      transparent 1px,
-      transparent 4px
-    );
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.009) 0,
+    rgba(72, 61, 45, 0.009) 1px,
+    transparent 1px,
+    transparent 4px
+  );
 
   border: 1px solid var(--border-color);
 
   border-radius: 0;
 
-  box-shadow:
-    0 10px 30px
-    rgba(57, 49, 36, 0.045);
+  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.045);
 
   overflow: hidden;
 
@@ -1800,21 +1584,16 @@ textarea {
 }
 
 .gee-frame-container:hover {
-
   border-color: var(--accent-gold);
 
-  box-shadow:
-    0 15px 40px
-    rgba(57, 49, 36, 0.075);
+  box-shadow: 0 15px 40px rgba(57, 49, 36, 0.075);
 }
-
 
 /* -----------------------------------------
    GEE IFRAME
 ----------------------------------------- */
 
 .gee-frame-container iframe {
-
   display: block;
 
   width: 100%;
@@ -1834,13 +1613,11 @@ textarea {
   overflow: hidden;
 }
 
-
 /* -----------------------------------------
    CAPTION
 ----------------------------------------- */
 
 .gee-caption {
-
   width: 100%;
 
   margin-top: 0.5rem;
@@ -1862,19 +1639,16 @@ textarea {
   color: var(--text-muted);
 }
 
-
 /* -----------------------------------------
    MOBILE
    360px — 420px
 ----------------------------------------- */
 
 @media screen and (min-width: 360px) and (max-width: 420px) {
-
   /* BUNGKUSAN IFRAME:
      Izinkan Scroll Horizontal */
 
   .gee-frame-container {
-
     width: 100%;
 
     height: 550px;
@@ -1889,13 +1663,10 @@ textarea {
 
     -webkit-overflow-scrolling: touch;
 
-    box-shadow:
-      inset -10px 0 10px -10px
-      rgba(41, 41, 35, 0.2);
+    box-shadow: inset -10px 0 10px -10px rgba(41, 41, 35, 0.2);
   }
 
   .gee-frame-container iframe {
-
     width: 900px;
 
     max-width: none !important;
@@ -1908,15 +1679,12 @@ textarea {
   }
 }
 
-
 /* -----------------------------------------
    VERY SMALL SCREEN
 ----------------------------------------- */
 
 @media screen and (max-width: 359px) {
-
   .gee-frame-container {
-
     width: 100%;
 
     height: 500px;
@@ -1933,7 +1701,6 @@ textarea {
   }
 
   .gee-frame-container iframe {
-
     width: 800px;
 
     max-width: none !important;
@@ -1944,19 +1711,15 @@ textarea {
   }
 }
 
-
 /* -----------------------------------------
    ACCESSIBILITY
 ----------------------------------------- */
 
 .gee-frame-container iframe:focus {
-
-  outline:
-    3px solid var(--accent-steel-blue);
+  outline: 3px solid var(--accent-steel-blue);
 
   outline-offset: 3px;
 }
-
 
 /* =========================================================
    7. RECENT NOTES SECTION
@@ -1964,7 +1727,6 @@ textarea {
 ========================================================= */
 
 .ainan-section {
-
   position: relative;
 
   width: 100%;
@@ -1978,17 +1740,8 @@ textarea {
   */
 
   background-image:
-
-    linear-gradient(
-      rgba(244, 239, 229, 0.88),
-      rgba(244, 239, 229, 0.50)
-    ),
-
-    linear-gradient(
-      rgba(244, 239, 229, 0.12),
-      rgba(244, 239, 229, 0.34)
-    ),
-
+    linear-gradient(rgba(244, 239, 229, 0.88), rgba(244, 239, 229, 0.5)),
+    linear-gradient(rgba(244, 239, 229, 0.12), rgba(244, 239, 229, 0.34)),
     url("./assets/images/notes.jpg");
 
   background-size: cover;
@@ -2004,11 +1757,9 @@ textarea {
   border-bottom: 1px solid var(--border-color);
 }
 
-
 /* Fine texture above photographic background */
 
 .ainan-section::after {
-
   content: "";
 
   position: absolute;
@@ -2019,27 +1770,21 @@ textarea {
 
   pointer-events: none;
 
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(72, 61, 45, 0.018) 0,
-      rgba(72, 61, 45, 0.018) 1px,
-      transparent 1px,
-      transparent 5px
-    );
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.018) 0,
+    rgba(72, 61, 45, 0.018) 1px,
+    transparent 1px,
+    transparent 5px
+  );
 
   mix-blend-mode: multiply;
 
   opacity: 0.45;
 }
 
-
 .ainan-container {
-
-  width: min(
-    1400px,
-    calc(100% - 80px)
-  );
+  width: min(1400px, calc(100% - 80px));
 
   margin: 0 auto;
 
@@ -2056,13 +1801,11 @@ textarea {
   z-index: 2;
 }
 
-
 /* =========================================================
    STICKY TITLE
 ========================================================= */
 
 .ainan-page-title {
-
   position: sticky;
 
   top: 150px;
@@ -2081,27 +1824,13 @@ textarea {
 }
 
 .ainan-page-title h2 {
+  margin-left: max(40px, calc((100% - 1400px) / 2));
 
-  margin-left:
-    max(
-      40px,
-      calc((100% - 1400px) / 2)
-    );
-
-  width:
-    min(
-      520px,
-      40vw
-    );
+  width: min(520px, 40vw);
 
   font-family: var(--font-serif);
 
-  font-size:
-    clamp(
-      2.4rem,
-      4vw,
-      4rem
-    );
+  font-size: clamp(2.4rem, 4vw, 4rem);
 
   font-weight: 500;
 
@@ -2114,11 +1843,9 @@ textarea {
   position: relative;
 }
 
-
 /* Linear engraving */
 
 .ainan-page-title h2::after {
-
   content: "";
 
   display: block;
@@ -2129,16 +1856,10 @@ textarea {
 
   margin-top: 0.85rem;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold-deep),
-      transparent
-    );
+  background: linear-gradient(to right, var(--accent-gold-deep), transparent);
 }
 
 .ainan-page-title h2 span {
-
   display: block;
 
   margin-top: 0.5rem;
@@ -2156,7 +1877,6 @@ textarea {
   color: var(--accent-gold-deep);
 }
 
-
 /* =========================================================
    EDITORIAL NOTE CARD
    No heavy glass effect.
@@ -2164,16 +1884,11 @@ textarea {
 ========================================================= */
 
 .ainan-glass-card {
-
   position: relative;
 
   z-index: 20;
 
-  width:
-    min(
-      550px,
-      100%
-    );
+  width: min(550px, 100%);
 
   padding: 3.5rem 3rem;
 
@@ -2182,24 +1897,21 @@ textarea {
      transformed into warm paper translucency.
   */
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(250, 247, 239, 0.94),
-      rgba(244, 239, 229, 0.91)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(250, 247, 239, 0.94),
+    rgba(244, 239, 229, 0.91)
+  );
 
   backdrop-filter: blur(12px);
 
   -webkit-backdrop-filter: blur(12px);
 
-  border: 1px solid
-    rgba(130, 107, 80, 0.20);
+  border: 1px solid rgba(130, 107, 80, 0.2);
 
   border-radius: var(--radius-xs);
 
-  box-shadow:
-    var(--shadow-paper);
+  box-shadow: var(--shadow-paper);
 
   transition:
     transform 0.4s var(--ease),
@@ -2209,23 +1921,22 @@ textarea {
   overflow: hidden;
 }
 
-
 /* ---------------------------------------------------------
    NOTE CARD ATMOSPHERIC IMAGE
-   Existing notes.jpg becomes default image.
-   Custom --note-image can be supplied by existing markup
-   without changing this stylesheet.
-
-   Example:
-   style="--note-image:url('./assets/images/compass.jpg')"
+   Each card can define its own image via:
+   style="--note-image: url('./assets/images/your-image.jpg')"
 --------------------------------------------------------- */
 
-.ainan-glass-card::before {
+.ainan-glass-card {
+  position: relative;
+  overflow: hidden;
+}
 
+/* Atmospheric image on top of the card */
+.ainan-glass-card::before {
   content: "";
 
   position: absolute;
-
   top: 0;
   left: 0;
   right: 0;
@@ -2233,136 +1944,106 @@ textarea {
   height: 120px;
 
   background-image:
-
     linear-gradient(
       to bottom,
       rgba(41, 41, 35, 0.07),
       rgba(244, 239, 229, 0.02) 48%,
       rgba(244, 239, 229, 0.96) 100%
     ),
+    var(--note-image, url("./assets/images/notes.jpg"));
 
-    var(
-      --note-image,
-      url("./assets/images/notes.jpg")
-    );
+  background-size: cover, cover;
 
-  background-size:
-    cover,
-    cover;
-
-  background-position:
-    center,
-    center;
+  background-position: center, center;
 
   background-repeat: no-repeat;
 
-  filter:
-    sepia(0.24)
-    grayscale(0.16)
-    saturate(0.7)
-    contrast(0.94);
+  filter: sepia(0.24) grayscale(0.16) saturate(0.7) contrast(0.94);
 
   opacity: 0.72;
 
   pointer-events: none;
-
   z-index: 0;
 }
 
-
 /* Fine upper-edge linear ornament */
-
 .ainan-glass-card::after {
-
   content: "";
 
   position: absolute;
-
   top: 116px;
-
   left: 3rem;
   right: 3rem;
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      transparent,
-      rgba(168, 141, 95, 0.56) 15%,
-      rgba(168, 141, 95, 0.30) 50%,
-      rgba(168, 141, 95, 0.56) 85%,
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(168, 141, 95, 0.56) 15%,
+    rgba(168, 141, 95, 0.3) 50%,
+    rgba(168, 141, 95, 0.56) 85%,
+    transparent
+  );
 
   z-index: 1;
-
   pointer-events: none;
 }
 
-
-/* Keep card contents above image */
-
+/* Keep all card contents above the image */
 .ainan-glass-card > * {
-
   position: relative;
-
   z-index: 2;
 }
 
-
+/* Hover */
 .ainan-glass-card:hover {
-
   transform: translateY(-5px);
 
-  box-shadow:
-    var(--shadow-paper-hover);
+  box-shadow: var(--shadow-paper-hover);
 
-  border-color:
-    rgba(168, 141, 95, 0.55);
+  border-color: rgba(168, 141, 95, 0.55);
 }
-
 
 /* =========================================================
    NOTE CATEGORY
 ========================================================= */
 
 .ainan-card-category {
-
   display: block;
 
   margin-bottom: 1.2rem;
 
   font-family: var(--font-sans);
 
-  font-size: 0.7rem;
+  font-size: 1.25rem;
 
-  font-weight: 500;
+  font-weight: 700;
 
   letter-spacing: 2px;
 
   text-transform: uppercase;
 
   color: var(--accent-gold-deep);
+
+  -webkit-text-stroke: 0.6px #ffffff;
+
+  text-shadow:
+    0 0 3px #ffffff,
+    0 0 5px rgba(255, 255, 255, 0.8);
 }
-
-
 /* =========================================================
    NOTE TITLE
 ========================================================= */
 
 .ainan-card-title {
-
   margin: 0 0 1.5rem;
+
+  padding-top: 2rem;
 
   font-family: var(--font-serif);
 
-  font-size:
-    clamp(
-      1.8rem,
-      2.5vw,
-      2.2rem
-    );
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
 
   font-weight: 500;
 
@@ -2371,13 +2052,11 @@ textarea {
   color: var(--text-main);
 }
 
-
 /* =========================================================
    NOTE DESCRIPTION
 ========================================================= */
 
 .ainan-card-description {
-
   margin: 0 0 2rem;
 
   font-family: var(--font-sans);
@@ -2389,13 +2068,11 @@ textarea {
   color: var(--text-muted);
 }
 
-
 /* =========================================================
    EXCERPT META
 ========================================================= */
 
 .excerpt-meta {
-
   display: flex;
 
   align-items: center;
@@ -2406,13 +2083,10 @@ textarea {
 
   padding-top: 1.5rem;
 
-  border-top:
-    1px solid
-    rgba(42, 42, 35, 0.12);
+  border-top: 1px solid rgba(42, 42, 35, 0.12);
 }
 
 .ainan-meta-item {
-
   display: flex;
 
   flex-direction: column;
@@ -2421,7 +2095,6 @@ textarea {
 }
 
 .ainan-meta-label {
-
   font-family: var(--font-sans);
 
   font-size: 0.65rem;
@@ -2436,7 +2109,6 @@ textarea {
 }
 
 .ainan-meta-value {
-
   font-family: var(--font-sans);
 
   font-size: 0.85rem;
@@ -2446,13 +2118,11 @@ textarea {
   color: var(--text-main);
 }
 
-
 /* =========================================================
    NOTE LINK
 ========================================================= */
 
 .ainan-card-link {
-
   display: inline-flex;
 
   align-items: center;
@@ -2480,11 +2150,9 @@ textarea {
   position: relative;
 }
 
-
 /* Linear gold underline */
 
 .ainan-card-link::after {
-
   content: "";
 
   position: absolute;
@@ -2497,30 +2165,25 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold-deep),
-      var(--accent-gold),
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep),
+    var(--accent-gold),
+    transparent
+  );
 }
 
-
 .ainan-card-link:hover {
-
   gap: 18px;
 
   color: var(--accent-gold-deep);
 }
-
 
 /* =========================================================
    8. SPACE TO GROW — ORGANIZATIONS GRID
 ========================================================= */
 
 .section-title {
-
   display: flex;
 
   flex-direction: column;
@@ -2529,7 +2192,6 @@ textarea {
 }
 
 .footer-tagline {
-
   font-family: var(--font-sans);
 
   font-size: 0.8rem;
@@ -2547,50 +2209,34 @@ textarea {
   display: block;
 }
 
-
 /* =========================================================
    ORGANIZATION GRID
 ========================================================= */
 
 .org-grid {
-
   display: grid;
 
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(340px, 1fr)
-    );
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
 
   gap: 2.5rem;
 }
-
 
 /* =========================================================
    ORGANIZATION CARD
 ========================================================= */
 
 .org-card {
+  background: #ffffff;
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(250, 247, 239, 0.98),
-      rgba(244, 239, 229, 0.96)
-    );
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.009) 0,
+    rgba(72, 61, 45, 0.009) 1px,
+    transparent 1px,
+    transparent 4px
+  );
 
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(72, 61, 45, 0.009) 0,
-      rgba(72, 61, 45, 0.009) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-
-  border:
-    1px solid
-    var(--border-color);
+  border: 1px solid var(--border-color);
 
   padding: 2.5rem;
 
@@ -2602,30 +2248,22 @@ textarea {
 
   transition: var(--ease);
 
-  box-shadow:
-    0 6px 20px
-    rgba(57, 49, 36, 0.025);
+  box-shadow: 0 6px 20px rgba(57, 49, 36, 0.025);
 }
 
 .org-card:hover {
-
   transform: translateY(-5px);
 
-  box-shadow:
-    0 12px 30px
-    rgba(57, 49, 36, 0.065);
+  box-shadow: 0 12px 30px rgba(57, 49, 36, 0.065);
 
-  border-color:
-    rgba(168, 141, 95, 0.55);
+  border-color: rgba(168, 141, 95, 0.55);
 }
-
 
 /* =========================================================
    ORGANIZATION HEADER
 ========================================================= */
 
 .org-header {
-
   display: flex;
 
   align-items: center;
@@ -2641,11 +2279,9 @@ textarea {
   position: relative;
 }
 
-
 /* Fine secondary line */
 
 .org-header::after {
-
   content: "";
 
   position: absolute;
@@ -2658,19 +2294,16 @@ textarea {
 
   height: 1px;
 
-  background:
-    var(--accent-gold);
+  background: var(--accent-gold);
 
   opacity: 0.55;
 }
-
 
 /* =========================================================
    ORGANIZATION LOGO
 ========================================================= */
 
 .org-logo {
-
   width: 55px;
 
   height: 55px;
@@ -2679,9 +2312,7 @@ textarea {
 
   flex-shrink: 0;
 
-  filter:
-    grayscale(100%)
-    sepia(10%);
+  filter: grayscale(100%) sepia(10%);
 
   opacity: 0.76;
 
@@ -2689,21 +2320,16 @@ textarea {
 }
 
 .org-card:hover .org-logo {
-
-  filter:
-    grayscale(35%)
-    sepia(12%);
+  filter: grayscale(35%) sepia(12%);
 
   opacity: 1;
 }
-
 
 /* =========================================================
    ORGANIZATION TITLE
 ========================================================= */
 
 .org-title-wrapper {
-
   display: flex;
 
   flex-direction: column;
@@ -2712,7 +2338,6 @@ textarea {
 }
 
 .org-name {
-
   font-family: var(--font-serif);
 
   font-size: 1.3rem;
@@ -2727,7 +2352,6 @@ textarea {
 }
 
 .org-role {
-
   font-family: var(--font-sans);
 
   font-size: 0.7rem;
@@ -2742,7 +2366,6 @@ textarea {
 }
 
 .org-desc {
-
   font-family: var(--font-sans);
 
   font-size: 0.95rem;
@@ -2756,9 +2379,7 @@ textarea {
   margin-bottom: 2rem;
 }
 
-
 .org-link {
-
   font-family: var(--font-sans);
 
   font-size: 0.75rem;
@@ -2786,11 +2407,9 @@ textarea {
   padding-bottom: 5px;
 }
 
-
 /* Linear underline */
 
 .org-link::after {
-
   content: "";
 
   position: absolute;
@@ -2803,28 +2422,20 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold-deep),
-      transparent
-    );
+  background: linear-gradient(to right, var(--accent-gold-deep), transparent);
 }
 
 .org-link:hover {
-
   color: var(--accent-gold-deep);
 
   gap: 14px;
 }
-
 
 /* =========================================================
    9. AFTER MOVIES — CAROUSEL
 ========================================================= */
 
 .aftermovie-layout {
-
   display: flex;
 
   align-items: center;
@@ -2839,14 +2450,12 @@ textarea {
 }
 
 .aftermovie-carousel-wrapper {
-
   width: 70%;
 
   overflow: hidden;
 }
 
 .aftermovie-carousel {
-
   display: flex;
 
   gap: 2rem;
@@ -2863,25 +2472,20 @@ textarea {
 }
 
 .aftermovie-carousel::-webkit-scrollbar {
-
   display: none;
 }
 
-
 .aftermovie-item {
-
   flex: 0 0 calc(40%);
 
   scroll-snap-align: start;
 }
-
 
 /* =========================================================
    YOUTUBE WRAPPER
 ========================================================= */
 
 .youtube-wrapper {
-
   width: 100%;
 
   aspect-ratio: 16 / 9;
@@ -2892,19 +2496,14 @@ textarea {
 
   overflow: hidden;
 
-  box-shadow:
-    0 10px 30px
-    rgba(57, 49, 36, 0.08);
+  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.08);
 
   position: relative;
 
-  border:
-    1px solid
-    rgba(168, 141, 95, 0.18);
+  border: 1px solid rgba(168, 141, 95, 0.18);
 }
 
 .youtube-wrapper iframe {
-
   position: absolute;
 
   top: 0;
@@ -2916,9 +2515,7 @@ textarea {
   border: none;
 }
 
-
 .aftermovie-title {
-
   font-family: var(--font-sans);
 
   font-size: 0.85rem;
@@ -2934,9 +2531,7 @@ textarea {
   font-weight: 500;
 }
 
-
 .aftermovie-info {
-
   width: 30%;
 
   display: flex;
@@ -2945,7 +2540,6 @@ textarea {
 }
 
 .aftermovie-info p {
-
   font-family: var(--font-sans);
 
   font-size: 1rem;
@@ -2957,9 +2551,7 @@ textarea {
   margin-bottom: 2rem;
 }
 
-
 .scroll-hint {
-
   font-family: var(--font-sans);
 
   font-size: 0.7rem;
@@ -2971,9 +2563,7 @@ textarea {
   color: var(--accent-gold-deep);
 }
 
-
 .animated-chevrons {
-
   display: flex;
 
   align-items: center;
@@ -2986,59 +2576,46 @@ textarea {
 }
 
 .animated-chevrons span {
-
   display: inline-block;
 
-  animation:
-    swipeForward
-    1.5s
-    infinite
-    ease-in-out;
+  animation: swipeForward 1.5s infinite ease-in-out;
 }
 
 .animated-chevrons span:nth-child(2) {
-
   animation-delay: 0.15s;
 
   margin-left: -4px;
 }
 
-
 @keyframes swipeForward {
-
   0%,
   100% {
-
     transform: translateX(0);
 
     opacity: 0.2;
   }
 
   50% {
-
     transform: translateX(6px);
 
     opacity: 1;
   }
 }
 
-
 /* =========================================================
    10. UNIVERSAL FOOTER STYLES
 ========================================================= */
 
 .site-footer {
-
   background-color: var(--bg-white);
 
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(72, 61, 45, 0.009) 0,
-      rgba(72, 61, 45, 0.009) 1px,
-      transparent 1px,
-      transparent 4px
-    );
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.009) 0,
+    rgba(72, 61, 45, 0.009) 1px,
+    transparent 1px,
+    transparent 4px
+  );
 
   color: var(--text-main);
 
@@ -3051,11 +2628,9 @@ textarea {
   position: relative;
 }
 
-
 /* Top linear ornament */
 
 .site-footer::before {
-
   content: "";
 
   position: absolute;
@@ -3067,21 +2642,18 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      transparent,
-      rgba(168, 141, 95, 0.45) 20%,
-      rgba(168, 141, 95, 0.45) 80%,
-      transparent
-    );
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(168, 141, 95, 0.45) 20%,
+    rgba(168, 141, 95, 0.45) 80%,
+    transparent
+  );
 
   pointer-events: none;
 }
 
-
 .footer-container {
-
   width: 100%;
 
   max-width: 1200px;
@@ -3097,15 +2669,11 @@ textarea {
   gap: 5rem;
 }
 
-
 .footer-center {
-
   text-align: center;
 }
 
-
 .footer-brand-logo {
-
   font-family: var(--font-serif);
 
   font-size: 1.5rem;
@@ -3120,21 +2688,13 @@ textarea {
 
   font-weight: 600;
 
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
-
 .footer-tagline-large {
-
   font-family: var(--font-serif);
 
-  font-size:
-    clamp(
-      1.8rem,
-      3vw,
-      2.8rem
-    );
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
 
   max-width: 800px;
 
@@ -3147,12 +2707,8 @@ textarea {
   font-weight: 500;
 }
 
-
 .footer-bottom-area {
-
-  border-top:
-    1px solid
-    var(--border-color);
+  border-top: 1px solid var(--border-color);
 
   padding-top: 2rem;
 
@@ -3165,9 +2721,7 @@ textarea {
   gap: 4rem;
 }
 
-
 .footer-connect-centered {
-
   display: flex;
 
   flex-direction: column;
@@ -3177,9 +2731,7 @@ textarea {
   gap: 2rem;
 }
 
-
 .nav-group-title {
-
   padding-top: 0.5rem;
 
   font-family: var(--font-sans);
@@ -3195,9 +2747,7 @@ textarea {
   font-weight: 500;
 }
 
-
 .connect-links {
-
   display: flex;
 
   justify-content: center;
@@ -3207,9 +2757,7 @@ textarea {
   gap: 4rem;
 }
 
-
 .connect-links a {
-
   font-family: var(--font-sans);
 
   font-size: 0.85rem;
@@ -3233,11 +2781,9 @@ textarea {
   padding-bottom: 5px;
 }
 
-
 /* Fine linear underline */
 
 .connect-links a::after {
-
   content: "";
 
   position: absolute;
@@ -3250,33 +2796,22 @@ textarea {
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--accent-gold),
-      transparent
-    );
+  background: linear-gradient(to right, var(--accent-gold), transparent);
 
   opacity: 0.45;
 }
 
-
 .connect-links a i {
-
   font-size: 1.1rem;
 }
 
-
 .connect-links a:hover {
-
   color: var(--accent-gold-deep);
 
   transform: translateY(-2px);
 }
 
-
 .footer-copyright {
-
   text-align: center;
 
   font-family: var(--font-sans);
@@ -3286,14 +2821,12 @@ textarea {
   color: var(--text-muted);
 }
 
-
 /* =========================================================
    MOBILE REFINEMENT — 360px TO 420px
    Existing functionality preserved
 ========================================================= */
 
 @media screen and (min-width: 360px) and (max-width: 420px) {
-
   /* =======================================================
      GLOBAL ACCESSIBILITY
   ======================================================= */
@@ -3306,7 +2839,6 @@ textarea {
 
   html,
   body {
-
     width: 100%;
 
     max-width: 100vw;
@@ -3319,7 +2851,6 @@ textarea {
   }
 
   body {
-
     font-size: 1rem;
 
     line-height: 1.5;
@@ -3329,13 +2860,11 @@ textarea {
     -webkit-text-size-adjust: 100%;
   }
 
-
   /* =======================================================
      CONTAINER
   ======================================================= */
 
   .container {
-
     width: 100%;
 
     max-width: 100%;
@@ -3345,16 +2874,13 @@ textarea {
     padding-right: 1rem;
   }
 
-
   img,
   video,
   iframe {
-
     max-width: 100%;
 
     height: auto;
   }
-
 
   p,
   h1,
@@ -3363,10 +2889,8 @@ textarea {
   h4,
   span,
   a {
-
     hyphens: none;
   }
-
 
   /* =======================================================
      KEYBOARD FOCUS
@@ -3377,14 +2901,10 @@ textarea {
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-
-    outline:
-      3px solid
-      var(--accent-steel-blue);
+    outline: 3px solid var(--accent-steel-blue);
 
     outline-offset: 3px;
   }
-
 
   /* =======================================================
      HEADER & NAVIGATION
@@ -3392,7 +2912,6 @@ textarea {
   ======================================================= */
 
   .site-header {
-
     width: 100%;
 
     position: fixed;
@@ -3403,13 +2922,10 @@ textarea {
 
     padding: 0;
 
-    background-color:
-      rgba(250, 247, 239, 0.97);
+    background-color: rgba(250, 247, 239, 0.97);
   }
 
-
   .site-nav {
-
     width: 100%;
 
     display: flex;
@@ -3423,17 +2939,13 @@ textarea {
     gap: 0.5rem;
   }
 
-
   .nav-logo {
-
     width: 100%;
 
     text-align: center;
   }
 
-
   .brand-text {
-
     font-size: 1.25rem;
 
     letter-spacing: 0.18em;
@@ -3447,9 +2959,7 @@ textarea {
     margin: 0;
   }
 
-
   .brand-text::after {
-
     left: 0;
 
     right: 0;
@@ -3457,9 +2967,7 @@ textarea {
     bottom: -4px;
   }
 
-
   .nav-links {
-
     display: flex;
 
     flex-wrap: nowrap;
@@ -3475,18 +2983,14 @@ textarea {
     padding: 0;
   }
 
-
   .nav-links li {
-
     list-style: none;
 
     margin: 0;
   }
 
-
   .nav-links a,
   .lang-btn {
-
     min-height: 36px;
 
     min-width: auto;
@@ -3506,9 +3010,7 @@ textarea {
     line-height: 1;
   }
 
-
   .lang-switcher {
-
     display: flex;
 
     align-items: center;
@@ -3516,19 +3018,15 @@ textarea {
     gap: 0.15rem;
   }
 
-
   .lang-divider {
-
     font-size: 0.75rem;
   }
-
 
   /* =======================================================
      HERO
   ======================================================= */
 
   .hero-section {
-
     position: relative;
 
     width: 100%;
@@ -3544,9 +3042,7 @@ textarea {
     overflow: hidden;
   }
 
-
   .hero-split-image {
-
     position: absolute;
 
     inset: 0;
@@ -3562,26 +3058,20 @@ textarea {
     z-index: 1;
   }
 
-
   .hero-split-image::after {
-
-    background:
-
-      linear-gradient(
-        to bottom,
-        rgba(244, 239, 229, 0.03) 0%,
-        rgba(244, 239, 229, 0.08) 50%,
-        rgba(41, 41, 35, 0.58) 100%
-      );
+    background: linear-gradient(
+      to bottom,
+      rgba(244, 239, 229, 0.03) 0%,
+      rgba(244, 239, 229, 0.08) 50%,
+      rgba(41, 41, 35, 0.58) 100%
+    );
   }
-
 
   /*
      TEXT BERADA DI DEPAN IMAGE
   */
 
   .hero-content {
-
     position: relative;
 
     z-index: 2;
@@ -3597,27 +3087,19 @@ textarea {
     align-items: flex-end;
   }
 
-
   .hero-split-text {
-
     width: 100%;
 
-    padding:
-      1rem
-      1rem
-      1.5rem
-      1rem;
+    padding: 1rem 1rem 1.5rem 1rem;
 
     text-align: left;
   }
-
 
   /* =======================================================
      HERO EYEBROW
   ======================================================= */
 
   .hero-eyebrow {
-
     font-size: 0.6rem;
 
     margin-bottom: 0.5rem;
@@ -3626,17 +3108,14 @@ textarea {
 
     color: var(--accent-gold-light);
 
-    text-shadow:
-      0 1px 4px rgba(41, 41, 35, 0.35);
+    text-shadow: 0 1px 4px rgba(41, 41, 35, 0.35);
   }
-
 
   /* =======================================================
      HERO TITLE
   ======================================================= */
 
   .hero-title {
-
     font-size: 2.25rem;
 
     line-height: 1.1;
@@ -3645,23 +3124,16 @@ textarea {
 
     margin-bottom: 0.5rem;
 
-    color:
-      #f5efe3;
+    color: #f5efe3;
 
-    text-shadow:
-      0 2px 12px
-      rgba(41, 41, 35, 0.40);
+    text-shadow: 0 2px 12px rgba(41, 41, 35, 0.4);
   }
 
-
   .gold-divider {
-
     display: none !important;
   }
 
-
   .hero-subtitle {
-
     font-size: 0.75rem;
 
     line-height: 1.4;
@@ -3670,21 +3142,16 @@ textarea {
 
     margin: 0;
 
-    color:
-      rgba(250, 247, 239, 0.82);
+    color: rgba(250, 247, 239, 0.82);
 
-    text-shadow:
-      0 1px 7px
-      rgba(41, 41, 35, 0.35);
+    text-shadow: 0 1px 7px rgba(41, 41, 35, 0.35);
   }
-
 
   /* =======================================================
      MAIN LAYOUT & STACKING
   ======================================================= */
 
   .intro-layout {
-
     display: flex;
 
     flex-direction: column;
@@ -3694,9 +3161,7 @@ textarea {
     width: 100%;
   }
 
-
   .intro-image {
-
     width: 100%;
 
     max-width: 260px;
@@ -3708,15 +3173,11 @@ textarea {
     display: none;
   }
 
-
   .intro-text {
-
     width: 100%;
   }
 
-
   .intro-text p {
-
     font-size: 1rem;
 
     line-height: 1.5;
@@ -3728,9 +3189,7 @@ textarea {
     word-break: normal;
   }
 
-
   .drop-cap::first-letter {
-
     font-size: 3rem;
 
     line-height: 1;
@@ -3742,21 +3201,17 @@ textarea {
     float: left;
   }
 
-
   /* =======================================================
      COMMUNITY QUOTE
   ======================================================= */
 
   .community-quote-section {
-
     padding-top: 2.5rem;
 
     padding-bottom: 2.5rem;
   }
 
-
   .community-quote {
-
     padding-left: 1rem;
 
     padding-right: 1rem;
@@ -3764,21 +3219,17 @@ textarea {
     margin: 0;
   }
 
-
   .community-quote p {
-
     font-size: 1.15rem;
 
     line-height: 1.5;
   }
-
 
   /* =======================================================
      AINAN SECTION — RECENT NOTES
   ======================================================= */
 
   .ainan-section {
-
     padding-top: 2.5rem;
 
     padding-bottom: 2.5rem;
@@ -3792,9 +3243,7 @@ textarea {
     background-attachment: scroll;
   }
 
-
   .ainan-page-title {
-
     width: 100%;
 
     margin-bottom: 1.5rem;
@@ -3808,9 +3257,7 @@ textarea {
     padding: 0 1rem;
   }
 
-
   .ainan-page-title h2 {
-
     font-size: 1.75rem;
 
     line-height: 1.3;
@@ -3826,9 +3273,7 @@ textarea {
     gap: 0.25rem;
   }
 
-
   .ainan-page-title h2::after {
-
     margin-top: 0.5rem;
 
     width: 55px;
@@ -3836,9 +3281,7 @@ textarea {
     align-self: center;
   }
 
-
   .ainan-page-title h2 span {
-
     font-size: 0.9rem;
 
     font-weight: normal;
@@ -3848,9 +3291,7 @@ textarea {
     opacity: 0.8;
   }
 
-
   .ainan-container {
-
     width: 100%;
 
     padding: 0 1rem;
@@ -3866,9 +3307,7 @@ textarea {
     z-index: 2;
   }
 
-
   .ainan-glass-card {
-
     display: block;
 
     width: 100%;
@@ -3879,23 +3318,18 @@ textarea {
 
     position: relative;
 
-    background:
-      rgba(250, 247, 239, 0.94);
+    background: rgba(250, 247, 239, 0.94);
 
     backdrop-filter: blur(9px);
 
     -webkit-backdrop-filter: blur(9px);
   }
 
-
   .ainan-glass-card::before {
-
     height: 95px;
   }
 
-
   .ainan-glass-card::after {
-
     top: 92px;
 
     left: 1.25rem;
@@ -3903,17 +3337,13 @@ textarea {
     right: 1.25rem;
   }
 
-
   .ainan-card-content {
-
     display: flex;
 
     flex-direction: column;
   }
 
-
   .ainan-card-category {
-
     display: inline-block;
 
     font-size: 0.8rem;
@@ -3925,9 +3355,7 @@ textarea {
     text-transform: uppercase;
   }
 
-
   .ainan-card-title {
-
     font-size: 1.25rem;
 
     line-height: 1.3;
@@ -3935,9 +3363,7 @@ textarea {
     margin-bottom: 0.75rem;
   }
 
-
   .ainan-card-description {
-
     font-size: 0.95rem;
 
     line-height: 1.5;
@@ -3945,9 +3371,7 @@ textarea {
     margin-bottom: 1rem;
   }
 
-
   .ainan-card-link {
-
     min-height: 44px;
 
     display: inline-flex;
@@ -3957,13 +3381,11 @@ textarea {
     font-weight: 600;
   }
 
-
   /* =======================================================
      ORGANIZATIONS
   ======================================================= */
 
   .org-grid {
-
     display: flex;
 
     flex-direction: column;
@@ -3971,17 +3393,13 @@ textarea {
     gap: 1rem;
   }
 
-
   .org-card {
-
     padding: 1.25rem;
 
     width: 100%;
   }
 
-
   .org-header {
-
     display: flex;
 
     flex-direction: row;
@@ -3993,9 +3411,7 @@ textarea {
     margin-bottom: 0.75rem;
   }
 
-
   .org-logo {
-
     width: 48px;
 
     height: auto;
@@ -4003,15 +3419,11 @@ textarea {
     flex-shrink: 0;
   }
 
-
   .org-title-wrapper {
-
     min-width: 0;
   }
 
-
   .org-name {
-
     font-size: 1.05rem;
 
     line-height: 1.3;
@@ -4021,9 +3433,7 @@ textarea {
     margin: 0;
   }
 
-
   .org-role {
-
     font-size: 0.85rem;
 
     display: block;
@@ -4031,9 +3441,7 @@ textarea {
     margin-top: 0.25rem;
   }
 
-
   .org-desc {
-
     font-size: 0.9rem;
 
     line-height: 1.5;
@@ -4041,9 +3449,7 @@ textarea {
     margin-bottom: 1rem;
   }
 
-
   .org-link {
-
     min-height: 44px;
 
     display: inline-flex;
@@ -4051,13 +3457,11 @@ textarea {
     align-items: center;
   }
 
-
   /* =======================================================
      AFTERMOVIE CAROUSEL
   ======================================================= */
 
   .content-section {
-
     position: relative;
 
     z-index: 10;
@@ -4065,17 +3469,13 @@ textarea {
     padding: 1rem 0;
   }
 
-
   .section-title {
-
     margin-bottom: 0.5rem;
 
     font-size: 1.5rem;
   }
 
-
   .aftermovie-layout {
-
     display: flex;
 
     flex-direction: column;
@@ -4087,9 +3487,7 @@ textarea {
     padding: 0 0.5rem;
   }
 
-
   .aftermovie-info {
-
     width: 100%;
 
     text-align: center;
@@ -4099,17 +3497,13 @@ textarea {
     padding: 0 0.5rem;
   }
 
-
   .aftermovie-info h2 {
-
     margin-bottom: 0.5rem;
 
     font-size: 1.5rem;
   }
 
-
   .aftermovie-info p {
-
     width: 100%;
 
     font-size: 0.95rem;
@@ -4119,17 +3513,13 @@ textarea {
     margin: 0 auto;
   }
 
-
   .aftermovie-carousel-wrapper {
-
     width: 100%;
 
     order: 2;
   }
 
-
   .aftermovie-carousel {
-
     display: flex;
 
     flex-direction: row;
@@ -4147,9 +3537,7 @@ textarea {
     -webkit-overflow-scrolling: touch;
   }
 
-
   .aftermovie-item {
-
     flex: 0 0 92%;
 
     max-width: 92%;
@@ -4157,9 +3545,7 @@ textarea {
     scroll-snap-align: center;
   }
 
-
   .youtube-wrapper {
-
     position: relative;
 
     width: 100%;
@@ -4175,9 +3561,7 @@ textarea {
     background: var(--text-main);
   }
 
-
   .youtube-wrapper iframe {
-
     position: absolute;
 
     top: 0;
@@ -4191,9 +3575,7 @@ textarea {
     border: none;
   }
 
-
   .aftermovie-title {
-
     font-size: 0.9rem;
 
     line-height: 1.3;
@@ -4203,13 +3585,11 @@ textarea {
     text-align: center;
   }
 
-
   /* =======================================================
      CONTACT & FORM
   ======================================================= */
 
   .contact-item {
-
     display: flex;
 
     flex-direction: column;
@@ -4221,9 +3601,7 @@ textarea {
     margin-bottom: 1.25rem;
   }
 
-
   .contact-info {
-
     min-width: 0;
 
     width: 100%;
@@ -4231,11 +3609,9 @@ textarea {
     overflow-wrap: break-word;
   }
 
-
   input,
   select,
   textarea {
-
     width: 100%;
 
     min-height: 44px;
@@ -4246,20 +3622,15 @@ textarea {
 
     padding: 0.75rem;
 
-    background:
-      rgba(250, 247, 239, 0.92);
+    background: rgba(250, 247, 239, 0.92);
 
-    border:
-      1px solid
-      var(--border-color);
+    border: 1px solid var(--border-color);
 
     color: var(--text-main);
   }
 
-
   button,
   .submit-btn {
-
     min-height: 44px;
 
     padding: 0.75rem 1rem;
@@ -4268,28 +3639,19 @@ textarea {
 
     width: 100%;
 
-    background:
-      var(--text-main);
+    background: var(--text-main);
 
-    color:
-      var(--bg-white);
+    color: var(--bg-white);
 
-    border:
-      1px solid
-      var(--text-main);
+    border: 1px solid var(--text-main);
   }
-
 
   /* =======================================================
      FOOTER
   ======================================================= */
 
   .footer-container {
-
-    padding:
-      3rem
-      1rem
-      1.5rem;
+    padding: 3rem 1rem 1.5rem;
 
     display: flex;
 
@@ -4302,15 +3664,11 @@ textarea {
     gap: 1rem;
   }
 
-
   .footer-center {
-
     width: 100%;
   }
 
-
   .footer-brand-logo {
-
     margin: 0;
 
     font-size: 1.5rem;
@@ -4318,9 +3676,7 @@ textarea {
     line-height: 1.2;
   }
 
-
   .footer-tagline-large {
-
     font-size: 1rem;
 
     line-height: 1.3;
@@ -4330,9 +3686,7 @@ textarea {
     margin-bottom: 0;
   }
 
-
   .footer-bottom-area {
-
     width: 100%;
 
     display: flex;
@@ -4344,9 +3698,7 @@ textarea {
     padding-top: 0;
   }
 
-
   .connect-links {
-
     display: flex;
 
     flex-direction: column;
@@ -4358,9 +3710,7 @@ textarea {
     width: 100%;
   }
 
-
   .nav-group-title {
-
     margin-bottom: 0.25rem;
 
     display: inline-block;
@@ -4368,9 +3718,7 @@ textarea {
     line-height: 1.2;
   }
 
-
   .connect-links a {
-
     min-height: 32px;
 
     display: flex;
@@ -4390,15 +3738,11 @@ textarea {
     padding: 0.1rem;
   }
 
-
   .footer-copyright {
-
     margin-top: 0.25rem;
   }
 
-
   .footer-copyright p {
-
     font-size: 0.75rem;
 
     line-height: 1.3;
@@ -4406,13 +3750,11 @@ textarea {
     margin: 0;
   }
 
-
   /* =======================================================
      FORCE HERO TO START IMMEDIATELY AFTER HEADER
   ======================================================= */
 
   .site-header {
-
     height: auto !important;
 
     min-height: 0 !important;
@@ -4422,9 +3764,7 @@ textarea {
     padding: 0 !important;
   }
 
-
   .site-nav {
-
     height: auto !important;
 
     min-height: 0 !important;
@@ -4434,9 +3774,7 @@ textarea {
     padding: 0.5rem !important;
   }
 
-
   .hero-section {
-
     height: 300px !important;
 
     min-height: 300px !important;
@@ -4446,13 +3784,11 @@ textarea {
     padding: 0 !important;
   }
 
-
   /* =======================================================
      HERO — REMOVE DESKTOP PLACEHOLDER SPACE
   ======================================================= */
 
   .hero-placeholder {
-
     display: none !important;
 
     width: 0 !important;
@@ -4466,13 +3802,11 @@ textarea {
     padding: 0 !important;
   }
 
-
   /* =======================================================
      HERO — MOBILE FINAL
   ======================================================= */
 
   .hero-section {
-
     position: relative !important;
 
     inset: auto !important;
@@ -4502,9 +3836,7 @@ textarea {
     z-index: 1;
   }
 
-
   .hero-split-image {
-
     position: absolute !important;
 
     inset: 0 !important;
@@ -4522,9 +3854,7 @@ textarea {
     overflow: hidden;
   }
 
-
   .hero-split-image img {
-
     width: 100% !important;
 
     height: 100% !important;
@@ -4535,15 +3865,10 @@ textarea {
 
     object-position: center !important;
 
-    filter:
-      grayscale(0.18)
-      sepia(0.15)
-      saturate(0.70)
-      contrast(0.94)
+    filter: grayscale(0.18) sepia(0.15) saturate(0.7) contrast(0.94)
       brightness(0.95);
   }
 }
-
 
 /* =========================================================
    OPTIONAL SMALL-SCREEN PAPER / GOLD REFINEMENTS
@@ -4551,7 +3876,6 @@ textarea {
 ========================================================= */
 
 @media screen and (max-width: 420px) {
-
   .section-title::before,
   .section-title::after,
   .org-header::after {
@@ -4569,14 +3893,12 @@ textarea {
   }
 }
 
-
 /* =========================================================
    PRINT / PAPER PRESERVATION
    Keeps the visual identity when printed.
 ========================================================= */
 
 @media print {
-
   body,
   .bg-paper,
   .bg-white,
@@ -4585,12 +3907,9 @@ textarea {
   .archive-intro-section,
   .interactive-map-section,
   .ainan-section {
+    background: #f4efe5 !important;
 
-    background:
-      #f4efe5 !important;
-
-    color:
-      #292923 !important;
+    color: #292923 !important;
   }
 
   .site-header {

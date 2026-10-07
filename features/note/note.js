@@ -3,6 +3,7 @@
    + VIEW ALL FEATURE
    + ROBUST RICH TEXT HIGHLIGHT
    + CLEAN URL ROUTING
+   + CARD BACKGROUND IMAGE
 ========================================================================== */
 
 /* ==========================================================================
@@ -54,6 +55,20 @@ const TOPIC_CONFIG = {
 ========================================================================== */
 
 let pendingImageDataUrl = null;
+
+/* ==========================================================
+   CARD BACKGROUND STATE
+========================================================== */
+
+let pendingCardBackgroundFile = null;
+
+let currentCardBackgroundUrl = null;
+
+let currentCardBackgroundPath = null;
+
+let removeCardBackground = false;
+
+const CARD_BG_BUCKET = "note-card-images";
 
 let editingArticleId = null;
 
@@ -1723,6 +1738,14 @@ async function fetchArticlesFromSupabase() {
     readTime: article.read_time,
 
     bodyHTML: article.body_html,
+
+    /* ==========================================================
+       CARD BACKGROUND
+    =========================================================== */
+
+    cardBgUrl: article.card_bg_url || null,
+
+    cardBgPath: article.card_bg_path || null,
   }));
 
   return globalArticlesCache;
@@ -1850,6 +1873,7 @@ function ensureTopicSection(topicSlug, topicLabel, iconClass) {
 
 /* ==========================================================================
    BUILD ARTICLE
+   + AUTOMATIC CARD BACKGROUND
 ========================================================================== */
 
 function buildArticleElement(data) {
@@ -1859,9 +1883,36 @@ function buildArticleElement(data) {
 
   article.id = data.id;
 
+  /* ------------------------------------------------------------
+     CARD BACKGROUND
+  ------------------------------------------------------------ */
+
+  if (data.cardBgUrl) {
+    article.classList.add("has-card-bg");
+
+    article.style.setProperty(
+      "--card-bg-image",
+      `url(${JSON.stringify(data.cardBgUrl)})`,
+    );
+  }
+
   const articleRoute = getArticleRoute(data.id);
 
   article.innerHTML = `
+
+    <!-- ======================================================
+         AUTOMATIC CARD BACKGROUND
+    ======================================================= -->
+
+    <div
+      class="ed-card-image"
+      aria-hidden="true"
+    ></div>
+
+
+    <!-- ======================================================
+         CARD CONTENT
+    ======================================================= -->
 
     <div
       class="export-content"
@@ -1880,9 +1931,11 @@ function buildArticleElement(data) {
 
       </div>
 
+
       <h3 class="ed-title">
         ${escapeHtml(data.title || "")}
       </h3>
+
 
       <div class="ed-excerpt">
 
@@ -1892,11 +1945,17 @@ function buildArticleElement(data) {
 
       </div>
 
+
       <div class="ed-full-text">
         ${data.bodyHTML || ""}
       </div>
 
     </div>
+
+
+    <!-- ======================================================
+         CARD ACTIONS
+    ======================================================= -->
 
     <div class="ed-actions">
 
@@ -1908,6 +1967,7 @@ function buildArticleElement(data) {
       >
         Open Note
       </a>
+
 
       <div
         class="ed-manage"
@@ -1922,11 +1982,10 @@ function buildArticleElement(data) {
           aria-label="Edit"
         >
 
-          <i
-            class="fa-solid fa-pen"
-          ></i>
+          <i class="fa-solid fa-pen"></i>
 
         </button>
+
 
         <button
           class="ed-manage-btn"
@@ -1936,9 +1995,7 @@ function buildArticleElement(data) {
           aria-label="Delete"
         >
 
-          <i
-            class="fa-solid fa-trash"
-          ></i>
+          <i class="fa-solid fa-trash"></i>
 
         </button>
 
@@ -1995,6 +2052,236 @@ async function loadSavedArticlesIntoDom() {
 }
 
 /* ==========================================================================
+   CARD BACKGROUND IMAGE HELPERS
+========================================================================== */
+
+/**
+ * Preview selected card background.
+ */
+function setCardBackgroundPreview(url) {
+  const preview = document.getElementById("cardBackgroundPreview");
+
+  const removeButton = document.getElementById("cardBgRemoveBtn");
+
+  if (!preview) {
+    return;
+  }
+
+  if (!url) {
+    preview.style.display = "none";
+
+    preview.style.backgroundImage = "";
+
+    if (removeButton) {
+      removeButton.style.display = "none";
+    }
+
+    return;
+  }
+
+  preview.style.display = "block";
+
+  preview.style.backgroundImage = `url(${JSON.stringify(url)})`;
+
+  if (removeButton) {
+    removeButton.style.display = "inline-flex";
+  }
+}
+
+/**
+ * Handle new background image selection.
+ */
+window.handleCardBackgroundChosen = function (event) {
+  const file = event.target.files?.[0];
+
+  if (!file) {
+    return;
+  }
+
+  /* ----------------------------------------------------------
+     VALIDATION
+  ---------------------------------------------------------- */
+
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    alert("Please use JPG, PNG, or WebP images only.");
+
+    event.target.value = "";
+
+    return;
+  }
+
+  /*
+     Maximum 5 MB.
+  */
+  const maxSize = 5 * 1024 * 1024;
+
+  if (file.size > maxSize) {
+    alert("The card background image must be smaller than 5 MB.");
+
+    event.target.value = "";
+
+    return;
+  }
+
+  pendingCardBackgroundFile = file;
+
+  removeCardBackground = false;
+
+  /*
+     Preview locally first.
+     Existing image is NOT deleted yet.
+  */
+
+  const reader = new FileReader();
+
+  reader.onload = (loadEvent) => {
+    setCardBackgroundPreview(loadEvent.target.result);
+  };
+
+  reader.onerror = () => {
+    console.error("Failed to preview card background.");
+
+    pendingCardBackgroundFile = null;
+  };
+
+  reader.readAsDataURL(file);
+};
+
+/**
+ * Remove current / selected card background.
+ *
+ * IMPORTANT:
+ * The actual Storage file is removed only after
+ * the article update succeeds.
+ */
+window.clearCardBackground = function () {
+  pendingCardBackgroundFile = null;
+
+  currentCardBackgroundUrl = null;
+
+  currentCardBackgroundPath = null;
+
+  removeCardBackground = true;
+
+  const input = document.getElementById("fieldCardBackground");
+
+  if (input) {
+    input.value = "";
+  }
+
+  setCardBackgroundPreview(null);
+};
+
+/**
+ * Reset card background editor state.
+ */
+function resetCardBackgroundState() {
+  pendingCardBackgroundFile = null;
+
+  currentCardBackgroundUrl = null;
+
+  currentCardBackgroundPath = null;
+
+  removeCardBackground = false;
+
+  const input = document.getElementById("fieldCardBackground");
+
+  if (input) {
+    input.value = "";
+  }
+
+  setCardBackgroundPreview(null);
+}
+
+/**
+ * Upload image to Supabase Storage.
+ */
+async function uploadCardBackground(file, articleId, title) {
+  if (!file) {
+    return null;
+  }
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "") || "jpg";
+
+  const safeTitle = slugify(title) || "note";
+
+  const safeArticleId = String(articleId || "article").replace(
+    /[^a-zA-Z0-9_-]/g,
+    "",
+  );
+
+  const filePath = `card-bg/${safeArticleId}-${safeTitle}-${Date.now()}.${extension}`;
+
+  const { data, error } = await supabaseClient.storage
+    .from(CARD_BG_BUCKET)
+    .upload(filePath, file, {
+      cacheControl: "31536000",
+      upsert: false,
+      contentType: file.type,
+    });
+
+  if (error) {
+    console.error("Card background upload failed:", error);
+
+    throw error;
+  }
+
+  /*
+     Public bucket → public URL.
+  */
+
+  const { data: publicData } = supabaseClient.storage
+    .from(CARD_BG_BUCKET)
+    .getPublicUrl(filePath);
+
+  if (!publicData?.publicUrl) {
+    /*
+       Upload succeeded but URL generation failed.
+       Try cleaning up the newly uploaded file.
+    */
+    try {
+      await deleteCardBackground(data?.path || filePath);
+    } catch (cleanupError) {
+      console.warn(
+        "Could not clean up failed card background upload:",
+        cleanupError,
+      );
+    }
+
+    throw new Error("Unable to generate card background URL.");
+  }
+
+  return {
+    path: data?.path || filePath,
+    publicUrl: publicData.publicUrl,
+  };
+}
+
+/**
+ * Delete a previously stored background.
+ */
+async function deleteCardBackground(path) {
+  if (!path) {
+    return;
+  }
+
+  const { error } = await supabaseClient.storage
+    .from(CARD_BG_BUCKET)
+    .remove([path]);
+
+  if (error) {
+    console.warn("Could not remove old card background:", error);
+  }
+}
+
+/* ==========================================================================
    OPEN EDITOR
 ========================================================================== */
 
@@ -2006,6 +2293,11 @@ window.openEditor = function () {
   }
 
   editingArticleId = null;
+
+  /*
+     Reset background state for a completely new article.
+  */
+  resetCardBackgroundState();
 
   document.getElementById("editorHeading").textContent = "Write a New Note";
 
@@ -2056,6 +2348,12 @@ window.closeEditor = function () {
   cancelPendingImage();
 
   clearSavedSelection();
+
+  /*
+     Reset card background state after closing.
+     No Storage deletion happens here.
+  */
+  resetCardBackgroundState();
 };
 
 /* ==========================================================================
@@ -2603,6 +2901,26 @@ window.editArticle = function (articleId) {
 
   document.getElementById("editorBody").innerHTML = data.bodyHTML;
 
+  /* ==========================================================
+     LOAD EXISTING CARD BACKGROUND
+  =========================================================== */
+
+  pendingCardBackgroundFile = null;
+
+  currentCardBackgroundUrl = data.cardBgUrl || null;
+
+  currentCardBackgroundPath = data.cardBgPath || null;
+
+  removeCardBackground = false;
+
+  const backgroundInput = document.getElementById("fieldCardBackground");
+
+  if (backgroundInput) {
+    backgroundInput.value = "";
+  }
+
+  setCardBackgroundPreview(currentCardBackgroundUrl);
+
   const topicSelect = document.getElementById("fieldTopicSelect");
 
   const isStatic = !!TOPIC_CONFIG[data.topicId];
@@ -2646,6 +2964,18 @@ window.deleteArticle = async function (articleId) {
     return;
   }
 
+  /*
+     Capture the image path before deleting
+     the database row.
+  */
+  const articleToDelete = globalArticlesCache.find(
+    (article) => article.id === articleId,
+  );
+
+  const oldCardBgPath = articleToDelete?.cardBgPath || null;
+
+  setEditorStatus("Deleting note...");
+
   const { error } = await supabaseClient
     .from("articles")
     .delete()
@@ -2655,6 +2985,14 @@ window.deleteArticle = async function (articleId) {
     alert("Failed to delete: " + error.message);
 
     return;
+  }
+
+  /*
+     Remove associated card background
+     after successful database deletion.
+  */
+  if (oldCardBgPath) {
+    await deleteCardBackground(oldCardBgPath);
   }
 
   globalArticlesCache = globalArticlesCache.filter(
@@ -2773,6 +3111,77 @@ window.publishArticle = async function () {
 
   const id = editingArticleId || `article-custom-${Date.now()}`;
 
+  /* ==========================================================
+       CARD BACKGROUND
+  =========================================================== */
+
+  /*
+     Keep a reference to the existing background
+     before potentially replacing/removing it.
+  */
+  const previousCardBgPath = editingArticleId
+    ? currentCardBackgroundPath
+    : null;
+
+  let cardBgUrl = currentCardBackgroundUrl || null;
+
+  let cardBgPath = currentCardBackgroundPath || null;
+
+  let newlyUploadedCardBgPath = null;
+
+  /*
+     User explicitly removed the image
+     and did not choose a replacement.
+  */
+  if (removeCardBackground && !pendingCardBackgroundFile) {
+    cardBgUrl = null;
+
+    cardBgPath = null;
+  }
+
+  /* ------------------------------------------------------------
+       DATABASE STATUS
+    ------------------------------------------------------------ */
+
+  setEditorStatus("Preparing note...");
+
+  /* ==========================================================
+       UPLOAD NEW CARD BACKGROUND
+  =========================================================== */
+
+  if (pendingCardBackgroundFile) {
+    setEditorStatus("Uploading card background...");
+
+    try {
+      const uploadedBackground = await uploadCardBackground(
+        pendingCardBackgroundFile,
+        id,
+        title,
+      );
+
+      if (!uploadedBackground) {
+        throw new Error("Card background upload returned no data.");
+      }
+
+      cardBgUrl = uploadedBackground.publicUrl;
+
+      cardBgPath = uploadedBackground.path;
+
+      newlyUploadedCardBgPath = uploadedBackground.path;
+
+      /*
+         New upload becomes the active background.
+      */
+    } catch (error) {
+      console.error("Card background upload error:", error);
+
+      return setEditorStatus(
+        "Error uploading card background: " +
+          (error?.message || "Unknown error"),
+      );
+    }
+  }
+
   /* ------------------------------------------------------------
        APP DATA
     ------------------------------------------------------------ */
@@ -2797,6 +3206,14 @@ window.publishArticle = async function () {
     readTime,
 
     bodyHTML,
+
+    /* ==========================================================
+       CARD BACKGROUND
+    =========================================================== */
+
+    cardBgUrl,
+
+    cardBgPath,
   };
 
   /* ------------------------------------------------------------
@@ -2823,6 +3240,14 @@ window.publishArticle = async function () {
     read_time: dataApp.readTime,
 
     body_html: dataApp.bodyHTML,
+
+    /* ==========================================================
+       CARD BACKGROUND
+    =========================================================== */
+
+    card_bg_url: dataApp.cardBgUrl,
+
+    card_bg_path: dataApp.cardBgPath,
   };
 
   setEditorStatus("Saving to database...");
@@ -2838,7 +3263,24 @@ window.publishArticle = async function () {
       .eq("id", editingArticleId);
 
     if (error) {
+      /*
+         Database failed after new image upload.
+         Remove new image so it does not become an orphan.
+      */
+      if (newlyUploadedCardBgPath) {
+        await deleteCardBackground(newlyUploadedCardBgPath);
+      }
+
       return setEditorStatus("Error updating: " + error.message);
+    }
+
+    /*
+       Database update succeeded.
+       Now remove previous image only if the image
+       has actually changed or has been removed.
+    */
+    if (previousCardBgPath && previousCardBgPath !== cardBgPath) {
+      await deleteCardBackground(previousCardBgPath);
     }
 
     const idx = globalArticlesCache.findIndex(
@@ -2849,9 +3291,21 @@ window.publishArticle = async function () {
       globalArticlesCache.splice(idx, 1);
     }
   } else {
+    /* ========================================================
+       INSERT
+    ========================================================= */
+
     const { error } = await supabaseClient.from("articles").insert([dbPayload]);
 
     if (error) {
+      /*
+         Database insert failed after image upload.
+         Clean up uploaded file.
+      */
+      if (newlyUploadedCardBgPath) {
+        await deleteCardBackground(newlyUploadedCardBgPath);
+      }
+
       return setEditorStatus("Error inserting: " + error.message);
     }
   }
@@ -2938,6 +3392,18 @@ window.publishArticle = async function () {
   }
 
   initScrollSpy();
+
+  /*
+       Store current background state
+       in memory after success.
+  */
+  currentCardBackgroundUrl = dataApp.cardBgUrl;
+
+  currentCardBackgroundPath = dataApp.cardBgPath;
+
+  removeCardBackground = false;
+
+  pendingCardBackgroundFile = null;
 
   editingArticleId = null;
 
