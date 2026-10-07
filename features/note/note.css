@@ -1520,6 +1520,7 @@ i.fa-regular {
   inset: 0;
 
   width: 100%;
+
   height: 100%;
 
   z-index: 1000;
@@ -1531,9 +1532,14 @@ i.fa-regular {
   overflow-y: auto;
 
   opacity: 0;
+
   visibility: hidden;
 
-  background: #fbf9f3;
+  background: radial-gradient(
+    ellipse at center top,
+    rgba(255, 253, 248, 0.99),
+    rgba(247, 243, 234, 0.99)
+  );
 
   transition: var(--ease);
 }
@@ -1551,7 +1557,7 @@ i.fa-regular {
 
   margin: 0 auto;
 
-  padding: 58px 50px 96px;
+  padding: 52px 50px 90px;
 
   transform: translateY(15px);
 
@@ -2225,7 +2231,7 @@ i.fa-regular {
 
   justify-content: center;
 
-  padding: 4vh 1.5rem;
+  padding: 6vh 1.5rem;
 
   overflow-y: auto;
 
@@ -2233,11 +2239,7 @@ i.fa-regular {
 
   visibility: hidden;
 
-  background: rgba(40, 37, 31, 0.42);
-
-  backdrop-filter: blur(3px);
-
-  -webkit-backdrop-filter: blur(3px);
+  background: rgba(40, 37, 31, 0.48);
 
   transition: var(--ease);
 }
@@ -2257,21 +2259,21 @@ i.fa-regular {
 
   padding: 3.2rem;
 
-  border: 1px solid rgba(168, 141, 95, 0.28);
+  border: 1px solid rgba(168, 141, 95, 0.35);
 
-  border-radius: 10px;
+  border-radius: 2px;
 
   background: linear-gradient(
     145deg,
     rgba(255, 253, 248, 0.99),
-    rgba(248, 244, 235, 0.98)
+    rgba(246, 241, 231, 0.98)
   );
 
   font-family: var(--font-sans);
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 24px 70px rgba(57, 49, 36, 0.14);
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 18px 55px rgba(57, 49, 36, 0.17);
 
   transform: translateY(16px);
 
@@ -2282,69 +2284,26 @@ i.fa-regular {
   transform: translateY(0);
 }
 
-/* --------------------------------------------------------------------------
-   EDIT NOTE MODAL
-   Full-height writing workspace
--------------------------------------------------------------------------- */
-
 .editor-box {
-  width: 100%;
-
-  max-width: 1100px;
-
-  height: 88vh;
-
-  min-height: 620px;
-
-  max-height: 920px;
-
-  padding: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  overflow: hidden;
-
-  border-radius: 12px;
-
-  background: #fbfaf5;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 24px 70px rgba(57, 49, 36, 0.16);
+  max-width: 860px;
 }
 
 .modal-close {
   position: absolute;
 
-  top: 18px;
+  top: 1.4rem;
 
-  right: 18px;
+  right: 1.4rem;
 
-  z-index: 10;
+  padding: 5px;
 
-  width: 34px;
+  border: none;
 
-  height: 34px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 0;
-
-  border: 1px solid transparent;
-
-  border-radius: 50%;
-
-  background: transparent;
+  background: none;
 
   color: var(--text-muted);
 
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 
   cursor: pointer;
 
@@ -2353,14 +2312,10 @@ i.fa-regular {
 
 .modal-close:hover {
   color: var(--accent-gold-deep);
-
-  background: rgba(168, 141, 95, 0.08);
-
-  border-color: rgba(168, 141, 95, 0.18);
 }
 
 .modal-title {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.8rem;
 
   font-family: var(--font-serif);
 
@@ -2374,13 +2329,13 @@ i.fa-regular {
 }
 
 .modal-subtitle {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 
   color: var(--text-muted);
 
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 
-  line-height: 1.55;
+  line-height: 1.65;
 }
 
 /* ==========================================================================
@@ -2536,172 +2491,63 @@ i.fa-regular {
 ========================================================================== */
 
 .editor-header {
-  flex: 0 0 auto;
-
   display: flex;
 
   align-items: flex-start;
 
   justify-content: space-between;
 
-  margin: 0;
-
-  padding: 24px 28px 10px;
+  margin-bottom: 2rem;
 }
 
 .editor-meta-grid {
-  flex: 0 0 auto;
-
   display: grid;
 
-  grid-template-columns:
-    minmax(0, 1.7fr)
-    minmax(150px, 1fr)
-    minmax(135px, 0.8fr);
+  grid-template-columns: 1fr 1fr;
 
-  gap: 12px;
+  gap: 1.5rem;
 
-  margin: 0;
-
-  padding: 0 28px 16px;
-}
-
-/*
-  Title menjadi kolom pertama.
-  Field lain seperti Excerpt yang masih memakai .span-2
-  tetap bisa melebar penuh.
-*/
-
-.editor-meta-grid .field-group:has(.title-input) {
-  grid-column: auto;
-}
-
-.editor-meta-grid .field-group.span-2:not(:has(.title-input)) {
-  grid-column: 1 / -1;
+  margin-bottom: 2rem;
 }
 
 .field-group {
   display: flex;
 
   flex-direction: column;
-
-  min-width: 0;
 }
 
 .field-group.span-2 {
   grid-column: 1 / -1;
 }
 
-.field-label {
-  display: block;
-
-  margin-bottom: 0.35rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.58rem;
-
-  font-weight: 600;
-
-  line-height: 1.4;
-
-  letter-spacing: 0.14em;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-}
-
-.field-input {
-  width: 100%;
-
-  min-height: 42px;
-
-  padding: 9px 12px;
-
-  border: 1px solid rgba(168, 141, 95, 0.25);
-
-  border-radius: 8px;
-
-  outline: none;
-
-  background: rgba(255, 255, 255, 0.68);
-
-  color: var(--text-main);
-
-  font-family: var(--font-sans);
-
-  font-size: 0.82rem;
-
-  resize: vertical;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.field-input:hover {
-  border-color: rgba(168, 141, 95, 0.4);
-
-  background: rgba(255, 255, 255, 0.82);
-}
-
-.field-input:focus {
-  border-color: var(--accent-gold);
-
-  background: #fffdf8;
-
-  box-shadow: 0 0 0 3px rgba(168, 141, 95, 0.06);
-}
-
 .title-input {
   font-family: var(--font-serif);
 
-  font-size: 1.15rem;
-
-  font-weight: 500;
+  font-size: 1.4rem;
 }
+
 /* ==========================================================================
    32. EDITOR TOOLBAR
 ========================================================================== */
 
 .editor-toolbar {
-  flex: 0 0 auto;
-
   display: flex;
 
   align-items: center;
 
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 
-  gap: 6px;
+  gap: 7px;
 
-  min-height: 50px;
+  padding: 12px;
 
-  padding: 8px 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 240, 229, 0.95),
+    rgba(237, 229, 212, 0.72)
+  );
 
-  overflow-x: auto;
-
-  overflow-y: hidden;
-
-  scrollbar-width: none;
-
-  border-top: 1px solid rgba(168, 141, 95, 0.18);
-
-  border-bottom: 1px solid rgba(168, 141, 95, 0.22);
-
-  border-radius: 10px 10px 0 0;
-
-  background: rgba(245, 241, 232, 0.92);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.82),
-    0 2px 8px rgba(57, 49, 36, 0.025);
-}
-
-.editor-toolbar::-webkit-scrollbar {
-  display: none;
+  border-bottom: 1px solid rgba(168, 141, 95, 0.3);
 }
 
 .tb-group {
@@ -2709,9 +2555,7 @@ i.fa-regular {
 
   align-items: center;
 
-  gap: 2px;
-
-  flex: 0 0 auto;
+  gap: 3px;
 }
 
 .highlight-btn {
@@ -2723,17 +2567,17 @@ i.fa-regular {
 
   padding: 6px 9px;
 
-  border: 1px solid rgba(168, 141, 95, 0.24);
+  border: 1px solid rgba(168, 141, 95, 0.3);
 
-  border-radius: 7px;
+  border-radius: 0;
 
-  background: rgba(255, 253, 248, 0.9);
+  background: var(--bg-white);
 
   color: var(--text-main);
 
   font-family: var(--font-sans);
 
-  font-size: 0.72rem;
+  font-size: 0.74rem;
 
   cursor: pointer;
 
@@ -2747,13 +2591,11 @@ i.fa-regular {
 .tb-divider {
   width: 1px;
 
-  height: 20px;
+  height: 22px;
 
-  margin: 0 4px;
+  margin: 0 5px;
 
-  flex: 0 0 auto;
-
-  background: rgba(168, 141, 95, 0.22);
+  background: rgba(168, 141, 95, 0.28);
 }
 
 .tb-btn {
@@ -2761,50 +2603,39 @@ i.fa-regular {
 
   height: 32px;
 
-  flex: 0 0 32px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
   border: none;
 
-  border-radius: 7px;
+  border-radius: 0;
 
-  background: transparent;
+  background: none;
 
   color: var(--text-main);
 
   cursor: pointer;
 
-  font-size: 0.84rem;
+  font-size: 0.86rem;
 
   transition: var(--ease);
 }
 
 .tb-btn:hover {
-  background: rgba(255, 253, 248, 0.92);
+  background: var(--bg-white);
 
   color: var(--accent-gold-deep);
 
-  box-shadow: 0 2px 7px rgba(57, 49, 36, 0.055);
+  box-shadow: 0 2px 6px rgba(57, 49, 36, 0.045);
 }
 
 .tb-word-count {
   margin-left: auto;
 
-  flex: 0 0 auto;
-
-  padding-left: 10px;
-
   color: var(--text-muted);
 
-  font-size: 0.68rem;
+  font-size: 0.7rem;
 
   white-space: nowrap;
 }
+
 /* ==========================================================================
    33. IMAGE STYLE PICKER
 ========================================================================== */
@@ -2879,154 +2710,38 @@ i.fa-regular {
    34. EDITOR BODY
 ========================================================================== */
 
-.editor-body,
-.editor-box #editorBody {
-  flex: 1 1 auto;
+.editor-body {
+  min-height: 260px;
 
-  min-height: 0;
-
-  max-height: none;
-
-  width: 100%;
+  max-height: 45vh;
 
   overflow-y: auto;
 
-  padding: 24px 32px 40px;
+  padding: 1.5rem 2rem;
 
-  border: none;
+  border: 1px solid rgba(168, 141, 95, 0.3);
+
+  border-top: none;
 
   outline: none;
 
-  border-radius: 0 0 10px 10px;
-
-  background: #fffdf8;
-
-  color: var(--text-main);
+  background: radial-gradient(
+    ellipse at top,
+    rgba(255, 253, 248, 0.98),
+    rgba(248, 244, 235, 0.92)
+  );
 
   font-family: var(--font-serif);
 
   font-size: 20px;
 
-  line-height: 1.72;
-
-  caret-color: var(--accent-gold-deep);
-
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
-
-  scrollbar-width: thin;
-
-  scrollbar-color: rgba(168, 141, 95, 0.3) transparent;
+  line-height: 1.68;
 }
 
-.editor-body::-webkit-scrollbar,
-.editor-box #editorBody::-webkit-scrollbar {
-  width: 7px;
-}
-
-.editor-body::-webkit-scrollbar-track,
-.editor-box #editorBody::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.editor-body::-webkit-scrollbar-thumb,
-.editor-box #editorBody::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-
-  background: rgba(168, 141, 95, 0.28);
-}
-
-.editor-body:focus,
-.editor-box #editorBody:focus {
-  outline: none;
-
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
-}
-
-.editor-body:empty::before,
-.editor-box #editorBody:empty::before {
+.editor-body:empty::before {
   content: attr(data-placeholder);
 
   color: var(--text-soft);
-
-  opacity: 0.8;
-}
-
-/* --------------------------------------------------------------------------
-   EDITOR TYPOGRAPHY
--------------------------------------------------------------------------- */
-
-.editor-box #editorBody p {
-  margin: 0 0 1.15em;
-}
-
-.editor-box #editorBody h1,
-.editor-box #editorBody h2,
-.editor-box #editorBody h3 {
-  margin-top: 1.7em;
-
-  margin-bottom: 0.6em;
-
-  color: var(--text-main);
-
-  font-family: var(--font-serif);
-
-  line-height: 1.2;
-}
-
-.editor-box #editorBody h1 {
-  font-size: 2rem;
-}
-
-.editor-box #editorBody h2 {
-  font-size: 1.65rem;
-}
-
-.editor-box #editorBody h3 {
-  font-size: 1.4rem;
-}
-
-/* ==========================================================================
-   EDITOR LISTS — RESTORE BULLET MARKERS
-========================================================================== */
-
-.editor-box #editorBody ul {
-  margin: 1.2em 0;
-
-  padding-left: 1.5rem !important;
-
-  list-style-type: disc !important;
-
-  list-style-position: outside !important;
-}
-
-.editor-box #editorBody ul li {
-  display: list-item !important;
-
-  margin-bottom: 0.5em;
-
-  padding-left: 0.15em;
-
-  list-style-type: disc !important;
-}
-
-.editor-box #editorBody ol {
-  margin: 1.2em 0;
-
-  padding-left: 1.5rem !important;
-
-  list-style-type: decimal !important;
-
-  list-style-position: outside !important;
-}
-
-.editor-box #editorBody ol li {
-  display: list-item !important;
-
-  margin-bottom: 0.5em;
-
-  padding-left: 0.15em;
-
-  list-style-type: decimal !important;
 }
 
 /* ==========================================================================
