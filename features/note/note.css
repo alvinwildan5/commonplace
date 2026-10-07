@@ -337,32 +337,36 @@ i.fa-regular {
   padding: 13px 0 13px 28px;
 
   font-family: var(--font-sans);
-
   font-size: 0.78rem;
 
   color: var(--text-main);
-
   background: transparent;
 
   border: none;
-
   border-bottom: 1px solid rgba(168, 141, 95, 0.38);
-
   border-radius: 0;
 
   outline: none;
-
-  transition: var(--ease);
-}
-
-.sidebar-search-input:focus {
-  border-bottom-color: var(--accent-gold);
-
-  border-bottom-width: 2px;
-
   box-shadow: none;
+
+  transition:
+    border-color 0.2s ease,
+    border-bottom-width 0.2s ease;
 }
 
+.sidebar-search-input:focus,
+.sidebar-search-input:focus-visible,
+.sidebar-search-input:active {
+  outline: none;
+  box-shadow: none;
+
+  border-top: none;
+  border-left: none;
+  border-right: none;
+
+  border-bottom-color: var(--accent-gold);
+  border-bottom-width: 2px;
+}
 /* ==========================================================================
    6. TOPIC NAVIGATION
 ========================================================================== */
