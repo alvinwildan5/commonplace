@@ -2216,6 +2216,7 @@ i.fa-regular {
 
 /* ==========================================================================
    29. MODAL SYSTEM
+   EDIT NOTE — DISTRACTION-FREE WRITING WORKSPACE
 ========================================================================== */
 
 .modal-overlay {
@@ -2231,7 +2232,7 @@ i.fa-regular {
 
   justify-content: center;
 
-  padding: 6vh 1.5rem;
+  padding: 4vh 1.25rem;
 
   overflow-y: auto;
 
@@ -2239,7 +2240,11 @@ i.fa-regular {
 
   visibility: hidden;
 
-  background: rgba(40, 37, 31, 0.48);
+  background: rgba(40, 37, 31, 0.42);
+
+  backdrop-filter: blur(4px);
+
+  -webkit-backdrop-filter: blur(4px);
 
   transition: var(--ease);
 }
@@ -2259,51 +2264,100 @@ i.fa-regular {
 
   padding: 3.2rem;
 
-  border: 1px solid rgba(168, 141, 95, 0.35);
+  border: 1px solid rgba(168, 141, 95, 0.26);
 
-  border-radius: 2px;
+  border-radius: 10px;
 
   background: linear-gradient(
     145deg,
     rgba(255, 253, 248, 0.99),
-    rgba(246, 241, 231, 0.98)
+    rgba(248, 244, 235, 0.98)
   );
 
   font-family: var(--font-sans);
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.85),
-    0 18px 55px rgba(57, 49, 36, 0.17);
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 24px 70px rgba(57, 49, 36, 0.15);
 
   transform: translateY(16px);
 
-  transition: transform 0.4s var(--ease);
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.3s ease;
 }
 
 .modal-overlay.active .modal-box {
   transform: translateY(0);
 }
 
+/* --------------------------------------------------------------------------
+   EDIT NOTE MODAL
+-------------------------------------------------------------------------- */
+
 .editor-box {
-  max-width: 860px;
+  width: 100%;
+
+  max-width: 1100px;
+
+  height: 88vh;
+
+  min-height: 620px;
+
+  max-height: 920px;
+
+  padding: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  background: #fbfaf6;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 26px 75px rgba(57, 49, 36, 0.16);
+}
+
+.editor-box,
+.editor-box * {
+  box-sizing: border-box;
 }
 
 .modal-close {
   position: absolute;
 
-  top: 1.4rem;
+  top: 16px;
 
-  right: 1.4rem;
+  right: 16px;
 
-  padding: 5px;
+  z-index: 20;
 
-  border: none;
+  width: 34px;
 
-  background: none;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+
+  border-radius: 50%;
+
+  background: transparent;
 
   color: var(--text-muted);
 
-  font-size: 1.1rem;
+  font-size: 0.9rem;
 
   cursor: pointer;
 
@@ -2312,10 +2366,14 @@ i.fa-regular {
 
 .modal-close:hover {
   color: var(--accent-gold-deep);
+
+  background: rgba(168, 141, 95, 0.08);
+
+  border-color: rgba(168, 141, 95, 0.18);
 }
 
 .modal-title {
-  margin-bottom: 0.8rem;
+  margin: 0 0 0.35rem;
 
   font-family: var(--font-serif);
 
@@ -2326,16 +2384,18 @@ i.fa-regular {
   line-height: 1.2;
 
   letter-spacing: -0.015em;
+
+  color: var(--text-main);
 }
 
 .modal-subtitle {
-  margin-bottom: 2rem;
+  margin: 0 0 1rem;
 
   color: var(--text-muted);
 
-  font-size: 0.85rem;
+  font-size: 0.78rem;
 
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 /* ==========================================================================
@@ -2345,17 +2405,17 @@ i.fa-regular {
 .field-label {
   display: block;
 
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.35rem;
 
   font-family: var(--font-sans);
 
-  font-size: 0.62rem;
+  font-size: 0.58rem;
 
   font-weight: 600;
 
   line-height: 1.4;
 
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
 
   text-transform: uppercase;
 
@@ -2365,39 +2425,50 @@ i.fa-regular {
 .field-input {
   width: 100%;
 
-  padding: 11px 13px;
+  min-height: 42px;
 
-  border: 1px solid rgba(168, 141, 95, 0.32);
+  padding: 9px 12px;
 
-  border-radius: 0;
+  border: 1px solid rgba(168, 141, 95, 0.25);
+
+  border-radius: 8px;
 
   outline: none;
 
-  background: rgba(255, 253, 248, 0.8);
+  background: rgba(255, 255, 255, 0.68);
 
   color: var(--text-main);
 
   font-family: var(--font-sans);
 
-  font-size: 0.88rem;
+  font-size: 0.82rem;
 
-  resize: vertical;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
 
-  transition: var(--ease);
+.field-input:hover {
+  border-color: rgba(168, 141, 95, 0.4);
+
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .field-input:focus {
   border-color: var(--accent-gold);
 
-  box-shadow: 0 3px 0 rgba(168, 141, 95, 0.08);
+  background: #fffdf8;
+
+  box-shadow: 0 0 0 3px rgba(168, 141, 95, 0.06);
 }
 
 .field-error {
-  margin: 0.5rem 0 0;
+  margin: 0.4rem 0 0;
 
   color: var(--accent-gold-deep);
 
-  font-size: 0.76rem;
+  font-size: 0.72rem;
 }
 
 .btn-primary {
@@ -2409,11 +2480,11 @@ i.fa-regular {
 
   gap: 8px;
 
-  padding: 13px 22px;
+  padding: 11px 19px;
 
   border: none;
 
-  border-radius: 1px;
+  border-radius: 8px;
 
   background: linear-gradient(
     145deg,
@@ -2425,7 +2496,7 @@ i.fa-regular {
 
   font-family: var(--font-sans);
 
-  font-size: 0.76rem;
+  font-size: 0.72rem;
 
   font-weight: 600;
 
@@ -2439,27 +2510,31 @@ i.fa-regular {
 
   transition: var(--ease);
 
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 12px rgba(126, 100, 57, 0.1);
 }
 
 .btn-primary:hover {
   background: linear-gradient(145deg, var(--accent-gold-deep), #71552d);
+
+  transform: translateY(-1px);
 }
 
 .btn-ghost {
-  padding: 13px 22px;
+  padding: 11px 19px;
 
-  border: 1px solid rgba(168, 141, 95, 0.35);
+  border: 1px solid rgba(168, 141, 95, 0.3);
 
-  border-radius: 1px;
+  border-radius: 8px;
 
-  background: none;
+  background: transparent;
 
   color: var(--text-main);
 
   font-family: var(--font-sans);
 
-  font-size: 0.76rem;
+  font-size: 0.72rem;
 
   font-weight: 600;
 
@@ -2478,12 +2553,14 @@ i.fa-regular {
   border-color: var(--accent-gold);
 
   color: var(--accent-gold-deep);
+
+  background: rgba(168, 141, 95, 0.04);
 }
 
 .full-width {
   width: 100%;
 
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
 }
 
 /* ==========================================================================
@@ -2491,39 +2568,156 @@ i.fa-regular {
 ========================================================================== */
 
 .editor-header {
+  flex: 0 0 auto;
+
   display: flex;
 
   align-items: flex-start;
 
   justify-content: space-between;
 
-  margin-bottom: 2rem;
+  padding: 22px 28px 8px;
+
+  margin: 0;
+
+  transition:
+    padding 0.35s ease,
+    opacity 0.3s ease;
 }
 
 .editor-meta-grid {
+  flex: 0 0 auto;
+
   display: grid;
 
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:
+    minmax(0, 1.7fr)
+    minmax(145px, 1fr)
+    minmax(125px, 0.9fr);
 
-  gap: 1.5rem;
+  gap: 11px 13px;
 
-  margin-bottom: 2rem;
+  margin: 0;
+
+  padding: 0 28px 14px;
+
+  max-height: 300px;
+
+  overflow: visible;
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+  transition:
+    max-height 0.4s ease,
+    opacity 0.25s ease,
+    transform 0.35s ease,
+    padding 0.35s ease;
 }
 
 .field-group {
   display: flex;
 
   flex-direction: column;
+
+  min-width: 0;
 }
 
 .field-group.span-2 {
   grid-column: 1 / -1;
 }
 
+/*
+  Bila Title menjadi field utama, beri ruang lebih besar.
+*/
+
+.editor-meta-grid .field-group:has(.title-input) {
+  grid-column: span 2;
+}
+
 .title-input {
   font-family: var(--font-serif);
 
-  font-size: 1.4rem;
+  font-size: 1.15rem;
+
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   31A. DISTRACTION-FREE MODE
+   Saat editor aktif, metadata otomatis collapse.
+   
+   CSS :has() membuat ini bisa berjalan tanpa JavaScript tambahan.
+========================================================================== */
+
+/*
+  Editor sedang fokus:
+  Title / Topic / New Topic Name / Icon / Date / Excerpt
+  otomatis dipadatkan dan disembunyikan.
+*/
+
+.editor-box:has(.editor-body:focus) .editor-meta-grid,
+.editor-box:has(#editorBody:focus) .editor-meta-grid {
+  max-height: 0;
+
+  padding-top: 0;
+
+  padding-bottom: 0;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  transform: translateY(-8px);
+
+  pointer-events: none;
+}
+
+.editor-box:has(.editor-body:focus) .editor-header,
+.editor-box:has(#editorBody:focus) .editor-header {
+  padding-top: 14px;
+
+  padding-bottom: 6px;
+}
+
+.editor-box:has(.editor-body:focus) .modal-subtitle,
+.editor-box:has(#editorBody:focus) .modal-subtitle {
+  display: none;
+}
+
+/* ==========================================================================
+   31B. OPTIONAL MANUAL HIDE MODE
+   Bisa dipakai nanti dengan class:
+   
+   .editor-box.metadata-hidden
+   
+   Jadi tidak perlu mengubah CSS lagi ketika kamu menambahkan tombol
+   "Hide Metadata" / "Show Metadata".
+========================================================================== */
+
+.editor-box.metadata-hidden .editor-meta-grid {
+  max-height: 0;
+
+  padding-top: 0;
+
+  padding-bottom: 0;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  transform: translateY(-8px);
+
+  pointer-events: none;
+}
+
+.editor-box.metadata-hidden .modal-subtitle {
+  display: none;
 }
 
 /* ==========================================================================
@@ -2531,23 +2725,41 @@ i.fa-regular {
 ========================================================================== */
 
 .editor-toolbar {
+  flex: 0 0 auto;
+
   display: flex;
 
   align-items: center;
 
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
-  gap: 7px;
+  gap: 5px;
 
-  padding: 12px;
+  min-height: 48px;
 
-  background: linear-gradient(
-    135deg,
-    rgba(245, 240, 229, 0.95),
-    rgba(237, 229, 212, 0.72)
-  );
+  padding: 7px 11px;
 
-  border-bottom: 1px solid rgba(168, 141, 95, 0.3);
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  scrollbar-width: none;
+
+  border-top: 1px solid rgba(168, 141, 95, 0.14);
+
+  border-bottom: 1px solid rgba(168, 141, 95, 0.22);
+
+  border-radius: 10px 10px 0 0;
+
+  background: rgba(245, 241, 233, 0.92);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 2px 8px rgba(57, 49, 36, 0.025);
+}
+
+.editor-toolbar::-webkit-scrollbar {
+  display: none;
 }
 
 .tb-group {
@@ -2555,7 +2767,9 @@ i.fa-regular {
 
   align-items: center;
 
-  gap: 3px;
+  gap: 2px;
+
+  flex: 0 0 auto;
 }
 
 .highlight-btn {
@@ -2567,17 +2781,17 @@ i.fa-regular {
 
   padding: 6px 9px;
 
-  border: 1px solid rgba(168, 141, 95, 0.3);
+  border: 1px solid rgba(168, 141, 95, 0.24);
 
-  border-radius: 0;
+  border-radius: 7px;
 
-  background: var(--bg-white);
+  background: rgba(255, 253, 248, 0.9);
 
   color: var(--text-main);
 
   font-family: var(--font-sans);
 
-  font-size: 0.74rem;
+  font-size: 0.72rem;
 
   cursor: pointer;
 
@@ -2591,11 +2805,13 @@ i.fa-regular {
 .tb-divider {
   width: 1px;
 
-  height: 22px;
+  height: 20px;
 
-  margin: 0 5px;
+  margin: 0 4px;
 
-  background: rgba(168, 141, 95, 0.28);
+  flex: 0 0 auto;
+
+  background: rgba(168, 141, 95, 0.22);
 }
 
 .tb-btn {
@@ -2603,35 +2819,51 @@ i.fa-regular {
 
   height: 32px;
 
+  flex: 0 0 32px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
   border: none;
 
-  border-radius: 0;
+  border-radius: 7px;
 
-  background: none;
+  background: transparent;
 
   color: var(--text-main);
 
   cursor: pointer;
 
-  font-size: 0.86rem;
+  font-size: 0.84rem;
 
   transition: var(--ease);
 }
 
 .tb-btn:hover {
-  background: var(--bg-white);
+  background: rgba(255, 253, 248, 0.94);
 
   color: var(--accent-gold-deep);
 
-  box-shadow: 0 2px 6px rgba(57, 49, 36, 0.045);
+  box-shadow: 0 2px 7px rgba(57, 49, 36, 0.055);
+}
+
+.tb-btn:active {
+  transform: scale(0.96);
 }
 
 .tb-word-count {
   margin-left: auto;
 
+  flex: 0 0 auto;
+
+  padding-left: 10px;
+
   color: var(--text-muted);
 
-  font-size: 0.7rem;
+  font-size: 0.68rem;
 
   white-space: nowrap;
 }
@@ -2641,31 +2873,33 @@ i.fa-regular {
 ========================================================================== */
 
 .image-style-picker {
+  flex: 0 0 auto;
+
   display: flex;
 
   align-items: center;
 
   flex-wrap: wrap;
 
-  gap: 7px;
+  gap: 6px;
 
-  padding: 11px 13px;
+  padding: 8px 12px;
 
-  border-bottom: 1px solid rgba(168, 141, 95, 0.26);
+  border-bottom: 1px solid rgba(168, 141, 95, 0.2);
 
-  background: rgba(245, 240, 229, 0.8);
+  background: rgba(245, 240, 229, 0.72);
 
   font-family: var(--font-sans);
 
-  font-size: 0.76rem;
+  font-size: 0.72rem;
 }
 
 .image-style-picker span {
-  margin-right: 5px;
+  margin-right: 4px;
 
   color: var(--accent-gold-deep);
 
-  font-size: 0.63rem;
+  font-size: 0.6rem;
 
   font-weight: 600;
 
@@ -2677,17 +2911,19 @@ i.fa-regular {
 }
 
 .image-style-picker button {
-  padding: 6px 12px;
+  padding: 5px 10px;
 
-  border: 1px solid rgba(168, 141, 95, 0.3);
+  border: 1px solid rgba(168, 141, 95, 0.25);
 
-  border-radius: 0;
+  border-radius: 7px;
 
-  background: var(--bg-white);
+  background: rgba(255, 253, 248, 0.9);
+
+  color: var(--text-main);
 
   font-family: var(--font-sans);
 
-  font-size: 0.7rem;
+  font-size: 0.68rem;
 
   cursor: pointer;
 
@@ -2698,6 +2934,8 @@ i.fa-regular {
   border-color: var(--accent-gold);
 
   color: var(--accent-gold-deep);
+
+  background: #fffdf8;
 }
 
 .image-style-picker .cancel-style {
@@ -2708,40 +2946,181 @@ i.fa-regular {
 
 /* ==========================================================================
    34. EDITOR BODY
+   MAIN WRITING AREA
 ========================================================================== */
 
-.editor-body {
-  min-height: 260px;
+.editor-body,
+.editor-box #editorBody {
+  flex: 1 1 auto;
 
-  max-height: 45vh;
+  min-height: 0;
+
+  width: 100%;
 
   overflow-y: auto;
 
-  padding: 1.5rem 2rem;
+  overflow-x: hidden;
 
-  border: 1px solid rgba(168, 141, 95, 0.3);
+  padding: 28px 34px 48px;
 
-  border-top: none;
+  border: none;
 
   outline: none;
 
-  background: radial-gradient(
-    ellipse at top,
-    rgba(255, 253, 248, 0.98),
-    rgba(248, 244, 235, 0.92)
-  );
+  border-radius: 0 0 10px 10px;
+
+  background: #fffdf8;
+
+  color: var(--text-main);
 
   font-family: var(--font-serif);
 
   font-size: 20px;
 
-  line-height: 1.68;
+  line-height: 1.72;
+
+  caret-color: var(--accent-gold-deep);
+
+  scrollbar-width: thin;
+
+  scrollbar-color: rgba(168, 141, 95, 0.28) transparent;
 }
 
-.editor-body:empty::before {
+.editor-body::-webkit-scrollbar,
+.editor-box #editorBody::-webkit-scrollbar {
+  width: 7px;
+}
+
+.editor-body::-webkit-scrollbar-track,
+.editor-box #editorBody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-body::-webkit-scrollbar-thumb,
+.editor-box #editorBody::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background: rgba(168, 141, 95, 0.28);
+}
+
+.editor-body:focus,
+.editor-box #editorBody:focus {
+  outline: none;
+
+  box-shadow: none;
+}
+
+.editor-body:empty::before,
+.editor-box #editorBody:empty::before {
   content: attr(data-placeholder);
 
   color: var(--text-soft);
+
+  opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   EDITOR TYPOGRAPHY
+-------------------------------------------------------------------------- */
+
+.editor-box #editorBody p,
+.editor-box .editor-body p {
+  margin: 0 0 1.15em;
+
+  overflow-wrap: break-word;
+
+  word-wrap: break-word;
+}
+
+.editor-box #editorBody h1,
+.editor-box #editorBody h2,
+.editor-box #editorBody h3,
+.editor-box .editor-body h1,
+.editor-box .editor-body h2,
+.editor-box .editor-body h3 {
+  margin-top: 1.7em;
+
+  margin-bottom: 0.6em;
+
+  font-family: var(--font-serif);
+
+  font-weight: 500;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.02em;
+
+  color: var(--text-main);
+}
+
+.editor-box #editorBody h1,
+.editor-box .editor-body h1 {
+  font-size: 2rem;
+}
+
+.editor-box #editorBody h2,
+.editor-box .editor-body h2 {
+  font-size: 1.65rem;
+}
+
+.editor-box #editorBody h3,
+.editor-box .editor-body h3 {
+  font-size: 1.4rem;
+}
+
+/* ==========================================================================
+   34A. BULLET / NUMBERED LIST FIX
+========================================================================== */
+
+.editor-box #editorBody ul,
+.editor-box .editor-body ul {
+  margin: 1.2em 0;
+
+  padding-left: 1.5rem !important;
+
+  list-style-type: disc !important;
+
+  list-style-position: outside !important;
+}
+
+.editor-box #editorBody ul li,
+.editor-box .editor-body ul li {
+  display: list-item !important;
+
+  margin-bottom: 0.5em;
+
+  padding-left: 0.15em;
+
+  list-style-type: disc !important;
+}
+
+.editor-box #editorBody ul li::marker,
+.editor-box .editor-body ul li::marker {
+  color: var(--accent-gold-deep);
+
+  font-size: 0.82em;
+}
+
+.editor-box #editorBody ol,
+.editor-box .editor-body ol {
+  margin: 1.2em 0;
+
+  padding-left: 1.5rem !important;
+
+  list-style-type: decimal !important;
+
+  list-style-position: outside !important;
+}
+
+.editor-box #editorBody ol li,
+.editor-box .editor-body ol li {
+  display: list-item !important;
+
+  margin-bottom: 0.5em;
+
+  padding-left: 0.15em;
+
+  list-style-type: decimal !important;
 }
 
 /* ==========================================================================
@@ -2749,6 +3128,8 @@ i.fa-regular {
 ========================================================================== */
 
 .editor-footer {
+  flex: 0 0 auto;
+
   display: flex;
 
   align-items: center;
@@ -2757,25 +3138,195 @@ i.fa-regular {
 
   flex-wrap: wrap;
 
-  gap: 1rem;
+  gap: 0.8rem;
 
-  margin-top: 2rem;
+  margin: 0;
+
+  padding: 11px 22px 14px;
+
+  border-top: 1px solid rgba(168, 141, 95, 0.2);
+
+  background: rgba(248, 244, 235, 0.76);
 }
 
 .editor-status {
   color: var(--text-muted);
 
-  font-size: 0.8rem;
+  font-size: 0.72rem;
 }
 
 .editor-footer-actions {
   display: flex;
 
-  gap: 1rem;
+  align-items: center;
+
+  gap: 0.6rem;
 
   margin-left: auto;
 }
 
+/* ==========================================================================
+   35A. WRITING MODE — EXTRA SPACE
+========================================================================== */
+
+.editor-box:has(.editor-body:focus) .editor-body,
+.editor-box:has(#editorBody:focus) #editorBody {
+  padding-top: 30px;
+
+  padding-bottom: 54px;
+}
+
+/* ==========================================================================
+   MOBILE EDITOR
+========================================================================== */
+
+@media screen and (max-width: 600px) {
+  .modal-overlay {
+    align-items: flex-start;
+
+    padding: 2vh 0.6rem;
+  }
+
+  .editor-box {
+    height: 96vh;
+
+    min-height: 0;
+
+    max-height: none;
+
+    border-radius: 10px;
+  }
+
+  .editor-header {
+    padding: 18px 17px 7px;
+  }
+
+  .modal-title {
+    font-size: 1.65rem;
+  }
+
+  .editor-meta-grid {
+    grid-template-columns: 1fr;
+
+    gap: 9px;
+
+    padding: 0 17px 12px;
+  }
+
+  .editor-meta-grid .field-group:has(.title-input) {
+    grid-column: auto;
+  }
+
+  .field-input {
+    min-height: 42px;
+
+    padding: 9px 11px;
+
+    border-radius: 8px;
+  }
+
+  .editor-toolbar {
+    min-height: 46px;
+
+    padding: 7px 8px;
+
+    gap: 4px;
+  }
+
+  .editor-body,
+  .editor-box #editorBody {
+    padding: 21px 18px 36px;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+  }
+
+  .editor-footer {
+    padding: 9px 12px 11px;
+  }
+
+  .editor-footer-actions {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .editor-footer-actions button {
+    flex: 1;
+
+    border-radius: 8px;
+  }
+}
+
+/* ==========================================================================
+   VERY SMALL SCREENS
+========================================================================== */
+
+@media screen and (max-width: 420px) {
+  .editor-box {
+    height: 97vh;
+
+    border-radius: 9px;
+  }
+
+  .editor-header {
+    padding-left: 14px;
+
+    padding-right: 14px;
+  }
+
+  .editor-meta-grid {
+    padding-left: 14px;
+
+    padding-right: 14px;
+  }
+
+  .editor-toolbar {
+    gap: 3px;
+
+    padding: 6px 7px;
+  }
+
+  .tb-select {
+    max-width: 115px;
+
+    font-size: 0.68rem;
+  }
+
+  .tb-word-count {
+    width: auto;
+
+    margin-left: auto;
+
+    padding-left: 8px;
+
+    font-size: 0.64rem;
+  }
+
+  .editor-body,
+  .editor-box #editorBody {
+    padding: 18px 16px 32px;
+
+    font-size: 18px;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-box,
+  .editor-header,
+  .editor-meta-grid,
+  .editor-body,
+  .editor-toolbar,
+  .field-input,
+  .tb-btn {
+    transition: none !important;
+  }
+}
 /* ==========================================================================
    36. INTERACTIVE GEE DASHBOARD
 ========================================================================== */
