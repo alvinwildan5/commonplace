@@ -1047,7 +1047,7 @@ textarea {
       transparent 1px,
       transparent 5px
     ),
-    var(--bg-paper);
+    var(--bg-white);
 }
 
 /* Decorative historical line */
