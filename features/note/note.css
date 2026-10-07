@@ -358,7 +358,9 @@ i.fa-regular {
 .sidebar-search-input:focus {
   border-bottom-color: var(--accent-gold);
 
-  box-shadow: 0 3px 0 rgba(168, 141, 95, 0.08);
+  border-bottom-width: 2px;
+
+  box-shadow: none;
 }
 
 /* ==========================================================================
@@ -514,8 +516,6 @@ i.fa-regular {
 ========================================================================== */
 
 .note-header-simple::after {
-  
-
   position: absolute;
 
   left: 50%;

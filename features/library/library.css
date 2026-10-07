@@ -173,7 +173,7 @@
   color: var(--text-main);
   background: rgba(250, 247, 239, 0.94);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
+  border-radius: 999px;
   outline: none;
 
   box-shadow: var(--shadow-paper);
