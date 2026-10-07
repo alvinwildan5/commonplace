@@ -103,8 +103,6 @@
 ========================================================================== */
 
 .ivy-header::after {
-  
-
   position: absolute;
 
   left: 50%;
@@ -432,8 +430,6 @@
 ========================================================================== */
 
 .profile-photo::after {
-  
-
   position: absolute;
 
   left: 50%;
@@ -700,8 +696,6 @@
 }
 
 .bio-heading::after {
-  content: "—  ❦  —";
-
   display: block;
 
   margin-top: 0.95rem;
@@ -868,8 +862,6 @@
 }
 
 .form-header h2::after {
-  content: "  ❦";
-
   color: var(--accent-gold);
 
   font-size: 0.75em;
@@ -1041,16 +1033,12 @@
 }
 
 .submit-btn::before {
-  
-
   margin-right: 12px;
 
   color: var(--accent-gold);
 }
 
 .submit-btn::after {
-  
-
   margin-left: 12px;
 
   color: var(--accent-gold);
