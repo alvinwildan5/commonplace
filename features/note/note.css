@@ -514,7 +514,7 @@ i.fa-regular {
 ========================================================================== */
 
 .note-header-simple::after {
-  content: "❦";
+  
 
   position: absolute;
 

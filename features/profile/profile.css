@@ -103,7 +103,7 @@
 ========================================================================== */
 
 .ivy-header::after {
-  content: "❦";
+  
 
   position: absolute;
 
@@ -432,7 +432,7 @@
 ========================================================================== */
 
 .profile-photo::after {
-  content: "❦";
+  
 
   position: absolute;
 
@@ -1041,7 +1041,7 @@
 }
 
 .submit-btn::before {
-  content: "❦";
+  
 
   margin-right: 12px;
 
@@ -1049,7 +1049,7 @@
 }
 
 .submit-btn::after {
-  content: "❦";
+  
 
   margin-left: 12px;
 
