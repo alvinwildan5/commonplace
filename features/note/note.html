@@ -624,59 +624,6 @@
 
             <input type="date" id="fieldDate" class="field-input" />
           </div>
-          <!-- ======================================================
-     CARD BACKGROUND IMAGE
-======================================================= -->
-
-          <div class="field-group span-2 card-bg-field">
-            <label class="field-label" for="fieldCardBackground">
-              Card Background
-            </label>
-
-            <div class="card-bg-picker">
-              <input
-                type="file"
-                id="fieldCardBackground"
-                accept="image/jpeg,image/png,image/webp"
-                onchange="handleCardBackgroundChosen(event)"
-              />
-
-              <label for="fieldCardBackground" class="card-bg-upload-btn">
-                <i class="fa-solid fa-image"></i>
-
-                <span>Select background image</span>
-              </label>
-
-              <button
-                type="button"
-                class="card-bg-remove-btn"
-                id="cardBgRemoveBtn"
-                onclick="clearCardBackground()"
-                style="display: none"
-              >
-                <i class="fa-solid fa-xmark"></i>
-
-                Remove
-              </button>
-            </div>
-
-            <!-- PREVIEW -->
-
-            <div
-              id="cardBackgroundPreview"
-              class="card-bg-preview"
-              style="display: none"
-            >
-              <div class="card-bg-preview-overlay"></div>
-
-              <span class="card-bg-preview-label"> Card preview </span>
-            </div>
-
-            <p class="card-bg-help">
-              This image will appear across the upper part of the note card and
-              gradually fade into the paper background.
-            </p>
-          </div>
 
           <!-- EXCERPT -->
 
