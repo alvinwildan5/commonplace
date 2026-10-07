@@ -42,6 +42,7 @@
   --bg-paper: #ffffff;
   --bg-white: #faf7ef;
   --bg-alt: #ebe4d5;
+  --bg-index: #f4efe5;
 
   /* Slightly warmer paper variants */
   --paper-light: #f8f4eb;
@@ -589,7 +590,7 @@ textarea {
 
   overflow: hidden;
 
-  background-color: var(--bg-paper);
+  background-color: var(--bg-index);
 
   background-image:
     linear-gradient(rgba(244, 239, 229, 0.15), rgba(244, 239, 229, 0.15)),
