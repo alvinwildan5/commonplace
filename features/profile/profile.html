@@ -2,32 +2,74 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Profile | AWS Archive</title>
 
+    <!-- =========================================================
+         FONTS
+    ========================================================== -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
       rel="stylesheet"
     />
+
+    <!-- =========================================================
+         ICONS
+    ========================================================== -->
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-    <link rel="stylesheet" href="./profile.css" />
+
+    <!-- =========================================================
+         SHARED SITE STYLE
+         Loaded first so profile.css can override it.
+    ========================================================== -->
+
     <link rel="stylesheet" href="../../index.css" />
 
-    <!-- Supabase CDN -->
+    <!-- =========================================================
+         PROFILE STYLE
+    ========================================================== -->
+
+    <link rel="stylesheet" href="./profile.css" />
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
+
   <body>
-    <!-- HEADER -->
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
     <header class="site-header">
       <nav class="site-nav">
+        <!-- BRAND -->
+
         <div class="nav-logo">
-          <a href="../../index.html" class="brand-text">AWS</a>
+          <a
+            href="../../index.html"
+            class="brand-text"
+            aria-label="AWS Archive Home"
+          >
+            AWS
+          </a>
         </div>
+
+        <!-- NAVIGATION -->
+
         <ul class="nav-links">
           <li>
             <a
@@ -35,41 +77,55 @@
               class="translatable"
               data-en="Notes"
               data-id="Catatan"
-              >Notes</a
             >
+              Notes
+            </a>
           </li>
+
           <li>
             <a
               href="../library/library.html"
               class="translatable"
               data-en="Library"
               data-id="Perpustakaan"
-              >Library</a
             >
+              Library
+            </a>
           </li>
+
           <li>
             <a
               href="./profile.html"
               class="active translatable"
               data-en="Profile"
               data-id="Profil"
-              >Profile</a
             >
+              Profile
+            </a>
           </li>
+
+          <!-- LANGUAGE -->
+
           <li class="lang-menu">
             <div class="lang-switcher">
               <button
+                type="button"
                 class="lang-btn"
                 id="btn-id"
                 onclick="switchLanguage('id')"
+                aria-label="Switch to Indonesian"
               >
                 ID
               </button>
-              <span class="lang-divider">|</span>
+
+              <span class="lang-divider" aria-hidden="true"> | </span>
+
               <button
+                type="button"
                 class="lang-btn active"
                 id="btn-en"
                 onclick="switchLanguage('en')"
+                aria-label="Switch to English"
               >
                 EN
               </button>
@@ -79,57 +135,142 @@
       </nav>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="ivy-header" id="dynamic-header"></section>
+    <!-- =========================================================
+         HERO / BIOGRAPHICAL TITLE PLATE
+    ========================================================== -->
 
-    <!-- MAIN LAYOUT -->
+    <section
+      class="ivy-header"
+      id="dynamic-header"
+      aria-label="Profile introduction"
+    >
+      <p
+        class="hero-kicker translatable"
+        data-en="Personal Archive · Portrait & Biography"
+        data-id="Arsip Personal · Potret & Biografi"
+      >
+        Personal Archive · Portrait &amp; Biography
+      </p>
+
+      <h1
+        class="main-title translatable"
+        data-en="About Me"
+        data-id="Tentang Saya"
+      >
+        About Me
+      </h1>
+
+      <div class="gold-divider" aria-hidden="true"></div>
+
+      <p
+        class="subtitle-text translatable"
+        data-en="A Life in Science, Observation & Public Purpose"
+        data-id="Kehidupan dalam Sains, Pengamatan & Pengabdian Publik"
+      >
+        A Life in Science, Observation &amp; Public Purpose
+      </p>
+
+      <p
+        class="header-desc translatable"
+        data-en="A modest record of an unfinished education: of skies observed, landscapes studied, questions pursued, and the enduring conviction that knowledge acquires its truest worth when placed in the service of people and the world they inhabit."
+        data-id="Sebuah catatan sederhana tentang pendidikan yang tak pernah selesai: tentang langit yang diamati, bentang alam yang dipelajari, pertanyaan yang terus dikejar, dan keyakinan bahwa pengetahuan memperoleh maknanya yang paling luhur ketika diabdikan bagi manusia dan dunia yang ditinggalinya."
+      >
+        A modest record of an unfinished education: of skies observed,
+        landscapes studied, questions pursued, and the enduring conviction that
+        knowledge acquires its truest worth when placed in the service of people
+        and the world they inhabit.
+      </p>
+    </section>
+
+    <!-- =========================================================
+         MAIN BIOGRAPHICAL ARCHIVE
+    ========================================================== -->
+
     <main class="main-layout container">
-      <!-- LEFT SIDEBAR: PROFILE & CONTACT -->
+      <!-- =======================================================
+           LEFT COLUMN
+           PORTRAIT / IDENTITY / CORRESPONDENCE
+      ======================================================== -->
+
       <aside class="profile-container reveal-item">
         <div class="profile-sticky">
+          <!-- PORTRAIT -->
+
           <div class="profile-photo">
             <img
               src="/assets/images/profile.png"
-              alt="Alvin Wildan Sahli Portrait"
+              alt="Portrait of Alvin Wildan Sahli"
+              loading="lazy"
             />
           </div>
+
+          <!-- BIOGRAPHICAL CAPTION -->
+
+          <p
+            class="profile-caption translatable"
+            data-en="A Biographical Portrait"
+            data-id="Sebuah Potret Biografis"
+          >
+            A Biographical Portrait
+          </p>
+
+          <!-- NAME -->
+
           <h1 class="profile-name">Alvin Wildan Sahli</h1>
+
+          <!-- DESIGNATION -->
+
           <p
             class="profile-title translatable"
             data-en="Applied Meteorology & Spatial Ecology"
             data-id="Meteorologi Terapan & Ekologi Spasial"
           >
-            Applied Meteorology & Spatial Ecology
+            Applied Meteorology &amp; Spatial Ecology
           </p>
+
+          <!-- ===================================================
+               CONTACT
+          ==================================================== -->
 
           <div class="contact-section">
             <h3
               class="translatable"
-              data-en="Contact & Network"
-              data-id="Kontak & Jejaring"
+              data-en="Contact & Correspondence"
+              data-id="Kontak & Korespondensi"
             >
-              Contact & Network
+              Contact &amp; Correspondence
             </h3>
 
+            <p
+              class="contact-intro translatable"
+              data-en="For professional inquiry, intellectual exchange, or matters of mutual interest."
+              data-id="Untuk keperluan profesional, pertukaran gagasan, atau hal-hal yang memiliki kepentingan bersama."
+            >
+              For professional inquiry, intellectual exchange, or matters of
+              mutual interest.
+            </p>
+
             <!-- EMAIL -->
+
             <div class="contact-item">
-              <div class="contact-icon">
+              <div class="contact-icon" aria-hidden="true">
                 <i class="fa-solid fa-envelope"></i>
               </div>
 
               <div class="contact-info">
                 <span
                   class="contact-label translatable"
-                  data-en="Email"
-                  data-id="Email"
+                  data-en="Correspondence"
+                  data-id="Korespondensi"
                 >
-                  Email
+                  Correspondence
                 </span>
 
                 <a
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Send email to Alvin Wildan Sahli"
                 >
                   alvinwildansahli@gmail.com
                 </a>
@@ -137,24 +278,26 @@
             </div>
 
             <!-- WHATSAPP -->
+
             <div class="contact-item">
-              <div class="contact-icon">
+              <div class="contact-icon" aria-hidden="true">
                 <i class="fa-brands fa-whatsapp"></i>
               </div>
 
               <div class="contact-info">
                 <span
                   class="contact-label translatable"
-                  data-en="WhatsApp"
-                  data-id="WhatsApp"
+                  data-en="Direct Correspondence"
+                  data-id="Korespondensi Langsung"
                 >
-                  WhatsApp
+                  Direct Correspondence
                 </span>
 
                 <a
                   href="https://wa.me/6281575431109"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Contact Alvin Wildan Sahli on WhatsApp"
                 >
                   +62 815-7543-1109
                 </a>
@@ -162,24 +305,26 @@
             </div>
 
             <!-- LINKEDIN -->
+
             <div class="contact-item">
-              <div class="contact-icon">
+              <div class="contact-icon" aria-hidden="true">
                 <i class="fa-brands fa-linkedin-in"></i>
               </div>
 
               <div class="contact-info">
                 <span
                   class="contact-label translatable"
-                  data-en="LinkedIn"
-                  data-id="LinkedIn"
+                  data-en="Professional Record"
+                  data-id="Rekam Profesional"
                 >
-                  LinkedIn
+                  Professional Record
                 </span>
 
                 <a
                   href="https://www.linkedin.com/in/alvinwildans"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="View Alvin Wildan Sahli on LinkedIn"
                 >
                   in/alvinwildans
                 </a>
@@ -187,24 +332,26 @@
             </div>
 
             <!-- INSTAGRAM -->
+
             <div class="contact-item">
-              <div class="contact-icon">
+              <div class="contact-icon" aria-hidden="true">
                 <i class="fa-brands fa-instagram"></i>
               </div>
 
               <div class="contact-info">
                 <span
                   class="contact-label translatable"
-                  data-en="Instagram"
-                  data-id="Instagram"
+                  data-en="Personal Record"
+                  data-id="Catatan Personal"
                 >
-                  Instagram
+                  Personal Record
                 </span>
 
                 <a
                   href="https://www.instagram.com/alvinwildans"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="View Alvin Wildan Sahli on Instagram"
                 >
                   @alvinwildans
                 </a>
@@ -212,8 +359,9 @@
             </div>
 
             <!-- CV -->
+
             <div class="contact-item">
-              <div class="contact-icon">
+              <div class="contact-icon" aria-hidden="true">
                 <i class="fa-solid fa-file-alt"></i>
               </div>
 
@@ -229,11 +377,13 @@
                 <a
                   href="https://hieryuiikzcrvssuvsmn.supabase.co/storage/v1/object/public/Memoir%20Project/CV_Alvin%20Wildan%20Sahli.pdf"
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="translatable"
-                  data-en="View CV"
-                  data-id="Lihat CV"
+                  data-en="View the Record"
+                  data-id="Lihat Rekam Jejak"
+                  aria-label="View Curriculum Vitae"
                 >
-                  View CV
+                  View the Record
                 </a>
               </div>
             </div>
@@ -241,167 +391,317 @@
         </div>
       </aside>
 
-      <!-- RIGHT SIDEBAR: BIO & FORM -->
+      <!-- =======================================================
+           RIGHT COLUMN
+           BIOGRAPHY / CORRESPONDENCE
+      ======================================================== -->
+
       <section
         class="content-container reveal-item"
         style="transition-delay: 0.2s"
       >
-        <!-- BIOGRAPHY NARRATIVE -->
+        <!-- =====================================================
+             BIOGRAPHICAL RECORD
+        ====================================================== -->
+
         <div class="bio-section">
           <h2
             class="bio-heading translatable"
-            data-en="Bridging Science and Community"
-            data-id="Menjembatani Sains dan Masyarakat"
+            data-en="A Mind Between Science and Society"
+            data-id="Di Antara Sains dan Masyarakat"
           >
-            Bridging Science and Community
+            A Mind Between Science and Society
           </h2>
+
+          <!-- PARAGRAPH 1 -->
+
           <p
             class="translatable"
-            data-en="I am driven by the intersection of climate dynamics, remote sensing, and sustainable policy. With an academic foundation in Applied Meteorology from IPB University, my work heavily involves processing multi-sensor satellite imagery and formulating spatial models to monitor environmental changes, particularly in vital ecosystems like mangroves."
-            data-id="Saya terdorong oleh persimpangan antara dinamika iklim, penginderaan jauh, dan kebijakan berkelanjutan. Dengan latar belakang akademik di bidang Meteorologi Terapan dari IPB University, pekerjaan saya banyak melibatkan pemrosesan citra satelit multi-sensor dan perumusan model spasial untuk memantau perubahan lingkungan, khususnya pada ekosistem vital seperti mangrove."
+            data-en="My education began with the study of the atmosphere, yet it has gradually led me towards a broader question: how ought we to understand the relationship between the natural world and the societies that depend upon it? Trained in Applied Meteorology at IPB University, I learned to observe the atmosphere not merely as a system of physical processes, but as part of a world in which weather, climate, landscape, and human life remain in constant conversation."
+            data-id="Pendidikan saya bermula dari studi mengenai atmosfer, namun secara perlahan membawa saya pada sebuah pertanyaan yang lebih luas: bagaimana seharusnya kita memahami hubungan antara alam dan masyarakat yang bergantung kepadanya? Menempuh pendidikan Meteorologi Terapan di IPB University, saya belajar mengamati atmosfer bukan semata-mata sebagai rangkaian proses fisik, melainkan sebagai bagian dari dunia tempat cuaca, iklim, bentang alam, dan kehidupan manusia senantiasa saling berhubungan."
           >
-            I am driven by the intersection of climate dynamics, remote sensing,
-            and sustainable policy. With an academic foundation in Applied
-            Meteorology from IPB University, my work heavily involves processing
-            multi-sensor satellite imagery and formulating spatial models to
-            monitor environmental changes, particularly in vital ecosystems like
-            mangroves.
+            My education began with the study of the atmosphere, yet it has
+            gradually led me towards a broader question: how ought we to
+            understand the relationship between the natural world and the
+            societies that depend upon it? Trained in Applied Meteorology at IPB
+            University, I learned to observe the atmosphere not merely as a
+            system of physical processes, but as part of a world in which
+            weather, climate, landscape, and human life remain in constant
+            conversation.
           </p>
+
+          <!-- PARAGRAPH 2 -->
+
           <p
             class="translatable"
-            data-en="Beyond technical analysis using Google Earth Engine and Python, I believe that data must translate into actionable community resilience. Whether it is engaging in international climate policy frameworks or grassroots disaster mitigation projects, my goal is to foster informed decision-making for a changing world."
-            data-id="Di luar analisis teknis menggunakan Google Earth Engine dan Python, saya percaya bahwa data harus diterjemahkan menjadi resiliensi masyarakat yang dapat ditindaklanjuti. Baik itu terlibat dalam kerangka kebijakan iklim internasional atau proyek mitigasi bencana di tingkat akar rumput, tujuan saya adalah mendorong pengambilan keputusan yang tepat untuk dunia yang terus berubah."
+            data-en="From this foundation grew an enduring interest in climate dynamics, remote sensing, spatial ecology, and environmental change. I have worked with satellite imagery, geographic information systems, Google Earth Engine, Python, and spatial modelling—not simply for the pleasure of technical precision, but in the hope that careful observation might reveal something useful about the places we inhabit and the changes taking place within them."
+            data-id="Dari dasar tersebut tumbuh ketertarikan yang terus bertahan pada dinamika iklim, penginderaan jauh, ekologi spasial, dan perubahan lingkungan. Saya telah bekerja dengan citra satelit, sistem informasi geografis, Google Earth Engine, Python, dan pemodelan spasial—bukan semata demi ketepatan teknis, melainkan dengan harapan bahwa pengamatan yang cermat dapat mengungkap sesuatu yang berguna tentang tempat-tempat yang kita huni dan perubahan yang berlangsung di dalamnya."
           >
-            Beyond technical analysis using Google Earth Engine and Python, I
-            believe that data must translate into actionable community
-            resilience. Whether it is engaging in international climate policy
-            frameworks or grassroots disaster mitigation projects, my goal is to
-            foster informed decision-making for a changing world.
+            From this foundation grew an enduring interest in climate dynamics,
+            remote sensing, spatial ecology, and environmental change. I have
+            worked with satellite imagery, geographic information systems,
+            Google Earth Engine, Python, and spatial modelling—not simply for
+            the pleasure of technical precision, but in the hope that careful
+            observation might reveal something useful about the places we
+            inhabit and the changes taking place within them.
+          </p>
+
+          <!-- PARAGRAPH 3 -->
+
+          <p
+            class="translatable"
+            data-en="Experience beyond the classroom has only strengthened this conviction. Environmental questions, I have found, seldom remain environmental questions alone. A landslide may be described through rainfall, slope, and soil; yet its consequences are also shaped by livelihood, settlement, perception, governance, and the choices available to those who live upon the land. The science may explain the hazard, but society determines, in many respects, whether that hazard becomes a disaster."
+            data-id="Pengalaman di luar ruang kelas semakin menguatkan keyakinan tersebut. Pertanyaan lingkungan, menurut pengalaman saya, jarang berhenti sebagai persoalan lingkungan semata. Longsor dapat dijelaskan melalui curah hujan, kemiringan lereng, dan kondisi tanah; namun dampaknya juga dibentuk oleh mata pencaharian, permukiman, persepsi, tata kelola, dan pilihan yang tersedia bagi mereka yang hidup di atas bentang alam tersebut. Sains dapat menjelaskan bahaya, tetapi masyarakat, dalam banyak hal, menentukan apakah bahaya tersebut berkembang menjadi bencana."
+          >
+            Experience beyond the classroom has only strengthened this
+            conviction. Environmental questions, I have found, seldom remain
+            environmental questions alone. A landslide may be described through
+            rainfall, slope, and soil; yet its consequences are also shaped by
+            livelihood, settlement, perception, governance, and the choices
+            available to those who live upon the land. The science may explain
+            the hazard, but society determines, in many respects, whether that
+            hazard becomes a disaster.
+          </p>
+
+          <!-- PARAGRAPH 4 -->
+
+          <p
+            class="translatable"
+            data-en="It is therefore at the meeting point of science and public life that I find my deepest intellectual interest. I remain devoted to the discipline of measurement, observation, and evidence, whilst increasingly concerned with the questions that follow them: What ought to be done? For whom? Under what uncertainties? And how might knowledge be made sufficiently clear and useful that it can inform decisions beyond the confines of the laboratory or classroom?"
+            data-id="Karena itulah titik pertemuan antara sains dan kehidupan publik menjadi ruang yang paling menarik bagi saya secara intelektual. Saya tetap berpegang pada disiplin pengukuran, pengamatan, dan bukti, sembari semakin tertarik pada pertanyaan yang mengikutinya: Apa yang seharusnya dilakukan? Untuk siapa? Dalam ketidakpastian seperti apa? Dan bagaimana pengetahuan dapat disampaikan dengan cukup jelas dan berguna sehingga mampu mendukung keputusan di luar batas laboratorium atau ruang kelas?"
+          >
+            It is therefore at the meeting point of science and public life that
+            I find my deepest intellectual interest. I remain devoted to the
+            discipline of measurement, observation, and evidence, whilst
+            increasingly concerned with the questions that follow them: What
+            ought to be done? For whom? Under what uncertainties? And how might
+            knowledge be made sufficiently clear and useful that it can inform
+            decisions beyond the confines of the laboratory or classroom?
+          </p>
+
+          <!-- PARAGRAPH 5 -->
+
+          <p
+            class="translatable"
+            data-en="I do not consider this journey complete. Rather, I regard it as an education still in progress—one shaped as much by questions as by answers, and by the recognition that there remains much I do not yet understand. This archive is a modest record of that pursuit: observations gathered, ideas encountered, books remembered, questions preserved, and reflections that might otherwise disappear with the passing of time."
+            data-id="Saya tidak menganggap perjalanan ini telah selesai. Sebaliknya, saya memandangnya sebagai pendidikan yang masih berlangsung—dibentuk bukan hanya oleh jawaban, tetapi juga oleh pertanyaan, serta oleh kesadaran bahwa masih banyak hal yang belum saya pahami. Arsip ini merupakan catatan sederhana dari pencarian tersebut: pengamatan yang dikumpulkan, gagasan yang ditemukan, buku yang dikenang, pertanyaan yang dipelihara, dan refleksi yang mungkin akan hilang seiring berlalunya waktu."
+          >
+            I do not consider this journey complete. Rather, I regard it as an
+            education still in progress—one shaped as much by questions as by
+            answers, and by the recognition that there remains much I do not yet
+            understand. This archive is a modest record of that pursuit:
+            observations gathered, ideas encountered, books remembered,
+            questions preserved, and reflections that might otherwise disappear
+            with the passing of time.
           </p>
         </div>
 
-        <hr class="section-divider" />
+        <!-- =====================================================
+             DIVIDER
+        ====================================================== -->
 
-        <!-- CONTACT FORM -->
+        <hr class="section-divider" aria-hidden="true" />
+
+        <!-- =====================================================
+             CORRESPONDENCE DESK
+        ====================================================== -->
+
         <div class="ivy-form-container">
           <div class="form-header">
+            <p
+              class="section-eyebrow translatable"
+              data-en="Correspondence"
+              data-id="Korespondensi"
+            >
+              Correspondence
+            </p>
+
             <h2
               class="translatable"
               data-en="Feedback, Collaboration & Inquiry"
               data-id="Umpan Balik, Kolaborasi & Pertanyaan"
             >
-              Feedback, Collaboration & Inquiry
+              Feedback, Collaboration &amp; Inquiry
             </h2>
+
             <p
               class="translatable"
-              data-en="If you would like to share feedback, ask a question, discuss an idea, or explore a potential collaboration, feel free to leave a message below. I read every message and appreciate the time taken to write."
-              data-id="Jika Anda ingin berbagi umpan balik, bertanya, mendiskusikan ide, atau menjajaki potensi kolaborasi, silakan tinggalkan pesan di bawah. Saya membaca setiap pesan yang masuk."
+              data-en="Should you wish to offer a thought, raise a question, discuss an idea, or inquire concerning possible collaboration, you are most welcome to leave a message below. Every thoughtful correspondence is received with gratitude."
+              data-id="Apabila Anda ingin menyampaikan pemikiran, mengajukan pertanyaan, mendiskusikan sebuah gagasan, atau menjajaki kemungkinan kolaborasi, Anda dipersilakan meninggalkan pesan di bawah. Setiap korespondensi yang disampaikan dengan penuh perhatian saya terima dengan rasa terima kasih."
             >
-              If you would like to share feedback, ask a question, discuss an
-              idea, or explore a potential collaboration, feel free to leave a
-              message below. I read every message and appreciate the time taken
-              to write.
+              Should you wish to offer a thought, raise a question, discuss an
+              idea, or inquire concerning possible collaboration, you are most
+              welcome to leave a message below. Every thoughtful correspondence
+              is received with gratitude.
             </p>
           </div>
 
-          <form id="contactForm">
+          <!-- ===================================================
+               CONTACT FORM
+          ==================================================== -->
+
+          <form id="contactForm" autocomplete="on">
+            <!-- NAME -->
+
             <div class="form-row">
               <div class="form-group">
                 <label
+                  for="firstName"
                   class="translatable"
                   data-en="First Name (Optional)"
                   data-id="Nama Depan (Opsional)"
-                  >First Name (Optional)</label
                 >
+                  First Name (Optional)
+                </label>
+
                 <input
                   type="text"
                   id="firstName"
                   name="firstName"
                   placeholder="Jane"
+                  autocomplete="given-name"
                 />
               </div>
+
               <div class="form-group">
                 <label
+                  for="lastName"
                   class="translatable"
                   data-en="Last Name (Optional)"
                   data-id="Nama Belakang (Opsional)"
-                  >Last Name (Optional)</label
                 >
+                  Last Name (Optional)
+                </label>
+
                 <input
                   type="text"
                   id="lastName"
                   name="lastName"
                   placeholder="Doe"
+                  autocomplete="family-name"
                 />
               </div>
             </div>
 
+            <!-- EMAIL -->
+
             <div class="form-group">
               <label
+                for="email"
                 class="translatable"
                 data-en="Your Email (Optional)"
                 data-id="Email Anda (Opsional)"
-                >Your Email (Optional)</label
               >
+                Your Email (Optional)
+              </label>
+
               <input
                 type="email"
                 id="email"
                 name="email"
                 placeholder="example@example.com"
+                autocomplete="email"
               />
             </div>
 
+            <!-- DAY RATING -->
+
             <div class="form-group">
               <label
+                for="rating"
                 class="translatable"
-                data-en="How's your day going so far?"
-                data-id="Bagaimana harimu sejauh ini?"
-                >How's your day going so far?</label
+                data-en="How has your day been?"
+                data-id="Bagaimana hari Anda?"
               >
+                How has your day been?
+              </label>
+
               <select id="rating" name="rating">
                 <option
                   value=""
                   disabled
                   selected
                   class="translatable"
-                  data-en="Select a rating..."
-                  data-id="Pilih penilaian..."
+                  data-en="Select a response..."
+                  data-id="Pilih jawaban..."
                 >
-                  Select a rating...
+                  Select a response...
                 </option>
-                <option value="4">Excellent</option>
-                <option value="3">Good</option>
-                <option value="2">Average</option>
-                <option value="1">Needs Improvement</option>
+
+                <option
+                  value="4"
+                  class="translatable"
+                  data-en="Excellent"
+                  data-id="Sangat Baik"
+                >
+                  Excellent
+                </option>
+
+                <option
+                  value="3"
+                  class="translatable"
+                  data-en="Good"
+                  data-id="Baik"
+                >
+                  Good
+                </option>
+
+                <option
+                  value="2"
+                  class="translatable"
+                  data-en="Fair"
+                  data-id="Cukup"
+                >
+                  Fair
+                </option>
+
+                <option
+                  value="1"
+                  class="translatable"
+                  data-en="Rather Difficult"
+                  data-id="Agak Berat"
+                >
+                  Rather Difficult
+                </option>
               </select>
             </div>
 
+            <!-- MESSAGE -->
+
             <div class="form-group">
               <label
+                for="message"
                 class="translatable"
-                data-en="Please share your message *"
-                data-id="Silakan tulis pesan Anda *"
-                >Please share your message *</label
+                data-en="Your Correspondence *"
+                data-id="Korespondensi Anda *"
               >
+                Your Correspondence *
+              </label>
+
               <textarea
                 id="message"
                 name="message"
                 required
                 rows="5"
+                autocomplete="off"
               ></textarea>
             </div>
+
+            <!-- SUBMIT -->
 
             <button
               type="submit"
               id="submitBtn"
               class="submit-btn translatable"
-              data-en="Send Message"
-              data-id="Kirim Pesan"
+              data-en="Send Correspondence"
+              data-id="Kirim Korespondensi"
             >
-              Send Message
+              Send Correspondence
             </button>
 
-            <div id="statusMessage"></div>
+            <!-- STATUS -->
+
+            <div id="statusMessage" role="status" aria-live="polite"></div>
           </form>
         </div>
       </section>
@@ -409,10 +709,9 @@
 
     <!-- =========================================================
      UNIVERSAL FOOTER
-    ========================================================= -->
+========================================================= -->
     <footer class="site-footer">
       <div class="footer-container">
-        <!-- BAGIAN ATAS: LOGO & TAGLINE -->
         <div class="footer-center">
           <h3 class="footer-brand-logo">AWS</h3>
           <p
@@ -425,7 +724,6 @@
           </p>
         </div>
 
-        <!-- BAGIAN BAWAH: CONNECT CENTERED & COPYRIGHT -->
         <div class="footer-bottom-area">
           <div class="footer-connect-centered">
             <span
@@ -442,23 +740,19 @@
               >
                 <i class="fa-solid fa-envelope"></i> Email
               </a>
-
               <a
                 href="https://www.linkedin.com/in/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-brands fa-linkedin-in"></i>
-                LinkedIn
+                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
               </a>
-
               <a
                 href="https://www.instagram.com/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-brands fa-instagram"></i>
-                Instagram
+                <i class="fa-brands fa-instagram"></i> Instagram
               </a>
             </div>
           </div>
@@ -469,6 +763,11 @@
         </div>
       </div>
     </footer>
+
+    <!-- =========================================================
+         PROFILE SCRIPT
+    ========================================================== -->
+
     <script src="./profile.js"></script>
   </body>
 </html>
