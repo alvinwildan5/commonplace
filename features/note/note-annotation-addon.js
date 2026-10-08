@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NOTES IMAGE ANNOTATION ADD-ON
+   NOTES IMAGE ANNOTATION ADD-ON — FULL FIXED VERSION
    --------------------------------------------------------------------------
    Drop-in extension for the existing AWS Commonplace note editor.
 
@@ -16,15 +16,18 @@
    - Optional "Perfect it" action for detected line/circle/ellipse
    - Inline SVG annotations saved inside existing body_html
 
-   Position / save fixes:
-   - Preserve the original image layout when wrapping it for annotation
-   - Drawing overlay does not make the image jump / shift
-   - "Done" closes the annotation toolbar completely
-   - Selection / drawing indicator classes are editor-only
-   - Editor-only annotation states are stripped before article save
-   - Actual SVG annotations remain saved inside body_html
+   LAYOUT FIX:
+   - Clicking an image does NOT move it to the left
+   - Clicking an image does NOT unexpectedly shrink it
+   - Original rendered width is captured BEFORE wrapping
+   - Original float / alignment is preserved
+   - Original margins are preserved
+   - Normal / float-left / float-right / center-small / full layouts supported
+   - SVG overlay exactly follows the image box
+   - Existing annotated images keep their original layout
+   - Editor-only states are stripped before save/publish
 
-   No Supabase schema change is required.
+   No Supabase schema change required.
 ========================================================================== */
 
 (() => {
@@ -36,31 +39,31 @@
   const state = {
     wrapper: null,
     svg: null,
+
     tool: "pen",
     color: "#b23a39",
     width: 4,
+
     drawing: false,
     pointerId: null,
     points: [],
     preview: null,
+
     history: [],
     suggestion: null,
+
     savedImageSelection: null,
     pendingImageDataUrl: null,
 
-    /* ---------------------------------------------------------------
-       Keeps track of editor-only selection state.
-       These states are NEVER intended to be saved.
-    --------------------------------------------------------------- */
     selectedWrapper: null,
   };
 
   let publishSanitizerInstalled = false;
   let originalPublishArticle = null;
 
-  /* -----------------------------------------------------------------------
-     SMALL HELPERS
-  ----------------------------------------------------------------------- */
+  /* ========================================================================
+     BASIC HELPERS
+  ======================================================================== */
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -114,134 +117,362 @@
     if (className.includes("float-right")) return "float-right";
     if (className.includes("center-small")) return "center-small";
     if (className.includes("full")) return "full";
+
     return "normal";
   }
 
-  /* -----------------------------------------------------------------------
-     IMAGE LAYOUT PRESERVATION
-     -----------------------------------------------------------------------
-     The original image may use float / width / center classes.
+  /* ========================================================================
+     IMAGE LAYOUT CAPTURE
+     ------------------------------------------------------------------------
+     CRITICAL:
+     Capture geometry BEFORE replacing the image's formatting context.
+  ======================================================================== */
 
-     Wrapping the image inside a new block element can otherwise change
-     its formatting context and make the image jump.
+  function captureImageLayout(image) {
+    if (!image) return null;
 
-     We preserve the original layout information on the annotation wrapper
-     and neutralize only the inner image's floating behavior.
-  ----------------------------------------------------------------------- */
+    const parent = image.parentElement;
+
+    const computed = window.getComputedStyle(image);
+
+    const parentComputed = parent ? window.getComputedStyle(parent) : null;
+
+    const rect = image.getBoundingClientRect();
+
+    let layout = getLayoutFromClass(image.className || "");
+
+    /*
+       Detect float from actual computed style if the class does not
+       expose the layout.
+    */
+    if (layout === "normal") {
+      if (computed.float === "left") {
+        layout = "float-left";
+      } else if (computed.float === "right") {
+        layout = "float-right";
+      }
+    }
+
+    return {
+      layout,
+
+      /* Original rendered geometry */
+      widthPx: rect.width,
+      heightPx: rect.height,
+
+      /* Original computed dimensions */
+      width: computed.width,
+      maxWidth: computed.maxWidth,
+      minWidth: computed.minWidth,
+
+      height: computed.height,
+      maxHeight: computed.maxHeight,
+      minHeight: computed.minHeight,
+
+      /* Original flow */
+      display: computed.display,
+      float: computed.float,
+      clear: computed.clear,
+      verticalAlign: computed.verticalAlign,
+
+      /* Original margins */
+      marginTop: computed.marginTop,
+      marginRight: computed.marginRight,
+      marginBottom: computed.marginBottom,
+      marginLeft: computed.marginLeft,
+
+      /* Parent alignment context */
+      parentTextAlign: parentComputed?.textAlign || "left",
+
+      parentDisplay: parentComputed?.display || "block",
+
+      /* Original inline styles */
+      inlineFloat: image.style.float,
+      inlineClear: image.style.clear,
+
+      inlineWidth: image.style.width,
+      inlineMaxWidth: image.style.maxWidth,
+
+      inlineHeight: image.style.height,
+
+      inlineMarginTop: image.style.marginTop,
+      inlineMarginRight: image.style.marginRight,
+      inlineMarginBottom: image.style.marginBottom,
+      inlineMarginLeft: image.style.marginLeft,
+
+      inlineDisplay: image.style.display,
+    };
+  }
+
+  /* ========================================================================
+     IMAGE LAYOUT APPLICATION
+  ======================================================================== */
 
   function applyAnnotationLayout(wrapper, image, originalParent = null) {
     if (!wrapper || !image) return;
 
-    const originalClassName = image.className || "";
-    const layout = getLayoutFromClass(originalClassName);
-
-    wrapper.dataset.layout = layout;
+    let savedLayout = null;
 
     /*
-       Preserve the known layout classes on the outer wrapper as well.
-       Existing site CSS can therefore continue to recognize them.
+       Use the ORIGINAL captured layout whenever possible.
     */
-    ["float-left", "float-right", "center-small", "full"].forEach(
-      (className) => {
-        wrapper.classList.toggle(
-          className,
-          originalClassName.includes(className),
-        );
-      },
-    );
-
-    /*
-       A dedicated class makes it possible for annotation CSS to identify
-       the image being contained by the annotation wrapper.
-    */
-    image.classList.add("annotation-contained-image");
-
-    /*
-       If the image originally floated, transfer that float behavior to
-       the wrapper instead of allowing the child image to establish the
-       float itself.
-    */
-    const computed = window.getComputedStyle(image);
-    const imageRect = image.getBoundingClientRect();
-    const parentRect = originalParent?.getBoundingClientRect?.();
-
-    if (layout === "float-left") {
-      wrapper.style.float = "left";
-      wrapper.style.clear = computed.clear || "none";
-    } else if (layout === "float-right") {
-      wrapper.style.float = "right";
-      wrapper.style.clear = computed.clear || "none";
-    } else {
-      wrapper.style.float = "none";
-
-      if (layout === "center-small") {
-        wrapper.style.marginLeft = "auto";
-        wrapper.style.marginRight = "auto";
+    if (wrapper.dataset.annotationLayout) {
+      try {
+        savedLayout = JSON.parse(wrapper.dataset.annotationLayout);
+      } catch (_) {
+        savedLayout = null;
       }
     }
 
     /*
-       Preserve the image's current visual width when possible.
-
-       Percentage width is preferred over a hard pixel width, because that
-       keeps the image responsive after the annotation is added.
+       Fallback for old/pre-existing wrappers that do not yet have
+       annotationLayout stored.
     */
-    if (parentRect?.width && imageRect.width && layout !== "normal") {
-      const widthPercent = clamp(
-        (imageRect.width / parentRect.width) * 100,
-        1,
-        100,
-      );
+    if (!savedLayout) {
+      savedLayout = captureImageLayout(image);
 
-      wrapper.style.width = `${formatNumber(widthPercent)}%`;
+      if (savedLayout) {
+        wrapper.dataset.annotationLayout = JSON.stringify(savedLayout);
+      }
     }
+
+    if (!savedLayout) return;
+
+    const layout = savedLayout.layout || "normal";
+
+    wrapper.dataset.layout = layout;
+
+    /* --------------------------------------------------------------
+       Restore supported layout classes.
+    -------------------------------------------------------------- */
+
+    ["float-left", "float-right", "center-small", "full"].forEach(
+      (className) => {
+        wrapper.classList.remove(className);
+      },
+    );
+
+    if (
+      ["float-left", "float-right", "center-small", "full"].includes(layout)
+    ) {
+      wrapper.classList.add(layout);
+    }
+
+    /* --------------------------------------------------------------
+       Wrapper base styles.
+    -------------------------------------------------------------- */
+
+    wrapper.style.boxSizing = "border-box";
+
+    /* --------------------------------------------------------------
+       NORMAL IMAGE
+       -------------------------------------------------------------- */
+
+    if (layout === "normal") {
+      wrapper.style.float = "none";
+      wrapper.style.clear = savedLayout.clear || "none";
+
+      /*
+         The exact original rendered width is retained.
+
+         This is the most important fix for images that previously
+         became smaller or jumped to the left.
+      */
+      if (savedLayout.widthPx > 0) {
+        wrapper.style.width = `${savedLayout.widthPx}px`;
+      }
+
+      wrapper.style.maxWidth = "100%";
+
+      /*
+         Preserve original margins when they were actually used.
+      */
+      wrapper.style.marginTop = savedLayout.marginTop || "0";
+
+      wrapper.style.marginBottom = savedLayout.marginBottom || "0";
+
+      /*
+         Preserve parent alignment.
+      */
+      if (savedLayout.parentTextAlign === "center") {
+        wrapper.style.display = "block";
+        wrapper.style.marginLeft = "auto";
+        wrapper.style.marginRight = "auto";
+      } else if (savedLayout.parentTextAlign === "right") {
+        wrapper.style.display = "block";
+        wrapper.style.marginLeft = "auto";
+        wrapper.style.marginRight = "0";
+      } else {
+        wrapper.style.display = "inline-block";
+
+        wrapper.style.marginLeft = savedLayout.marginLeft || "0";
+
+        wrapper.style.marginRight = savedLayout.marginRight || "0";
+      }
+    } else if (layout === "float-left") {
+
+    /* --------------------------------------------------------------
+       FLOAT LEFT
+       -------------------------------------------------------------- */
+      wrapper.style.display = "block";
+      wrapper.style.float = "left";
+      wrapper.style.clear = savedLayout.clear || "none";
+
+      if (savedLayout.widthPx > 0) {
+        wrapper.style.width = `${savedLayout.widthPx}px`;
+      }
+
+      wrapper.style.maxWidth = "100%";
+
+      wrapper.style.marginTop = savedLayout.marginTop || "0";
+
+      wrapper.style.marginRight = savedLayout.marginRight || "0";
+
+      wrapper.style.marginBottom = savedLayout.marginBottom || "0";
+
+      wrapper.style.marginLeft = savedLayout.marginLeft || "0";
+    } else if (layout === "float-right") {
+
+    /* --------------------------------------------------------------
+       FLOAT RIGHT
+       -------------------------------------------------------------- */
+      wrapper.style.display = "block";
+      wrapper.style.float = "right";
+      wrapper.style.clear = savedLayout.clear || "none";
+
+      if (savedLayout.widthPx > 0) {
+        wrapper.style.width = `${savedLayout.widthPx}px`;
+      }
+
+      wrapper.style.maxWidth = "100%";
+
+      wrapper.style.marginTop = savedLayout.marginTop || "0";
+
+      wrapper.style.marginRight = savedLayout.marginRight || "0";
+
+      wrapper.style.marginBottom = savedLayout.marginBottom || "0";
+
+      wrapper.style.marginLeft = savedLayout.marginLeft || "0";
+    } else if (layout === "center-small") {
+
+    /* --------------------------------------------------------------
+       CENTER SMALL
+       -------------------------------------------------------------- */
+      wrapper.style.display = "block";
+      wrapper.style.float = "none";
+      wrapper.style.clear = savedLayout.clear || "none";
+
+      if (savedLayout.widthPx > 0) {
+        wrapper.style.width = `${savedLayout.widthPx}px`;
+      }
+
+      wrapper.style.maxWidth = "100%";
+
+      wrapper.style.marginLeft = "auto";
+      wrapper.style.marginRight = "auto";
+
+      wrapper.style.marginTop = savedLayout.marginTop || "0";
+
+      wrapper.style.marginBottom = savedLayout.marginBottom || "0";
+    } else if (layout === "full") {
+
+    /* --------------------------------------------------------------
+       FULL WIDTH
+       -------------------------------------------------------------- */
+      wrapper.style.display = "block";
+      wrapper.style.float = "none";
+      wrapper.style.clear = savedLayout.clear || "none";
+
+      wrapper.style.width = "100%";
+      wrapper.style.maxWidth = "100%";
+
+      wrapper.style.marginTop = savedLayout.marginTop || "0";
+
+      wrapper.style.marginRight = savedLayout.marginRight || "0";
+
+      wrapper.style.marginBottom = savedLayout.marginBottom || "0";
+
+      wrapper.style.marginLeft = savedLayout.marginLeft || "0";
+    }
+
+    /* ==================================================================
+       INNER CONTAINER
+    ================================================================== */
+
+    const inner = wrapper.querySelector(
+      ":scope > .note-image-annotation-inner",
+    );
+
+    if (inner) {
+      inner.style.position = "relative";
+      inner.style.width = "100%";
+      inner.style.maxWidth = "100%";
+      inner.style.height = "auto";
+
+      inner.style.display = "block";
+      inner.style.boxSizing = "border-box";
+      inner.style.lineHeight = "0";
+    }
+
+    /* ==================================================================
+       IMAGE INSIDE WRAPPER
+    ================================================================== */
+
+    image.classList.add("annotation-contained-image");
 
     /*
-       Preserve original vertical / horizontal margins at the wrapper level.
-    */
-    const marginTop = computed.marginTop;
-    const marginRight = computed.marginRight;
-    const marginBottom = computed.marginBottom;
-    const marginLeft = computed.marginLeft;
-
-    if (marginTop && marginTop !== "0px") {
-      wrapper.style.marginTop = marginTop;
-    }
-
-    if (marginRight && marginRight !== "0px" && layout !== "center-small") {
-      wrapper.style.marginRight = marginRight;
-    }
-
-    if (marginBottom && marginBottom !== "0px") {
-      wrapper.style.marginBottom = marginBottom;
-    }
-
-    if (marginLeft && marginLeft !== "0px" && layout !== "center-small") {
-      wrapper.style.marginLeft = marginLeft;
-    }
-
-    /*
-       The SVG and inner image must occupy the same box.
-
-       Float behavior now belongs to the wrapper, not the child.
+       The wrapper now controls the image's original layout.
+       Therefore the inner image can safely fill the wrapper.
     */
     image.style.float = "none";
     image.style.clear = "none";
-    image.style.marginLeft = "0";
-    image.style.marginRight = "0";
+
     image.style.marginTop = "0";
+    image.style.marginRight = "0";
     image.style.marginBottom = "0";
+    image.style.marginLeft = "0";
+
     image.style.display = "block";
 
-    /*
-       Avoid forcing 100% width for "normal" images because that could
-       unexpectedly resize images that were intentionally smaller.
-    */
-    if (layout !== "normal") {
-      image.style.width = "100%";
-      image.style.maxWidth = "100%";
+    image.style.width = "100%";
+    image.style.maxWidth = "100%";
+
+    image.style.height = "auto";
+
+    image.style.verticalAlign = "top";
+
+    /* ==================================================================
+       SVG
+    ================================================================== */
+
+    const svg = wrapper.querySelector(".note-annotation-layer");
+
+    if (svg) {
+      svg.style.position = "absolute";
+      svg.style.left = "0";
+      svg.style.top = "0";
+
+      svg.style.width = "100%";
+      svg.style.height = "100%";
+
+      svg.style.display = "block";
+
+      /*
+         JS drawing needs pointer events, so this is later changed
+         automatically when annotation mode is active.
+      */
+      svg.style.pointerEvents =
+        state.drawing && state.wrapper === wrapper ? "auto" : "none";
+
+      svg.setAttribute("viewBox", "0 0 100 100");
+
+      svg.setAttribute("preserveAspectRatio", "none");
     }
   }
+
+  /* ========================================================================
+     EDITOR-ONLY STATE CLEANUP
+  ======================================================================== */
 
   function removeEditorOnlyState(wrapper) {
     if (!wrapper) return;
@@ -251,10 +482,6 @@
     wrapper.removeAttribute("data-selected");
     wrapper.removeAttribute("data-drawing");
 
-    /*
-       Preview strokes should never become part of saved HTML.
-       This is also useful as a defensive cleanup before publishing.
-    */
     wrapper
       .querySelectorAll('[data-preview="true"]')
       .forEach((element) => element.remove());
@@ -281,9 +508,6 @@
       removeEditorOnlyState(wrapper);
     });
 
-    /*
-       Any accidental preview nodes are removed globally as a safeguard.
-    */
     clone
       .querySelectorAll('[data-preview="true"]')
       .forEach((element) => element.remove());
@@ -291,34 +515,21 @@
     return clone.innerHTML;
   }
 
-  /*
-     Public helper.
-     If the main note.js wants to explicitly use a clean HTML snapshot,
-     this function is available globally.
-  */
   window.getCleanAnnotationEditorHtml = getCleanEditorHtml;
 
   window.prepareAnnotationHtmlForSave = () => {
     cleanAnnotationEditorDom();
+
     return getCleanEditorHtml();
   };
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      STROKE STYLE
-  ----------------------------------------------------------------------- */
-
-  function setStrokeStyle(element) {
-    element.setAttribute("fill", "none");
-    element.setAttribute("stroke", state.color);
-    element.setAttribute("stroke-width", getStrokeWidthInViewBoxUnits());
-    element.setAttribute("stroke-linecap", "round");
-    element.setAttribute("stroke-linejoin", "round");
-    element.setAttribute("opacity", "0.92");
-    element.setAttribute("vector-effect", "non-scaling-stroke");
-  }
+  ======================================================================== */
 
   function getStrokeWidthInViewBoxUnits() {
     const svg = state.svg;
+
     const rect = svg?.getBoundingClientRect?.();
 
     const minSize = Math.max(
@@ -329,28 +540,48 @@
     return Math.max(0.25, (state.width / minSize) * 100);
   }
 
+  function setStrokeStyle(element) {
+    element.setAttribute("fill", "none");
+
+    element.setAttribute("stroke", state.color);
+
+    element.setAttribute("stroke-width", getStrokeWidthInViewBoxUnits());
+
+    element.setAttribute("stroke-linecap", "round");
+
+    element.setAttribute("stroke-linejoin", "round");
+
+    element.setAttribute("opacity", "0.92");
+
+    element.setAttribute("vector-effect", "non-scaling-stroke");
+  }
+
   function pointsToPath(points) {
     return points
       .map(
         (point, index) =>
-          `${index === 0 ? "M" : "L"}${formatNumber(point.x)} ${formatNumber(point.y)}`,
+          `${index === 0 ? "M" : "L"}${formatNumber(
+            point.x,
+          )} ${formatNumber(point.y)}`,
       )
       .join(" ");
   }
 
-  /* -----------------------------------------------------------------------
-     Ramer–Douglas–Peucker simplification
-     Prevents long pen strokes from producing unnecessarily huge body_html.
-  ----------------------------------------------------------------------- */
+  /* ========================================================================
+     RDP POINT SIMPLIFICATION
+  ======================================================================== */
 
   function simplifyPoints(points, tolerance = 0.45) {
-    if (points.length <= 8) return points;
+    if (points.length <= 8) {
+      return points;
+    }
 
     const sqTolerance = tolerance * tolerance;
 
     const sqSegDist = (point, start, end) => {
       let x = start.x;
       let y = start.y;
+
       let dx = end.x - x;
       let dy = end.y - y;
 
@@ -376,6 +607,7 @@
     const markers = new Uint8Array(points.length);
 
     const last = points.length - 1;
+
     const stack = [[0, last]];
 
     markers[0] = 1;
@@ -412,9 +644,9 @@
     return points.filter((_, index) => markers[index]);
   }
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      IMAGE WRAPPER
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function ensureAnnotationWrapper(image) {
     if (!image) return null;
@@ -424,9 +656,6 @@
     if (existing) {
       ensureAnnotationLayer(existing);
 
-      /*
-         If wrapper exists, refresh layout protection as well.
-      */
       applyAnnotationLayout(existing, image, existing.parentNode);
 
       return existing;
@@ -437,9 +666,11 @@
     if (!parent) return null;
 
     /*
-       Capture the original geometry BEFORE changing the DOM.
+       CRITICAL:
+       Capture layout BEFORE inserting wrapper.
     */
-    const originalParent = parent;
+    const originalLayout = captureImageLayout(image);
+
     const originalRect = image.getBoundingClientRect();
 
     const wrapper = document.createElement("div");
@@ -448,8 +679,11 @@
 
     const svg = createSvgElement("svg", {
       class: "note-annotation-layer",
+
       viewBox: "0 0 100 100",
+
       preserveAspectRatio: "none",
+
       "aria-hidden": "true",
     });
 
@@ -459,46 +693,48 @@
 
     wrapper.setAttribute(
       "data-layout",
-      getLayoutFromClass(image.className || ""),
+      originalLayout?.layout || getLayoutFromClass(image.className || ""),
     );
 
     wrapper.setAttribute("contenteditable", "false");
 
+    /*
+       Save exact pre-wrap geometry.
+    */
+    if (originalLayout) {
+      wrapper.dataset.annotationLayout = JSON.stringify(originalLayout);
+    }
+
     inner.className = "note-image-annotation-inner";
 
     /*
-       Insert wrapper at EXACTLY the original image location.
+       Insert wrapper at exact original
+       DOM position.
     */
     parent.insertBefore(wrapper, image);
 
     inner.appendChild(image);
     inner.appendChild(svg);
+
     wrapper.appendChild(inner);
 
     /*
-       Apply layout after insertion using the original geometry.
+       Reapply the ORIGINAL geometry
+       after wrapping.
     */
-    applyAnnotationLayout(wrapper, image, originalParent);
+    applyAnnotationLayout(wrapper, image, parent);
 
     /*
-       Fallback width preservation if layout CSS does not expose a
-       recognizable layout class.
+       Final safety check for normal images.
     */
-    if (
-      !wrapper.style.width &&
-      originalRect.width &&
-      originalParent?.getBoundingClientRect
-    ) {
-      const parentRect = originalParent.getBoundingClientRect();
+    if (originalRect.width > 0 && originalLayout?.layout === "normal") {
+      const wrapperRect = wrapper.getBoundingClientRect();
 
-      if (parentRect.width) {
-        const widthPercent = clamp(
-          (originalRect.width / parentRect.width) * 100,
-          1,
-          100,
-        );
-
-        wrapper.style.width = `${formatNumber(widthPercent)}%`;
+      if (
+        wrapperRect.width > 0 &&
+        Math.abs(wrapperRect.width - originalRect.width) > 1
+      ) {
+        wrapper.style.width = `${originalRect.width}px`;
       }
     }
 
@@ -506,6 +742,10 @@
 
     return wrapper;
   }
+
+  /* ========================================================================
+     ENSURE SVG LAYER
+  ======================================================================== */
 
   function ensureAnnotationLayer(wrapper) {
     if (!wrapper) return null;
@@ -538,8 +778,11 @@
     if (!svg) {
       svg = createSvgElement("svg", {
         class: "note-annotation-layer",
+
         viewBox: "0 0 100 100",
+
         preserveAspectRatio: "none",
+
         "aria-hidden": "true",
       });
 
@@ -559,6 +802,10 @@
     return svg;
   }
 
+  /* ========================================================================
+     IMAGE SELECTION
+  ======================================================================== */
+
   function deselectImageWrapper(wrapper = state.wrapper) {
     if (!wrapper) return;
 
@@ -575,6 +822,7 @@
     state.selectedWrapper = null;
     state.wrapper = null;
     state.svg = null;
+
     state.history = [];
     state.suggestion = null;
 
@@ -609,14 +857,16 @@
 
     if (state.svg) {
       bindSvg(state.svg);
+
+      state.svg.style.pointerEvents = state.drawing ? "auto" : "none";
     }
 
     updateToolbar();
   }
 
-  /* -----------------------------------------------------------------------
-     SVG POINTER EVENTS
-  ----------------------------------------------------------------------- */
+  /* ========================================================================
+     POINTER / DRAWING
+  ======================================================================== */
 
   function pointFromEvent(event, svg) {
     const rect = svg.getBoundingClientRect();
@@ -630,6 +880,7 @@
 
     return {
       x: clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100),
+
       y: clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100),
     };
   }
@@ -701,7 +952,7 @@
     try {
       state.svg.setPointerCapture(event.pointerId);
     } catch (_) {
-      /* Pointer capture is a convenience; continue without it. */
+      /* Continue without capture. */
     }
 
     if (state.tool === "eraser") {
@@ -800,16 +1051,18 @@
     }
 
     snapshot();
+
     group.remove();
   }
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      SHAPE BUILDERS
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function createGroup(kind) {
     return createSvgElement("g", {
       class: "annotation-group",
+
       "data-annotation-kind": kind,
     });
   }
@@ -817,8 +1070,11 @@
   function buildArrow(group, start, end) {
     const main = createSvgElement("line", {
       x1: formatNumber(start.x),
+
       y1: formatNumber(start.y),
+
       x2: formatNumber(end.x),
+
       y2: formatNumber(end.y),
     });
 
@@ -829,25 +1085,33 @@
 
     const left = {
       x: end.x - length * Math.cos(angle - spread),
+
       y: end.y - length * Math.sin(angle - spread),
     };
 
     const right = {
       x: end.x - length * Math.cos(angle + spread),
+
       y: end.y - length * Math.sin(angle + spread),
     };
 
     const headA = createSvgElement("line", {
       x1: formatNumber(end.x),
+
       y1: formatNumber(end.y),
+
       x2: formatNumber(left.x),
+
       y2: formatNumber(left.y),
     });
 
     const headB = createSvgElement("line", {
       x1: formatNumber(end.x),
+
       y1: formatNumber(end.y),
+
       x2: formatNumber(right.x),
+
       y2: formatNumber(right.y),
     });
 
@@ -884,8 +1148,11 @@
     if (tool === "line") {
       const line = createSvgElement("line", {
         x1: formatNumber(start.x),
+
         y1: formatNumber(start.y),
+
         x2: formatNumber(end.x),
+
         y2: formatNumber(end.y),
       });
 
@@ -905,8 +1172,11 @@
     if (tool === "rect") {
       const rect = createSvgElement("rect", {
         x: formatNumber(Math.min(start.x, end.x)),
+
         y: formatNumber(Math.min(start.y, end.y)),
+
         width: formatNumber(Math.abs(end.x - start.x)),
+
         height: formatNumber(Math.abs(end.y - start.y)),
       });
 
@@ -920,8 +1190,11 @@
     if (tool === "ellipse") {
       const ellipse = createSvgElement("ellipse", {
         cx: formatNumber((start.x + end.x) / 2),
+
         cy: formatNumber((start.y + end.y) / 2),
+
         rx: formatNumber(Math.max(0.3, Math.abs(end.x - start.x) / 2)),
+
         ry: formatNumber(Math.max(0.3, Math.abs(end.y - start.y) / 2)),
       });
 
@@ -935,9 +1208,9 @@
     return null;
   }
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      SHAPE RECOGNITION
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function perpendicularDistance(point, start, end) {
     const dx = end.x - start.x;
@@ -965,12 +1238,12 @@
     const scaleY = (rect.height || 1) / 100;
 
     /*
-       Detection is done in screen-pixel space rather than the SVG's
-       normalized 0–100 coordinates. This prevents a real circle from
-       being misclassified as an ellipse on a wide/short image.
+       Work in pixel space so circles are not incorrectly classified
+       as ellipses when the image itself is wide.
     */
     const pixelPoints = points.map((point) => ({
       x: point.x * scaleX,
+
       y: point.y * scaleY,
     }));
 
@@ -982,7 +1255,9 @@
 
     const endpointDistance = distance(start, end);
 
-    /* -------------------- line -------------------- */
+    /* --------------------------------------------------------------
+       LINE
+    -------------------------------------------------------------- */
 
     if (totalLength > 16) {
       let maxDeviation = 0;
@@ -1004,13 +1279,17 @@
       if (straightness >= 0.94 && maxDeviation <= deviationLimit) {
         return {
           kind: "line",
+
           originalStart: points[0],
+
           originalEnd: points.at(-1),
         };
       }
     }
 
-    /* -------------------- circle / ellipse -------------------- */
+    /* --------------------------------------------------------------
+       CIRCLE / ELLIPSE
+    -------------------------------------------------------------- */
 
     if (
       endpointDistance > Math.min(rect.width, rect.height) * 0.18 ||
@@ -1041,6 +1320,7 @@
 
     const centerPx = {
       x: (minX + maxX) / 2,
+
       y: (minY + maxY) / 2,
     };
 
@@ -1212,9 +1492,9 @@
     hideSuggestion();
   };
 
-  /* -----------------------------------------------------------------------
-     TOOLBAR / MODE
-  ----------------------------------------------------------------------- */
+  /* ========================================================================
+     TOOLBAR
+  ======================================================================== */
 
   function updateToolbar() {
     const toolbar = document.getElementById("annotationToolbar");
@@ -1247,13 +1527,33 @@
     if (width && Number(width.value) !== state.width) {
       width.value = String(state.width);
     }
+
+    /*
+       Make SVG interactive only while actively drawing.
+    */
+    document
+      .querySelectorAll(".note-image-annotation .note-annotation-layer")
+      .forEach((svg) => {
+        svg.style.pointerEvents =
+          state.drawing && state.wrapper && state.wrapper.contains(svg)
+            ? "auto"
+            : "none";
+      });
   }
+
+  /* ========================================================================
+     TOGGLE ANNOTATION MODE
+  ======================================================================== */
 
   window.toggleAnnotationMode = () => {
     if (!state.wrapper) {
       const editor = getEditor();
 
-      const firstImage = editor?.querySelector("img.note-img");
+      const selectedImage = editor?.querySelector(
+        ".note-image-annotation.is-selected img.note-img",
+      );
+
+      const firstImage = selectedImage || editor?.querySelector("img.note-img");
 
       if (!firstImage) {
         setStatus(
@@ -1263,7 +1563,11 @@
         return;
       }
 
-      selectImageWrapper(ensureAnnotationWrapper(firstImage));
+      const wrapper = ensureAnnotationWrapper(firstImage);
+
+      if (wrapper) {
+        selectImageWrapper(wrapper);
+      }
     }
 
     state.drawing = !state.drawing;
@@ -1281,14 +1585,10 @@
     updateToolbar();
   };
 
-  /*
-     DONE:
-     - Stops drawing
-     - Removes temporary selection indicators
-     - Closes annotation toolbar
-     - Clears active wrapper state
-     - Does NOT remove actual SVG annotations
-  */
+  /* ========================================================================
+     DONE
+  ======================================================================== */
+
   window.finishAnnotationMode = () => {
     clearPreview();
 
@@ -1311,8 +1611,13 @@
     state.points = [];
 
     hideSuggestion();
+
     updateToolbar();
   };
+
+  /* ========================================================================
+     TOOL SELECTION
+  ======================================================================== */
 
   window.setAnnotationTool = (tool) => {
     if (!["pen", "line", "arrow", "rect", "ellipse", "eraser"].includes(tool)) {
@@ -1327,6 +1632,7 @@
     state.suggestion = null;
 
     hideSuggestion();
+
     updateToolbar();
   };
 
@@ -1343,6 +1649,10 @@
       state.width = clamp(numeric, 1, 10);
     }
   };
+
+  /* ========================================================================
+     UNDO / CLEAR
+  ======================================================================== */
 
   window.undoAnnotation = () => {
     if (!state.svg || !state.history.length) {
@@ -1370,11 +1680,9 @@
     hideSuggestion();
   };
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      IMAGE INSERT OVERRIDES
-     Keeps the current image-style picker, but inserts an annotation-ready
-     wrapper instead of a plain <img>.
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function installImageInsertOverrides() {
     const originalCancel = window.cancelPendingImage;
@@ -1447,7 +1755,7 @@
       try {
         originalCancel?.();
       } catch (_) {
-        /* Original cleanup is optional. */
+        /* Optional cleanup. */
       }
     };
 
@@ -1472,7 +1780,7 @@
         try {
           selection.addRange(state.savedImageSelection.cloneRange());
         } catch (_) {
-          /* Fall back to the current caret. */
+          /* Keep current caret. */
         }
       }
 
@@ -1481,6 +1789,8 @@
         .slice(2, 8)}`;
 
       const layout = getLayoutFromClass(styleClass);
+
+      const safeStyle = escapeHtml(styleClass);
 
       const imageHtml = `
           <div
@@ -1492,7 +1802,7 @@
           >
             <div class="note-image-annotation-inner">
               <img
-                class="note-img ${escapeHtml(styleClass)}"
+                class="note-img ${safeStyle}"
                 src="${state.pendingImageDataUrl}"
                 alt=""
                 draggable="false"
@@ -1520,7 +1830,35 @@
         const insertedImage = wrapper.querySelector("img.note-img");
 
         if (insertedImage) {
+          /*
+               New image has not necessarily completed loading yet.
+               Apply layout once now and again after load so its natural
+               dimensions are available.
+            */
           applyAnnotationLayout(wrapper, insertedImage, wrapper.parentNode);
+
+          if (!insertedImage.complete) {
+            insertedImage.addEventListener(
+              "load",
+              () => {
+                /*
+                     New images should respond naturally to their
+                     style class. Do not recapture as though they were
+                     already wrapped.
+                  */
+                if (wrapper.isConnected) {
+                  applyAnnotationLayout(
+                    wrapper,
+                    insertedImage,
+                    wrapper.parentNode,
+                  );
+                }
+              },
+              {
+                once: true,
+              },
+            );
+          }
         }
 
         ensureAnnotationLayer(wrapper);
@@ -1532,10 +1870,9 @@
     };
   }
 
-  /* -----------------------------------------------------------------------
-     UI INJECTION
-     No need to manually rebuild the existing HTML toolbar.
-  ----------------------------------------------------------------------- */
+  /* ========================================================================
+     TOOLBAR BUTTON
+  ======================================================================== */
 
   function injectToolbarButton() {
     if (document.getElementById("annotationLaunchBtn")) {
@@ -1571,6 +1908,10 @@
     imageButton.parentElement.insertBefore(button, imageButton.nextSibling);
   }
 
+  /* ========================================================================
+     ANNOTATION TOOLBAR
+  ======================================================================== */
+
   function injectAnnotationToolbar() {
     if (document.getElementById("annotationToolbar")) {
       return;
@@ -1592,61 +1933,144 @@
 
     toolbar.innerHTML = `
       <div class="annotation-toolbar-main">
-        <span class="annotation-tool-label">Draw on image</span>
+
+        <span class="annotation-tool-label">
+          Draw on image
+        </span>
 
         <div class="annotation-tool-group">
-          <button type="button" class="annotation-tool-btn is-active" data-annotation-tool="pen" title="Freehand marker">
-            <i class="fa-solid fa-pen"></i><span>Pen</span>
+
+          <button
+            type="button"
+            class="annotation-tool-btn is-active"
+            data-annotation-tool="pen"
+            title="Freehand marker"
+          >
+            <i class="fa-solid fa-pen"></i>
+            <span>Pen</span>
           </button>
 
-          <button type="button" class="annotation-tool-btn" data-annotation-tool="line" title="Straight line">
-            <i class="fa-solid fa-minus"></i><span>Line</span>
+          <button
+            type="button"
+            class="annotation-tool-btn"
+            data-annotation-tool="line"
+            title="Straight line"
+          >
+            <i class="fa-solid fa-minus"></i>
+            <span>Line</span>
           </button>
 
-          <button type="button" class="annotation-tool-btn" data-annotation-tool="arrow" title="Arrow">
-            <i class="fa-solid fa-arrow-right"></i><span>Arrow</span>
+          <button
+            type="button"
+            class="annotation-tool-btn"
+            data-annotation-tool="arrow"
+            title="Arrow"
+          >
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>Arrow</span>
           </button>
 
-          <button type="button" class="annotation-tool-btn" data-annotation-tool="rect" title="Rectangle">
-            <i class="fa-regular fa-square"></i><span>Box</span>
+          <button
+            type="button"
+            class="annotation-tool-btn"
+            data-annotation-tool="rect"
+            title="Rectangle"
+          >
+            <i class="fa-regular fa-square"></i>
+            <span>Box</span>
           </button>
 
-          <button type="button" class="annotation-tool-btn" data-annotation-tool="ellipse" title="Ellipse / circle">
-            <i class="fa-regular fa-circle"></i><span>Circle</span>
+          <button
+            type="button"
+            class="annotation-tool-btn"
+            data-annotation-tool="ellipse"
+            title="Ellipse / circle"
+          >
+            <i class="fa-regular fa-circle"></i>
+            <span>Circle</span>
           </button>
 
-          <button type="button" class="annotation-tool-btn" data-annotation-tool="eraser" title="Erase annotation">
-            <i class="fa-solid fa-eraser"></i><span>Erase</span>
+          <button
+            type="button"
+            class="annotation-tool-btn"
+            data-annotation-tool="eraser"
+            title="Erase annotation"
+          >
+            <i class="fa-solid fa-eraser"></i>
+            <span>Erase</span>
           </button>
+
         </div>
 
-        <label class="annotation-control" title="Marker color">
+        <label
+          class="annotation-control"
+          title="Marker color"
+        >
           <span>Color</span>
-          <input id="annotationColor" type="color" value="#b23a39" />
+
+          <input
+            id="annotationColor"
+            type="color"
+            value="#b23a39"
+          />
         </label>
 
-        <label class="annotation-control annotation-width-control" title="Marker thickness">
+        <label
+          class="annotation-control annotation-width-control"
+          title="Marker thickness"
+        >
           <span>Size</span>
-          <input id="annotationWidth" type="range" min="1" max="10" step="0.5" value="4" />
+
+          <input
+            id="annotationWidth"
+            type="range"
+            min="1"
+            max="10"
+            step="0.5"
+            value="4"
+          />
         </label>
 
-        <button type="button" class="annotation-action-btn" id="annotationUndoBtn" title="Undo last annotation">
+        <button
+          type="button"
+          class="annotation-action-btn"
+          id="annotationUndoBtn"
+          title="Undo last annotation"
+        >
           <i class="fa-solid fa-rotate-left"></i>
         </button>
 
-        <button type="button" class="annotation-action-btn" id="annotationClearBtn" title="Clear annotations from this image">
+        <button
+          type="button"
+          class="annotation-action-btn"
+          id="annotationClearBtn"
+          title="Clear annotations from this image"
+        >
           <i class="fa-solid fa-trash-can"></i>
         </button>
 
-        <button type="button" class="annotation-done-btn" id="annotationDoneBtn" title="Finish drawing">
-          <i class="fa-solid fa-check"></i><span>Done</span>
+        <button
+          type="button"
+          class="annotation-done-btn"
+          id="annotationDoneBtn"
+          title="Finish drawing"
+        >
+          <i class="fa-solid fa-check"></i>
+          <span>Done</span>
         </button>
+
       </div>
 
-      <div class="annotation-status-row" id="annotationStatusRow" style="display:none">
+      <div
+        class="annotation-status-row"
+        id="annotationStatusRow"
+        style="display:none"
+      >
+
         <span id="annotationStatusText"></span>
 
         <div class="annotation-suggestion-actions">
+
           <button
             type="button"
             id="acceptAnnotationSuggestionBtn"
@@ -1662,6 +2086,7 @@
           >
             Keep freehand
           </button>
+
         </div>
       </div>
     `;
@@ -1713,9 +2138,9 @@
       ?.addEventListener("click", window.dismissAnnotationSuggestion);
   }
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      EDITOR BINDING
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function initEditorBinding() {
     const editor = getEditor();
@@ -1726,6 +2151,10 @@
 
     editor.dataset.annotationAddonBound = "true";
 
+    /* --------------------------------------------------------------
+       CLICK IMAGE
+    -------------------------------------------------------------- */
+
     editor.addEventListener("click", (event) => {
       const image = event.target.closest?.("img.note-img");
 
@@ -1734,8 +2163,7 @@
       }
 
       /*
-           While actively drawing, the SVG handles the pointer interaction.
-           We must not run image-selection logic again.
+           During drawing, SVG owns interaction.
         */
       if (state.drawing) {
         return;
@@ -1753,19 +2181,20 @@
       selectImageWrapper(wrapper);
     });
 
+    /* --------------------------------------------------------------
+       MOUSE DOWN
+    -------------------------------------------------------------- */
+
     editor.addEventListener("mousedown", (event) => {
       if (state.drawing && event.target.closest?.(".note-image-annotation")) {
-        /*
-             Prevent browser image dragging / contenteditable selection from
-             competing with the SVG pointer-drawing system.
-          */
         event.preventDefault();
       }
     });
 
-    /*
-       Explicitly disable native image dragging.
-    */
+    /* --------------------------------------------------------------
+       DISABLE NATIVE IMAGE DRAGGING
+    -------------------------------------------------------------- */
+
     editor.addEventListener("dragstart", (event) => {
       if (event.target.closest?.("img.note-img")) {
         event.preventDefault();
@@ -1773,16 +2202,9 @@
     });
   }
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      PUBLISH / SAVE SANITIZATION
-  -----------------------------------------------------------------------
-     Selection indicators such as `.is-selected` and `.is-drawing` are
-     strictly editor UI state. They must never be persisted into body_html.
-
-     We sanitize both:
-     1. publish-button click capture
-     2. window.publishArticle wrapper
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function installPublishSanitizer() {
     if (publishSanitizerInstalled) {
@@ -1792,10 +2214,7 @@
     publishSanitizerInstalled = true;
 
     /*
-       Capture phase runs before inline onclick handlers such as:
-       onclick="publishArticle()"
-
-       Therefore the DOM is already clean when note.js reads editorBody.innerHTML.
+       Capture phase executes before inline onclick handlers.
     */
     document.addEventListener(
       "click",
@@ -1811,16 +2230,12 @@
       true,
     );
 
-    /*
-       Also expose a wrapper around the global publishArticle function.
-       This covers programmatic calls as well as the normal button.
-    */
     const installGlobalWrapper = () => {
       if (typeof window.publishArticle !== "function") {
         return false;
       }
 
-      if (window.publishArticle.__annotationSanitized === "true") {
+      if (window.publishArticle?.__annotationSanitized === "true") {
         return true;
       }
 
@@ -1836,13 +2251,14 @@
 
         const restoreState = Array.from(selected).map((wrapper) => ({
           wrapper,
+
           selected: wrapper.classList.contains("is-selected"),
+
           drawing: wrapper.classList.contains("is-drawing"),
         }));
 
         /*
-               Remove editor-only indicators BEFORE note.js serializes
-               editorBody.innerHTML.
+               Clean editor-only state before note.js reads innerHTML.
             */
         cleanAnnotationEditorDom();
 
@@ -1850,11 +2266,8 @@
           return await originalPublishArticle.apply(this, args);
         } finally {
           /*
-                 If publishing failed and the editor is still open, restore
-                 the visual state for the user.
-
-                 Successful publishing normally closes the editor, so these
-                 classes will not be restored into a saved article.
+                 Restore editor visual state only if the editor
+                 remains open.
               */
           const overlay = document.getElementById("editor-overlay");
 
@@ -1881,11 +2294,6 @@
       return true;
     };
 
-    /*
-       note.js is loaded before this add-on, but a microtask + timeout
-       makes this resilient if another initializer assigns the function
-       immediately after DOM construction.
-    */
     installGlobalWrapper();
 
     Promise.resolve().then(() => {
@@ -1897,9 +2305,9 @@
     }, 0);
   }
 
-  /* -----------------------------------------------------------------------
+  /* ========================================================================
      EDITOR OVERLAY OBSERVER
-  ----------------------------------------------------------------------- */
+  ======================================================================== */
 
   function observeEditorOverlay() {
     const overlay = document.getElementById("editor-overlay");
@@ -1917,9 +2325,11 @@
         state.wrapper?.classList.remove("is-selected", "is-drawing");
 
         state.wrapper = null;
+
         state.selectedWrapper = null;
 
         state.svg = null;
+
         state.history = [];
 
         state.suggestion = null;
@@ -1940,9 +2350,7 @@
       updateToolbar();
 
       /*
-             Ensure all pre-existing images loaded from an article can be
-             selected and converted to annotation-ready wrappers without
-             losing their layout.
+             Prepare existing images from article content.
           */
       const editor = getEditor();
 
@@ -1961,17 +2369,23 @@
     });
   }
 
-  /* -----------------------------------------------------------------------
-     INIT
-  ----------------------------------------------------------------------- */
+  /* ========================================================================
+     INITIALIZATION
+  ======================================================================== */
 
   function init() {
     injectToolbarButton();
+
     injectAnnotationToolbar();
+
     initEditorBinding();
+
     installImageInsertOverrides();
+
     observeEditorOverlay();
+
     installPublishSanitizer();
+
     updateToolbar();
   }
 
