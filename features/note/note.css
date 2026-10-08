@@ -23,6 +23,8 @@
    - Reading overlay
    - Export system
    - Editor
+   - Editor Focus Mode
+   - Editor Full Screen
    - GEE dashboard
    - Recent Notes / AINAN
    - Organizations
@@ -100,56 +102,80 @@ i.fa-regular {
 
 .lang-menu {
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 }
 
 .lang-switcher {
   display: inline-flex;
+
   flex-direction: row;
+
   align-items: center;
+
   justify-content: center;
+
   flex-wrap: nowrap;
+
   gap: 0;
+
   white-space: nowrap;
 }
 
 .lang-switcher .lang-btn {
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   flex: 0 0 auto;
+
   white-space: nowrap;
 }
 
 .lang-switcher .lang-divider {
   display: inline-block;
+
   flex: 0 0 auto;
+
   margin: 0 8px;
+
   line-height: 1;
+
   white-space: nowrap;
 }
 
-/* Mobile */
 @media screen and (max-width: 600px) {
   .lang-menu {
     width: auto;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
   }
 
   .lang-switcher {
     display: inline-flex;
+
     flex-direction: row;
+
     align-items: center;
+
     justify-content: center;
+
     flex-wrap: nowrap;
+
     width: auto;
   }
 
   .lang-switcher .lang-btn {
     flex: 0 0 auto;
+
     width: auto;
   }
 
@@ -160,9 +186,6 @@ i.fa-regular {
 
 /* ==========================================================================
    3. NOTE-SPECIFIC AUTH CONTROLS
-
-   These controls are Notes-specific and therefore remain here.
-   The surrounding header/navigation remains controlled by index.css.
 ========================================================================== */
 
 .auth-menu {
@@ -337,16 +360,21 @@ i.fa-regular {
   padding: 13px 0 13px 28px;
 
   font-family: var(--font-sans);
+
   font-size: 0.78rem;
 
   color: var(--text-main);
+
   background: transparent;
 
   border: none;
+
   border-bottom: 1px solid rgba(168, 141, 95, 0.38);
+
   border-radius: 0;
 
   outline: none;
+
   box-shadow: none;
 
   transition:
@@ -358,15 +386,20 @@ i.fa-regular {
 .sidebar-search-input:focus-visible,
 .sidebar-search-input:active {
   outline: none;
+
   box-shadow: none;
 
   border-top: none;
+
   border-left: none;
+
   border-right: none;
 
   border-bottom-color: var(--accent-gold);
+
   border-bottom-width: 2px;
 }
+
 /* ==========================================================================
    6. TOPIC NAVIGATION
 ========================================================================== */
@@ -485,10 +518,6 @@ i.fa-regular {
   );
 }
 
-/* ==========================================================================
-   NOTE HEADER FRAME
-========================================================================== */
-
 .note-header-simple::before {
   content: "";
 
@@ -514,10 +543,6 @@ i.fa-regular {
 
   opacity: 0.8;
 }
-
-/* ==========================================================================
-   NOTE HEADER ORNAMENT
-========================================================================== */
 
 .note-header-simple::after {
   position: absolute;
@@ -554,10 +579,6 @@ i.fa-regular {
     0 1px 0 rgba(255, 255, 255, 0.8),
     0 2px 5px rgba(126, 100, 57, 0.08);
 }
-
-/* ==========================================================================
-   NOTE HEADER TITLE
-========================================================================== */
 
 .note-header-simple h1 {
   position: relative;
@@ -2292,9 +2313,9 @@ i.fa-regular {
   transform: translateY(0);
 }
 
-/* --------------------------------------------------------------------------
-   EDIT NOTE MODAL
--------------------------------------------------------------------------- */
+/* ==========================================================================
+   30. EDIT NOTE MODAL
+========================================================================== */
 
 .editor-box {
   width: 100%;
@@ -2336,7 +2357,7 @@ i.fa-regular {
 
   right: 16px;
 
-  z-index: 20;
+  z-index: 30;
 
   width: 34px;
 
@@ -2400,7 +2421,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   30. FORMS / EDITOR CONTROLS
+   31. FORMS / EDITOR CONTROLS
 ========================================================================== */
 
 .field-label {
@@ -2565,10 +2586,12 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   31. EDITOR HEADER
+   32. EDITOR HEADER
 ========================================================================== */
 
 .editor-header {
+  position: relative;
+
   flex: 0 0 auto;
 
   display: flex;
@@ -2577,13 +2600,159 @@ i.fa-regular {
 
   justify-content: space-between;
 
-  padding: 22px 28px 8px;
+  min-height: 68px;
+
+  padding: 18px 170px 8px 28px;
 
   margin: 0;
 
+  border-bottom: 1px solid transparent;
+
   transition:
     padding 0.35s ease,
-    opacity 0.3s ease;
+    min-height 0.35s ease,
+    border-color 0.3s ease;
+}
+
+.editor-header-main {
+  min-width: 0;
+
+  flex: 1 1 auto;
+
+  padding-right: 12px;
+}
+
+.editor-focus-title {
+  display: none;
+
+  max-width: 100%;
+
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  color: var(--text-muted);
+
+  font-family: var(--font-sans);
+
+  font-size: 0.7rem;
+
+  font-weight: 400;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.01em;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   32A. EDITOR VIEW CONTROLS
+========================================================================== */
+
+.editor-view-controls {
+  position: absolute;
+
+  top: 17px;
+
+  right: 59px;
+
+  z-index: 25;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+.editor-view-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  min-height: 34px;
+
+  padding: 7px 10px;
+
+  border: 1px solid rgba(168, 141, 95, 0.24);
+
+  border-radius: 7px;
+
+  background: rgba(255, 253, 248, 0.72);
+
+  color: var(--text-muted);
+
+  font-family: var(--font-sans);
+
+  font-size: 0.62rem;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: 0.04em;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.editor-view-btn i {
+  font-size: 0.76rem;
+}
+
+.editor-view-btn:hover {
+  background: rgba(255, 255, 255, 0.96);
+
+  border-color: rgba(168, 141, 95, 0.5);
+
+  color: var(--accent-gold-deep);
+
+  transform: translateY(-1px);
+}
+
+.editor-view-btn[aria-pressed="true"] {
+  border-color: var(--accent-gold);
+
+  color: var(--accent-gold-deep);
+
+  background: rgba(168, 141, 95, 0.08);
+}
+
+/* ==========================================================================
+   33. EDITOR META AREA
+========================================================================== */
+
+.editor-note-meta {
+  flex: 0 0 auto;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  max-height: 320px;
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+  transition:
+    max-height 0.4s ease,
+    opacity 0.25s ease,
+    transform 0.35s ease;
 }
 
 .editor-meta-grid {
@@ -2629,10 +2798,6 @@ i.fa-regular {
   grid-column: 1 / -1;
 }
 
-/*
-  Bila Title menjadi field utama, beri ruang lebih besar.
-*/
-
 .editor-meta-grid .field-group:has(.title-input) {
   grid-column: span 2;
 }
@@ -2646,83 +2811,101 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   31A. DISTRACTION-FREE MODE
-   Saat editor aktif, metadata otomatis collapse.
-   
-   CSS :has() membuat ini bisa berjalan tanpa JavaScript tambahan.
+   34. FOCUS MODE
+   JS toggles .focus-mode on #editor-overlay
 ========================================================================== */
 
+.editor-overlay.focus-mode {
+  overflow: hidden;
+}
+
 /*
-  Editor sedang fokus:
-  Title / Topic / New Topic Name / Icon / Date / Excerpt
-  otomatis dipadatkan dan disembunyikan.
+   Hide every metadata field together.
+
+   The metadata remains in the DOM and retains all values.
 */
 
-.editor-box:has(.editor-body:focus) .editor-meta-grid,
-.editor-box:has(#editorBody:focus) .editor-meta-grid {
+#editor-overlay.focus-mode .editor-note-meta {
   max-height: 0;
-
-  padding-top: 0;
-
-  padding-bottom: 0;
-
-  margin: 0;
-
-  overflow: hidden;
 
   opacity: 0;
 
   transform: translateY(-8px);
 
   pointer-events: none;
+
+  overflow: hidden;
 }
 
-.editor-box:has(.editor-body:focus) .editor-header,
-.editor-box:has(#editorBody:focus) .editor-header {
-  padding-top: 14px;
+#editor-overlay.focus-mode .editor-meta-grid {
+  max-height: 0;
+
+  margin: 0;
+
+  padding-top: 0;
+
+  padding-bottom: 0;
+
+  opacity: 0;
+
+  transform: translateY(-8px);
+
+  pointer-events: none;
+
+  overflow: hidden;
+}
+
+/*
+   Focus title becomes visible when metadata disappears.
+*/
+
+#editor-overlay.focus-mode .editor-focus-title {
+  display: block;
+}
+
+/*
+   Slightly more compact header in Focus Mode.
+*/
+
+#editor-overlay.focus-mode .editor-header {
+  min-height: 58px;
+
+  padding-top: 13px;
 
   padding-bottom: 6px;
 }
 
-.editor-box:has(.editor-body:focus) .modal-subtitle,
-.editor-box:has(#editorBody:focus) .modal-subtitle {
-  display: none;
+/*
+   The writing workspace receives all
+   remaining height.
+*/
+
+#editor-overlay.focus-mode .editor-workspace {
+  flex: 1 1 auto;
+
+  min-height: 0;
 }
 
 /* ==========================================================================
-   31B. OPTIONAL MANUAL HIDE MODE
-   Bisa dipakai nanti dengan class:
-   
-   .editor-box.metadata-hidden
-   
-   Jadi tidak perlu mengubah CSS lagi ketika kamu menambahkan tombol
-   "Hide Metadata" / "Show Metadata".
+   35. EDITOR WORKSPACE
 ========================================================================== */
 
-.editor-box.metadata-hidden .editor-meta-grid {
-  max-height: 0;
+.editor-workspace {
+  flex: 1 1 auto;
 
-  padding-top: 0;
+  min-height: 0;
 
-  padding-bottom: 0;
+  display: flex;
 
-  margin: 0;
+  flex-direction: column;
+
+  width: 100%;
 
   overflow: hidden;
-
-  opacity: 0;
-
-  transform: translateY(-8px);
-
-  pointer-events: none;
-}
-
-.editor-box.metadata-hidden .modal-subtitle {
-  display: none;
 }
 
 /* ==========================================================================
-   32. EDITOR TOOLBAR
+   36. EDITOR TOOLBAR
 ========================================================================== */
 
 .editor-toolbar {
@@ -2870,7 +3053,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   33. IMAGE STYLE PICKER
+   37. IMAGE STYLE PICKER
 ========================================================================== */
 
 .image-style-picker {
@@ -2946,7 +3129,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   34. EDITOR BODY
+   38. EDITOR BODY
    MAIN WRITING AREA
 ========================================================================== */
 
@@ -2958,17 +3141,21 @@ i.fa-regular {
 
   width: 100%;
 
+  max-width: none;
+
+  margin: 0;
+
   overflow-y: auto;
 
   overflow-x: hidden;
 
-  padding: 28px 34px 48px;
+  padding: 28px max(34px, calc((100% - 900px) / 2)) 48px;
 
   border: none;
 
   outline: none;
 
-  border-radius: 0 0 10px 10px;
+  border-radius: 0;
 
   background: #fffdf8;
 
@@ -3021,8 +3208,19 @@ i.fa-regular {
 }
 
 /* --------------------------------------------------------------------------
-   EDITOR TYPOGRAPHY
+   FOCUS MODE WRITING AREA
 -------------------------------------------------------------------------- */
+
+#editor-overlay.focus-mode .editor-body,
+#editor-overlay.focus-mode #editorBody {
+  padding-top: 30px;
+
+  padding-bottom: 72px;
+}
+
+/* ==========================================================================
+   39. EDITOR TYPOGRAPHY
+========================================================================== */
 
 .editor-box #editorBody p,
 .editor-box .editor-body p {
@@ -3070,7 +3268,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   34A. BULLET / NUMBERED LIST FIX
+   40. BULLET / NUMBERED LIST FIX
 ========================================================================== */
 
 .editor-box #editorBody ul,
@@ -3125,7 +3323,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   35. EDITOR FOOTER
+   41. EDITOR FOOTER
 ========================================================================== */
 
 .editor-footer {
@@ -3167,18 +3365,147 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   35A. WRITING MODE — EXTRA SPACE
+   42. EDITOR FULL SCREEN
 ========================================================================== */
 
-.editor-box:has(.editor-body:focus) .editor-body,
-.editor-box:has(#editorBody:focus) #editorBody {
-  padding-top: 30px;
+/*
+   Native Fullscreen API.
+*/
 
-  padding-bottom: 54px;
+#editor-overlay:fullscreen {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+
+  height: 100vh;
+
+  max-width: none;
+
+  max-height: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: stretch;
+
+  justify-content: stretch;
+
+  background: rgba(40, 37, 31, 0.14);
+}
+
+#editor-overlay:fullscreen::backdrop {
+  background: #f4efe5;
+}
+
+#editor-overlay:fullscreen .editor-box {
+  width: 100%;
+
+  max-width: none;
+
+  height: 100vh;
+
+  min-height: 100vh;
+
+  max-height: none;
+
+  border: none;
+
+  border-radius: 0;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+/*
+   CSS fallback used by note.js
+   when native fullscreen is unavailable.
+*/
+
+#editor-overlay.editor-browser-fullscreen-fallback {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+
+  height: 100dvh;
+
+  max-width: none;
+
+  max-height: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  align-items: stretch;
+
+  justify-content: stretch;
+
+  background: #f4efe5;
+
+  z-index: 99999;
+}
+
+#editor-overlay.editor-browser-fullscreen-fallback .editor-box {
+  width: 100%;
+
+  max-width: none;
+
+  height: 100dvh;
+
+  min-height: 100dvh;
+
+  max-height: none;
+
+  border: none;
+
+  border-radius: 0;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+/*
+   Fullscreen should always use the writing-focused layout.
+*/
+
+#editor-overlay:fullscreen.focus-mode .editor-workspace,
+#editor-overlay.editor-browser-fullscreen-fallback.focus-mode
+  .editor-workspace {
+  flex: 1 1 auto;
+
+  min-height: 0;
 }
 
 /* ==========================================================================
-   MOBILE EDITOR
+   43. EDITOR BOTTOM-SPACE / WRITING COMFORT
+========================================================================== */
+
+#editor-overlay.focus-mode .editor-body::after,
+#editor-overlay.focus-mode #editorBody::after {
+  content: "";
+
+  display: block;
+
+  height: 5rem;
+
+  width: 100%;
+}
+
+/* ==========================================================================
+   44. MOBILE EDITOR
 ========================================================================== */
 
 @media screen and (max-width: 600px) {
@@ -3199,11 +3526,47 @@ i.fa-regular {
   }
 
   .editor-header {
-    padding: 18px 17px 7px;
+    min-height: 62px;
+
+    padding: 16px 128px 7px 17px;
+  }
+
+  .editor-header-main {
+    padding-right: 0;
+  }
+
+  .editor-view-controls {
+    top: 14px;
+
+    right: 53px;
+
+    gap: 4px;
+  }
+
+  .editor-view-btn {
+    min-height: 34px;
+
+    width: 34px;
+
+    padding: 0;
+  }
+
+  .editor-view-btn span {
+    display: none;
+  }
+
+  .editor-view-btn i {
+    font-size: 0.78rem;
   }
 
   .modal-title {
     font-size: 1.65rem;
+  }
+
+  .editor-focus-title {
+    max-width: 100%;
+
+    font-size: 0.66rem;
   }
 
   .editor-meta-grid {
@@ -3218,12 +3581,20 @@ i.fa-regular {
     grid-column: auto;
   }
 
+  .field-group.span-2 {
+    grid-column: auto;
+  }
+
   .field-input {
     min-height: 42px;
 
     padding: 9px 11px;
 
     border-radius: 8px;
+  }
+
+  .editor-workspace {
+    min-height: 0;
   }
 
   .editor-toolbar {
@@ -3243,6 +3614,13 @@ i.fa-regular {
     line-height: 1.7;
   }
 
+  #editor-overlay.focus-mode .editor-body,
+  #editor-overlay.focus-mode #editorBody {
+    padding-top: 24px;
+
+    padding-bottom: 54px;
+  }
+
   .editor-footer {
     padding: 9px 12px 11px;
   }
@@ -3258,10 +3636,19 @@ i.fa-regular {
 
     border-radius: 8px;
   }
+
+  #editor-overlay:fullscreen .editor-box,
+  #editor-overlay.editor-browser-fullscreen-fallback .editor-box {
+    height: 100vh;
+
+    min-height: 100vh;
+
+    border-radius: 0;
+  }
 }
 
 /* ==========================================================================
-   VERY SMALL SCREENS
+   45. VERY SMALL SCREENS
 ========================================================================== */
 
 @media screen and (max-width: 420px) {
@@ -3272,21 +3659,33 @@ i.fa-regular {
   }
 
   .editor-header {
-    padding-left: 14px;
+    min-height: 58px;
 
-    padding-right: 14px;
+    padding: 14px 112px 6px 14px;
+  }
+
+  .editor-view-controls {
+    top: 12px;
+
+    right: 49px;
+  }
+
+  .editor-view-btn {
+    width: 32px;
+
+    height: 32px;
+
+    min-height: 32px;
   }
 
   .editor-meta-grid {
-    padding-left: 14px;
-
-    padding-right: 14px;
+    padding: 0 14px 12px;
   }
 
   .editor-toolbar {
-    gap: 3px;
+    gap: 5px;
 
-    padding: 6px 7px;
+    padding: 9px;
   }
 
   .tb-select {
@@ -3296,13 +3695,11 @@ i.fa-regular {
   }
 
   .tb-word-count {
-    width: auto;
+    width: 100%;
 
-    margin-left: auto;
+    margin-left: 0;
 
-    padding-left: 8px;
-
-    font-size: 0.64rem;
+    text-align: right;
   }
 
   .editor-body,
@@ -3311,1172 +3708,15 @@ i.fa-regular {
 
     font-size: 18px;
   }
-}
 
-/* ==========================================================================
-   REDUCED MOTION
-========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .editor-box,
-  .editor-header,
-  .editor-meta-grid,
-  .editor-body,
-  .editor-toolbar,
-  .field-input,
-  .tb-btn {
-    transition: none !important;
-  }
-}
-/* ==========================================================================
-   36. INTERACTIVE GEE DASHBOARD
-========================================================================== */
-
-.interactive-map-section {
-  position: relative;
-
-  z-index: 10;
-
-  width: 100%;
-
-  padding: 6rem 0;
-
-  border-top: 1px solid var(--border-color);
-
-  border-bottom: 1px solid var(--border-color);
-
-  background-color: var(--bg-alt);
-
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(72, 61, 45, 0.01) 0,
-    rgba(72, 61, 45, 0.01) 1px,
-    transparent 1px,
-    transparent 5px
-  );
-}
-
-.interactive-map-section .section-title {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: flex-start;
-
-  margin-bottom: 0;
-}
-
-.interactive-map-section .section-title h2 {
-  position: relative;
-
-  width: 100%;
-
-  margin: 0;
-
-  padding-bottom: 1rem;
-
-  border-bottom: none;
-
-  font-family: var(--font-serif);
-
-  font-size: 2.2rem;
-
-  font-weight: 500;
-
-  line-height: 1.3;
-
-  color: var(--text-main);
-}
-
-.interactive-map-section .section-title h2::after {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-
-  bottom: 0;
-
-  width: 100%;
-
-  height: 1px;
-
-  background: linear-gradient(
-    to right,
-    var(--accent-gold-deep),
-    rgba(168, 141, 95, 0.5) 45%,
-    transparent
-  );
-}
-
-.interactive-map-section .footer-tagline {
-  display: block;
-
-  margin: 0.5rem 0 0;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.8rem;
-
-  font-weight: 400;
-
-  line-height: 1.4;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-}
-
-.gee-editorial-wrapper {
-  position: relative;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 1.5rem;
-
-  width: 100%;
-
-  margin-top: 3rem;
-
-  opacity: 1;
-
-  visibility: visible;
-
-  transform: none;
-
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gee-editorial-wrapper.is-visible {
-  opacity: 1;
-
-  visibility: visible;
-
-  transform: translateY(0);
-}
-
-.gee-meta {
-  width: 100%;
-
-  max-width: 800px;
-}
-
-.gee-title {
-  margin: 0 0.6rem;
-
-  font-family: var(--font-serif);
-
-  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
-
-  font-weight: 500;
-
-  line-height: 1.3;
-
-  color: var(--text-main);
-}
-
-.gee-desc {
-  margin: 0;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.95rem;
-
-  font-weight: 300;
-
-  line-height: 1.7;
-
-  color: var(--text-muted);
-}
-
-.gee-frame-container {
-  position: relative;
-
-  width: 100%;
-
-  height: 80vh;
-
-  min-height: 600px;
-
-  padding: 0.75rem;
-
-  overflow: hidden;
-
-  border: 1px solid var(--border-color);
-
-  border-radius: 0;
-
-  background-color: var(--paper-light);
-
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(72, 61, 45, 0.009) 0,
-    rgba(72, 61, 45, 0.009) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-
-  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.045);
-
-  transition:
-    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gee-frame-container:hover {
-  border-color: var(--accent-gold);
-
-  box-shadow: 0 15px 40px rgba(57, 49, 36, 0.075);
-}
-
-.gee-frame-container iframe {
-  display: block;
-
-  width: 100%;
-
-  height: 100%;
-
-  min-height: 0;
-
-  margin: 0;
-
-  padding: 0;
-
-  border: 1px solid var(--border-dark);
-
-  background-color: #ede8dd;
-
-  overflow: hidden;
-}
-
-.gee-frame-container iframe:focus {
-  outline: 3px solid var(--accent-steel-blue);
-
-  outline-offset: 3px;
-}
-
-.gee-caption {
-  width: 100%;
-
-  margin-top: 0.5rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.7rem;
-
-  font-weight: 400;
-
-  line-height: 1.5;
-
-  letter-spacing: 2px;
-
-  text-align: right;
-
-  text-transform: uppercase;
-
-  color: var(--text-muted);
-}
-
-/* ==========================================================================
-   37. RECENT NOTES / AINAN
-========================================================================== */
-
-.ainan-section {
-  position: relative;
-
-  width: 100%;
-
-  padding: 8rem 0;
-
-  overflow: hidden;
-
-  border-top: 1px solid var(--border-color);
-
-  border-bottom: 1px solid var(--border-color);
-
-  background-image:
-    linear-gradient(rgba(244, 239, 229, 0.88), rgba(244, 239, 229, 0.5)),
-    linear-gradient(rgba(244, 239, 229, 0.12), rgba(244, 239, 229, 0.34)),
-    url("./assets/images/notes.jpg");
-
-  background-size: cover;
-
-  background-position: center;
-
-  background-repeat: no-repeat;
-
-  background-attachment: fixed;
-}
-
-.ainan-section::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 1;
-
-  pointer-events: none;
-
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(72, 61, 45, 0.018) 0,
-    rgba(72, 61, 45, 0.018) 1px,
-    transparent 1px,
-    transparent 5px
-  );
-
-  mix-blend-mode: multiply;
-
-  opacity: 0.45;
-}
-
-.ainan-container {
-  position: relative;
-
-  z-index: 2;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: flex-end;
-
-  gap: 4rem;
-
-  width: min(1400px, calc(100% - 80px));
-
-  margin: 0 auto;
-}
-
-/* ==========================================================================
-   AINAN TITLE
-========================================================================== */
-
-.ainan-page-title {
-  position: sticky;
-
-  top: 150px;
-
-  z-index: 5;
-
-  display: block;
-
-  width: 100%;
-
-  height: 0;
-
-  pointer-events: none;
-
-  overflow: visible;
-}
-
-.ainan-page-title h2 {
-  position: relative;
-
-  width: min(520px, 40vw);
-
-  margin-left: max(40px, calc((100% - 1400px) / 2));
-
-  font-family: var(--font-serif);
-
-  font-size: clamp(2.4rem, 4vw, 4rem);
-
-  font-weight: 500;
-
-  line-height: 1.1;
-
-  color: var(--text-main);
-
-  pointer-events: auto;
-}
-
-.ainan-page-title h2::after {
-  content: "";
-
-  display: block;
-
-  width: 80px;
-
-  height: 1px;
-
-  margin-top: 0.85rem;
-
-  background: linear-gradient(to right, var(--accent-gold-deep), transparent);
-}
-
-.ainan-page-title h2 span {
-  display: block;
-
-  margin-top: 0.5rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.9rem;
-
-  font-weight: 300;
-
-  line-height: 1.4;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-}
-
-/* ==========================================================================
-   AINAN NOTE CARD
-========================================================================== */
-
-.ainan-glass-card {
-  position: relative;
-
-  z-index: 20;
-
-  width: min(550px, 100%);
-
-  padding: 3.5rem 3rem;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(130, 107, 80, 0.2);
-
-  border-radius: var(--radius-xs);
-
-  background: linear-gradient(
-    180deg,
-    rgba(250, 247, 239, 0.94),
-    rgba(244, 239, 229, 0.91)
-  );
-
-  box-shadow: var(--shadow-paper);
-
-  backdrop-filter: blur(12px);
-
-  -webkit-backdrop-filter: blur(12px);
-
-  transition:
-    transform 0.4s var(--ease),
-    box-shadow 0.4s var(--ease),
-    border-color 0.4s var(--ease);
-}
-
-.ainan-glass-card::before {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-
-  left: 0;
-
-  right: 0;
-
-  height: 120px;
-
-  z-index: 0;
-
-  pointer-events: none;
-
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(41, 41, 35, 0.07),
-      rgba(244, 239, 229, 0.02) 48%,
-      rgba(244, 239, 229, 0.96) 100%
-    ),
-    var(--note-image, url("./assets/images/notes.jpg"));
-
-  background-size: cover, cover;
-
-  background-position: center, center;
-
-  background-repeat: no-repeat;
-
-  filter: sepia(0.24) grayscale(0.16) saturate(0.7) contrast(0.94);
-
-  opacity: 0.72;
-}
-
-.ainan-glass-card::after {
-  content: "";
-
-  position: absolute;
-
-  top: 116px;
-
-  left: 3rem;
-
-  right: 3rem;
-
-  height: 1px;
-
-  z-index: 1;
-
-  pointer-events: none;
-
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(168, 141, 95, 0.56) 15%,
-    rgba(168, 141, 95, 0.3) 50%,
-    rgba(168, 141, 95, 0.56) 85%,
-    transparent
-  );
-}
-
-.ainan-glass-card > * {
-  position: relative;
-
-  z-index: 2;
-}
-
-.ainan-glass-card:hover {
-  transform: translateY(-5px);
-
-  border-color: rgba(168, 141, 95, 0.55);
-
-  box-shadow: var(--shadow-paper-hover);
-}
-
-/* ==========================================================================
-   AINAN CARD CONTENT
-========================================================================== */
-
-.ainan-card-category {
-  display: block;
-
-  margin-bottom: 1.2rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 1.25rem;
-
-  font-weight: 700;
-
-  line-height: 1.3;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-
-  -webkit-text-stroke: 0.6px #ffffff;
-
-  text-shadow:
-    0 0 3px #ffffff,
-    0 0 5px rgba(255, 255, 255, 0.8);
-}
-
-.ainan-card-title {
-  margin: 0 0 1.5rem;
-
-  padding-top: 2rem;
-
-  font-family: var(--font-serif);
-
-  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
-
-  font-weight: 500;
-
-  line-height: 1.3;
-
-  color: var(--text-main);
-}
-
-.ainan-card-description {
-  margin: 0 0 2rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.95rem;
-
-  line-height: 1.8;
-
-  color: var(--text-muted);
-}
-
-.excerpt-meta {
-  display: flex;
-
-  align-items: center;
-
-  gap: 2rem;
-
-  margin-bottom: 2rem;
-
-  padding-top: 1.5rem;
-
-  border-top: 1px solid rgba(42, 42, 35, 0.12);
-}
-
-.ainan-meta-item {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: flex-start;
-}
-
-.ainan-meta-label {
-  margin-bottom: 4px;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.65rem;
-
-  font-weight: 500;
-
-  line-height: 1.4;
-
-  letter-spacing: 1.5px;
-
-  color: var(--accent-gold-deep);
-}
-
-.ainan-meta-value {
-  font-family: var(--font-sans);
-
-  font-size: 0.85rem;
-
-  font-weight: 400;
-
-  color: var(--text-main);
-}
-
-.ainan-card-link {
-  position: relative;
-
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  padding-bottom: 6px;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.8rem;
-
-  font-weight: 500;
-
-  line-height: 1.4;
-
-  letter-spacing: 1px;
-
-  text-transform: uppercase;
-
-  color: var(--text-main);
-
-  transition: var(--ease);
-}
-
-.ainan-card-link::after {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-
-  bottom: 0;
-
-  width: 100%;
-
-  height: 1px;
-
-  background: linear-gradient(
-    to right,
-    var(--accent-gold-deep),
-    var(--accent-gold),
-    transparent
-  );
-}
-
-.ainan-card-link:hover {
-  gap: 18px;
-
-  color: var(--accent-gold-deep);
-}
-
-/* ==========================================================================
-   38. ORGANIZATIONS
-========================================================================== */
-
-.main-content .section-title {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: flex-start;
-
-  position: relative;
-
-  margin-bottom: 2.5rem;
-
-  padding-bottom: 1rem;
-
-  font-family: var(--font-serif);
-
-  font-size: 2.2rem;
-
-  font-weight: 500;
-
-  line-height: 1.3;
-
-  color: var(--text-main);
-}
-
-.main-content .section-title::after {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-
-  bottom: 0;
-
-  width: 100%;
-
-  height: 1px;
-
-  background: linear-gradient(
-    to right,
-    var(--accent-gold-deep) 0,
-    var(--accent-gold) 12%,
-    rgba(168, 141, 95, 0.32) 48%,
-    transparent 100%
-  );
-}
-
-.main-content .section-title::before {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-
-  bottom: -4px;
-
-  width: 48px;
-
-  height: 1px;
-
-  background: var(--accent-gold);
-
-  opacity: 0.65;
-}
-
-.main-content .footer-tagline {
-  font-family: var(--font-sans);
-
-  font-size: 0.8rem;
-
-  line-height: 1.4;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-
-  margin-top: 0.5rem;
-
-  margin-bottom: 0;
-}
-
-/* ==========================================================================
-   39. ORGANIZATION GRID
-========================================================================== */
-
-.org-grid {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-
-  gap: 2.5rem;
-}
-
-.org-card {
-  display: flex;
-
-  flex-direction: column;
-
-  padding: 2.5rem;
-
-  background: #ffffff;
-
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(72, 61, 45, 0.009) 0,
-    rgba(72, 61, 45, 0.009) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-
-  border: 1px solid var(--border-color);
-
-  border-radius: var(--radius-xs);
-
-  box-shadow: 0 6px 20px rgba(57, 49, 36, 0.025);
-
-  transition: var(--ease);
-}
-
-.org-card:hover {
-  transform: translateY(-5px);
-
-  border-color: rgba(168, 141, 95, 0.55);
-
-  box-shadow: 0 12px 30px rgba(57, 49, 36, 0.065);
-}
-
-.org-header {
-  position: relative;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 1.5rem;
-
-  margin-bottom: 1.5rem;
-
-  padding-bottom: 1.5rem;
-
-  border-bottom: 1px solid var(--border-color);
-}
-
-.org-header::after {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-
-  bottom: -4px;
-
-  width: 42px;
-
-  height: 1px;
-
-  background: var(--accent-gold);
-
-  opacity: 0.55;
-}
-
-.org-logo {
-  width: 55px;
-
-  height: 55px;
-
-  flex-shrink: 0;
-
-  object-fit: contain;
-
-  filter: grayscale(100%) sepia(10%);
-
-  opacity: 0.76;
-
-  transition: var(--ease);
-}
-
-.org-card:hover .org-logo {
-  filter: grayscale(35%) sepia(12%);
-
-  opacity: 1;
-}
-
-.org-title-wrapper {
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-}
-
-.org-name {
-  margin-bottom: 0.4rem;
-
-  font-family: var(--font-serif);
-
-  font-size: 1.3rem;
-
-  font-weight: 500;
-
-  line-height: 1.2;
-
-  color: var(--text-main);
-}
-
-.org-role {
-  font-family: var(--font-sans);
-
-  font-size: 0.7rem;
-
-  font-weight: 500;
-
-  line-height: 1.4;
-
-  letter-spacing: 1.5px;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-}
-
-.org-desc {
-  flex-grow: 1;
-
-  margin-bottom: 2rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.95rem;
-
-  line-height: 1.7;
-
-  color: var(--text-muted);
-}
-
-.org-link {
-  position: relative;
-
-  display: inline-flex;
-
-  align-items: center;
-
-  align-self: flex-start;
-
-  gap: 8px;
-
-  padding-bottom: 5px;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.75rem;
-
-  font-weight: 500;
-
-  line-height: 1.4;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
-
-  color: var(--text-main);
-
-  transition: var(--ease);
-}
-
-.org-link::after {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-
-  bottom: 0;
-
-  width: 100%;
-
-  height: 1px;
-
-  background: linear-gradient(to right, var(--accent-gold-deep), transparent);
-}
-
-.org-link:hover {
-  gap: 14px;
-
-  color: var(--accent-gold-deep);
-}
-
-/* ==========================================================================
-   40. AFTERMOVIE
-========================================================================== */
-
-.aftermovie-layout {
-  display: flex;
-
-  align-items: center;
-
-  gap: 4rem;
-
-  width: 100%;
-
-  max-width: 1400px;
-
-  margin: 0 auto;
-
-  padding: 0 2rem 0 0;
-}
-
-.aftermovie-carousel-wrapper {
-  width: 70%;
-
-  overflow: hidden;
-}
-
-.aftermovie-carousel {
-  display: flex;
-
-  gap: 2rem;
-
-  overflow-x: auto;
-
-  padding: 1rem 0 2rem 2rem;
-
-  scroll-snap-type: x mandatory;
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
-}
-
-.aftermovie-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.aftermovie-item {
-  flex: 0 0 40%;
-
-  scroll-snap-align: start;
-}
-
-.youtube-wrapper {
-  position: relative;
-
-  width: 100%;
-
-  aspect-ratio: 16 / 9;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(168, 141, 95, 0.18);
-
-  border-radius: var(--radius-xs);
-
-  background: var(--text-main);
-
-  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.08);
-}
-
-.youtube-wrapper iframe {
-  position: absolute;
-
-  top: 0;
-
-  left: 0;
-
-  width: 100%;
-
-  height: 100%;
-
-  border: none;
-}
-
-.aftermovie-title {
-  margin-top: 1.5rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 0.85rem;
-
-  font-weight: 500;
-
-  line-height: 1.4;
-
-  letter-spacing: 1px;
-
-  text-transform: uppercase;
-
-  color: var(--text-main);
-}
-
-.aftermovie-info {
-  width: 30%;
-
-  display: flex;
-
-  flex-direction: column;
-}
-
-.aftermovie-info p {
-  margin-bottom: 2rem;
-
-  font-family: var(--font-sans);
-
-  font-size: 1rem;
-
-  line-height: 1.7;
-
-  color: var(--text-muted);
-}
-
-.scroll-hint {
-  font-family: var(--font-sans);
-
-  font-size: 0.7rem;
-
-  line-height: 1.4;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
-
-  color: var(--accent-gold-deep);
-}
-
-.animated-chevrons {
-  display: flex;
-
-  align-items: center;
-
-  margin-left: 8px;
-
-  color: var(--accent-gold);
-
-  font-size: 1.2rem;
-}
-
-.animated-chevrons span {
-  display: inline-block;
-
-  animation: swipeForward 1.5s infinite ease-in-out;
-}
-
-.animated-chevrons span:nth-child(2) {
-  margin-left: -4px;
-
-  animation-delay: 0.15s;
-}
-
-@keyframes swipeForward {
-  0%,
-  100% {
-    transform: translateX(0);
-
-    opacity: 0.2;
-  }
-
-  50% {
-    transform: translateX(6px);
-
-    opacity: 1;
+  #editor-overlay.focus-mode .editor-body,
+  #editor-overlay.focus-mode #editorBody {
+    padding: 20px 16px 42px;
   }
 }
 
 /* ==========================================================================
-   41. MOBILE — 600px
+   46. MOBILE TOPIC / NOTE PAGE
 ========================================================================== */
 
 @media screen and (max-width: 600px) {
@@ -4665,20 +3905,6 @@ i.fa-regular {
 
   .field-group.span-2 {
     grid-column: auto;
-  }
-
-  .editor-body {
-    padding: 1.25rem 1rem;
-  }
-
-  .editor-footer-actions {
-    width: 100%;
-
-    margin-left: 0;
-  }
-
-  .editor-footer-actions button {
-    flex: 1;
   }
 
   /* ------------------------------------------------------------------------
@@ -5037,7 +4263,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   42. VERY SMALL SCREENS
+   47. VERY SMALL SCREENS
 ========================================================================== */
 
 @media screen and (max-width: 420px) {
@@ -5128,7 +4354,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   43. 360px — 420px REFINEMENT
+   48. 360px — 420px REFINEMENT
 ========================================================================== */
 
 @media screen and (min-width: 360px) and (max-width: 420px) {
@@ -5179,7 +4405,61 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   44. REDUCED MOTION
+   49. DESKTOP LARGE SCREEN EDITOR
+   Make the writing area feel like a true document workspace.
+========================================================================== */
+
+@media screen and (min-width: 1200px) {
+  .editor-box {
+    max-width: 1180px;
+  }
+
+  #editorBody,
+  .editor-box #editorBody {
+    padding-left: max(48px, calc((100% - 900px) / 2));
+
+    padding-right: max(48px, calc((100% - 900px) / 2));
+  }
+
+  #editor-overlay.focus-mode .editor-body,
+  #editor-overlay.focus-mode #editorBody {
+    padding-top: 38px;
+
+    padding-bottom: 80px;
+  }
+}
+
+/* ==========================================================================
+   50. FULL SCREEN DESKTOP REFINEMENT
+========================================================================== */
+
+@media screen and (min-width: 769px) {
+  #editor-overlay:fullscreen .editor-header,
+  #editor-overlay.editor-browser-fullscreen-fallback .editor-header {
+    min-height: 64px;
+
+    padding-top: 13px;
+  }
+
+  #editor-overlay:fullscreen .editor-toolbar,
+  #editor-overlay.editor-browser-fullscreen-fallback .editor-toolbar {
+    min-height: 50px;
+
+    padding-top: 8px;
+
+    padding-bottom: 8px;
+  }
+
+  #editor-overlay:fullscreen #editorBody,
+  #editor-overlay.editor-browser-fullscreen-fallback #editorBody {
+    font-size: 21px;
+
+    line-height: 1.75;
+  }
+}
+
+/* ==========================================================================
+   51. REDUCED MOTION
 ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -5197,6 +4477,15 @@ i.fa-regular {
   .see-all-btn,
   .btn-primary,
   .btn-ghost,
+  .editor-box,
+  .editor-header,
+  .editor-note-meta,
+  .editor-meta-grid,
+  .editor-body,
+  .editor-toolbar,
+  .editor-view-btn,
+  .field-input,
+  .tb-btn,
   .ainan-glass-card,
   .ainan-card-link,
   .org-card,
@@ -5216,7 +4505,7 @@ i.fa-regular {
 }
 
 /* ==========================================================================
-   45. PRINT
+   52. PRINT
 ========================================================================== */
 
 @media print {
@@ -5265,5 +4554,1136 @@ i.fa-regular {
 
   .ainan-section {
     background-attachment: initial;
+  }
+}
+
+/* ==========================================================================
+   53. INTERACTIVE GEE DASHBOARD
+========================================================================== */
+
+.interactive-map-section {
+  position: relative;
+
+  z-index: 10;
+
+  width: 100%;
+
+  padding: 6rem 0;
+
+  border-top: 1px solid var(--border-color);
+
+  border-bottom: 1px solid var(--border-color);
+
+  background-color: var(--bg-alt);
+
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.01) 0,
+    rgba(72, 61, 45, 0.01) 1px,
+    transparent 1px,
+    transparent 5px
+  );
+}
+
+.interactive-map-section .section-title {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  margin-bottom: 0;
+}
+
+.interactive-map-section .section-title h2 {
+  position: relative;
+
+  width: 100%;
+
+  margin: 0;
+
+  padding-bottom: 1rem;
+
+  border-bottom: none;
+
+  font-family: var(--font-serif);
+
+  font-size: 2.2rem;
+
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  color: var(--text-main);
+}
+
+.interactive-map-section .section-title h2::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep),
+    rgba(168, 141, 95, 0.5) 45%,
+    transparent
+  );
+}
+
+.interactive-map-section .footer-tagline {
+  display: block;
+
+  margin: 0.5rem 0 0;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.8rem;
+
+  font-weight: 400;
+
+  line-height: 1.4;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: var(--accent-gold-deep);
+}
+
+.gee-editorial-wrapper {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1.5rem;
+
+  width: 100%;
+
+  margin-top: 3rem;
+
+  opacity: 1;
+
+  visibility: visible;
+
+  transform: none;
+
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gee-editorial-wrapper.is-visible {
+  opacity: 1;
+
+  visibility: visible;
+
+  transform: translateY(0);
+}
+
+.gee-meta {
+  width: 100%;
+
+  max-width: 800px;
+}
+
+.gee-title {
+  margin: 0 0.6rem;
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  color: var(--text-main);
+}
+
+.gee-desc {
+  margin: 0;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.95rem;
+
+  font-weight: 300;
+
+  line-height: 1.7;
+
+  color: var(--text-muted);
+}
+
+.gee-frame-container {
+  position: relative;
+
+  width: 100%;
+
+  height: 80vh;
+
+  min-height: 600px;
+
+  padding: 0.75rem;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 0;
+
+  background-color: var(--paper-light);
+
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.009) 0,
+    rgba(72, 61, 45, 0.009) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+
+  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.045);
+
+  transition:
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gee-frame-container:hover {
+  border-color: var(--accent-gold);
+
+  box-shadow: 0 15px 40px rgba(57, 49, 36, 0.075);
+}
+
+.gee-frame-container iframe {
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  min-height: 0;
+
+  margin: 0;
+
+  padding: 0;
+
+  border: 1px solid var(--border-dark);
+
+  background-color: #ede8dd;
+
+  overflow: hidden;
+}
+
+.gee-frame-container iframe:focus {
+  outline: 3px solid var(--accent-steel-blue);
+
+  outline-offset: 3px;
+}
+
+.gee-caption {
+  width: 100%;
+
+  margin-top: 0.5rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.7rem;
+
+  font-weight: 400;
+
+  line-height: 1.5;
+
+  letter-spacing: 2px;
+
+  text-align: right;
+
+  text-transform: uppercase;
+
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   54. RECENT NOTES / AINAN
+========================================================================== */
+
+.ainan-section {
+  position: relative;
+
+  width: 100%;
+
+  padding: 8rem 0;
+
+  overflow: hidden;
+
+  border-top: 1px solid var(--border-color);
+
+  border-bottom: 1px solid var(--border-color);
+
+  background-image:
+    linear-gradient(rgba(244, 239, 229, 0.88), rgba(244, 239, 229, 0.5)),
+    linear-gradient(rgba(244, 239, 229, 0.12), rgba(244, 239, 229, 0.34)),
+    url("./assets/images/notes.jpg");
+
+  background-size: cover;
+
+  background-position: center;
+
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
+}
+
+.ainan-section::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.018) 0,
+    rgba(72, 61, 45, 0.018) 1px,
+    transparent 1px,
+    transparent 5px
+  );
+
+  mix-blend-mode: multiply;
+
+  opacity: 0.45;
+}
+
+.ainan-container {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 4rem;
+
+  width: min(1400px, calc(100% - 80px));
+
+  margin: 0 auto;
+}
+
+.ainan-page-title {
+  position: sticky;
+
+  top: 150px;
+
+  z-index: 5;
+
+  display: block;
+
+  width: 100%;
+
+  height: 0;
+
+  pointer-events: none;
+
+  overflow: visible;
+}
+
+.ainan-page-title h2 {
+  position: relative;
+
+  width: min(520px, 40vw);
+
+  margin-left: max(40px, calc((100% - 1400px) / 2));
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(2.4rem, 4vw, 4rem);
+
+  font-weight: 500;
+
+  line-height: 1.1;
+
+  color: var(--text-main);
+
+  pointer-events: auto;
+}
+
+.ainan-page-title h2::after {
+  content: "";
+
+  display: block;
+
+  width: 80px;
+
+  height: 1px;
+
+  margin-top: 0.85rem;
+
+  background: linear-gradient(to right, var(--accent-gold-deep), transparent);
+}
+
+.ainan-page-title h2 span {
+  display: block;
+
+  margin-top: 0.5rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.9rem;
+
+  font-weight: 300;
+
+  line-height: 1.4;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: var(--accent-gold-deep);
+}
+
+.ainan-glass-card {
+  position: relative;
+
+  z-index: 20;
+
+  width: min(550px, 100%);
+
+  padding: 3.5rem 3rem;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(130, 107, 80, 0.2);
+
+  border-radius: var(--radius-xs);
+
+  background: linear-gradient(
+    180deg,
+    rgba(250, 247, 239, 0.94),
+    rgba(244, 239, 229, 0.91)
+  );
+
+  box-shadow: var(--shadow-paper);
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+}
+
+.ainan-glass-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 120px;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(41, 41, 35, 0.07),
+      rgba(244, 239, 229, 0.02) 48%,
+      rgba(244, 239, 229, 0.96) 100%
+    ),
+    var(--note-image, url("./assets/images/notes.jpg"));
+
+  background-size: cover, cover;
+
+  background-position: center, center;
+
+  background-repeat: no-repeat;
+
+  filter: sepia(0.24) grayscale(0.16) saturate(0.7) contrast(0.94);
+
+  opacity: 0.72;
+}
+
+.ainan-glass-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: 116px;
+
+  left: 3rem;
+
+  right: 3rem;
+
+  height: 1px;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(168, 141, 95, 0.56) 15%,
+    rgba(168, 141, 95, 0.3) 50%,
+    rgba(168, 141, 95, 0.56) 85%,
+    transparent
+  );
+}
+
+.ainan-glass-card > * {
+  position: relative;
+
+  z-index: 2;
+}
+
+.ainan-glass-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(168, 141, 95, 0.55);
+
+  box-shadow: var(--shadow-paper-hover);
+}
+
+.ainan-card-category {
+  display: block;
+
+  margin-bottom: 1.2rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 1.25rem;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: var(--accent-gold-deep);
+
+  -webkit-text-stroke: 0.6px #ffffff;
+
+  text-shadow:
+    0 0 3px #ffffff,
+    0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+.ainan-card-title {
+  margin: 0 0 1.5rem;
+
+  padding-top: 2rem;
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  color: var(--text-main);
+}
+
+.ainan-card-description {
+  margin: 0 0 2rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.95rem;
+
+  line-height: 1.8;
+
+  color: var(--text-muted);
+}
+
+.excerpt-meta {
+  display: flex;
+
+  align-items: center;
+
+  gap: 2rem;
+
+  margin-bottom: 2rem;
+
+  padding-top: 1.5rem;
+
+  border-top: 1px solid rgba(42, 42, 35, 0.12);
+}
+
+.ainan-meta-item {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+.ainan-meta-label {
+  margin-bottom: 4px;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.65rem;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  letter-spacing: 1.5px;
+
+  color: var(--accent-gold-deep);
+}
+
+.ainan-meta-value {
+  font-family: var(--font-sans);
+
+  font-size: 0.85rem;
+
+  font-weight: 400;
+
+  color: var(--text-main);
+}
+
+.ainan-card-link {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding-bottom: 6px;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.8rem;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  color: var(--text-main);
+
+  transition: var(--ease);
+}
+
+.ainan-card-link::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep),
+    var(--accent-gold),
+    transparent
+  );
+}
+
+.ainan-card-link:hover {
+  gap: 18px;
+
+  color: var(--accent-gold-deep);
+}
+
+/* ==========================================================================
+   55. ORGANIZATIONS
+========================================================================== */
+
+.main-content .section-title {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  position: relative;
+
+  margin-bottom: 2.5rem;
+
+  padding-bottom: 1rem;
+
+  font-family: var(--font-serif);
+
+  font-size: 2.2rem;
+
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  color: var(--text-main);
+}
+
+.main-content .section-title::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+    var(--accent-gold-deep) 0,
+    var(--accent-gold) 12%,
+    rgba(168, 141, 95, 0.32) 48%,
+    transparent 100%
+  );
+}
+
+.main-content .section-title::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -4px;
+
+  width: 48px;
+
+  height: 1px;
+
+  background: var(--accent-gold);
+
+  opacity: 0.65;
+}
+
+.main-content .footer-tagline {
+  font-family: var(--font-sans);
+
+  font-size: 0.8rem;
+
+  line-height: 1.4;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: var(--accent-gold-deep);
+
+  margin-top: 0.5rem;
+
+  margin-bottom: 0;
+}
+
+.org-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+
+  gap: 2.5rem;
+}
+
+.org-card {
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 2.5rem;
+
+  background: #ffffff;
+
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(72, 61, 45, 0.009) 0,
+    rgba(72, 61, 45, 0.009) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+
+  border: 1px solid var(--border-color);
+
+  border-radius: var(--radius-xs);
+
+  box-shadow: 0 6px 20px rgba(57, 49, 36, 0.025);
+
+  transition: var(--ease);
+}
+
+.org-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(168, 141, 95, 0.55);
+
+  box-shadow: 0 12px 30px rgba(57, 49, 36, 0.065);
+}
+
+.org-header {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 1.5rem;
+
+  margin-bottom: 1.5rem;
+
+  padding-bottom: 1.5rem;
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+.org-header::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -4px;
+
+  width: 42px;
+
+  height: 1px;
+
+  background: var(--accent-gold);
+
+  opacity: 0.55;
+}
+
+.org-logo {
+  width: 55px;
+
+  height: 55px;
+
+  flex-shrink: 0;
+
+  object-fit: contain;
+
+  filter: grayscale(100%) sepia(10%);
+
+  opacity: 0.76;
+
+  transition: var(--ease);
+}
+
+.org-card:hover .org-logo {
+  filter: grayscale(35%) sepia(12%);
+
+  opacity: 1;
+}
+
+.org-title-wrapper {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.org-name {
+  margin-bottom: 0.4rem;
+
+  font-family: var(--font-serif);
+
+  font-size: 1.3rem;
+
+  font-weight: 500;
+
+  line-height: 1.2;
+
+  color: var(--text-main);
+}
+
+.org-role {
+  font-family: var(--font-sans);
+
+  font-size: 0.7rem;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  color: var(--accent-gold-deep);
+}
+
+.org-desc {
+  flex-grow: 1;
+
+  margin-bottom: 2rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.95rem;
+
+  line-height: 1.7;
+
+  color: var(--text-muted);
+}
+
+.org-link {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  align-self: flex-start;
+
+  gap: 8px;
+
+  padding-bottom: 5px;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.75rem;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: var(--text-main);
+
+  transition: var(--ease);
+}
+
+.org-link::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 1px;
+
+  background: linear-gradient(to right, var(--accent-gold-deep), transparent);
+}
+
+.org-link:hover {
+  gap: 14px;
+
+  color: var(--accent-gold-deep);
+}
+
+/* ==========================================================================
+   56. AFTERMOVIE
+========================================================================== */
+
+.aftermovie-layout {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4rem;
+
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 0 2rem 0 0;
+}
+
+.aftermovie-carousel-wrapper {
+  width: 70%;
+
+  overflow: hidden;
+}
+
+.aftermovie-carousel {
+  display: flex;
+
+  gap: 2rem;
+
+  overflow-x: auto;
+
+  padding: 1rem 0 2rem 2rem;
+
+  scroll-snap-type: x mandatory;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+.aftermovie-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.aftermovie-item {
+  flex: 0 0 40%;
+
+  scroll-snap-align: start;
+}
+
+.youtube-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(168, 141, 95, 0.18);
+
+  border-radius: var(--radius-xs);
+
+  background: var(--text-main);
+
+  box-shadow: 0 10px 30px rgba(57, 49, 36, 0.08);
+}
+
+.youtube-wrapper iframe {
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  border: none;
+}
+
+.aftermovie-title {
+  margin-top: 1.5rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.85rem;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  color: var(--text-main);
+}
+
+.aftermovie-info {
+  width: 30%;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.aftermovie-info p {
+  margin-bottom: 2rem;
+
+  font-family: var(--font-sans);
+
+  font-size: 1rem;
+
+  line-height: 1.7;
+
+  color: var(--text-muted);
+}
+
+.scroll-hint {
+  font-family: var(--font-sans);
+
+  font-size: 0.7rem;
+
+  line-height: 1.4;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: var(--accent-gold-deep);
+}
+
+.animated-chevrons {
+  display: flex;
+
+  align-items: center;
+
+  margin-left: 8px;
+
+  color: var(--accent-gold);
+
+  font-size: 1.2rem;
+}
+
+.animated-chevrons span {
+  display: inline-block;
+
+  animation: swipeForward 1.5s infinite ease-in-out;
+}
+
+.animated-chevrons span:nth-child(2) {
+  margin-left: -4px;
+
+  animation-delay: 0.15s;
+}
+
+@keyframes swipeForward {
+  0%,
+  100% {
+    transform: translateX(0);
+
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateX(6px);
+
+    opacity: 1;
   }
 }

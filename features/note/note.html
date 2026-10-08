@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -332,7 +331,7 @@
 
           <p
             class="translatable"
-            data-en="A medium with decisive implications, insofar as it is eminently federative, establishing a concrete link, i.e. of proximity, between the subject and the world, the subject and others, the subject and his or his own self."
+            data-en="A medium with decisive implications, insofar as it is eminently federative, establishing a concrete link, i.e. of proximity, between the subject and the world, the subject and others, the subject and his or her own self."
             data-id="Sebuah medium yang memiliki implikasi yang menentukan, sejauh ia pada dasarnya bersifat federatif: ia membangun hubungan yang konkret—yakni hubungan kedekatan—antara subjek dan dunia, subjek dan orang lain, serta subjek dengan dirinya sendiri."
           >
             A medium with decisive implications, insofar as it is eminently
@@ -346,7 +345,7 @@
              DYNAMIC TOPIC SECTIONS
         ======================================================= -->
 
-        <!-- Created by note.js -->
+        <!-- Created dynamically by note.js -->
 
         <!-- ======================================================
              NO RESULTS
@@ -411,19 +410,16 @@
 
                 <button onclick="shareLink('wa')" type="button">
                   <i class="fa-brands fa-whatsapp"></i>
-
                   WhatsApp
                 </button>
 
                 <button onclick="shareLink('x')" type="button">
                   <i class="fa-brands fa-x-twitter"></i>
-
                   X (Twitter)
                 </button>
 
                 <button onclick="copyArticleLink()" type="button">
                   <i class="fa-solid fa-link"></i>
-
                   Copy Link
                 </button>
               </div>
@@ -441,13 +437,11 @@
 
                 <button onclick="downloadNote('word')" type="button">
                   <i class="fa-solid fa-file-word"></i>
-
                   Word (Auto-Format)
                 </button>
 
                 <button onclick="downloadNote('png')" type="button">
                   <i class="fa-solid fa-image"></i>
-
                   PNG (Image)
                 </button>
               </div>
@@ -528,12 +522,70 @@
 
     <div id="editor-overlay" class="modal-overlay">
       <div class="modal-box editor-box">
-        <!-- EDITOR HEADER -->
+        <!-- ======================================================
+             EDITOR HEADER
+        ======================================================= -->
 
         <div class="editor-header">
-          <h2 class="modal-title" id="editorHeading">Write a New Note</h2>
+          <div class="editor-header-main">
+            <h2 class="modal-title" id="editorHeading">Write a New Note</h2>
 
-          <button class="modal-close" onclick="closeEditor()" type="button">
+            <!--
+              Appears only in Focus Mode.
+              Shows the current title without
+              consuming the space of the title input.
+            -->
+
+            <div class="editor-focus-title" id="editorFocusTitle"></div>
+          </div>
+
+          <!--
+            EDITOR VIEW CONTROLS
+          -->
+
+          <div class="editor-view-controls">
+            <!-- DETAILS -->
+
+            <button
+              type="button"
+              class="editor-view-btn"
+              id="editorDetailsBtn"
+              onclick="toggleEditorMetadata()"
+              title="Show note details"
+              aria-label="Show note details"
+              aria-pressed="false"
+            >
+              <i class="fa-solid fa-sliders"></i>
+
+              <span id="editorDetailsLabel"> Details </span>
+            </button>
+
+            <!-- FULL SCREEN -->
+
+            <button
+              type="button"
+              class="editor-view-btn"
+              id="editorFullscreenBtn"
+              onclick="toggleEditorFullscreen()"
+              title="Full screen"
+              aria-label="Full screen"
+              aria-pressed="false"
+            >
+              <i class="fa-solid fa-expand" id="editorFullscreenIcon"></i>
+
+              <span id="editorFullscreenLabel"> Full Screen </span>
+            </button>
+          </div>
+
+          <!-- CLOSE -->
+
+          <button
+            class="modal-close"
+            onclick="closeEditor()"
+            type="button"
+            title="Close editor"
+            aria-label="Close editor"
+          >
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -542,446 +594,498 @@
              EDITOR META
         ======================================================= -->
 
-        <div class="editor-meta-grid">
-          <!-- TITLE -->
+        <div class="editor-note-meta" id="editorNoteMeta">
+          <div class="editor-meta-grid">
+            <!-- ==================================================
+                 TITLE
+            =================================================== -->
 
-          <div class="field-group">
-            <label class="field-label" for="fieldTitle"> Title </label>
+            <div class="field-group">
+              <label class="field-label" for="fieldTitle"> Title </label>
 
-            <input
-              type="text"
-              id="fieldTitle"
-              class="field-input title-input"
-              placeholder="Give your note a title"
-            />
-          </div>
+              <input
+                type="text"
+                id="fieldTitle"
+                class="field-input title-input"
+                placeholder="Give your note a title"
+                autocomplete="off"
+              />
+            </div>
 
-          <!-- TOPIC -->
+            <!-- ==================================================
+                 TOPIC
+            =================================================== -->
 
-          <div class="field-group">
-            <label class="field-label" for="fieldTopicSelect"> Topic </label>
+            <div class="field-group">
+              <label class="field-label" for="fieldTopicSelect"> Topic </label>
 
-            <select
-              id="fieldTopicSelect"
-              class="field-input"
-              onchange="handleTopicSelectChange()"
-            >
-              <option value="culture">Culture & History</option>
+              <select
+                id="fieldTopicSelect"
+                class="field-input"
+                onchange="handleTopicSelectChange()"
+              >
+                <option value="culture">Culture &amp; History</option>
 
-              <option value="sustainability" selected>Sustainability</option>
+                <option value="sustainability" selected>Sustainability</option>
 
-              <option value="environment">Environment</option>
+                <option value="environment">Environment</option>
 
-              <option value="education">Education</option>
+                <option value="education">Education</option>
 
-              <option value="__new__">+ New topic...</option>
-            </select>
-          </div>
+                <option value="__new__">+ New topic...</option>
+              </select>
+            </div>
 
-          <!-- NEW TOPIC -->
+            <!-- ==================================================
+                 NEW TOPIC
+            =================================================== -->
 
-          <div class="field-group" id="newTopicGroup" style="display: none">
-            <label class="field-label" for="fieldNewTopicName">
-              New topic name
-            </label>
+            <div class="field-group" id="newTopicGroup" style="display: none">
+              <label class="field-label" for="fieldNewTopicName">
+                New topic name
+              </label>
 
-            <input
-              type="text"
-              id="fieldNewTopicName"
-              class="field-input"
-              placeholder="e.g. Technology"
-            />
+              <input
+                type="text"
+                id="fieldNewTopicName"
+                class="field-input"
+                placeholder="e.g. Technology"
+                autocomplete="off"
+              />
 
-            <label
-              class="field-label"
-              for="fieldNewTopicIcon"
-              style="margin-top: 0.6rem"
-            >
-              Icon
-            </label>
+              <label
+                class="field-label"
+                for="fieldNewTopicIcon"
+                style="margin-top: 0.6rem"
+              >
+                Icon
+              </label>
 
-            <select id="fieldNewTopicIcon" class="field-input">
-              <option value="fa-lightbulb">Idea</option>
+              <select id="fieldNewTopicIcon" class="field-input">
+                <option value="fa-lightbulb">Idea</option>
 
-              <option value="fa-flask">Science</option>
+                <option value="fa-flask">Science</option>
 
-              <option value="fa-code">Technology</option>
+                <option value="fa-code">Technology</option>
 
-              <option value="fa-pen-nib">Writing</option>
+                <option value="fa-pen-nib">Writing</option>
 
-              <option value="fa-mountain-sun">Travel</option>
+                <option value="fa-mountain-sun">Travel</option>
 
-              <option value="fa-heart-pulse">Wellbeing</option>
+                <option value="fa-heart-pulse">Wellbeing</option>
 
-              <option value="fa-city">Urban</option>
+                <option value="fa-city">Urban</option>
 
-              <option value="fa-seedling">Nature</option>
-            </select>
-          </div>
+                <option value="fa-seedling">Nature</option>
+              </select>
+            </div>
 
-          <!-- DATE -->
+            <!-- ==================================================
+                 DATE
+            =================================================== -->
 
-          <div class="field-group">
-            <label class="field-label" for="fieldDate"> Date </label>
+            <div class="field-group">
+              <label class="field-label" for="fieldDate"> Date </label>
 
-            <input type="date" id="fieldDate" class="field-input" />
-          </div>
+              <input type="date" id="fieldDate" class="field-input" />
+            </div>
 
-          <!-- EXCERPT -->
+            <!-- ==================================================
+                 EXCERPT
+            =================================================== -->
 
-          <div class="field-group span-2">
-            <label class="field-label" for="fieldExcerpt"> Excerpt </label>
+            <div class="field-group span-2">
+              <label class="field-label" for="fieldExcerpt"> Excerpt </label>
 
-            <textarea
-              id="fieldExcerpt"
-              class="field-input"
-              rows="2"
-              placeholder="A short teaser shown on the card (1-2 sentences)"
-            ></textarea>
+              <textarea
+                id="fieldExcerpt"
+                class="field-input"
+                rows="2"
+                placeholder="A short teaser shown on the card (1-2 sentences)"
+              ></textarea>
+            </div>
           </div>
         </div>
 
         <!-- ======================================================
-             RICH TEXT TOOLBAR
+             EDITOR WORKSPACE
         ======================================================= -->
 
-        <div class="editor-toolbar">
-          <!-- BLOCK / FONT / LINE -->
+        <div class="editor-workspace">
+          <!-- ====================================================
+               RICH TEXT TOOLBAR
+          ===================================================== -->
 
-          <div class="tb-group">
-            <select
-              class="tb-select"
-              id="tbBlockType"
-              onmousedown="saveSelection()"
-              onchange="applyBlockType(this.value)"
-            >
-              <option value="P">Paragraf</option>
+          <div class="editor-toolbar">
+            <!-- BLOCK / FONT / LINE -->
 
-              <option value="H1">Heading 1</option>
+            <div class="tb-group">
+              <select
+                class="tb-select"
+                id="tbBlockType"
+                onmousedown="saveSelection()"
+                onchange="applyBlockType(this.value)"
+              >
+                <option value="P">Paragraf</option>
 
-              <option value="H2">Heading 2</option>
+                <option value="H1">Heading 1</option>
 
-              <option value="H3">Heading 3</option>
+                <option value="H2">Heading 2</option>
 
-              <option value="BLOCKQUOTE">Kutipan</option>
-            </select>
+                <option value="H3">Heading 3</option>
 
-            <select
-              class="tb-select"
-              id="tbFont"
-              onmousedown="saveSelection()"
-              onchange="applyFont(this.value)"
-            >
-              <option value="Playfair Display">Serif (Klasik)</option>
+                <option value="BLOCKQUOTE">Kutipan</option>
+              </select>
 
-              <option value="Inter">Sans (Modern)</option>
+              <select
+                class="tb-select"
+                id="tbFont"
+                onmousedown="saveSelection()"
+                onchange="applyFont(this.value)"
+              >
+                <option value="Playfair Display">Serif (Klasik)</option>
 
-              <option value="JetBrains Mono">Mono (Kode)</option>
+                <option value="Inter">Sans (Modern)</option>
 
-              <option value="Cedarville Cursive">Handwriting (Natural)</option>
+                <option value="JetBrains Mono">Mono (Kode)</option>
 
-              <option value="Dancing Script">Handwriting (Elegant)</option>
+                <option value="Cedarville Cursive">
+                  Handwriting (Natural)
+                </option>
 
-              <option value="Caveat">Handwriting (Casual)</option>
-            </select>
+                <option value="Dancing Script">Handwriting (Elegant)</option>
 
-            <select
-              class="tb-select"
-              id="tbLineSpacing"
-              onmousedown="saveSelection()"
-              onchange="applyLineHeight(this.value)"
-              title="Spasi Baris"
-            >
-              <option value="1.2">Spasi: Rapat (1.2)</option>
+                <option value="Caveat">Handwriting (Casual)</option>
+              </select>
 
-              <option value="1.58" selected>Spasi: Normal (1.58)</option>
+              <select
+                class="tb-select"
+                id="tbLineSpacing"
+                onmousedown="saveSelection()"
+                onchange="applyLineHeight(this.value)"
+                title="Spasi Baris"
+              >
+                <option value="1.2">Spasi: Rapat (1.2)</option>
 
-              <option value="2.0">Spasi: Lebar (2.0)</option>
-            </select>
+                <option value="1.58" selected>Spasi: Normal (1.58)</option>
+
+                <option value="2.0">Spasi: Lebar (2.0)</option>
+              </select>
+            </div>
+
+            <span class="tb-divider"></span>
+
+            <!-- ==================================================
+                 BASIC FORMATTING
+            =================================================== -->
+
+            <div class="tb-group">
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('bold')"
+                title="Bold"
+                aria-label="Bold"
+              >
+                <i class="fa-solid fa-bold"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('italic')"
+                title="Italic"
+                aria-label="Italic"
+              >
+                <i class="fa-solid fa-italic"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('underline')"
+                title="Underline"
+                aria-label="Underline"
+              >
+                <i class="fa-solid fa-underline"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('strikeThrough')"
+                title="Strikethrough"
+                aria-label="Strikethrough"
+              >
+                <i class="fa-solid fa-strikethrough"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn highlight-btn"
+                onmousedown="
+                  saveSelection();
+                  event.preventDefault();
+                "
+                onclick="applyCustomHighlight()"
+                title="Highlight"
+                aria-label="Highlight"
+              >
+                <i class="fa-solid fa-highlighter"></i>
+              </button>
+            </div>
+
+            <span class="tb-divider"></span>
+
+            <!-- ==================================================
+                 LIST / ALIGNMENT / TABLE
+            =================================================== -->
+
+            <div class="tb-group">
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('insertUnorderedList')"
+                title="Bullet List"
+                aria-label="Bullet List"
+              >
+                <i class="fa-solid fa-list-ul"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('insertOrderedList')"
+                title="Numbered List"
+                aria-label="Numbered List"
+              >
+                <i class="fa-solid fa-list-ol"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('justifyLeft')"
+                title="Align Left"
+                aria-label="Align Left"
+              >
+                <i class="fa-solid fa-align-left"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('justifyCenter')"
+                title="Align Center"
+                aria-label="Align Center"
+              >
+                <i class="fa-solid fa-align-center"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="execToolbar('justifyFull')"
+                title="Justify"
+                aria-label="Justify"
+              >
+                <i class="fa-solid fa-align-justify"></i>
+              </button>
+
+              <select
+                class="tb-select"
+                id="tbTableAction"
+                onmousedown="saveSelection()"
+                onchange="handleTableAction(this.value)"
+                style="margin-left: 8px"
+                title="Table options"
+              >
+                <option value="">-- Opsi Tabel --</option>
+
+                <option value="insert">+ Sisipkan Tabel</option>
+
+                <option value="" disabled>────────</option>
+
+                <option value="fit-window">▣ Sesuaikan Jendela</option>
+
+                <option value="fit-content">▣ Sesuaikan Konten</option>
+
+                <option value="" disabled>────────</option>
+
+                <option value="border-full">▦ Semua Garis</option>
+
+                <option value="border-horizontal">☰ Horizontal</option>
+
+                <option value="border-vertical">▥ Vertikal</option>
+
+                <option value="border-none">□ Tanpa Garis</option>
+
+                <option value="" disabled>────────</option>
+
+                <option value="merge-right">→ Gabung Kanan</option>
+
+                <option value="merge-down">↓ Gabung Bawah</option>
+
+                <option value="unmerge">↶ Pisahkan</option>
+              </select>
+            </div>
+
+            <!-- ==================================================
+                 IMAGE / LINK
+            =================================================== -->
+
+            <div class="tb-group">
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="triggerImageInsert()"
+                title="Insert image"
+                aria-label="Insert image"
+              >
+                <i class="fa-solid fa-image"></i>
+              </button>
+
+              <button
+                type="button"
+                class="tb-btn"
+                onclick="triggerLinkInsert()"
+                title="Insert link"
+                aria-label="Insert link"
+              >
+                <i class="fa-solid fa-link"></i>
+              </button>
+
+              <input
+                type="file"
+                id="imageFileInput"
+                accept="image/*"
+                style="display: none"
+                onchange="handleImageFileChosen(event)"
+              />
+            </div>
+
+            <!-- ==================================================
+                 WORD COUNT
+            =================================================== -->
+
+            <span class="tb-word-count" id="tbWordCount">
+              0 words • ~1 min read
+            </span>
           </div>
 
-          <span class="tb-divider"></span>
+          <!-- ====================================================
+               IMAGE STYLE PICKER
+          ===================================================== -->
 
-          <!-- BASIC FORMATTING -->
-
-          <div class="tb-group">
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('bold')"
-              title="Bold"
-            >
-              <i class="fa-solid fa-bold"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('italic')"
-              title="Italic"
-            >
-              <i class="fa-solid fa-italic"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('underline')"
-              title="Underline"
-            >
-              <i class="fa-solid fa-underline"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('strikeThrough')"
-              title="Strikethrough"
-            >
-              <i class="fa-solid fa-strikethrough"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn highlight-btn"
-              onmousedown="
-                saveSelection();
-                event.preventDefault();
-              "
-              onclick="applyCustomHighlight()"
-              title="Highlight"
-            >
-              <i class="fa-solid fa-highlighter"></i>
-            </button>
-          </div>
-
-          <span class="tb-divider"></span>
-
-          <!-- LIST / ALIGNMENT / TABLE -->
-
-          <div class="tb-group">
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('insertUnorderedList')"
-              title="Bullet List"
-            >
-              <i class="fa-solid fa-list-ul"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('insertOrderedList')"
-              title="Numbered List"
-            >
-              <i class="fa-solid fa-list-ol"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('justifyLeft')"
-              title="Align Left"
-            >
-              <i class="fa-solid fa-align-left"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('justifyCenter')"
-              title="Align Center"
-            >
-              <i class="fa-solid fa-align-center"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="execToolbar('justifyFull')"
-              title="Justify"
-            >
-              <i class="fa-solid fa-align-justify"></i>
-            </button>
-
-            <select
-              class="tb-select"
-              id="tbTableAction"
-              onmousedown="saveSelection()"
-              onchange="handleTableAction(this.value)"
-              style="margin-left: 8px"
-            >
-              <option value="">-- Opsi Tabel --</option>
-
-              <option value="insert">+ Sisipkan Tabel</option>
-
-              <option value="" disabled>────────</option>
-
-              <option value="fit-window">▣ Sesuaikan Jendela</option>
-
-              <option value="fit-content">▣ Sesuaikan Konten</option>
-
-              <option value="" disabled>────────</option>
-
-              <option value="border-full">▦ Semua Garis</option>
-
-              <option value="border-horizontal">☰ Horizontal</option>
-
-              <option value="border-vertical">▥ Vertikal</option>
-
-              <option value="border-none">□ Tanpa Garis</option>
-
-              <option value="" disabled>────────</option>
-
-              <option value="merge-right">→ Gabung Kanan</option>
-
-              <option value="merge-down">↓ Gabung Bawah</option>
-
-              <option value="unmerge">↶ Pisahkan</option>
-            </select>
-          </div>
-
-          <!-- IMAGE / LINK -->
-
-          <div class="tb-group">
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="triggerImageInsert()"
-              title="Insert image"
-            >
-              <i class="fa-solid fa-image"></i>
-            </button>
-
-            <button
-              type="button"
-              class="tb-btn"
-              onclick="triggerLinkInsert()"
-              title="Insert link"
-            >
-              <i class="fa-solid fa-link"></i>
-            </button>
-
-            <input
-              type="file"
-              id="imageFileInput"
-              accept="image/*"
-              style="display: none"
-              onchange="handleImageFileChosen(event)"
-            />
-          </div>
-
-          <!-- WORD COUNT -->
-
-          <span class="tb-word-count" id="tbWordCount">
-            0 words • ~1 min read
-          </span>
-        </div>
-
-        <!-- ======================================================
-             IMAGE STYLE PICKER
-        ======================================================= -->
-
-        <div
-          class="image-style-picker"
-          id="imageStylePicker"
-          style="display: none"
-        >
-          <span> Image style: </span>
-
-          <button type="button" onclick="insertPendingImage('note-img-full')">
-            Full width
-          </button>
-
-          <button
-            type="button"
-            onclick="insertPendingImage('note-img-rounded')"
+          <div
+            class="image-style-picker"
+            id="imageStylePicker"
+            style="display: none"
           >
-            Rounded
-          </button>
+            <span> Image style: </span>
 
-          <button
-            type="button"
-            onclick="insertPendingImage('note-img-bordered')"
-          >
-            Bordered
-          </button>
+            <button type="button" onclick="insertPendingImage('note-img-full')">
+              Full width
+            </button>
 
-          <button
-            type="button"
-            onclick="insertPendingImage('note-img-center-small')"
-          >
-            Centered, small
-          </button>
+            <button
+              type="button"
+              onclick="insertPendingImage('note-img-rounded')"
+            >
+              Rounded
+            </button>
 
-          <button
-            type="button"
-            onclick="insertPendingImage('note-img-float-left')"
-          >
-            Float left
-          </button>
+            <button
+              type="button"
+              onclick="insertPendingImage('note-img-bordered')"
+            >
+              Bordered
+            </button>
 
-          <button
-            type="button"
-            onclick="insertPendingImage('note-img-float-right')"
-          >
-            Float right
-          </button>
+            <button
+              type="button"
+              onclick="insertPendingImage('note-img-center-small')"
+            >
+              Centered, small
+            </button>
 
-          <button
-            type="button"
-            class="cancel-style"
-            onclick="cancelPendingImage()"
-          >
-            Cancel
-          </button>
-        </div>
+            <button
+              type="button"
+              onclick="insertPendingImage('note-img-float-left')"
+            >
+              Float left
+            </button>
 
-        <!-- ======================================================
-             EDITOR BODY
-        ======================================================= -->
+            <button
+              type="button"
+              onclick="insertPendingImage('note-img-float-right')"
+            >
+              Float right
+            </button>
 
-        <div
-          id="editorBody"
-          class="editor-body"
-          contenteditable="true"
-          data-placeholder="Start writing..."
-        ></div>
-
-        <!-- ======================================================
-             EDITOR FOOTER
-        ======================================================= -->
-
-        <div class="editor-footer">
-          <span id="editorStatus" class="editor-status"></span>
-
-          <div class="editor-footer-actions">
-            <button type="button" class="btn-ghost" onclick="closeEditor()">
+            <button
+              type="button"
+              class="cancel-style"
+              onclick="cancelPendingImage()"
+            >
               Cancel
             </button>
+          </div>
 
-            <button
-              type="button"
-              class="btn-primary"
-              onclick="publishArticle()"
-            >
-              <i class="fa-solid fa-paper-plane"></i>
+          <!-- ====================================================
+               EDITOR BODY
+          ===================================================== -->
 
-              <span id="publishBtnLabel"> Publish </span>
-            </button>
+          <div
+            id="editorBody"
+            class="editor-body"
+            contenteditable="true"
+            data-placeholder="Start writing..."
+            spellcheck="true"
+            role="textbox"
+            aria-multiline="true"
+          ></div>
+
+          <!-- ====================================================
+               EDITOR FOOTER
+          ===================================================== -->
+
+          <div class="editor-footer">
+            <span
+              id="editorStatus"
+              class="editor-status"
+              aria-live="polite"
+            ></span>
+
+            <div class="editor-footer-actions">
+              <button type="button" class="btn-ghost" onclick="closeEditor()">
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                class="btn-primary"
+                onclick="publishArticle()"
+              >
+                <i class="fa-solid fa-paper-plane"></i>
+
+                <span id="publishBtnLabel"> Publish </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- =========================================================
-     UNIVERSAL FOOTER
-========================================================= -->
+         UNIVERSAL FOOTER
+    ========================================================== -->
+
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-center">
           <h3 class="footer-brand-logo">AWS</h3>
+
           <p
             class="footer-tagline-large translatable"
             data-en="Navigating the intersections of climate, spatial ecology, and community resilience."
@@ -998,29 +1102,36 @@
               class="nav-group-title translatable"
               data-en="Connect"
               data-id="Hubungi"
-              >Connect</span
             >
+              Connect
+            </span>
+
             <div class="connect-links">
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=alvinwildansahli@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-solid fa-envelope"></i> Email
+                <i class="fa-solid fa-envelope"></i>
+                Email
               </a>
+
               <a
                 href="https://www.linkedin.com/in/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+                <i class="fa-brands fa-linkedin-in"></i>
+                LinkedIn
               </a>
+
               <a
                 href="https://www.instagram.com/alvinwildans"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fa-brands fa-instagram"></i> Instagram
+                <i class="fa-brands fa-instagram"></i>
+                Instagram
               </a>
             </div>
           </div>
@@ -1043,6 +1154,7 @@
     =========================================================== -->
 
     <script src="/features/note/note.js"></script>
+
     <script src="/features/note/note-annotation-addon.js"></script>
 
     <!-- ==========================================================

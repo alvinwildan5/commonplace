@@ -4,6 +4,8 @@
    + ROBUST RICH TEXT HIGHLIGHT
    + CLEAN URL ROUTING
    + CARD BACKGROUND IMAGE
+   + EDITOR FOCUS MODE
+   + EDITOR FULL SCREEN
 ========================================================================== */
 
 /* ==========================================================================
@@ -83,6 +85,17 @@ let lastSelectionRange = null;
 let savedImageSelectionRange = null;
 
 let currentArticleTitle = "Document";
+
+/* ==========================================================
+   EDITOR VIEW STATE
+========================================================== */
+
+/*
+   Focus Mode:
+   - metadata hidden
+   - editor body gets remaining viewport space
+*/
+let editorFocusMode = true;
 
 /* ==========================================================================
    SUPABASE
@@ -373,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   /*
        MUST load Supabase first.
        This makes direct article URLs work.
-    */
+  */
   await loadSavedArticlesIntoDom();
 
   initCarousels();
@@ -384,7 +397,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ------------------------------------------------------------
        DATE DEFAULT
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const dateField = document.getElementById("fieldDate");
 
@@ -394,7 +407,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ------------------------------------------------------------
        EDITOR BODY INPUT
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const editorBody = document.getElementById("editorBody");
 
@@ -435,12 +448,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       updateWordCount();
+
+      /*
+         Keep the mini title synchronized while typing/editing.
+      */
+      updateEditorFocusTitle(
+        document.getElementById("fieldTitle")?.value?.trim() || "",
+      );
+    });
+  }
+
+  /* ------------------------------------------------------------
+       TITLE INPUT
+  ------------------------------------------------------------ */
+
+  const editorTitleInput = document.getElementById("fieldTitle");
+
+  if (editorTitleInput) {
+    editorTitleInput.addEventListener("input", () => {
+      updateEditorFocusTitle(editorTitleInput.value.trim());
     });
   }
 
   /* ------------------------------------------------------------
        SELECTION CHANGE
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   document.addEventListener("selectionchange", () => {
     const sel = window.getSelection();
@@ -464,7 +496,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ------------------------------------------------------------
        HEADER SCROLL
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const header = document.querySelector(".site-header");
 
@@ -486,7 +518,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ------------------------------------------------------------
        INTERNAL ARTICLE LINKS
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   document.addEventListener("click", (event) => {
     const routeLink = event.target.closest("[data-note-route]");
@@ -496,12 +528,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /*
-           Preserve:
-           Ctrl + Click
-           Cmd + Click
-           Shift + Click
-           Middle click
-        */
+       Preserve:
+       Ctrl + Click
+       Cmd + Click
+       Shift + Click
+       Middle click
+    */
     if (
       event.ctrlKey ||
       event.metaKey ||
@@ -524,9 +556,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ------------------------------------------------------------
        INITIAL ROUTE
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   handleCurrentRoute();
+
+  /* ------------------------------------------------------------
+       INITIAL EDITOR VIEW STATE
+  ------------------------------------------------------------ */
+
+  setEditorFocusMode(true);
+
+  updateEditorFullscreenButton();
 });
 
 /* ==========================================================================
@@ -788,7 +828,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        ACTIVE TOPIC
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const parentSection = article.closest(".topic-section");
 
@@ -810,7 +850,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        CONTENT CLONE
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const contentToExport = document.getElementById(`content-${articleId}`);
 
@@ -832,7 +872,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        CURRENT TITLE
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const titleEl = modalContent.querySelector(".ed-title");
 
@@ -842,7 +882,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        DESCRIPTION
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const excerptText = article.querySelector(".ed-excerpt p")?.textContent || "";
 
@@ -853,7 +893,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        OPEN MODAL
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   const readingOverlay = document.getElementById("reading-overlay");
 
@@ -871,7 +911,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        RESET SCROLL
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   window.scrollTo({
     top: 0,
@@ -884,7 +924,7 @@ window.openArticle = function (articleId, updateRoute = true) {
 
   /* ------------------------------------------------------------
        PUBLIC ROUTE
-    ------------------------------------------------------------ */
+  ------------------------------------------------------------ */
 
   if (updateRoute) {
     navigateToArticle(articleId);
@@ -1102,7 +1142,7 @@ window.closeArticle = function () {
   /*
        Replace instead of push:
        prevents duplicate /note entries in history.
-    */
+  */
   navigateToNotes(true);
 
   hideReadingOverlay();
@@ -1207,7 +1247,7 @@ window.downloadNote = function (format) {
 
   /* ==============================================================
        PDF / PNG
-    ============================================================== */
+  ============================================================== */
 
   if (format === "pdf" || format === "png") {
     const hiddenContainer = document.createElement("div");
@@ -1338,7 +1378,7 @@ window.downloadNote = function (format) {
 
   /* ==============================================================
        WORD
-    ============================================================== */
+  ============================================================== */
 
   if (format === "word") {
     const exportClone = originalElement.cloneNode(true);
@@ -1376,6 +1416,7 @@ window.downloadNote = function (format) {
           xmlns="http://www.w3.org/TR/REC-html40"
         >
           <head>
+
             <meta charset="utf-8">
 
             <title>Export</title>
@@ -1740,8 +1781,8 @@ async function fetchArticlesFromSupabase() {
     bodyHTML: article.body_html,
 
     /* ==========================================================
-       CARD BACKGROUND
-    =========================================================== */
+           CARD BACKGROUND
+        =========================================================== */
 
     cardBgUrl: article.card_bg_url || null,
 
@@ -2099,8 +2140,8 @@ window.handleCardBackgroundChosen = function (event) {
   }
 
   /* ----------------------------------------------------------
-     VALIDATION
-  ---------------------------------------------------------- */
+       VALIDATION
+    ---------------------------------------------------------- */
 
   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
@@ -2113,8 +2154,8 @@ window.handleCardBackgroundChosen = function (event) {
   }
 
   /*
-     Maximum 5 MB.
-  */
+       Maximum 5 MB.
+    */
   const maxSize = 5 * 1024 * 1024;
 
   if (file.size > maxSize) {
@@ -2130,9 +2171,9 @@ window.handleCardBackgroundChosen = function (event) {
   removeCardBackground = false;
 
   /*
-     Preview locally first.
-     Existing image is NOT deleted yet.
-  */
+       Preview locally first.
+       Existing image is NOT deleted yet.
+    */
 
   const reader = new FileReader();
 
@@ -2260,6 +2301,7 @@ async function uploadCardBackground(file, articleId, title) {
 
   return {
     path: data?.path || filePath,
+
     publicUrl: publicData.publicUrl,
   };
 }
@@ -2282,6 +2324,244 @@ async function deleteCardBackground(path) {
 }
 
 /* ==========================================================================
+   EDITOR FOCUS MODE
+========================================================================== */
+
+/**
+ * Update the small title shown in Focus Mode.
+ */
+function updateEditorFocusTitle(title) {
+  const element = document.getElementById("editorFocusTitle");
+
+  if (!element) {
+    return;
+  }
+
+  const cleanTitle = String(title || "").trim();
+
+  element.textContent = cleanTitle || "Untitled Note";
+}
+
+/**
+ * Set editor Focus Mode.
+ *
+ * Focus Mode:
+ * - Hides Title
+ * - Hides Topic
+ * - Hides New Topic
+ * - Hides Date
+ * - Hides Excerpt
+ *
+ * It does NOT remove those fields from the DOM,
+ * so their values remain available to publishArticle().
+ */
+window.setEditorFocusMode = function (enabled = true) {
+  const overlay = document.getElementById("editor-overlay");
+
+  if (!overlay) {
+    return;
+  }
+
+  editorFocusMode = Boolean(enabled);
+
+  overlay.classList.toggle("focus-mode", editorFocusMode);
+
+  const detailsBtn = document.getElementById("editorDetailsBtn");
+
+  const detailsLabel = document.getElementById("editorDetailsLabel");
+
+  const detailsIcon = detailsBtn?.querySelector("i");
+
+  /*
+       aria-pressed means:
+       true  = metadata currently visible
+       false = metadata currently hidden
+    */
+  if (detailsBtn) {
+    detailsBtn.setAttribute("aria-pressed", String(!editorFocusMode));
+
+    detailsBtn.setAttribute(
+      "title",
+      editorFocusMode ? "Show note details" : "Hide note details",
+    );
+
+    detailsBtn.setAttribute(
+      "aria-label",
+      editorFocusMode ? "Show note details" : "Hide note details",
+    );
+  }
+
+  if (detailsLabel) {
+    detailsLabel.textContent = editorFocusMode ? "Details" : "Hide Details";
+  }
+
+  if (detailsIcon) {
+    detailsIcon.className = editorFocusMode
+      ? "fa-solid fa-sliders"
+      : "fa-solid fa-xmark";
+  }
+};
+
+/**
+ * Toggle metadata visibility.
+ */
+window.toggleEditorMetadata = function () {
+  const overlay = document.getElementById("editor-overlay");
+
+  if (!overlay) {
+    return;
+  }
+
+  const currentlyFocused = overlay.classList.contains("focus-mode");
+
+  setEditorFocusMode(!currentlyFocused);
+
+  /*
+       Let the layout settle first.
+       Then return focus to the editor.
+    */
+  requestAnimationFrame(() => {
+    const body = document.getElementById("editorBody");
+
+    if (body && !currentlyFocused) {
+      /*
+           Metadata was just opened.
+           Do not forcibly steal the user's focus.
+        */
+      return;
+    }
+
+    if (body) {
+      body.focus();
+    }
+  });
+};
+
+/**
+ * Update Full Screen button state.
+ */
+function updateEditorFullscreenButton() {
+  const overlay = document.getElementById("editor-overlay");
+
+  const button = document.getElementById("editorFullscreenBtn");
+
+  const label = document.getElementById("editorFullscreenLabel");
+
+  const icon = document.getElementById("editorFullscreenIcon");
+
+  if (!overlay || !button) {
+    return;
+  }
+
+  const isNativeFullscreen = document.fullscreenElement === overlay;
+
+  const isFallbackFullscreen = overlay.classList.contains(
+    "editor-browser-fullscreen-fallback",
+  );
+
+  const fullscreen = isNativeFullscreen || isFallbackFullscreen;
+
+  button.setAttribute("aria-pressed", String(fullscreen));
+
+  button.setAttribute("title", fullscreen ? "Exit full screen" : "Full screen");
+
+  button.setAttribute(
+    "aria-label",
+    fullscreen ? "Exit full screen" : "Full screen",
+  );
+
+  if (label) {
+    label.textContent = fullscreen ? "Exit Full Screen" : "Full Screen";
+  }
+
+  if (icon) {
+    icon.className = fullscreen ? "fa-solid fa-compress" : "fa-solid fa-expand";
+  }
+}
+
+/**
+ * Toggle native browser fullscreen.
+ *
+ * Fullscreen automatically enters Focus Mode.
+ */
+window.toggleEditorFullscreen = async function () {
+  const overlay = document.getElementById("editor-overlay");
+
+  if (!overlay) {
+    return;
+  }
+
+  /*
+       Fullscreen is intended to be
+       a writing-focused experience.
+    */
+  setEditorFocusMode(true);
+
+  try {
+    const isNativeFullscreen = document.fullscreenElement === overlay;
+
+    if (!document.fullscreenElement && !isNativeFullscreen) {
+      if (typeof overlay.requestFullscreen === "function") {
+        await overlay.requestFullscreen();
+      } else {
+        /*
+             Browser does not support
+             Fullscreen API.
+          */
+        overlay.classList.add("editor-browser-fullscreen-fallback");
+      }
+    } else {
+      if (typeof document.exitFullscreen === "function") {
+        await document.exitFullscreen();
+      }
+
+      overlay.classList.remove("editor-browser-fullscreen-fallback");
+    }
+  } catch (error) {
+    console.warn("Could not toggle native fullscreen:", error);
+
+    /*
+         CSS fallback:
+         still provides a full viewport editor
+         even if native fullscreen is unavailable.
+      */
+    overlay.classList.toggle("editor-browser-fullscreen-fallback");
+  }
+
+  updateEditorFullscreenButton();
+
+  requestAnimationFrame(() => {
+    const body = document.getElementById("editorBody");
+
+    if (body) {
+      body.focus();
+    }
+  });
+};
+
+/**
+ * Browser fullscreen changes can also
+ * happen through ESC or browser controls.
+ */
+document.addEventListener("fullscreenchange", () => {
+  const overlay = document.getElementById("editor-overlay");
+
+  if (!overlay) {
+    return;
+  }
+
+  /*
+       Native fullscreen ended.
+       Remove fallback state if present.
+    */
+  if (document.fullscreenElement !== overlay) {
+    overlay.classList.remove("editor-browser-fullscreen-fallback");
+  }
+
+  updateEditorFullscreenButton();
+});
+
+/* ==========================================================================
    OPEN EDITOR
 ========================================================================== */
 
@@ -2299,48 +2579,133 @@ window.openEditor = function () {
   */
   resetCardBackgroundState();
 
-  document.getElementById("editorHeading").textContent = "Write a New Note";
+  const heading = document.getElementById("editorHeading");
 
-  document.getElementById("publishBtnLabel").textContent = "Publish";
+  if (heading) {
+    heading.textContent = "Write a New Note";
+  }
 
-  document.getElementById("fieldTitle").value = "";
+  const publishLabel = document.getElementById("publishBtnLabel");
 
-  document.getElementById("fieldExcerpt").value = "";
+  if (publishLabel) {
+    publishLabel.textContent = "Publish";
+  }
 
-  document.getElementById("fieldTopicSelect").value = "sustainability";
+  const titleField = document.getElementById("fieldTitle");
 
-  document.getElementById("newTopicGroup").style.display = "none";
+  if (titleField) {
+    titleField.value = "";
+  }
 
-  document.getElementById("fieldNewTopicName").value = "";
+  const excerptField = document.getElementById("fieldExcerpt");
 
-  document.getElementById("fieldNewTopicIcon").value = "fa-lightbulb";
+  if (excerptField) {
+    excerptField.value = "";
+  }
 
-  document.getElementById("fieldDate").value = new Date()
-    .toISOString()
-    .slice(0, 10);
+  const topicSelect = document.getElementById("fieldTopicSelect");
 
-  document.getElementById("editorBody").innerHTML = "";
+  if (topicSelect) {
+    topicSelect.value = "sustainability";
+  }
 
-  document.getElementById("editorStatus").textContent = "";
+  const newTopicGroup = document.getElementById("newTopicGroup");
+
+  if (newTopicGroup) {
+    newTopicGroup.style.display = "none";
+  }
+
+  const newTopicName = document.getElementById("fieldNewTopicName");
+
+  if (newTopicName) {
+    newTopicName.value = "";
+  }
+
+  const newTopicIcon = document.getElementById("fieldNewTopicIcon");
+
+  if (newTopicIcon) {
+    newTopicIcon.value = "fa-lightbulb";
+  }
+
+  const dateField = document.getElementById("fieldDate");
+
+  if (dateField) {
+    dateField.value = new Date().toISOString().slice(0, 10);
+  }
+
+  const body = document.getElementById("editorBody");
+
+  if (body) {
+    body.innerHTML = "";
+  }
+
+  const status = document.getElementById("editorStatus");
+
+  if (status) {
+    status.textContent = "";
+  }
 
   clearSavedSelection();
 
   updateWordCount();
 
-  document.getElementById("editor-overlay").classList.add("active");
+  updateEditorFocusTitle("");
+
+  /*
+     New notes always start in Focus Mode.
+  */
+  setEditorFocusMode(true);
+
+  updateEditorFullscreenButton();
+
+  const overlay = document.getElementById("editor-overlay");
+
+  if (overlay) {
+    overlay.classList.add("active");
+  }
 
   document.body.style.overflow = "hidden";
+
+  /*
+     Put cursor directly into
+     writing area.
+  */
+  requestAnimationFrame(() => {
+    if (body) {
+      body.focus();
+    }
+  });
 };
 
 /* ==========================================================================
    CLOSE EDITOR
 ========================================================================== */
 
-window.closeEditor = function () {
+window.closeEditor = async function () {
   const overlay = document.getElementById("editor-overlay");
 
+  /*
+       Exit native browser fullscreen
+       before closing the editor.
+    */
+  if (
+    overlay &&
+    document.fullscreenElement === overlay &&
+    typeof document.exitFullscreen === "function"
+  ) {
+    try {
+      await document.exitFullscreen();
+    } catch (error) {
+      console.warn("Could not exit fullscreen:", error);
+    }
+  }
+
   if (overlay) {
-    overlay.classList.remove("active");
+    overlay.classList.remove(
+      "active",
+      "focus-mode",
+      "editor-browser-fullscreen-fallback",
+    );
   }
 
   document.body.style.overflow = "auto";
@@ -2350,10 +2715,19 @@ window.closeEditor = function () {
   clearSavedSelection();
 
   /*
-     Reset card background state after closing.
-     No Storage deletion happens here.
-  */
+       Reset card background state after closing.
+       No Storage deletion happens here.
+    */
   resetCardBackgroundState();
+
+  /*
+       Reset editor state.
+    */
+  editorFocusMode = true;
+
+  updateEditorFocusTitle("");
+
+  updateEditorFullscreenButton();
 };
 
 /* ==========================================================================
@@ -2889,21 +3263,45 @@ window.editArticle = function (articleId) {
 
   editingArticleId = articleId;
 
-  document.getElementById("editorHeading").textContent = "Edit Note";
+  const heading = document.getElementById("editorHeading");
 
-  document.getElementById("publishBtnLabel").textContent = "Save changes";
+  if (heading) {
+    heading.textContent = "Edit Note";
+  }
 
-  document.getElementById("fieldTitle").value = data.title;
+  const publishLabel = document.getElementById("publishBtnLabel");
 
-  document.getElementById("fieldExcerpt").value = data.excerpt;
+  if (publishLabel) {
+    publishLabel.textContent = "Save changes";
+  }
 
-  document.getElementById("fieldDate").value = data.dateISO;
+  const titleField = document.getElementById("fieldTitle");
 
-  document.getElementById("editorBody").innerHTML = data.bodyHTML;
+  if (titleField) {
+    titleField.value = data.title;
+  }
+
+  const excerptField = document.getElementById("fieldExcerpt");
+
+  if (excerptField) {
+    excerptField.value = data.excerpt;
+  }
+
+  const dateField = document.getElementById("fieldDate");
+
+  if (dateField) {
+    dateField.value = data.dateISO;
+  }
+
+  const body = document.getElementById("editorBody");
+
+  if (body) {
+    body.innerHTML = data.bodyHTML;
+  }
 
   /* ==========================================================
-     LOAD EXISTING CARD BACKGROUND
-  =========================================================== */
+       LOAD EXISTING CARD BACKGROUND
+    =========================================================== */
 
   pendingCardBackgroundFile = null;
 
@@ -2925,30 +3323,75 @@ window.editArticle = function (articleId) {
 
   const isStatic = !!TOPIC_CONFIG[data.topicId];
 
-  if (isStatic) {
-    topicSelect.value = data.topicId;
+  if (topicSelect) {
+    if (isStatic) {
+      topicSelect.value = data.topicId;
 
-    document.getElementById("newTopicGroup").style.display = "none";
-  } else {
-    topicSelect.value = "__new__";
+      const newTopicGroup = document.getElementById("newTopicGroup");
 
-    document.getElementById("newTopicGroup").style.display = "block";
+      if (newTopicGroup) {
+        newTopicGroup.style.display = "none";
+      }
+    } else {
+      topicSelect.value = "__new__";
 
-    document.getElementById("fieldNewTopicName").value = data.topicLabel;
+      const newTopicGroup = document.getElementById("newTopicGroup");
 
-    document.getElementById("fieldNewTopicIcon").value =
-      data.topicIcon || "fa-lightbulb";
+      if (newTopicGroup) {
+        newTopicGroup.style.display = "block";
+      }
+
+      const newTopicName = document.getElementById("fieldNewTopicName");
+
+      if (newTopicName) {
+        newTopicName.value = data.topicLabel;
+      }
+
+      const newTopicIcon = document.getElementById("fieldNewTopicIcon");
+
+      if (newTopicIcon) {
+        newTopicIcon.value = data.topicIcon || "fa-lightbulb";
+      }
+    }
   }
 
   clearSavedSelection();
 
   updateWordCount();
 
-  document.getElementById("editorStatus").textContent = "";
+  const status = document.getElementById("editorStatus");
 
-  document.getElementById("editor-overlay").classList.add("active");
+  if (status) {
+    status.textContent = "";
+  }
+
+  /*
+       Show the current article title
+       in Focus Mode.
+    */
+  updateEditorFocusTitle(data.title);
+
+  /*
+       Editing starts directly
+       in Focus Mode.
+    */
+  setEditorFocusMode(true);
+
+  updateEditorFullscreenButton();
+
+  const overlay = document.getElementById("editor-overlay");
+
+  if (overlay) {
+    overlay.classList.add("active");
+  }
 
   document.body.style.overflow = "hidden";
+
+  requestAnimationFrame(() => {
+    if (body) {
+      body.focus();
+    }
+  });
 };
 
 /* ==========================================================================
@@ -2965,9 +3408,9 @@ window.deleteArticle = async function (articleId) {
   }
 
   /*
-     Capture the image path before deleting
-     the database row.
-  */
+       Capture the image path before deleting
+       the database row.
+    */
   const articleToDelete = globalArticlesCache.find(
     (article) => article.id === articleId,
   );
@@ -2988,9 +3431,9 @@ window.deleteArticle = async function (articleId) {
   }
 
   /*
-     Remove associated card background
-     after successful database deletion.
-  */
+       Remove associated card background
+       after successful database deletion.
+    */
   if (oldCardBgPath) {
     await deleteCardBackground(oldCardBgPath);
   }
@@ -3113,12 +3556,12 @@ window.publishArticle = async function () {
 
   /* ==========================================================
        CARD BACKGROUND
-  =========================================================== */
+    =========================================================== */
 
   /*
-     Keep a reference to the existing background
-     before potentially replacing/removing it.
-  */
+       Keep a reference to the existing background
+       before potentially replacing/removing it.
+    */
   const previousCardBgPath = editingArticleId
     ? currentCardBackgroundPath
     : null;
@@ -3130,9 +3573,9 @@ window.publishArticle = async function () {
   let newlyUploadedCardBgPath = null;
 
   /*
-     User explicitly removed the image
-     and did not choose a replacement.
-  */
+       User explicitly removed the image
+       and did not choose a replacement.
+    */
   if (removeCardBackground && !pendingCardBackgroundFile) {
     cardBgUrl = null;
 
@@ -3147,7 +3590,7 @@ window.publishArticle = async function () {
 
   /* ==========================================================
        UPLOAD NEW CARD BACKGROUND
-  =========================================================== */
+    =========================================================== */
 
   if (pendingCardBackgroundFile) {
     setEditorStatus("Uploading card background...");
@@ -3170,8 +3613,8 @@ window.publishArticle = async function () {
       newlyUploadedCardBgPath = uploadedBackground.path;
 
       /*
-         New upload becomes the active background.
-      */
+           New upload becomes the active background.
+        */
     } catch (error) {
       console.error("Card background upload error:", error);
 
@@ -3208,8 +3651,8 @@ window.publishArticle = async function () {
     bodyHTML,
 
     /* ==========================================================
-       CARD BACKGROUND
-    =========================================================== */
+         CARD BACKGROUND
+      =========================================================== */
 
     cardBgUrl,
 
@@ -3242,8 +3685,8 @@ window.publishArticle = async function () {
     body_html: dataApp.bodyHTML,
 
     /* ==========================================================
-       CARD BACKGROUND
-    =========================================================== */
+         CARD BACKGROUND
+      =========================================================== */
 
     card_bg_url: dataApp.cardBgUrl,
 
@@ -3264,9 +3707,9 @@ window.publishArticle = async function () {
 
     if (error) {
       /*
-         Database failed after new image upload.
-         Remove new image so it does not become an orphan.
-      */
+           Database failed after new image upload.
+           Remove new image so it does not become an orphan.
+        */
       if (newlyUploadedCardBgPath) {
         await deleteCardBackground(newlyUploadedCardBgPath);
       }
@@ -3275,10 +3718,10 @@ window.publishArticle = async function () {
     }
 
     /*
-       Database update succeeded.
-       Now remove previous image only if the image
-       has actually changed or has been removed.
-    */
+         Database update succeeded.
+         Now remove previous image only if the image
+         has actually changed or has been removed.
+      */
     if (previousCardBgPath && previousCardBgPath !== cardBgPath) {
       await deleteCardBackground(previousCardBgPath);
     }
@@ -3292,16 +3735,16 @@ window.publishArticle = async function () {
     }
   } else {
     /* ========================================================
-       INSERT
-    ========================================================= */
+         INSERT
+      ========================================================= */
 
     const { error } = await supabaseClient.from("articles").insert([dbPayload]);
 
     if (error) {
       /*
-         Database insert failed after image upload.
-         Clean up uploaded file.
-      */
+           Database insert failed after image upload.
+           Clean up uploaded file.
+        */
       if (newlyUploadedCardBgPath) {
         await deleteCardBackground(newlyUploadedCardBgPath);
       }
@@ -3396,7 +3839,7 @@ window.publishArticle = async function () {
   /*
        Store current background state
        in memory after success.
-  */
+    */
   currentCardBackgroundUrl = dataApp.cardBgUrl;
 
   currentCardBackgroundPath = dataApp.cardBgPath;
@@ -3407,7 +3850,7 @@ window.publishArticle = async function () {
 
   editingArticleId = null;
 
-  closeEditor();
+  await closeEditor();
 
   /*
        New public URL is generated
@@ -3568,9 +4011,9 @@ function normalizeLegacyFontTags(editor) {
     fontElement.style.fontFamily = normalized;
 
     /*
-       Preserve the text/content but remove old
-       presentational <font> dependency.
-    */
+           Preserve the text/content but remove old
+           presentational <font> dependency.
+        */
 
     const span = document.createElement("span");
 
@@ -3596,8 +4039,8 @@ window.applyFont = function (fontFamily) {
   }
 
   /* ------------------------------------------------------------
-     NORMALIZE FONT
-  ------------------------------------------------------------ */
+       NORMALIZE FONT
+    ------------------------------------------------------------ */
 
   const normalizedStack = normalizeFontFamily(fontFamily);
 
@@ -3612,8 +4055,8 @@ window.applyFont = function (fontFamily) {
   }
 
   /* ------------------------------------------------------------
-     RESTORE USER SELECTION
-  ------------------------------------------------------------ */
+       RESTORE USER SELECTION
+    ------------------------------------------------------------ */
 
   if (!restoreSelection()) {
     return;
@@ -3636,23 +4079,23 @@ window.applyFont = function (fontFamily) {
   }
 
   /* ------------------------------------------------------------
-     APPLY FONT USING BROWSER COMMAND
-  ------------------------------------------------------------ */
+       APPLY FONT USING BROWSER COMMAND
+    ------------------------------------------------------------ */
 
   try {
     /*
-       Force browser to use CSS styling instead of relying
-       exclusively on deprecated <font face=""> markup.
-    */
+         Force browser to use CSS styling instead of relying
+         exclusively on deprecated <font face=""> markup.
+      */
 
     document.execCommand("styleWithCSS", false, true);
 
     const commandSuccess = document.execCommand("fontName", false, primaryFont);
 
     /*
-       Disable styleWithCSS again so the rest of the editor
-       does not inherit unexpected behavior.
-    */
+         Disable styleWithCSS again so the rest of the editor
+         does not inherit unexpected behavior.
+      */
 
     document.execCommand("styleWithCSS", false, false);
 
@@ -3666,16 +4109,16 @@ window.applyFont = function (fontFamily) {
   }
 
   /* ------------------------------------------------------------
-     NORMALIZE RESULT
-  ------------------------------------------------------------ */
+       NORMALIZE RESULT
+    ------------------------------------------------------------ */
 
   normalizeLegacyFontTags(editor);
 
   /* ------------------------------------------------------------
-     FORCE INLINE FONT FAMILY
-     This catches browsers that produce <span style="">
-     inconsistently.
-  ------------------------------------------------------------ */
+       FORCE INLINE FONT FAMILY
+       This catches browsers that produce <span style="">
+       inconsistently.
+    ------------------------------------------------------------ */
 
   const currentSelection = window.getSelection();
 
@@ -3692,9 +4135,9 @@ window.applyFont = function (fontFamily) {
       }
 
       /*
-         Do not overwrite heading/list/table structure.
-         Only add font to inline wrappers.
-      */
+             Do not overwrite heading/list/table structure.
+             Only add font to inline wrappers.
+          */
 
       if (
         parent.tagName === "SPAN" ||
@@ -3711,8 +4154,8 @@ window.applyFont = function (fontFamily) {
   }
 
   /* ------------------------------------------------------------
-     WORD COUNT
-  ------------------------------------------------------------ */
+       WORD COUNT
+    ------------------------------------------------------------ */
 
   updateWordCount();
 };
@@ -3872,7 +4315,7 @@ window.handleTableAction = function (value) {
 
   switch (value) {
     /* ==========================================================
-         BORDER FULL
+           BORDER FULL
       =========================================================== */
 
     case "border-full":
@@ -3885,7 +4328,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         HORIZONTAL
+           HORIZONTAL
       =========================================================== */
 
     case "border-horizontal":
@@ -3906,7 +4349,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         VERTICAL
+           VERTICAL
       =========================================================== */
 
     case "border-vertical":
@@ -3927,7 +4370,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         NONE
+           NONE
       =========================================================== */
 
     case "border-none":
@@ -3940,7 +4383,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         FIT WINDOW
+           FIT WINDOW
       =========================================================== */
 
     case "fit-window":
@@ -3951,7 +4394,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         FIT CONTENT
+           FIT CONTENT
       =========================================================== */
 
     case "fit-content":
@@ -3962,7 +4405,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         MERGE RIGHT
+           MERGE RIGHT
       =========================================================== */
 
     case "merge-right":
@@ -3991,7 +4434,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         MERGE DOWN
+           MERGE DOWN
       =========================================================== */
 
     case "merge-down":
@@ -4064,7 +4507,7 @@ window.handleTableAction = function (value) {
       break;
 
     /* ==========================================================
-         UNMERGE
+           UNMERGE
       =========================================================== */
 
     case "unmerge":
@@ -4083,7 +4526,7 @@ window.handleTableAction = function (value) {
       const originalBorder = cell.style.border || "1px solid #ccc";
 
       /* --------------------------------------------------------
-           COLUMNS
+             COLUMNS
         -------------------------------------------------------- */
 
       if (cSpan > 1) {
@@ -4104,7 +4547,7 @@ window.handleTableAction = function (value) {
       }
 
       /* --------------------------------------------------------
-           ROWS
+             ROWS
         -------------------------------------------------------- */
 
       if (rSpan > 1) {
