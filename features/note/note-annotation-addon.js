@@ -117,299 +117,408 @@
     return "normal";
   }
 
-  /* -----------------------------------------------------------------------
-     IMAGE LAYOUT PRESERVATION
-     -----------------------------------------------------------------------
-     The original image may use float / width / center classes.
+  /* ==========================================================================
+   IMAGE LAYOUT PRESERVATION — STABLE VERSION
+   --------------------------------------------------------------------------
+   Fix:
+   - Image does NOT jump to the left when clicked.
+   - Original displayed size is preserved.
+   - Original float / center alignment is preserved.
+   - Original margins are preserved.
+   - Wrapper takes over the image's layout instead of changing it.
+   - Inner image only becomes 100% wide when the wrapper intentionally
+     controls its width.
+   - Repeated clicks do not recalculate the image and cause resizing.
+========================================================================== */
 
-     Wrapping the image inside a new block element can otherwise change
-     its formatting context and make the image jump.
+  /*
+     Cache the original image layout in memory.
 
-     We preserve the original layout information on the annotation wrapper
-     and neutralize only the inner image's floating behavior.
-  ----------------------------------------------------------------------- */
+     Why:
+     After an image is wrapped, its computed geometry can change.
+     We therefore capture the layout BEFORE moving it whenever possible,
+     then reuse that snapshot.
+  */
+  const annotationLayoutCache = new WeakMap();
 
-  function applyAnnotationLayout(wrapper, image, originalParent = null) {
+  function getContainingContentWidth(parent) {
+    if (!parent) return 1;
+
+    const computed = window.getComputedStyle(parent);
+
+    const paddingLeft = parseFloat(computed.paddingLeft) || 0;
+    const paddingRight = parseFloat(computed.paddingRight) || 0;
+
+    const clientWidth = parent.clientWidth || 1;
+
+    return Math.max(1, clientWidth - paddingLeft - paddingRight);
+  }
+
+  function captureImageLayout(image, parent) {
+    if (!image) return null;
+
+    const computed = window.getComputedStyle(image);
+
+    const rect = image.getBoundingClientRect();
+
+    const parentContentWidth = getContainingContentWidth(parent);
+
+    const layout = getLayoutFromClass(image.className || "");
+
+    const widthRatio = clamp(rect.width / parentContentWidth, 0.01, 1);
+
+    return {
+      layout,
+
+      widthPx: rect.width,
+
+      heightPx: rect.height,
+
+      widthRatio,
+
+      computedWidth: computed.width,
+
+      computedHeight: computed.height,
+
+      display: computed.display,
+
+      float: computed.float,
+
+      clear: computed.clear,
+
+      boxSizing: computed.boxSizing,
+
+      marginTop: computed.marginTop,
+
+      marginRight: computed.marginRight,
+
+      marginBottom: computed.marginBottom,
+
+      marginLeft: computed.marginLeft,
+
+      verticalAlign: computed.verticalAlign,
+
+      maxWidth: computed.maxWidth,
+
+      minWidth: computed.minWidth,
+
+      parentTextAlign: window.getComputedStyle(parent || document.body)
+        .textAlign,
+
+      parentContentWidth,
+    };
+  }
+
+  function applyAnnotationLayout(
+    wrapper,
+    image,
+    originalParent = null,
+    providedSnapshot = null,
+  ) {
     if (!wrapper || !image) return;
 
-    const originalClassName = image.className || "";
-    const layout = getLayoutFromClass(originalClassName);
+    /*
+       Reuse cached geometry whenever possible.
+
+       This prevents the second click, third click, etc. from measuring an
+       already-resized image and progressively changing its size.
+    */
+    let snapshot = providedSnapshot || annotationLayoutCache.get(wrapper);
+
+    if (!snapshot) {
+      snapshot = captureImageLayout(image, originalParent);
+    }
+
+    if (!snapshot) return;
+
+    annotationLayoutCache.set(wrapper, snapshot);
+
+    const layout = snapshot.layout;
 
     wrapper.dataset.layout = layout;
 
     /*
-       Preserve the known layout classes on the outer wrapper as well.
-       Existing site CSS can therefore continue to recognize them.
+       Preserve layout classes on the wrapper.
+
+       This is useful if the existing website CSS styles these classes.
     */
     ["float-left", "float-right", "center-small", "full"].forEach(
       (className) => {
-        wrapper.classList.toggle(
-          className,
-          originalClassName.includes(className),
-        );
+        wrapper.classList.toggle(className, layout === className);
       },
     );
 
     /*
-       A dedicated class makes it possible for annotation CSS to identify
-       the image being contained by the annotation wrapper.
+       ---------------------------------------------------------------
+       WRAPPER GEOMETRY
+       ---------------------------------------------------------------
     */
-    image.classList.add("annotation-contained-image");
+
+    wrapper.style.boxSizing = "border-box";
+
+    wrapper.style.position = "relative";
+
+    wrapper.style.clear =
+      snapshot.clear && snapshot.clear !== "none" ? snapshot.clear : "none";
+
+    wrapper.style.verticalAlign = snapshot.verticalAlign || "top";
 
     /*
-       If the image originally floated, transfer that float behavior to
-       the wrapper instead of allowing the child image to establish the
-       float itself.
+       Use the ORIGINAL percentage relationship between the image and
+       its containing block.
+
+       Example:
+       Original image = 480px
+       Content width = 960px
+       => wrapper = 50%
+
+       This preserves the visual proportion while remaining responsive.
     */
-    const computed = window.getComputedStyle(image);
-    const imageRect = image.getBoundingClientRect();
-    const parentRect = originalParent?.getBoundingClientRect?.();
+    const widthPercent = clamp(snapshot.widthRatio * 100, 1, 100);
+
+    /* ---------------------------------------------------------------
+       FLOAT LEFT
+    --------------------------------------------------------------- */
 
     if (layout === "float-left") {
+      wrapper.style.display = "block";
+
       wrapper.style.float = "left";
-      wrapper.style.clear = computed.clear || "none";
-    } else if (layout === "float-right") {
-      wrapper.style.float = "right";
-      wrapper.style.clear = computed.clear || "none";
-    } else {
-      wrapper.style.float = "none";
-
-      if (layout === "center-small") {
-        wrapper.style.marginLeft = "auto";
-        wrapper.style.marginRight = "auto";
-      }
-    }
-
-    /*
-       Preserve the image's current visual width when possible.
-
-       Percentage width is preferred over a hard pixel width, because that
-       keeps the image responsive after the annotation is added.
-    */
-    if (parentRect?.width && imageRect.width && layout !== "normal") {
-      const widthPercent = clamp(
-        (imageRect.width / parentRect.width) * 100,
-        1,
-        100,
-      );
 
       wrapper.style.width = `${formatNumber(widthPercent)}%`;
+
+      wrapper.style.maxWidth = "100%";
+    } else if (layout === "float-right") {
+
+    /* ---------------------------------------------------------------
+       FLOAT RIGHT
+    --------------------------------------------------------------- */
+      wrapper.style.display = "block";
+
+      wrapper.style.float = "right";
+
+      wrapper.style.width = `${formatNumber(widthPercent)}%`;
+
+      wrapper.style.maxWidth = "100%";
+    } else if (layout === "center-small") {
+
+    /* ---------------------------------------------------------------
+       CENTER SMALL
+    --------------------------------------------------------------- */
+      /*
+         A centered image must remain a block-level element so
+         margin-left/right:auto continues to work.
+      */
+      wrapper.style.display = "block";
+
+      wrapper.style.float = "none";
+
+      wrapper.style.width = `${formatNumber(widthPercent)}%`;
+
+      wrapper.style.maxWidth = "100%";
+
+      wrapper.style.marginLeft = "auto";
+
+      wrapper.style.marginRight = "auto";
+    } else if (layout === "full") {
+
+    /* ---------------------------------------------------------------
+       FULL
+    --------------------------------------------------------------- */
+      wrapper.style.display = "block";
+
+      wrapper.style.float = "none";
+
+      wrapper.style.width = "100%";
+
+      wrapper.style.maxWidth = "100%";
+
+      wrapper.style.marginLeft = "0";
+
+      wrapper.style.marginRight = "0";
+    } else {
+
+    /* ---------------------------------------------------------------
+       NORMAL IMAGE
+       --------------------------------------------------------------- */
+      wrapper.style.float = "none";
+
+      /*
+         If the original image was inline / inline-block, keep the
+         wrapper inline-block.
+
+         This is important because changing it into a block was one
+         of the main reasons a centered/inline image could jump left.
+      */
+      const originalWasInline =
+        snapshot.display === "inline" ||
+        snapshot.display === "inline-block" ||
+        snapshot.display === "inline-flex";
+
+      const hadAutoHorizontalMargin =
+        snapshot.marginLeft === "auto" || snapshot.marginRight === "auto";
+
+      if (hadAutoHorizontalMargin) {
+        /*
+           Auto horizontal margins require a block formatting context
+           for reliable centering.
+        */
+        wrapper.style.display = "block";
+
+        wrapper.style.width = `${formatNumber(widthPercent)}%`;
+
+        wrapper.style.maxWidth = "100%";
+
+        wrapper.style.marginLeft = "auto";
+
+        wrapper.style.marginRight = "auto";
+      } else if (originalWasInline) {
+        wrapper.style.display = "inline-block";
+
+        wrapper.style.width = `${formatNumber(widthPercent)}%`;
+
+        wrapper.style.maxWidth = "100%";
+      } else {
+        /*
+           Preserve the visual relationship of normal block images.
+        */
+        wrapper.style.display = "block";
+
+        wrapper.style.width = `${formatNumber(widthPercent)}%`;
+
+        wrapper.style.maxWidth = "100%";
+      }
     }
 
     /*
-       Preserve original vertical / horizontal margins at the wrapper level.
+       ---------------------------------------------------------------
+       PRESERVE ORIGINAL VERTICAL MARGINS
+       ---------------------------------------------------------------
     */
-    const marginTop = computed.marginTop;
-    const marginRight = computed.marginRight;
-    const marginBottom = computed.marginBottom;
-    const marginLeft = computed.marginLeft;
 
-    if (marginTop && marginTop !== "0px") {
-      wrapper.style.marginTop = marginTop;
+    wrapper.style.marginTop = snapshot.marginTop || "0";
+
+    wrapper.style.marginBottom = snapshot.marginBottom || "0";
+
+    /*
+       Horizontal margins are handled specially above for centered
+       layouts. For other layouts, preserve the original margins when
+       they are actual values rather than "auto".
+    */
+
+    if (layout !== "center-small" && snapshot.marginLeft !== "auto") {
+      wrapper.style.marginLeft = snapshot.marginLeft || "0";
     }
 
-    if (marginRight && marginRight !== "0px" && layout !== "center-small") {
-      wrapper.style.marginRight = marginRight;
-    }
-
-    if (marginBottom && marginBottom !== "0px") {
-      wrapper.style.marginBottom = marginBottom;
-    }
-
-    if (marginLeft && marginLeft !== "0px" && layout !== "center-small") {
-      wrapper.style.marginLeft = marginLeft;
+    if (layout !== "center-small" && snapshot.marginRight !== "auto") {
+      wrapper.style.marginRight = snapshot.marginRight || "0";
     }
 
     /*
-       The SVG and inner image must occupy the same box.
-
-       Float behavior now belongs to the wrapper, not the child.
+       ---------------------------------------------------------------
+       INNER CONTAINER
+       ---------------------------------------------------------------
     */
-    image.style.float = "none";
-    image.style.clear = "none";
-    image.style.marginLeft = "0";
-    image.style.marginRight = "0";
-    image.style.marginTop = "0";
-    image.style.marginBottom = "0";
-    image.style.display = "block";
 
-    /*
-       Avoid forcing 100% width for "normal" images because that could
-       unexpectedly resize images that were intentionally smaller.
-    */
-    if (layout !== "normal") {
-      image.style.width = "100%";
-      image.style.maxWidth = "100%";
-    }
-  }
-
-  function removeEditorOnlyState(wrapper) {
-    if (!wrapper) return;
-
-    wrapper.classList.remove("is-selected", "is-drawing");
-
-    wrapper.removeAttribute("data-selected");
-    wrapper.removeAttribute("data-drawing");
-
-    /*
-       Preview strokes should never become part of saved HTML.
-       This is also useful as a defensive cleanup before publishing.
-    */
-    wrapper
-      .querySelectorAll('[data-preview="true"]')
-      .forEach((element) => element.remove());
-  }
-
-  function cleanAnnotationEditorDom() {
-    const editor = getEditor();
-
-    if (!editor) return;
-
-    editor.querySelectorAll(".note-image-annotation").forEach((wrapper) => {
-      removeEditorOnlyState(wrapper);
-    });
-  }
-
-  function getCleanEditorHtml() {
-    const editor = getEditor();
-
-    if (!editor) return "";
-
-    const clone = editor.cloneNode(true);
-
-    clone.querySelectorAll(".note-image-annotation").forEach((wrapper) => {
-      removeEditorOnlyState(wrapper);
-    });
-
-    /*
-       Any accidental preview nodes are removed globally as a safeguard.
-    */
-    clone
-      .querySelectorAll('[data-preview="true"]')
-      .forEach((element) => element.remove());
-
-    return clone.innerHTML;
-  }
-
-  /*
-     Public helper.
-     If the main note.js wants to explicitly use a clean HTML snapshot,
-     this function is available globally.
-  */
-  window.getCleanAnnotationEditorHtml = getCleanEditorHtml;
-
-  window.prepareAnnotationHtmlForSave = () => {
-    cleanAnnotationEditorDom();
-    return getCleanEditorHtml();
-  };
-
-  /* -----------------------------------------------------------------------
-     STROKE STYLE
-  ----------------------------------------------------------------------- */
-
-  function setStrokeStyle(element) {
-    element.setAttribute("fill", "none");
-    element.setAttribute("stroke", state.color);
-    element.setAttribute("stroke-width", getStrokeWidthInViewBoxUnits());
-    element.setAttribute("stroke-linecap", "round");
-    element.setAttribute("stroke-linejoin", "round");
-    element.setAttribute("opacity", "0.92");
-    element.setAttribute("vector-effect", "non-scaling-stroke");
-  }
-
-  function getStrokeWidthInViewBoxUnits() {
-    const svg = state.svg;
-    const rect = svg?.getBoundingClientRect?.();
-
-    const minSize = Math.max(
-      1,
-      Math.min(rect?.width || 600, rect?.height || 400),
+    const inner = wrapper.querySelector(
+      ":scope > .note-image-annotation-inner",
     );
 
-    return Math.max(0.25, (state.width / minSize) * 100);
-  }
+    if (inner) {
+      inner.style.position = "relative";
 
-  function pointsToPath(points) {
-    return points
-      .map(
-        (point, index) =>
-          `${index === 0 ? "M" : "L"}${formatNumber(point.x)} ${formatNumber(point.y)}`,
-      )
-      .join(" ");
-  }
+      inner.style.width = "100%";
 
-  /* -----------------------------------------------------------------------
-     Ramer–Douglas–Peucker simplification
-     Prevents long pen strokes from producing unnecessarily huge body_html.
-  ----------------------------------------------------------------------- */
+      inner.style.maxWidth = "100%";
 
-  function simplifyPoints(points, tolerance = 0.45) {
-    if (points.length <= 8) return points;
+      inner.style.margin = "0";
 
-    const sqTolerance = tolerance * tolerance;
+      inner.style.padding = "0";
 
-    const sqSegDist = (point, start, end) => {
-      let x = start.x;
-      let y = start.y;
-      let dx = end.x - x;
-      let dy = end.y - y;
+      inner.style.boxSizing = "border-box";
 
-      if (dx !== 0 || dy !== 0) {
-        const t =
-          ((point.x - x) * dx + (point.y - y) * dy) / (dx * dx + dy * dy);
-
-        if (t > 1) {
-          x = end.x;
-          y = end.y;
-        } else if (t > 0) {
-          x += dx * t;
-          y += dy * t;
-        }
-      }
-
-      dx = point.x - x;
-      dy = point.y - y;
-
-      return dx * dx + dy * dy;
-    };
-
-    const markers = new Uint8Array(points.length);
-
-    const last = points.length - 1;
-    const stack = [[0, last]];
-
-    markers[0] = 1;
-    markers[last] = 1;
-
-    while (stack.length) {
-      const [startIndex, endIndex] = stack.pop();
-
-      let maxDistance = 0;
-      let maxIndex = 0;
-
-      for (let i = startIndex + 1; i < endIndex; i += 1) {
-        const sqDistance = sqSegDist(
-          points[i],
-          points[startIndex],
-          points[endIndex],
-        );
-
-        if (sqDistance > maxDistance) {
-          maxDistance = sqDistance;
-          maxIndex = i;
-        }
-      }
-
-      if (maxDistance > sqTolerance) {
-        markers[maxIndex] = 1;
-
-        stack.push([startIndex, maxIndex]);
-
-        stack.push([maxIndex, endIndex]);
-      }
+      inner.style.lineHeight = "0";
     }
 
-    return points.filter((_, index) => markers[index]);
+    /*
+       ---------------------------------------------------------------
+       IMAGE
+       ---------------------------------------------------------------
+    */
+
+    image.classList.add("annotation-contained-image");
+
+    image.style.clear = "none";
+
+    image.style.float = "none";
+
+    image.style.display = "block";
+
+    image.style.margin = "0";
+
+    image.style.boxSizing = snapshot.boxSizing || "border-box";
+
+    /*
+       Only force image width to 100% when the wrapper is explicitly
+       controlling the layout width.
+
+       For normal images, retaining the original image width prevents
+       accidental shrinking.
+    */
+    if (
+      layout === "float-left" ||
+      layout === "float-right" ||
+      layout === "center-small" ||
+      layout === "full"
+    ) {
+      image.style.width = "100%";
+
+      image.style.maxWidth = "100%";
+    } else {
+      /*
+         Preserve normal-image sizing.
+
+         We do NOT blindly set width:100% here.
+         That was another source of unexpected image resizing.
+      */
+      if (image.style.width === "100%" && snapshot.display !== "block") {
+        image.style.width = "";
+      }
+
+      image.style.maxWidth =
+        snapshot.maxWidth && snapshot.maxWidth !== "none"
+          ? snapshot.maxWidth
+          : "100%";
+    }
+
+    /*
+       ---------------------------------------------------------------
+       SVG OVERLAY
+       ---------------------------------------------------------------
+       The SVG must occupy exactly the image box and must never
+       participate in normal document flow.
+    */
+    const svg = wrapper.querySelector(":scope .note-annotation-layer");
+
+    if (svg) {
+      svg.style.position = "absolute";
+
+      svg.style.inset = "0";
+
+      svg.style.width = "100%";
+
+      svg.style.height = "100%";
+
+      svg.style.display = "block";
+
+      svg.style.margin = "0";
+
+      svg.style.padding = "0";
+
+      svg.style.pointerEvents = state.drawing ? "auto" : "none";
+
+      svg.style.boxSizing = "border-box";
+    }
   }
 
   /* -----------------------------------------------------------------------
@@ -421,13 +530,18 @@
 
     const existing = image.closest(".note-image-annotation");
 
+    /*
+       ---------------------------------------------------------------
+       ALREADY WRAPPED
+       ---------------------------------------------------------------
+    */
     if (existing) {
-      ensureAnnotationLayer(existing);
-
       /*
-         If wrapper exists, refresh layout protection as well.
+         Do NOT recalculate from scratch on every click.
+
+         The original geometry has already been cached.
       */
-      applyAnnotationLayout(existing, image, existing.parentNode);
+      ensureAnnotationLayer(existing);
 
       return existing;
     }
@@ -437,10 +551,16 @@
     if (!parent) return null;
 
     /*
-       Capture the original geometry BEFORE changing the DOM.
+       ===============================================================
+       CRITICAL FIX
+       ===============================================================
+       Capture the image geometry BEFORE moving it.
+
+       Previously, the code moved the image into the wrapper first and
+       only THEN called getComputedStyle()/getBoundingClientRect().
+       At that point the browser had already changed the layout context.
     */
-    const originalParent = parent;
-    const originalRect = image.getBoundingClientRect();
+    const originalSnapshot = captureImageLayout(image, parent);
 
     const wrapper = document.createElement("div");
 
@@ -448,8 +568,11 @@
 
     const svg = createSvgElement("svg", {
       class: "note-annotation-layer",
+
       viewBox: "0 0 100 100",
+
       preserveAspectRatio: "none",
+
       "aria-hidden": "true",
     });
 
@@ -457,52 +580,38 @@
 
     wrapper.setAttribute("data-annotation-image", "true");
 
-    wrapper.setAttribute(
-      "data-layout",
-      getLayoutFromClass(image.className || ""),
-    );
-
     wrapper.setAttribute("contenteditable", "false");
 
     inner.className = "note-image-annotation-inner";
 
     /*
-       Insert wrapper at EXACTLY the original image location.
+       Cache BEFORE DOM movement.
+    */
+    annotationLayoutCache.set(wrapper, originalSnapshot);
+
+    /*
+       Insert wrapper at the exact original position.
     */
     parent.insertBefore(wrapper, image);
 
+    /*
+       Move image into wrapper.
+    */
     inner.appendChild(image);
+
+    /*
+       SVG goes AFTER image so it can sit on top using absolute positioning.
+    */
     inner.appendChild(svg);
+
     wrapper.appendChild(inner);
 
     /*
-       Apply layout after insertion using the original geometry.
+       Apply the PRE-WRAP geometry snapshot.
     */
-    applyAnnotationLayout(wrapper, image, originalParent);
+    applyAnnotationLayout(wrapper, image, parent, originalSnapshot);
 
-    /*
-       Fallback width preservation if layout CSS does not expose a
-       recognizable layout class.
-    */
-    if (
-      !wrapper.style.width &&
-      originalRect.width &&
-      originalParent?.getBoundingClientRect
-    ) {
-      const parentRect = originalParent.getBoundingClientRect();
-
-      if (parentRect.width) {
-        const widthPercent = clamp(
-          (originalRect.width / parentRect.width) * 100,
-          1,
-          100,
-        );
-
-        wrapper.style.width = `${formatNumber(widthPercent)}%`;
-      }
-    }
-
-    ensureAnnotationLayer(wrapper);
+    bindSvg(svg);
 
     return wrapper;
   }
@@ -538,20 +647,33 @@
     if (!svg) {
       svg = createSvgElement("svg", {
         class: "note-annotation-layer",
+
         viewBox: "0 0 100 100",
+
         preserveAspectRatio: "none",
+
         "aria-hidden": "true",
       });
 
       inner.appendChild(svg);
     }
 
-    if (!wrapper.dataset.layout && image) {
-      wrapper.dataset.layout = getLayoutFromClass(image.className || "");
-    }
+    /*
+       For articles loaded from saved HTML, there is no JS cache yet.
 
+       Capture their current layout ONCE before applying annotation
+       wrapper styling.
+    */
     if (image) {
-      applyAnnotationLayout(wrapper, image, wrapper.parentNode);
+      let snapshot = annotationLayoutCache.get(wrapper);
+
+      if (!snapshot) {
+        snapshot = captureImageLayout(image, wrapper.parentNode);
+
+        annotationLayoutCache.set(wrapper, snapshot);
+      }
+
+      applyAnnotationLayout(wrapper, image, wrapper.parentNode, snapshot);
     }
 
     bindSvg(svg);
@@ -559,59 +681,56 @@
     return svg;
   }
 
-  function deselectImageWrapper(wrapper = state.wrapper) {
-    if (!wrapper) return;
+  /* -----------------------------------------------------------------------
+     OPTIONAL: MAKE SVG NON-INTERACTIVE UNTIL DRAWING MODE
+  ----------------------------------------------------------------------- */
 
-    wrapper.classList.remove("is-selected", "is-drawing");
+  function updateAnnotationPointerState() {
+    document
+      .querySelectorAll(".note-image-annotation .note-annotation-layer")
+      .forEach((svg) => {
+        svg.style.pointerEvents =
+          state.drawing && state.svg === svg ? "auto" : "none";
+      });
   }
 
-  function resetAnnotationSelection() {
-    document
-      .querySelectorAll(".note-image-annotation.is-selected")
-      .forEach((item) => {
-        item.classList.remove("is-selected", "is-drawing");
-      });
+  /*
+     Patch existing updateToolbar so SVG interaction follows drawing state.
+     Replace the original updateToolbar function with this version.
+  */
+  function updateToolbar() {
+    const toolbar = document.getElementById("annotationToolbar");
 
-    state.selectedWrapper = null;
-    state.wrapper = null;
-    state.svg = null;
-    state.history = [];
-    state.suggestion = null;
+    const launch = document.getElementById("annotationLaunchBtn");
 
-    clearPreview();
-    hideSuggestion();
-  }
-
-  function selectImageWrapper(wrapper) {
-    if (!wrapper) return;
-
-    ensureAnnotationLayer(wrapper);
-
-    document
-      .querySelectorAll(".note-image-annotation.is-selected")
-      .forEach((item) => {
-        if (item !== wrapper) {
-          item.classList.remove("is-selected", "is-drawing");
-        }
-      });
-
-    wrapper.classList.add("is-selected");
-
-    state.wrapper = wrapper;
-    state.selectedWrapper = wrapper;
-
-    state.svg = wrapper.querySelector(".note-annotation-layer");
-
-    state.history = [];
-    state.suggestion = null;
-
-    hideSuggestion();
-
-    if (state.svg) {
-      bindSvg(state.svg);
+    if (toolbar) {
+      toolbar.style.display = state.wrapper ? "block" : "none";
     }
 
-    updateToolbar();
+    if (launch) {
+      launch.classList.toggle("is-active", state.drawing);
+    }
+
+    document.querySelectorAll("[data-annotation-tool]").forEach((button) => {
+      button.classList.toggle(
+        "is-active",
+        button.getAttribute("data-annotation-tool") === state.tool,
+      );
+    });
+
+    const color = document.getElementById("annotationColor");
+
+    const width = document.getElementById("annotationWidth");
+
+    if (color && color.value !== state.color) {
+      color.value = state.color;
+    }
+
+    if (width && Number(width.value) !== state.width) {
+      width.value = String(state.width);
+    }
+
+    updateAnnotationPointerState();
   }
 
   /* -----------------------------------------------------------------------
@@ -1982,4 +2101,4 @@
   } else {
     init();
   }
-})();
+};)();
