@@ -1,0 +1,7 @@
+<!-- 1. Add this inside <head>, after note.css -->
+<link rel="stylesheet" href="/features/note/note-annotation.css" />
+
+<!-- 2. Add this before </body>, AFTER note.js -->
+<script src="/features/note/note-annotation-addon.js"></script>
+
+<!-- Nothing else in the current editor HTML needs to be replaced. -->
