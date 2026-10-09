@@ -4433,6 +4433,333 @@ window.handleTableAction = function (value) {
 
       break;
 
+      /* ==========================================================
+   EDITOR TABLE ACTIONS
+   ========================================================== */
+
+      function getEditorTableCell() {
+        const selection = window.getSelection();
+
+        if (selection && selection.rangeCount) {
+          let node = selection.getRangeAt(0).startContainer;
+
+          if (node.nodeType === Node.TEXT_NODE) {
+            node = node.parentElement;
+          }
+
+          const cell = node?.closest?.("td, th");
+          if (cell && cell.closest(".editor-workspace")) {
+            return cell;
+          }
+        }
+
+        const active = document.activeElement;
+        return active?.closest?.("td, th") || null;
+      }
+
+      function getEditorTable() {
+        return getEditorTableCell()?.closest("table") || null;
+      }
+
+      function insertEditorTable(rows = 3, columns = 3) {
+        if (typeof restoreSelection === "function") {
+          restoreSelection();
+        }
+
+        const editor = document.querySelector(
+          ".editor-workspace [contenteditable='true']",
+        );
+
+        if (!editor) {
+          alert("Area editor contenteditable tidak ditemukan.");
+          return;
+        }
+
+        rows = Math.max(1, Math.min(30, Number(rows) || 3));
+        columns = Math.max(1, Math.min(15, Number(columns) || 3));
+
+        const table = document.createElement("table");
+        table.className = "table-fit-window table-border-full";
+
+        const tbody = document.createElement("tbody");
+
+        for (let r = 0; r < rows; r++) {
+          const tr = document.createElement("tr");
+
+          for (let c = 0; c < columns; c++) {
+            const cell = document.createElement(r === 0 ? "th" : "td");
+
+            cell.contentEditable = "true";
+            cell.textContent = r === 0 ? `Header ${c + 1}` : "";
+            tr.appendChild(cell);
+          }
+
+          tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+
+        const selection = window.getSelection();
+        let inserted = false;
+
+        if (selection && selection.rangeCount) {
+          const range = selection.getRangeAt(0);
+
+          if (editor.contains(range.commonAncestorContainer)) {
+            range.deleteContents();
+            range.insertNode(table);
+
+            const next = document.createRange();
+            next.selectNodeContents(
+              table.rows[1]?.cells[0] || table.rows[0].cells[0],
+            );
+            next.collapse(true);
+
+            selection.removeAllRanges();
+            selection.addRange(next);
+            inserted = true;
+          }
+        }
+
+        if (!inserted) {
+          editor.appendChild(table);
+        }
+
+        table.querySelector("td, th")?.focus();
+      }
+
+      function handleTableAction(action) {
+        if (!action) return;
+
+        if (action === "insert") {
+          const rows = prompt("Jumlah baris:", "3");
+          if (rows === null) return;
+
+          const columns = prompt("Jumlah kolom:", "3");
+          if (columns === null) return;
+
+          insertEditorTable(rows, columns);
+          return;
+        }
+
+        const cell = getEditorTableCell();
+        const table = cell?.closest("table");
+
+        if (!cell || !table) {
+          alert("Letakkan kursor di dalam tabel terlebih dahulu.");
+          return;
+        }
+
+        const row = cell.parentElement;
+        const rowIndex = row.rowIndex;
+        const cellIndex = cell.cellIndex;
+
+        function createCell(reference) {
+          const newCell = document.createElement(
+            reference.tagName.toLowerCase() === "th" ? "th" : "td",
+          );
+
+          newCell.contentEditable = "true";
+          return newCell;
+        }
+
+        function focusCell(target) {
+          if (!target) return;
+
+          target.focus();
+
+          const range = document.createRange();
+          range.selectNodeContents(target);
+          range.collapse(true);
+
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+
+        switch (action) {
+          case "add-row-above":
+          case "add-row-below": {
+            const newRow = document.createElement("tr");
+
+            for (let i = 0; i < row.cells.length; i++) {
+              newRow.appendChild(createCell(row.cells[i]));
+            }
+
+            if (action === "add-row-above") {
+              row.before(newRow);
+            } else {
+              row.after(newRow);
+            }
+
+            focusCell(
+              newRow.cells[Math.min(cellIndex, newRow.cells.length - 1)],
+            );
+            break;
+          }
+
+          case "add-column-left":
+          case "add-column-right": {
+            for (const tr of table.rows) {
+              const newCell = createCell(
+                tr.cells[Math.min(cellIndex, tr.cells.length - 1)] || cell,
+              );
+
+              const index =
+                action === "add-column-left" ? cellIndex : cellIndex + 1;
+
+              if (index >= tr.cells.length) {
+                tr.appendChild(newCell);
+              } else {
+                tr.insertBefore(newCell, tr.cells[index]);
+              }
+            }
+
+            focusCell(
+              table.rows[rowIndex]?.cells[
+                action === "add-column-left" ? cellIndex : cellIndex + 1
+              ],
+            );
+            break;
+          }
+
+          case "delete-row": {
+            row.remove();
+
+            if (!table.rows.length) {
+              table.remove();
+            }
+
+            break;
+          }
+
+          case "delete-column": {
+            for (const tr of [...table.rows]) {
+              if (tr.cells[cellIndex]) {
+                tr.deleteCell(cellIndex);
+              }
+            }
+
+            if (!table.rows.length || !table.rows[0].cells.length) {
+              table.remove();
+            }
+
+            break;
+          }
+
+          case "delete-table":
+            table.remove();
+            break;
+
+          case "fit-window":
+            table.classList.remove("table-fit-content");
+            table.classList.add("table-fit-window");
+            break;
+
+          case "fit-content":
+            table.classList.remove("table-fit-window");
+            table.classList.add("table-fit-content");
+            break;
+
+          case "border-full":
+          case "border-horizontal":
+          case "border-vertical":
+          case "border-none":
+            table.classList.remove(
+              "table-border-full",
+              "table-border-horizontal",
+              "table-border-vertical",
+              "table-border-none",
+            );
+            table.classList.add(`table-${action}`);
+            break;
+
+          case "merge-right": {
+            const nextCell = cell.nextElementSibling;
+            if (!nextCell) {
+              alert("Tidak ada sel di sebelah kanan.");
+              return;
+            }
+
+            const rowSpan = Number(cell.rowSpan) || 1;
+            const colSpan = Number(cell.colSpan) || 1;
+
+            if (nextCell.rowSpan !== rowSpan) {
+              alert("Sel memiliki tinggi berbeda dan tidak dapat digabung.");
+              return;
+            }
+
+            cell.colSpan = colSpan + (Number(nextCell.colSpan) || 1);
+
+            while (nextCell.firstChild) {
+              cell.appendChild(nextCell.firstChild);
+            }
+
+            nextCell.remove();
+            focusCell(cell);
+            break;
+          }
+
+          case "merge-down": {
+            const nextRow = table.rows[rowIndex + 1];
+            const nextCell = nextRow?.cells[cellIndex];
+
+            if (!nextCell) {
+              alert("Tidak ada sel di bawah pada posisi yang sama.");
+              return;
+            }
+
+            cell.rowSpan =
+              (Number(cell.rowSpan) || 1) + (Number(nextCell.rowSpan) || 1);
+
+            while (nextCell.firstChild) {
+              cell.appendChild(nextCell.firstChild);
+            }
+
+            nextCell.remove();
+            focusCell(cell);
+            break;
+          }
+
+          case "unmerge": {
+            const rowSpan = Number(cell.rowSpan) || 1;
+            const colSpan = Number(cell.colSpan) || 1;
+
+            if (rowSpan === 1 && colSpan === 1) {
+              alert("Sel ini tidak sedang digabung.");
+              return;
+            }
+
+            cell.rowSpan = 1;
+            cell.colSpan = 1;
+
+            // Rebuild remaining cells in the merged area.
+            for (let r = 0; r < rowSpan; r++) {
+              const targetRow = table.rows[rowIndex + r];
+              if (!targetRow) continue;
+
+              for (let c = 0; c < colSpan; c++) {
+                if (r === 0 && c === 0) continue;
+
+                const newCell = createCell(cell);
+                const insertionIndex = Math.min(
+                  cellIndex + c,
+                  targetRow.cells.length,
+                );
+
+                targetRow.insertBefore(
+                  newCell,
+                  targetRow.cells[insertionIndex] || null,
+                );
+              }
+            }
+
+            focusCell(cell);
+            break;
+          }
+        }
+      }
+
     /* ==========================================================
            MERGE DOWN
       =========================================================== */

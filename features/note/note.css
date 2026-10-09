@@ -1944,22 +1944,133 @@ i.fa-regular {
    24. TABLES
 ========================================================================== */
 
-.reading-content table,
-#editorBody table {
-  width: 100%;
+/* ==========================================================
+   EDITOR TABLE SYSTEM
+   ========================================================== */
 
-  margin-bottom: 1.5rem;
-
-  border-collapse: collapse;
+.editor-workspace {
+  min-width: 0;
 }
 
-.reading-content th,
-.reading-content td,
-#editorBody th,
-#editorBody td {
-  padding: 9px 13px;
+.editor-workspace table {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  color: var(--text-color, #292821);
+  font-family: inherit;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  background: transparent;
+}
 
-  border: 1px solid rgba(168, 141, 95, 0.28);
+.editor-workspace table th,
+.editor-workspace table td {
+  position: relative;
+  min-width: 60px;
+  padding: 11px 14px;
+  border: 1px solid #d8d2c5;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+.editor-workspace table th {
+  background: #f0ece2;
+  color: #37352e;
+  font-weight: 600;
+}
+
+.editor-workspace table td {
+  background: transparent;
+}
+
+.editor-workspace table td:focus,
+.editor-workspace table th:focus {
+  outline: 2px solid #b49a62;
+  outline-offset: -2px;
+}
+
+/* Selected cell */
+.editor-workspace table td.cell-selected,
+.editor-workspace table th.cell-selected {
+  background-color: rgba(180, 154, 98, 0.14);
+  box-shadow: inset 0 0 0 2px #b49a62;
+}
+
+/* Table hover */
+.editor-workspace table tbody tr:hover td {
+  background-color: rgba(180, 154, 98, 0.045);
+}
+
+/* Preserve a clear header appearance */
+.editor-workspace table thead th {
+  background: #f0ece2;
+}
+
+/* Table sizing modes */
+.editor-workspace table.table-fit-window {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.editor-workspace table.table-fit-content {
+  width: max-content;
+  max-width: 100%;
+  table-layout: auto;
+}
+
+/* Border modes */
+.editor-workspace table.table-border-full th,
+.editor-workspace table.table-border-full td {
+  border: 1px solid #d8d2c5;
+}
+
+.editor-workspace table.table-border-horizontal th,
+.editor-workspace table.table-border-horizontal td {
+  border: 0;
+  border-bottom: 1px solid #d8d2c5;
+}
+
+.editor-workspace table.table-border-vertical th,
+.editor-workspace table.table-border-vertical td {
+  border-top: 0;
+  border-bottom: 0;
+  border-left: 1px solid #d8d2c5;
+  border-right: 1px solid #d8d2c5;
+}
+
+.editor-workspace table.table-border-none th,
+.editor-workspace table.table-border-none td {
+  border: 0;
+}
+
+/* Toolbar table select */
+.tb-table-select {
+  max-width: 220px;
+  min-width: 155px;
+}
+
+/* Responsive table */
+@media (max-width: 640px) {
+  .editor-workspace table {
+    font-size: 0.85rem;
+  }
+
+  .editor-workspace table th,
+  .editor-workspace table td {
+    min-width: 90px;
+    padding: 8px 10px;
+  }
+
+  .tb-table-select {
+    max-width: 100%;
+    min-width: 0;
+  }
 }
 
 /* ==========================================================================

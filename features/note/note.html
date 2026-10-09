@@ -893,40 +893,41 @@
               </button>
 
               <select
-                class="tb-select"
+                class="tb-select tb-table-select"
                 id="tbTableAction"
                 onmousedown="saveSelection()"
-                onchange="handleTableAction(this.value)"
-                style="margin-left: 8px"
+                onchange="
+                  handleTableAction(this.value);
+                  this.value = '';
+                "
                 title="Table options"
               >
                 <option value="">-- Opsi Tabel --</option>
+                <option value="insert">＋ Sisipkan Tabel</option>
 
-                <option value="insert">+ Sisipkan Tabel</option>
+                <option value="" disabled>────────────</option>
+                <option value="add-row-above">↑ Tambah Baris Atas</option>
+                <option value="add-row-below">↓ Tambah Baris Bawah</option>
+                <option value="add-column-left">← Tambah Kolom Kiri</option>
+                <option value="add-column-right">→ Tambah Kolom Kanan</option>
+                <option value="delete-row">Hapus Baris</option>
+                <option value="delete-column">Hapus Kolom</option>
+                <option value="delete-table">Hapus Tabel</option>
 
-                <option value="" disabled>────────</option>
-
+                <option value="" disabled>────────────</option>
                 <option value="fit-window">▣ Sesuaikan Jendela</option>
-
                 <option value="fit-content">▣ Sesuaikan Konten</option>
 
-                <option value="" disabled>────────</option>
-
+                <option value="" disabled>────────────</option>
                 <option value="border-full">▦ Semua Garis</option>
-
                 <option value="border-horizontal">☰ Horizontal</option>
-
                 <option value="border-vertical">▥ Vertikal</option>
-
                 <option value="border-none">□ Tanpa Garis</option>
 
-                <option value="" disabled>────────</option>
-
+                <option value="" disabled>────────────</option>
                 <option value="merge-right">→ Gabung Kanan</option>
-
                 <option value="merge-down">↓ Gabung Bawah</option>
-
-                <option value="unmerge">↶ Pisahkan</option>
+                <option value="unmerge">↶ Pisahkan Sel</option>
               </select>
             </div>
 
