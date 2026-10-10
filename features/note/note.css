@@ -5798,3 +5798,325 @@ i.fa-regular {
     opacity: 1;
   }
 }
+
+/* ========================================================================== 
+   57 — NOTES IMAGE ANNOTATION ADD-ON STYLES
+   ========================================================================== */
+
+.note-image-annotation {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.2rem 0;
+  line-height: 0;
+  clear: both;
+  isolation: isolate;
+  overflow: visible;
+}
+
+.note-image-annotation[data-layout="full"] {
+  width: 100%;
+}
+
+.note-image-annotation[data-layout="center-small"] {
+  width: min(70%, 760px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.note-image-annotation[data-layout="float-left"] {
+  float: left;
+  width: min(48%, 620px);
+  margin: 0.35rem 1.5rem 1rem 0;
+  clear: none;
+}
+
+.note-image-annotation[data-layout="float-right"] {
+  float: right;
+  width: min(48%, 620px);
+  margin: 0.35rem 0 1rem 1.5rem;
+  clear: none;
+}
+
+.note-image-annotation-inner {
+  position: relative !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  line-height: 0 !important;
+  overflow: visible;
+}
+
+.note-image-annotation .note-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.note-image-annotation[data-layout="full"] .note-img,
+.note-image-annotation[data-layout="center-small"] .note-img,
+.note-image-annotation[data-layout="float-left"] .note-img,
+.note-image-annotation[data-layout="float-right"] .note-img {
+  width: 100%;
+}
+
+/* SVG does not intercept clicks until the selected image enters drawing mode. */
+.note-image-annotation .note-annotation-layer {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0;
+  padding: 0;
+  z-index: 50 !important;
+  overflow: visible;
+  pointer-events: none !important;
+  touch-action: none !important;
+}
+
+.note-image-annotation.is-drawing
+  > .note-image-annotation-inner
+  > .note-annotation-layer {
+  pointer-events: all !important;
+  cursor: crosshair;
+}
+
+.note-image-annotation.is-selected .note-image-annotation-inner {
+  outline: 2px dashed rgba(178, 58, 57, 0.45);
+  outline-offset: 3px;
+}
+
+.note-image-annotation.is-drawing .note-image-annotation-inner {
+  outline: 2px solid rgba(178, 58, 57, 0.65);
+  outline-offset: 3px;
+  cursor: crosshair;
+}
+
+.annotation-launch-btn.is-active {
+  background: rgba(178, 58, 57, 0.1);
+  color: #8f2c2b;
+}
+
+.annotation-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0.85rem 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(41, 41, 35, 0.14);
+  border-radius: 12px;
+  background: rgba(250, 247, 239, 0.96);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(41, 41, 35, 0.08);
+  line-height: 1;
+}
+
+.annotation-toolbar[hidden] {
+  display: none !important;
+}
+
+.annotation-toolbar-main {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.annotation-tool-label {
+  margin-right: 0.35rem;
+  color: #6b695f;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.annotation-tool-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-right: 0.35rem;
+  border-right: 1px solid rgba(41, 41, 35, 0.12);
+}
+
+.annotation-tool-btn,
+.annotation-action-btn,
+.annotation-done-btn,
+.annotation-suggestion-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  min-height: 34px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.42rem 0.58rem;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    opacity 0.16s ease;
+}
+
+.annotation-tool-btn,
+.annotation-action-btn,
+.annotation-suggestion-btn {
+  background: transparent;
+  color: #292923;
+  border-color: rgba(41, 41, 35, 0.1);
+}
+
+.annotation-tool-btn:hover,
+.annotation-action-btn:hover,
+.annotation-suggestion-btn:hover {
+  background: rgba(41, 41, 35, 0.06);
+  border-color: rgba(41, 41, 35, 0.2);
+}
+
+.annotation-tool-btn:focus-visible,
+.annotation-action-btn:focus-visible,
+.annotation-done-btn:focus-visible,
+.annotation-suggestion-btn:focus-visible,
+.annotation-control input:focus-visible {
+  outline: 2px solid #8f2c2b;
+  outline-offset: 2px;
+}
+
+.annotation-tool-btn.is-active {
+  background: rgba(178, 58, 57, 0.1);
+  border-color: rgba(178, 58, 57, 0.3);
+  color: #8f2c2b;
+}
+
+.annotation-done-btn {
+  background: #292923;
+  color: #faf7ef;
+  border-color: #292923;
+}
+
+.annotation-done-btn:hover {
+  opacity: 0.9;
+}
+
+.annotation-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 34px;
+  padding: 0.3rem 0.42rem;
+  border: 1px solid rgba(41, 41, 35, 0.1);
+  border-radius: 8px;
+  color: #6b695f;
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.annotation-control input[type="color"] {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.annotation-width-control input[type="range"] {
+  width: 82px;
+  accent-color: #292923;
+  cursor: pointer;
+}
+
+.annotation-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(41, 41, 35, 0.1);
+  color: #6b695f;
+  font-size: 0.78rem;
+}
+
+.annotation-suggestion-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.annotation-suggestion-btn.is-primary {
+  background: rgba(178, 58, 57, 0.1);
+  border-color: rgba(178, 58, 57, 0.25);
+  color: #8f2c2b;
+  font-weight: 700;
+}
+
+.annotation-group {
+  vector-effect: non-scaling-stroke;
+}
+
+@media (max-width: 760px) {
+  .annotation-toolbar {
+    top: -1px;
+    padding: 0.65rem;
+  }
+
+  .annotation-tool-label {
+    width: 100%;
+    margin-bottom: 0.15rem;
+  }
+
+  .annotation-tool-group {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 0.35rem;
+    border-right: 0;
+    border-bottom: 1px solid rgba(41, 41, 35, 0.1);
+    overflow-x: auto;
+  }
+
+  .annotation-tool-btn span {
+    display: none;
+  }
+
+  .annotation-status-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .annotation-suggestion-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .annotation-tool-btn,
+  .annotation-action-btn,
+  .annotation-done-btn,
+  .annotation-suggestion-btn {
+    transition: none;
+  }
+}
