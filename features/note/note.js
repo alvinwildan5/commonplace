@@ -476,22 +476,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.addEventListener("selectionchange", () => {
     const sel = window.getSelection();
+    const editor = document.getElementById("editorBody");
 
-    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) {
+    if (!sel || sel.rangeCount === 0 || !editor) {
+      updateContextWordCount();
       return;
     }
 
     const range = sel.getRangeAt(0);
+    const toolbarHasFocus = Boolean(
+      document.activeElement?.closest?.(".editor-toolbar, .annotation-toolbar"),
+    );
 
-    const editor = document.getElementById("editorBody");
-
-    if (!editor) {
-      return;
-    }
-
-    if (editor.contains(range.commonAncestorContainer)) {
+    // Do not overwrite a saved text selection when a toolbar control receives
+    // focus and the browser collapses the visible selection as a side effect.
+    // Save collapsed caret ranges whenever the editor itself owns the focus.
+    if (!toolbarHasFocus && editor.contains(range.commonAncestorContainer)) {
       lastSelectionRange = range.cloneRange();
+      savedSelectionRange = range.cloneRange();
     }
+
+    updateContextWordCount();
   });
 
   /* ------------------------------------------------------------
@@ -567,6 +572,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   setEditorFocusMode(true);
 
   updateEditorFullscreenButton();
+  installEditorEnhancements();
+  updateWordCount();
 });
 
 /* ==========================================================================
@@ -2491,6 +2498,9 @@ window.toggleEditorFullscreen = async function () {
     return;
   }
 
+  // Save the current caret/selection BEFORE fullscreen causes focus changes.
+  saveSelection();
+
   /*
        Fullscreen is intended to be
        a writing-focused experience.
@@ -2531,10 +2541,11 @@ window.toggleEditorFullscreen = async function () {
   updateEditorFullscreenButton();
 
   requestAnimationFrame(() => {
-    const body = document.getElementById("editorBody");
-
-    if (body) {
-      body.focus();
+    // restoreSelection focuses the editor and then reapplies the saved range.
+    // Calling body.focus() alone first would often move list commands to the
+    // beginning/end of the document in Chromium-based browsers.
+    if (!restoreSelection()) {
+      document.getElementById("editorBody")?.focus();
     }
   });
 };
@@ -2746,133 +2757,194 @@ window.handleTopicSelectChange = function () {
   group.style.display = select.value === "__new__" ? "block" : "none";
 };
 
-/* ==========================================================================
-   TOOLBAR BASIC COMMANDS
-========================================================================== */
+/* ============================================================================
+   TOOLBAR COMMANDS, WORD COUNT & SELECTION MANAGEMENT
+============================================================================ */
 
-window.execToolbar = function (command) {
-  const body = document.getElementById("editorBody");
-
-  if (!body) {
-    return;
-  }
-
-  body.focus();
-
-  document.execCommand(command, false, null);
-
-  updateWordCount();
-};
-
-/* ==========================================================================
-   LINK
-========================================================================== */
-
-window.triggerLinkInsert = function () {
-  const url = prompt("Enter URL:", "https://");
-
-  if (!url) {
-    return;
-  }
-
-  restoreSelection();
-
-  const body = document.getElementById("editorBody");
-
-  if (!body) {
-    return;
-  }
-
-  body.focus();
-
-  document.execCommand("createLink", false, url);
-
-  updateWordCount();
-};
-
-/* ==========================================================================
-   WORD COUNT
-========================================================================== */
-
-function updateWordCount() {
-  const body = document.getElementById("editorBody");
-
-  const text = body ? body.textContent.trim() : "";
-
-  const words = text.length ? text.split(/\s+/).length : 0;
-
-  const minutes = Math.max(1, Math.round(words / 200));
-
-  const element = document.getElementById("tbWordCount");
-
-  if (element) {
-    element.textContent = `${words} words • ~${minutes} min read`;
-  }
+function isRangeInsideEditor(
+  range,
+  editor = document.getElementById("editorBody"),
+) {
+  return Boolean(
+    editor && range && editor.contains(range.commonAncestorContainer),
+  );
 }
-
-/* ==========================================================================
-   SELECTION MANAGEMENT
-========================================================================== */
 
 window.saveSelection = function () {
   const selection = window.getSelection();
-
-  if (!selection || selection.rangeCount === 0) {
-    return;
-  }
-
-  const range = selection.getRangeAt(0);
-
   const editor = document.getElementById("editorBody");
 
-  if (!editor) {
-    return;
-  }
+  if (!selection || selection.rangeCount === 0 || !editor) return false;
 
-  if (!editor.contains(range.commonAncestorContainer)) {
-    return;
-  }
+  const range = selection.getRangeAt(0);
+  if (!isRangeInsideEditor(range, editor)) return false;
 
   lastSelectionRange = range.cloneRange();
-
   savedSelectionRange = range.cloneRange();
+  return true;
 };
 
 function restoreSelection() {
   const editor = document.getElementById("editorBody");
+  if (!editor) return false;
 
-  if (!editor) {
-    return false;
+  // Prefer the browser's current range only when a toolbar has not taken focus.
+  // The visible selection can collapse when clicking a toolbar button/select.
+  const toolbarHasFocus = Boolean(
+    document.activeElement?.closest?.(".editor-toolbar, .annotation-toolbar"),
+  );
+  const activeSelection = window.getSelection();
+  if (!toolbarHasFocus && activeSelection && activeSelection.rangeCount > 0) {
+    const currentRange = activeSelection.getRangeAt(0);
+    if (isRangeInsideEditor(currentRange, editor)) {
+      lastSelectionRange = currentRange.cloneRange();
+      savedSelectionRange = currentRange.cloneRange();
+    }
   }
 
-  const range = lastSelectionRange || savedSelectionRange;
-
-  if (!range) {
-    return false;
-  }
+  const candidates = [lastSelectionRange, savedSelectionRange];
+  const range = candidates.find((candidate) =>
+    isRangeInsideEditor(candidate, editor),
+  );
+  if (!range) return false;
 
   try {
-    editor.focus();
-
+    editor.focus({ preventScroll: true });
     const selection = window.getSelection();
-
     selection.removeAllRanges();
-
     selection.addRange(range.cloneRange());
-
     return true;
   } catch (error) {
-    console.warn("Could not restore selection:", error);
-
+    console.warn("Could not restore editor selection:", error);
     return false;
   }
 }
 
 function clearSavedSelection() {
   savedSelectionRange = null;
-
   lastSelectionRange = null;
 }
+
+function countWords(text) {
+  const matches = String(text || "").match(
+    /[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu,
+  );
+  return matches ? matches.length : 0;
+}
+
+function getContextBlockText(editor, range) {
+  if (!editor || !range || !isRangeInsideEditor(range, editor)) return "";
+  if (!range.collapsed) return range.toString();
+
+  let node = range.startContainer;
+  if (node.nodeType === Node.TEXT_NODE) node = node.parentElement;
+
+  const block = node?.closest?.(
+    "p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th, pre, div",
+  );
+  if (!block || block === editor || !editor.contains(block)) {
+    return editor.textContent || "";
+  }
+
+  // When counting the current list item, do not include words in nested lists.
+  if (block.tagName === "LI") {
+    const clone = block.cloneNode(true);
+    clone
+      .querySelectorAll(":scope > ul, :scope > ol")
+      .forEach((list) => list.remove());
+    return clone.textContent || "";
+  }
+
+  return block.textContent || "";
+}
+
+function updateContextWordCount() {
+  const output = document.getElementById("tbContextWordCount");
+  if (!output) return;
+
+  const editor = document.getElementById("editorBody");
+  const selection = window.getSelection();
+
+  if (!editor || !selection || selection.rangeCount === 0) {
+    output.textContent = "Paragraph: 0 words";
+    output.title = "Word count for the current paragraph or selection";
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+  if (!isRangeInsideEditor(range, editor)) {
+    // Keep contextual count stable while a toolbar control has focus.
+    return;
+  }
+
+  if (!range.collapsed) {
+    output.textContent = `Selection: ${countWords(range.toString())} words`;
+    output.title = "Word count for selected text";
+  } else {
+    output.textContent = `Paragraph: ${countWords(getContextBlockText(editor, range))} words`;
+    output.title = "Word count for the paragraph/list item under the caret";
+  }
+}
+
+function updateWordCount() {
+  const body = document.getElementById("editorBody");
+  const text = body ? (body.innerText || body.textContent || "").trim() : "";
+  const words = countWords(text);
+  const minutes = Math.max(1, Math.round(words / 200));
+  const element = document.getElementById("tbWordCount");
+
+  if (element) {
+    element.textContent = `${words} words • ~${minutes} min read`;
+  }
+
+  updateContextWordCount();
+}
+
+window.execToolbar = function (command) {
+  const body = document.getElementById("editorBody");
+  if (!body || !command) return false;
+
+  // A pointerdown listener saves the selection before the toolbar steals focus.
+  // This restore-first order fixes bullets/lists being applied at the first line.
+  if (!restoreSelection()) body.focus({ preventScroll: true });
+
+  let succeeded = false;
+  try {
+    succeeded = document.execCommand(command, false, null);
+  } catch (error) {
+    console.error(`Editor command failed (${command}):`, error);
+  }
+
+  saveSelection();
+  if (
+    ["insertUnorderedList", "insertOrderedList", "indent", "outdent"].includes(
+      command,
+    )
+  ) {
+    const indentControl = document.getElementById("tbListIndent");
+    if (indentControl) applyListIndent(indentControl.value);
+  }
+  updateWordCount();
+  return succeeded;
+};
+
+/* ============================================================================
+   LINK
+============================================================================ */
+
+window.triggerLinkInsert = function () {
+  // Capture at button/pointerdown, then restore after the prompt steals focus.
+  const url = prompt("Enter URL:", "https://");
+  if (!url) return;
+
+  const body = document.getElementById("editorBody");
+  if (!body) return;
+
+  if (!restoreSelection()) body.focus({ preventScroll: true });
+  document.execCommand("createLink", false, url);
+  saveSelection();
+  updateWordCount();
+};
 
 /* ==========================================================================
    HIGHLIGHT
@@ -3478,7 +3550,15 @@ window.publishArticle = async function () {
 
   const body = document.getElementById("editorBody");
 
-  const bodyHTML = body ? body.innerHTML.trim() : "";
+  const bodyHTML = body
+    ? String(
+        typeof window.prepareAnnotationHtmlForSave === "function"
+          ? window.prepareAnnotationHtmlForSave()
+          : typeof window.getCleanAnnotationEditorHtml === "function"
+            ? window.getCleanAnnotationEditorHtml()
+            : body.innerHTML,
+      ).trim()
+    : "";
 
   const topicSelectVal = document.getElementById("fieldTopicSelect").value;
 
@@ -3544,7 +3624,7 @@ window.publishArticle = async function () {
 
   const text = body?.textContent?.trim() || "";
 
-  const wordCount = text.split(/\s+/).filter(Boolean).length;
+  const wordCount = countWords(text);
 
   const readTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
 
@@ -4200,717 +4280,580 @@ window.applyLineHeight = function (value) {
   updateWordCount();
 };
 
-/* ==========================================================================
-   TABLE ACTIONS
-========================================================================== */
+/* ============================================================================
+   TABLE ACTIONS & WRITING ENHANCEMENTS
+============================================================================ */
 
-window.handleTableAction = function (value) {
-  if (!value) {
-    return;
-  }
-
-  const select = document.getElementById("tbTableAction");
-
-  if (select) {
-    select.selectedIndex = 0;
-  }
-
-  restoreSelection();
-
-  /* ------------------------------------------------------------
-       INSERT TABLE
-    ------------------------------------------------------------ */
-
-  if (value === "insert") {
-    const rows = prompt("Jumlah baris?", "3");
-
-    const cols = prompt("Jumlah kolom?", "3");
-
-    if (!rows || !cols) {
-      return;
-    }
-
-    const rowCount = Math.max(1, parseInt(rows, 10));
-
-    const colCount = Math.max(1, parseInt(cols, 10));
-
-    let tableHTML = `
-        <table
-          style="
-            width:100%;
-            border-collapse:collapse;
-            border:1px solid #ccc;
-            margin-bottom:1.5rem;
-          "
-        >
-          <tbody>
-      `;
-
-    for (let i = 0; i < rowCount; i++) {
-      tableHTML += "<tr>";
-
-      for (let j = 0; j < colCount; j++) {
-        tableHTML += `
-            <td
-              style="
-                border:1px solid #ccc;
-                padding:8px 12px;
-              "
-            >
-              Sel
-            </td>
-          `;
-      }
-
-      tableHTML += "</tr>";
-    }
-
-    tableHTML += `
-          </tbody>
-        </table>
-
-        <p><br></p>
-      `;
-
-    document.execCommand("insertHTML", false, tableHTML);
-
-    updateWordCount();
-
-    return;
-  }
-
-  /* ------------------------------------------------------------
-       TABLE EXISTENCE
-    ------------------------------------------------------------ */
-
+function getEditorSelectionCell() {
+  const editor = document.getElementById("editorBody");
   const selection = window.getSelection();
+  if (editor && selection && selection.rangeCount) {
+    let node = selection.getRangeAt(0).startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentElement;
+    const cell = node?.closest?.("td, th");
+    if (cell && editor.contains(cell)) return cell;
+  }
+  const active = document.activeElement;
+  const cell = active?.closest?.("td, th");
+  return cell && editor?.contains(cell) ? cell : null;
+}
 
-  if (!selection || selection.rangeCount === 0) {
-    alert("Arahkan kursor ke dalam tabel terlebih dahulu.");
+function focusEditorCell(cell) {
+  if (!cell) return;
+  const editor = document.getElementById("editorBody");
+  editor?.focus({ preventScroll: true });
+  const range = document.createRange();
+  range.selectNodeContents(cell);
+  range.collapse(true);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+  saveSelection();
+}
 
-    return;
+function editorTableFromSelection() {
+  return getEditorSelectionCell()?.closest("table") || null;
+}
+
+function normalizedTableCell(tagName = "td") {
+  return document.createElement(
+    String(tagName).toLowerCase() === "th" ? "th" : "td",
+  );
+}
+
+function createTableMarkup(rows, columns, id) {
+  const table = document.createElement("table");
+  table.className = "note-editor-table table-fit-window table-border-full";
+  table.dataset.editorTableId = id;
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
+  table.style.margin = "1.25rem 0";
+  table.style.tableLayout = "fixed";
+
+  const tbody = document.createElement("tbody");
+  for (let r = 0; r < rows; r++) {
+    const tr = document.createElement("tr");
+    for (let c = 0; c < columns; c++) {
+      const cell = normalizedTableCell(r === 0 ? "th" : "td");
+      cell.style.border = "1px solid #d8d2c5";
+      cell.style.padding = "9px 12px";
+      cell.style.verticalAlign = "top";
+      cell.style.minWidth = "50px";
+      if (r === 0) cell.textContent = `Header ${c + 1}`;
+      else cell.appendChild(document.createElement("br"));
+      tr.appendChild(cell);
+    }
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  return table;
+}
+
+function insertTableAtSavedSelection(rows, columns) {
+  const editor = document.getElementById("editorBody");
+  if (!editor) return null;
+
+  const id = `note-table-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const markup = createTableMarkup(rows, columns, id);
+  const html = markup.outerHTML + "<p><br></p>";
+
+  if (!restoreSelection()) {
+    editor.focus({ preventScroll: true });
   }
 
-  let node = selection.getRangeAt(0).commonAncestorContainer;
+  // insertHTML respects the restored caret and asks the browser to normalize
+  // block-level table insertion within an existing paragraph.
+  const inserted = document.execCommand("insertHTML", false, html);
+  let table = editor.querySelector(`[data-editor-table-id="${id}"]`);
 
-  if (node.nodeType === Node.TEXT_NODE) {
-    node = node.parentElement;
+  if (!table && !inserted) {
+    table = createTableMarkup(rows, columns, id);
+    editor.appendChild(table);
+    const spacer = document.createElement("p");
+    spacer.appendChild(document.createElement("br"));
+    table.after(spacer);
   }
-
-  const table = node?.closest?.("table");
 
   if (!table) {
-    alert("Kursor Anda harus berada di dalam tabel untuk mengeditnya.");
-
-    return;
+    // Some engines may strip custom data attributes during insertHTML; locate
+    // the last inserted table by its structure and the editor's end position.
+    const tables = editor.querySelectorAll("table.note-editor-table");
+    table = tables[tables.length - 1] || null;
   }
 
-  const cells = table.querySelectorAll("th, td");
-
-  const cell = node.closest?.("th, td");
-
-  /* ------------------------------------------------------------
-       TABLE ACTION SWITCH
-    ------------------------------------------------------------ */
-
-  switch (value) {
-    /* ==========================================================
-           BORDER FULL
-      =========================================================== */
-
-    case "border-full":
-      table.style.border = "1px solid #ccc";
-
-      cells.forEach((currentCell) => {
-        currentCell.style.border = "1px solid #ccc";
-      });
-
-      break;
-
-    /* ==========================================================
-           HORIZONTAL
-      =========================================================== */
-
-    case "border-horizontal":
-      table.style.border = "none";
-
-      table.style.borderTop = "1px solid #ccc";
-
-      table.style.borderBottom = "1px solid #ccc";
-
-      cells.forEach((currentCell) => {
-        currentCell.style.border = "none";
-
-        currentCell.style.borderTop = "1px solid #ccc";
-
-        currentCell.style.borderBottom = "1px solid #ccc";
-      });
-
-      break;
-
-    /* ==========================================================
-           VERTICAL
-      =========================================================== */
-
-    case "border-vertical":
-      table.style.border = "none";
-
-      table.style.borderLeft = "1px solid #ccc";
-
-      table.style.borderRight = "1px solid #ccc";
-
-      cells.forEach((currentCell) => {
-        currentCell.style.border = "none";
-
-        currentCell.style.borderLeft = "1px solid #ccc";
-
-        currentCell.style.borderRight = "1px solid #ccc";
-      });
-
-      break;
-
-    /* ==========================================================
-           NONE
-      =========================================================== */
-
-    case "border-none":
-      table.style.border = "none";
-
-      cells.forEach((currentCell) => {
-        currentCell.style.border = "none";
-      });
-
-      break;
-
-    /* ==========================================================
-           FIT WINDOW
-      =========================================================== */
-
-    case "fit-window":
-      table.style.width = "100%";
-
-      table.style.tableLayout = "auto";
-
-      break;
-
-    /* ==========================================================
-           FIT CONTENT
-      =========================================================== */
-
-    case "fit-content":
-      table.style.width = "auto";
-
-      table.style.tableLayout = "auto";
-
-      break;
-
-    /* ==========================================================
-           MERGE RIGHT
-      =========================================================== */
-
-    case "merge-right":
-      if (!cell) {
-        return;
-      }
-
-      const nextCell = cell.nextElementSibling;
-
-      if (nextCell) {
-        const currentColSpan = cell.hasAttribute("colspan")
-          ? parseInt(cell.getAttribute("colspan"), 10)
-          : 1;
-
-        const nextColSpan = nextCell.hasAttribute("colspan")
-          ? parseInt(nextCell.getAttribute("colspan"), 10)
-          : 1;
-
-        cell.setAttribute("colspan", currentColSpan + nextColSpan);
-
-        cell.innerHTML += "<br>" + nextCell.innerHTML;
-
-        nextCell.remove();
-      }
-
-      break;
-
-      /* ==========================================================
-   EDITOR TABLE ACTIONS
-   ========================================================== */
-
-      function getEditorTableCell() {
-        const selection = window.getSelection();
-
-        if (selection && selection.rangeCount) {
-          let node = selection.getRangeAt(0).startContainer;
-
-          if (node.nodeType === Node.TEXT_NODE) {
-            node = node.parentElement;
-          }
-
-          const cell = node?.closest?.("td, th");
-          if (cell && cell.closest(".editor-workspace")) {
-            return cell;
-          }
-        }
-
-        const active = document.activeElement;
-        return active?.closest?.("td, th") || null;
-      }
-
-      function getEditorTable() {
-        return getEditorTableCell()?.closest("table") || null;
-      }
-
-      function insertEditorTable(rows = 3, columns = 3) {
-        if (typeof restoreSelection === "function") {
-          restoreSelection();
-        }
-
-        const editor = document.querySelector(
-          ".editor-workspace [contenteditable='true']",
-        );
-
-        if (!editor) {
-          alert("Area editor contenteditable tidak ditemukan.");
-          return;
-        }
-
-        rows = Math.max(1, Math.min(30, Number(rows) || 3));
-        columns = Math.max(1, Math.min(15, Number(columns) || 3));
-
-        const table = document.createElement("table");
-        table.className = "table-fit-window table-border-full";
-
-        const tbody = document.createElement("tbody");
-
-        for (let r = 0; r < rows; r++) {
-          const tr = document.createElement("tr");
-
-          for (let c = 0; c < columns; c++) {
-            const cell = document.createElement(r === 0 ? "th" : "td");
-
-            cell.contentEditable = "true";
-            cell.textContent = r === 0 ? `Header ${c + 1}` : "";
-            tr.appendChild(cell);
-          }
-
-          tbody.appendChild(tr);
-        }
-
-        table.appendChild(tbody);
-
-        const selection = window.getSelection();
-        let inserted = false;
-
-        if (selection && selection.rangeCount) {
-          const range = selection.getRangeAt(0);
-
-          if (editor.contains(range.commonAncestorContainer)) {
-            range.deleteContents();
-            range.insertNode(table);
-
-            const next = document.createRange();
-            next.selectNodeContents(
-              table.rows[1]?.cells[0] || table.rows[0].cells[0],
-            );
-            next.collapse(true);
-
-            selection.removeAllRanges();
-            selection.addRange(next);
-            inserted = true;
-          }
-        }
-
-        if (!inserted) {
-          editor.appendChild(table);
-        }
-
-        table.querySelector("td, th")?.focus();
-      }
-
-      function handleTableAction(action) {
-        if (!action) return;
-
-        if (action === "insert") {
-          const rows = prompt("Jumlah baris:", "3");
-          if (rows === null) return;
-
-          const columns = prompt("Jumlah kolom:", "3");
-          if (columns === null) return;
-
-          insertEditorTable(rows, columns);
-          return;
-        }
-
-        const cell = getEditorTableCell();
-        const table = cell?.closest("table");
-
-        if (!cell || !table) {
-          alert("Letakkan kursor di dalam tabel terlebih dahulu.");
-          return;
-        }
-
-        const row = cell.parentElement;
-        const rowIndex = row.rowIndex;
-        const cellIndex = cell.cellIndex;
-
-        function createCell(reference) {
-          const newCell = document.createElement(
-            reference.tagName.toLowerCase() === "th" ? "th" : "td",
-          );
-
-          newCell.contentEditable = "true";
-          return newCell;
-        }
-
-        function focusCell(target) {
-          if (!target) return;
-
-          target.focus();
-
-          const range = document.createRange();
-          range.selectNodeContents(target);
-          range.collapse(true);
-
-          const selection = window.getSelection();
-          selection.removeAllRanges();
-          selection.addRange(range);
-        }
-
-        switch (action) {
-          case "add-row-above":
-          case "add-row-below": {
-            const newRow = document.createElement("tr");
-
-            for (let i = 0; i < row.cells.length; i++) {
-              newRow.appendChild(createCell(row.cells[i]));
-            }
-
-            if (action === "add-row-above") {
-              row.before(newRow);
-            } else {
-              row.after(newRow);
-            }
-
-            focusCell(
-              newRow.cells[Math.min(cellIndex, newRow.cells.length - 1)],
-            );
-            break;
-          }
-
-          case "add-column-left":
-          case "add-column-right": {
-            for (const tr of table.rows) {
-              const newCell = createCell(
-                tr.cells[Math.min(cellIndex, tr.cells.length - 1)] || cell,
-              );
-
-              const index =
-                action === "add-column-left" ? cellIndex : cellIndex + 1;
-
-              if (index >= tr.cells.length) {
-                tr.appendChild(newCell);
-              } else {
-                tr.insertBefore(newCell, tr.cells[index]);
-              }
-            }
-
-            focusCell(
-              table.rows[rowIndex]?.cells[
-                action === "add-column-left" ? cellIndex : cellIndex + 1
-              ],
-            );
-            break;
-          }
-
-          case "delete-row": {
-            row.remove();
-
-            if (!table.rows.length) {
-              table.remove();
-            }
-
-            break;
-          }
-
-          case "delete-column": {
-            for (const tr of [...table.rows]) {
-              if (tr.cells[cellIndex]) {
-                tr.deleteCell(cellIndex);
-              }
-            }
-
-            if (!table.rows.length || !table.rows[0].cells.length) {
-              table.remove();
-            }
-
-            break;
-          }
-
-          case "delete-table":
-            table.remove();
-            break;
-
-          case "fit-window":
-            table.classList.remove("table-fit-content");
-            table.classList.add("table-fit-window");
-            break;
-
-          case "fit-content":
-            table.classList.remove("table-fit-window");
-            table.classList.add("table-fit-content");
-            break;
-
-          case "border-full":
-          case "border-horizontal":
-          case "border-vertical":
-          case "border-none":
-            table.classList.remove(
-              "table-border-full",
-              "table-border-horizontal",
-              "table-border-vertical",
-              "table-border-none",
-            );
-            table.classList.add(`table-${action}`);
-            break;
-
-          case "merge-right": {
-            const nextCell = cell.nextElementSibling;
-            if (!nextCell) {
-              alert("Tidak ada sel di sebelah kanan.");
-              return;
-            }
-
-            const rowSpan = Number(cell.rowSpan) || 1;
-            const colSpan = Number(cell.colSpan) || 1;
-
-            if (nextCell.rowSpan !== rowSpan) {
-              alert("Sel memiliki tinggi berbeda dan tidak dapat digabung.");
-              return;
-            }
-
-            cell.colSpan = colSpan + (Number(nextCell.colSpan) || 1);
-
-            while (nextCell.firstChild) {
-              cell.appendChild(nextCell.firstChild);
-            }
-
-            nextCell.remove();
-            focusCell(cell);
-            break;
-          }
-
-          case "merge-down": {
-            const nextRow = table.rows[rowIndex + 1];
-            const nextCell = nextRow?.cells[cellIndex];
-
-            if (!nextCell) {
-              alert("Tidak ada sel di bawah pada posisi yang sama.");
-              return;
-            }
-
-            cell.rowSpan =
-              (Number(cell.rowSpan) || 1) + (Number(nextCell.rowSpan) || 1);
-
-            while (nextCell.firstChild) {
-              cell.appendChild(nextCell.firstChild);
-            }
-
-            nextCell.remove();
-            focusCell(cell);
-            break;
-          }
-
-          case "unmerge": {
-            const rowSpan = Number(cell.rowSpan) || 1;
-            const colSpan = Number(cell.colSpan) || 1;
-
-            if (rowSpan === 1 && colSpan === 1) {
-              alert("Sel ini tidak sedang digabung.");
-              return;
-            }
-
-            cell.rowSpan = 1;
-            cell.colSpan = 1;
-
-            // Rebuild remaining cells in the merged area.
-            for (let r = 0; r < rowSpan; r++) {
-              const targetRow = table.rows[rowIndex + r];
-              if (!targetRow) continue;
-
-              for (let c = 0; c < colSpan; c++) {
-                if (r === 0 && c === 0) continue;
-
-                const newCell = createCell(cell);
-                const insertionIndex = Math.min(
-                  cellIndex + c,
-                  targetRow.cells.length,
-                );
-
-                targetRow.insertBefore(
-                  newCell,
-                  targetRow.cells[insertionIndex] || null,
-                );
-              }
-            }
-
-            focusCell(cell);
-            break;
-          }
-        }
-      }
-
-    /* ==========================================================
-           MERGE DOWN
-      =========================================================== */
-
-    case "merge-down":
-      if (!cell) {
-        return;
-      }
-
-      const row = cell.closest("tr");
-
-      if (!row) {
-        return;
-      }
-
-      const tbody = row.closest("tbody") || row.parentNode;
-
-      const allRows = Array.from(tbody.querySelectorAll("tr"));
-
-      const rowIndex = allRows.indexOf(row);
-
-      const currentRowSpan = cell.hasAttribute("rowspan")
-        ? parseInt(cell.getAttribute("rowspan"), 10)
-        : 1;
-
-      let colIndex = 0;
-
-      for (const currentCell of Array.from(row.children)) {
-        if (currentCell === cell) {
-          break;
-        }
-
-        colIndex += currentCell.hasAttribute("colspan")
-          ? parseInt(currentCell.getAttribute("colspan"), 10)
-          : 1;
-      }
-
-      const nextRow = allRows[rowIndex + currentRowSpan];
-
-      if (!nextRow) {
-        break;
-      }
-
-      let targetCell = null;
-
-      let currentCol = 0;
-
-      for (const currentCell of Array.from(nextRow.children)) {
-        if (currentCol === colIndex) {
-          targetCell = currentCell;
-
-          break;
-        }
-
-        currentCol += currentCell.hasAttribute("colspan")
-          ? parseInt(currentCell.getAttribute("colspan"), 10)
-          : 1;
-      }
-
-      if (targetCell) {
-        const targetRowSpan = targetCell.hasAttribute("rowspan")
-          ? parseInt(targetCell.getAttribute("rowspan"), 10)
-          : 1;
-
-        cell.setAttribute("rowspan", currentRowSpan + targetRowSpan);
-
-        cell.innerHTML += "<br>" + targetCell.innerHTML;
-
-        targetCell.remove();
-      }
-
-      break;
-
-    /* ==========================================================
-           UNMERGE
-      =========================================================== */
-
-    case "unmerge":
-      if (!cell) {
-        return;
-      }
-
-      const cSpan = cell.hasAttribute("colspan")
-        ? parseInt(cell.getAttribute("colspan"), 10)
-        : 1;
-
-      const rSpan = cell.hasAttribute("rowspan")
-        ? parseInt(cell.getAttribute("rowspan"), 10)
-        : 1;
-
-      const originalBorder = cell.style.border || "1px solid #ccc";
-
-      /* --------------------------------------------------------
-             COLUMNS
-        -------------------------------------------------------- */
-
-      if (cSpan > 1) {
-        for (let i = 1; i < cSpan; i++) {
-          const newCell = document.createElement(cell.tagName);
-
-          newCell.style.cssText = [
-            `border:${originalBorder}`,
-            "padding:8px",
-          ].join(";");
-
-          newCell.innerHTML = "Sel";
-
-          cell.parentNode.insertBefore(newCell, cell.nextSibling);
-        }
-
-        cell.removeAttribute("colspan");
-      }
-
-      /* --------------------------------------------------------
-             ROWS
-        -------------------------------------------------------- */
-
-      if (rSpan > 1) {
-        const referenceRow = cell.closest("tr");
-
-        const referenceBody =
-          referenceRow.closest("tbody") || referenceRow.parentNode;
-
-        const rowsArray = Array.from(referenceBody.querySelectorAll("tr"));
-
-        const referenceIndex = rowsArray.indexOf(referenceRow);
-
-        for (let i = 1; i < rSpan; i++) {
-          const nextRow = rowsArray[referenceIndex + i];
-
-          if (!nextRow) {
-            continue;
-          }
-
-          const newCell = document.createElement(cell.tagName);
-
-          newCell.style.cssText = [
-            `border:${originalBorder}`,
-            "padding:8px",
-          ].join(";");
-
-          newCell.innerHTML = "Sel";
-
-          nextRow.appendChild(newCell);
-        }
-
-        cell.removeAttribute("rowspan");
-      }
-
-      break;
+  if (table) {
+    delete table.dataset.editorTableId;
+    focusEditorCell(table.rows[1]?.cells[0] || table.rows[0]?.cells[0]);
   }
 
   updateWordCount();
+  return table;
+}
+
+function setTableBorderMode(table, mode) {
+  if (!table) return;
+  table.style.borderCollapse = "collapse";
+  const cells = table.querySelectorAll("th, td");
+  table.classList.remove(
+    "table-border-full",
+    "table-border-horizontal",
+    "table-border-vertical",
+    "table-border-none",
+  );
+  table.classList.add(`table-${mode}`);
+
+  cells.forEach((cell) => {
+    cell.style.border = "";
+    cell.style.borderTop = "";
+    cell.style.borderRight = "";
+    cell.style.borderBottom = "";
+    cell.style.borderLeft = "";
+    if (mode === "border-full") {
+      cell.style.border = "1px solid #d8d2c5";
+    } else if (mode === "border-horizontal") {
+      cell.style.borderTop = "1px solid #d8d2c5";
+      cell.style.borderBottom = "1px solid #d8d2c5";
+    } else if (mode === "border-vertical") {
+      cell.style.borderLeft = "1px solid #d8d2c5";
+      cell.style.borderRight = "1px solid #d8d2c5";
+    }
+  });
+
+  table.style.border = mode === "border-none" ? "none" : "1px solid #d8d2c5";
+}
+
+function addTableRow(table, row, where) {
+  const newRow = document.createElement("tr");
+  const referenceCells = Array.from(row.cells);
+  referenceCells.forEach((reference) => {
+    const cell = normalizedTableCell(reference.tagName);
+    cell.style.cssText = reference.style.cssText;
+    cell.appendChild(document.createElement("br"));
+    newRow.appendChild(cell);
+  });
+  if (where === "above") row.before(newRow);
+  else row.after(newRow);
+  focusEditorCell(newRow.cells[0]);
+}
+
+function addTableColumn(table, cell, where) {
+  const targetRow = cell.parentElement;
+  const index =
+    Array.from(targetRow.cells).indexOf(cell) + (where === "right" ? 1 : 0);
+  Array.from(table.rows).forEach((row) => {
+    const reference = row.cells[Math.min(index, row.cells.length - 1)] || cell;
+    const newCell = normalizedTableCell(reference?.tagName || "td");
+    if (reference) newCell.style.cssText = reference.style.cssText;
+    newCell.appendChild(document.createElement("br"));
+    row.insertBefore(newCell, row.cells[index] || null);
+  });
+  focusEditorCell(targetRow.cells[Math.min(index, targetRow.cells.length - 1)]);
+}
+
+window.handleTableAction = function (value) {
+  if (!value) return;
+  const select = document.getElementById("tbTableAction");
+  if (select) select.selectedIndex = 0;
+
+  // Restore from the saved range before checking the current table/cell.
+  restoreSelection();
+
+  if (value === "insert") {
+    const rowsValue = prompt("Jumlah baris? (1–30)", "3");
+    if (rowsValue === null) return;
+    const columnsValue = prompt("Jumlah kolom? (1–15)", "3");
+    if (columnsValue === null) return;
+    const rows = Math.max(1, Math.min(30, parseInt(rowsValue, 10) || 3));
+    const columns = Math.max(1, Math.min(15, parseInt(columnsValue, 10) || 3));
+    insertTableAtSavedSelection(rows, columns);
+    return;
+  }
+
+  const cell = getEditorSelectionCell();
+  const table = cell?.closest("table") || editorTableFromSelection();
+  if (!table) {
+    setEditorStatus(
+      "Place the cursor inside a table before using table options.",
+    );
+    return;
+  }
+
+  const row = cell?.closest("tr") || null;
+  const rowIndex = row ? Array.from(table.rows).indexOf(row) : -1;
+  const cellIndex = cell ? Array.from(row.cells).indexOf(cell) : -1;
+
+  switch (value) {
+    case "add-row-above":
+      if (row) addTableRow(table, row, "above");
+      break;
+    case "add-row-below":
+      if (row) addTableRow(table, row, "below");
+      break;
+    case "add-column-left":
+      if (cell) addTableColumn(table, cell, "left");
+      break;
+    case "add-column-right":
+      if (cell) addTableColumn(table, cell, "right");
+      break;
+    case "delete-row":
+      if (row) {
+        row.remove();
+        if (!table.rows.length) table.remove();
+      }
+      break;
+    case "delete-column":
+      if (cell) {
+        Array.from(table.rows).forEach((tableRow) => {
+          if (tableRow.cells[cellIndex]) tableRow.deleteCell(cellIndex);
+        });
+        if (!table.rows.length || !table.rows[0].cells.length) table.remove();
+      }
+      break;
+    case "delete-table":
+      table.remove();
+      break;
+    case "fit-window":
+      table.classList.remove("table-fit-content");
+      table.classList.add("table-fit-window");
+      table.style.width = "100%";
+      table.style.maxWidth = "100%";
+      table.style.tableLayout = "fixed";
+      break;
+    case "fit-content":
+      table.classList.remove("table-fit-window");
+      table.classList.add("table-fit-content");
+      table.style.width = "max-content";
+      table.style.maxWidth = "100%";
+      table.style.tableLayout = "auto";
+      break;
+    case "border-full":
+    case "border-horizontal":
+    case "border-vertical":
+    case "border-none":
+      setTableBorderMode(table, value);
+      break;
+    case "merge-right": {
+      if (!cell) break;
+      const nextCell = cell.nextElementSibling;
+      if (!nextCell) {
+        setEditorStatus("There is no cell to the right of the current cell.");
+        break;
+      }
+      const currentRowSpan = cell.rowSpan || 1;
+      if ((nextCell.rowSpan || 1) !== currentRowSpan) {
+        setEditorStatus(
+          "Cells with different row spans cannot be merged safely.",
+        );
+        break;
+      }
+      cell.colSpan = (cell.colSpan || 1) + (nextCell.colSpan || 1);
+      while (nextCell.firstChild) cell.appendChild(nextCell.firstChild);
+      nextCell.remove();
+      focusEditorCell(cell);
+      break;
+    }
+    case "merge-down": {
+      if (!cell || rowIndex < 0) break;
+      const nextRow = table.rows[rowIndex + 1];
+      const nextCell = nextRow?.cells[cellIndex];
+      if (!nextCell) {
+        setEditorStatus("There is no matching cell directly below.");
+        break;
+      }
+      if ((cell.colSpan || 1) !== (nextCell.colSpan || 1)) {
+        setEditorStatus(
+          "Cells with different column spans cannot be merged safely.",
+        );
+        break;
+      }
+      cell.rowSpan = (cell.rowSpan || 1) + (nextCell.rowSpan || 1);
+      while (nextCell.firstChild) cell.appendChild(nextCell.firstChild);
+      nextCell.remove();
+      focusEditorCell(cell);
+      break;
+    }
+    case "unmerge": {
+      if (!cell) break;
+      const rowSpan = cell.rowSpan || 1;
+      const colSpan = cell.colSpan || 1;
+      if (rowSpan === 1 && colSpan === 1) {
+        setEditorStatus("The selected cell is not merged.");
+        break;
+      }
+      cell.rowSpan = 1;
+      cell.colSpan = 1;
+      // Recreate the missing cells in the merged rectangle. This is intended
+      // for simple rectangular merges; irregular pre-existing spans may need
+      // manual correction in a full table editor.
+      for (let r = 0; r < rowSpan; r++) {
+        const targetRow = table.rows[rowIndex + r];
+        if (!targetRow) continue;
+        for (let c = 0; c < colSpan; c++) {
+          if (r === 0 && c === 0) continue;
+          const newCell = normalizedTableCell(cell.tagName);
+          newCell.style.cssText = cell.style.cssText;
+          newCell.appendChild(document.createElement("br"));
+          const insertionIndex = Math.min(
+            cellIndex + c,
+            targetRow.cells.length,
+          );
+          targetRow.insertBefore(
+            newCell,
+            targetRow.cells[insertionIndex] || null,
+          );
+        }
+      }
+      focusEditorCell(cell);
+      break;
+    }
+    default:
+      break;
+  }
+
+  saveSelection();
+  updateWordCount();
 };
+
+/* ============================================================================
+   TABLE DIMENSIONS
+============================================================================ */
+
+function applyTableColumnWidth(value) {
+  const cell = getEditorSelectionCell();
+  const table = cell?.closest("table");
+  if (!cell || !table) {
+    setEditorStatus(
+      "Place the cursor inside the table before changing column width.",
+    );
+    return;
+  }
+
+  const index = Array.from(cell.parentElement.cells).indexOf(cell);
+  const rows = Array.from(table.rows);
+  const width = value === "auto" ? "" : value;
+  rows.forEach((row) => {
+    const target = row.cells[index];
+    if (target) target.style.width = width;
+  });
+
+  // Set a matching COL width as well when the table uses a regular grid.
+  let colgroup = table.querySelector(":scope > colgroup");
+  const colCount = Math.max(...rows.map((row) => row.cells.length), 0);
+  if (colCount > 0) {
+    if (!colgroup) {
+      colgroup = document.createElement("colgroup");
+      for (let i = 0; i < colCount; i++)
+        colgroup.appendChild(document.createElement("col"));
+      table.insertBefore(colgroup, table.firstChild);
+    } else {
+      while (colgroup.children.length < colCount)
+        colgroup.appendChild(document.createElement("col"));
+    }
+    if (colgroup.children[index]) colgroup.children[index].style.width = width;
+  }
+  updateWordCount();
+}
+window.applyTableColumnWidth = applyTableColumnWidth;
+
+function applyTableRowHeight(value) {
+  const cell = getEditorSelectionCell();
+  const table = cell?.closest("table");
+  const row = cell?.closest("tr");
+  if (!cell || !table || !row) {
+    setEditorStatus(
+      "Place the cursor inside a table row before changing row height.",
+    );
+    return;
+  }
+  row.style.height = value === "auto" ? "" : value;
+  Array.from(row.cells).forEach((currentCell) => {
+    currentCell.style.height = value === "auto" ? "" : value;
+    currentCell.style.verticalAlign = "top";
+  });
+  updateWordCount();
+}
+window.applyTableRowHeight = applyTableRowHeight;
+
+/* ============================================================================
+   NESTED LIST INDENT & TOOLBAR UI
+============================================================================ */
+
+function applyListIndent(value) {
+  const editor = document.getElementById("editorBody");
+  if (!editor) return;
+  const indent = Math.max(1.2, Math.min(3.6, Number(value) || 1.8));
+  editor.style.setProperty("--editor-list-indent", `${indent}em`);
+  // Inline indentation is serialized with body_html, so the user's setting
+  // survives save/read mode instead of applying only to the live editor root.
+  editor.querySelectorAll("ul, ol").forEach((list) => {
+    list.style.paddingLeft = `${indent}em`;
+  });
+  const output = document.getElementById("tbListIndentValue");
+  if (output) output.textContent = `${indent.toFixed(1)}em`;
+}
+window.applyListIndent = applyListIndent;
+
+function injectEditorEnhancementStyles() {
+  if (document.getElementById("noteEditorEnhancementStyles")) return;
+  const style = document.createElement("style");
+  style.id = "noteEditorEnhancementStyles";
+  style.textContent = `
+    #editorBody, #reading-content-area { --editor-list-indent: 1.8em; }
+    #editorBody ul, #editorBody ol, #reading-content-area ul, #reading-content-area ol {
+      padding-left: var(--editor-list-indent, 1.8em);
+    }
+    #editorBody li > ul, #editorBody li > ol,
+    #reading-content-area li > ul, #reading-content-area li > ol {
+      margin-top: .25em; margin-bottom: .25em;
+    }
+    #editorBody table, #reading-content-area table {
+      max-width: 100%; border-collapse: collapse; border-spacing: 0;
+      margin: 1.25rem 0; color: inherit; font: inherit;
+    }
+    #editorBody th, #editorBody td, #reading-content-area th, #reading-content-area td {
+      padding: 9px 12px; vertical-align: top; overflow-wrap: anywhere;
+      border: 1px solid #d8d2c5;
+    }
+    #editorBody th, #reading-content-area th { background: #f0ece2; font-weight: 600; }
+    #editorBody table.table-fit-window, #reading-content-area table.table-fit-window { width: 100%; table-layout: fixed; }
+    #editorBody table.table-fit-content, #reading-content-area table.table-fit-content { width: max-content; max-width: 100%; table-layout: auto; }
+    #editorBody table.table-border-none th, #editorBody table.table-border-none td,
+    #reading-content-area table.table-border-none th, #reading-content-area table.table-border-none td { border: 0 !important; }
+    #editorBody table.table-border-horizontal th, #editorBody table.table-border-horizontal td,
+    #reading-content-area table.table-border-horizontal th, #reading-content-area table.table-border-horizontal td { border-left: 0 !important; border-right: 0 !important; border-top: 1px solid #d8d2c5 !important; border-bottom: 1px solid #d8d2c5 !important; }
+    #editorBody table.table-border-vertical th, #editorBody table.table-border-vertical td,
+    #reading-content-area table.table-border-vertical th, #reading-content-area table.table-border-vertical td { border-top: 0 !important; border-bottom: 0 !important; border-left: 1px solid #d8d2c5 !important; border-right: 1px solid #d8d2c5 !important; }
+    .tb-enhancements-group { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+    .tb-enhancement-label { display:inline-flex; align-items:center; gap:5px; font-size:11px; color:var(--muted, #77746c); white-space:nowrap; }
+    .tb-enhancement-select { max-width:115px; min-width:76px; padding:6px 7px; border:1px solid #d8d2c5; border-radius:5px; background:#fffdf8; color:#302e28; font:inherit; font-size:11px; }
+    .tb-context-count { display:inline-flex; align-items:center; font-size:11px; color:var(--muted, #77746c); white-space:nowrap; padding:4px 7px; border-radius:5px; background:rgba(180,154,98,.10); }
+    .tb-indent-range { width:68px; accent-color:#b49a62; }
+    .tb-list-indent-value { min-width:30px; font-size:10px; color:var(--muted, #77746c); }
+    @media(max-width:700px) { .tb-enhancements-group { flex-basis:100%; } .tb-enhancement-select { max-width:100px; } }
+  `;
+  document.head.appendChild(style);
+}
+
+function installTableMenuOptions() {
+  const select = document.getElementById("tbTableAction");
+  if (!select) return;
+
+  const existing = new Set(
+    Array.from(select.options).map((option) => option.value),
+  );
+  if (existing.has("add-row-above")) return;
+
+  const fragment = document.createDocumentFragment();
+  const addOption = (value, label, disabled = false) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    option.disabled = disabled;
+    fragment.appendChild(option);
+  };
+
+  addOption("", "────────────", true);
+  addOption("add-row-above", "↑ Tambah Baris Atas");
+  addOption("add-row-below", "↓ Tambah Baris Bawah");
+  addOption("add-column-left", "← Tambah Kolom Kiri");
+  addOption("add-column-right", "→ Tambah Kolom Kanan");
+  addOption("delete-row", "Hapus Baris");
+  addOption("delete-column", "Hapus Kolom");
+  addOption("delete-table", "Hapus Tabel");
+  addOption("", "────────────", true);
+
+  const firstSizingOption = Array.from(select.options).find(
+    (option) => option.value === "fit-window",
+  );
+  if (firstSizingOption) select.insertBefore(fragment, firstSizingOption);
+  else select.appendChild(fragment);
+}
+
+function installEditorEnhancements() {
+  const toolbar = document.querySelector(".editor-toolbar");
+  const editor = document.getElementById("editorBody");
+  if (!toolbar || !editor) return;
+
+  injectEditorEnhancementStyles();
+  installTableMenuOptions();
+
+  // Toolbar capture saves the selection before buttons/selects take focus.
+  if (!toolbar.dataset.selectionCaptureBound) {
+    toolbar.dataset.selectionCaptureBound = "true";
+    toolbar.addEventListener(
+      "pointerdown",
+      (event) => {
+        if (event.target.closest("button, select, input, label"))
+          saveSelection();
+      },
+      true,
+    );
+    toolbar.addEventListener(
+      "mousedown",
+      (event) => {
+        if (event.target.closest("button, select, input, label"))
+          saveSelection();
+      },
+      true,
+    );
+  }
+
+  let group = document.getElementById("tbEditorEnhancements");
+  if (!group) {
+    group = document.createElement("div");
+    group.className = "tb-group tb-enhancements-group";
+    group.id = "tbEditorEnhancements";
+    group.innerHTML = `
+      <span id="tbContextWordCount" class="tb-context-count" title="Word count for current paragraph or selected text">Paragraph: 0 words</span>
+      <button type="button" class="tb-btn" id="tbOutdentList" title="Decrease list indentation" aria-label="Decrease list indentation"><i class="fa-solid fa-outdent"></i></button>
+      <button type="button" class="tb-btn" id="tbIndentList" title="Indent list item / create nested bullet" aria-label="Indent list item"><i class="fa-solid fa-indent"></i></button>
+      <label class="tb-enhancement-label" title="Indent amount for each nested list level">List indent
+        <input id="tbListIndent" class="tb-indent-range" type="range" min="1.2" max="3.6" step="0.2" value="1.8" />
+        <span id="tbListIndentValue" class="tb-list-indent-value">1.8em</span>
+      </label>
+      <label class="tb-enhancement-label" title="Width of the current table column">Col.
+        <select id="tbColumnWidth" class="tb-enhancement-select">
+          <option value="auto">Auto width</option><option value="80px">80 px</option><option value="100px">100 px</option><option value="120px">120 px</option><option value="160px">160 px</option><option value="200px">200 px</option><option value="25%">25%</option><option value="33.333%">33%</option><option value="50%">50%</option>
+        </select>
+      </label>
+      <label class="tb-enhancement-label" title="Height of the current table row">Row
+        <select id="tbRowHeight" class="tb-enhancement-select">
+          <option value="auto">Auto height</option><option value="36px">36 px</option><option value="48px">48 px</option><option value="64px">64 px</option><option value="80px">80 px</option><option value="120px">120 px</option>
+        </select>
+      </label>
+    `;
+    const tableSelect = document.getElementById("tbTableAction");
+    const referenceGroup = tableSelect?.closest(".tb-group");
+    if (referenceGroup) referenceGroup.insertAdjacentElement("afterend", group);
+    else toolbar.appendChild(group);
+
+    document
+      .getElementById("tbOutdentList")
+      ?.addEventListener("click", () => window.execToolbar("outdent"));
+    document
+      .getElementById("tbIndentList")
+      ?.addEventListener("click", () => window.execToolbar("indent"));
+    document
+      .getElementById("tbListIndent")
+      ?.addEventListener("input", (event) =>
+        applyListIndent(event.target.value),
+      );
+    document
+      .getElementById("tbColumnWidth")
+      ?.addEventListener("change", (event) => {
+        restoreSelection();
+        applyTableColumnWidth(event.target.value);
+        event.target.value = "auto";
+      });
+    document
+      .getElementById("tbRowHeight")
+      ?.addEventListener("change", (event) => {
+        restoreSelection();
+        applyTableRowHeight(event.target.value);
+        event.target.value = "auto";
+      });
+  }
+
+  applyListIndent(document.getElementById("tbListIndent")?.value || 1.8);
+  updateWordCount();
+}

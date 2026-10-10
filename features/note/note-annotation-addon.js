@@ -36,6 +36,10 @@
   const SVG_NS = "http://www.w3.org/2000/svg";
   const HISTORY_LIMIT = 40;
 
+  // Track SVG listeners in memory, not in serialized markup. Persisted DOM
+  // must never carry a "bound" flag that prevents listeners on a later edit.
+  const boundSvgs = new WeakSet();
+
   const state = {
     wrapper: null,
     svg: null,
@@ -78,6 +82,34 @@
       window.setEditorStatus(message);
     }
   };
+
+  function injectAnnotationStyles() {
+    if (document.getElementById("noteAnnotationStyles")) return;
+    const style = document.createElement("style");
+    style.id = "noteAnnotationStyles";
+    style.textContent = `
+      .note-image-annotation { position:relative; box-sizing:border-box; max-width:100%; }
+      .note-image-annotation-inner { position:relative; display:block; width:100%; max-width:100%; box-sizing:border-box; line-height:0; }
+      .note-image-annotation-inner > img.annotation-contained-image,
+      .note-image-annotation-inner > img.note-img { display:block; width:100%; max-width:100%; height:auto; vertical-align:top; }
+      .note-image-annotation .note-annotation-layer { position:absolute !important; inset:0; display:block; width:100% !important; height:100% !important; overflow:visible; pointer-events:none; z-index:2; }
+      .note-image-annotation.is-drawing .note-annotation-layer { pointer-events:all !important; cursor:crosshair; touch-action:none; }
+      .note-image-annotation .note-annotation-layer [data-annotation-kind] { pointer-events:visiblePainted; }
+      .note-image-annotation.is-selected { outline:1px dashed rgba(180,154,98,.9); outline-offset:3px; }
+      .annotation-toolbar { position:relative; z-index:30; display:none; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0 12px; padding:10px; border:1px solid #ddd5c6; border-radius:8px; background:#fbf8f0; color:#302e28; }
+      .annotation-toolbar-main { display:flex; flex-wrap:wrap; align-items:center; gap:8px; width:100%; }
+      .annotation-tool-group { display:flex; flex-wrap:wrap; gap:4px; }
+      .annotation-tool-btn, .annotation-action-btn, .annotation-done-btn, .annotation-suggestion-btn { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-height:30px; padding:5px 8px; border:1px solid #d8d0c0; border-radius:5px; background:#fffdf8; color:#343128; cursor:pointer; font:inherit; font-size:12px; }
+      .annotation-tool-btn.is-active, .annotation-suggestion-btn.is-primary { background:#e9dfc9; border-color:#b49a62; }
+      .annotation-control { display:inline-flex; align-items:center; gap:6px; font-size:11px; }
+      .annotation-control input[type=color] { width:28px; height:24px; padding:0; border:0; background:transparent; }
+      .annotation-control input[type=range] { width:72px; accent-color:#b49a62; }
+      .annotation-done-btn { background:#e9dfc9; }
+      .annotation-status-row, .annotation-suggestion-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:12px; }
+      @media (max-width:640px) { .annotation-tool-label { display:none; } .annotation-toolbar-main { align-items:flex-start; } }
+    `;
+    document.head.appendChild(style);
+  }
 
   const formatNumber = (value) => Number(value.toFixed(2));
 
@@ -483,6 +515,9 @@
       svg.style.removeProperty("pointer-events");
       svg.style.removeProperty("z-index");
       svg.style.removeProperty("touch-action");
+      // This is runtime-only state; otherwise reopening a note can mistake
+      // the persisted SVG for an already-bound one.
+      svg.removeAttribute("data-annotation-bound");
     });
 
     wrapper
@@ -514,6 +549,11 @@
     clone
       .querySelectorAll('[data-preview="true"]')
       .forEach((element) => element.remove());
+
+    // Listener state is never serialized into saved HTML.
+    clone.querySelectorAll(".note-annotation-layer").forEach((svg) => {
+      svg.removeAttribute("data-annotation-bound");
+    });
 
     return clone.innerHTML;
   }
@@ -888,11 +928,11 @@
   }
 
   function bindSvg(svg) {
-    if (!svg || svg.dataset.annotationBound === "true") {
+    if (!svg || boundSvgs.has(svg)) {
       return;
     }
 
-    svg.dataset.annotationBound = "true";
+    boundSvgs.add(svg);
 
     svg.addEventListener("pointerdown", beginPointer);
 
@@ -1536,13 +1576,24 @@
       width.value = String(state.width);
     }
 
-    /* Clean up inline pointer styles left by previous script versions. */
+    // Explicitly control hit-testing instead of relying on an external CSS file.
+    // `pointer-events: all` makes the transparent SVG surface drawable, including
+    // areas with no existing stroke, which is important in browser fullscreen.
     document
       .querySelectorAll(".note-image-annotation .note-annotation-layer")
       .forEach((svg) => {
-        svg.style.removeProperty("pointer-events");
-        svg.style.removeProperty("z-index");
-        svg.style.removeProperty("touch-action");
+        const wrapper = svg.closest(".note-image-annotation");
+        const activeDrawingSurface = Boolean(
+          state.drawing && state.wrapper === wrapper,
+        );
+        svg.style.position = "absolute";
+        svg.style.left = "0";
+        svg.style.top = "0";
+        svg.style.width = "100%";
+        svg.style.height = "100%";
+        svg.style.zIndex = "2";
+        svg.style.pointerEvents = activeDrawingSurface ? "all" : "none";
+        svg.style.touchAction = activeDrawingSurface ? "none" : "";
       });
   }
 
@@ -2218,25 +2269,6 @@
 
     publishSanitizerInstalled = true;
 
-    /*
-       Capture phase executes before inline onclick handlers.
-    */
-    document.addEventListener(
-      "click",
-      (event) => {
-        const publishButton = event.target.closest?.(
-          '#publishBtn, button[onclick="publishArticle()"]',
-        );
-
-        if (!publishButton) {
-          return;
-        }
-
-        cleanAnnotationEditorDom();
-      },
-      true,
-    );
-
     const installGlobalWrapper = () => {
       if (typeof window.publishArticle !== "function") {
         return false;
@@ -2290,6 +2322,7 @@
 
               wrapper.classList.toggle("is-drawing", drawing);
             });
+            updateToolbar();
           }
         }
       };
@@ -2381,6 +2414,7 @@
   ======================================================================== */
 
   function init() {
+    injectAnnotationStyles();
     injectToolbarButton();
 
     injectAnnotationToolbar();
