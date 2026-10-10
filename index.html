@@ -6,33 +6,36 @@
     <title>AWS | A Personal Archive</title>
 
     <!-- ============================================================
-         SEO: Meta description
-         Ini yang dipakai Google sebagai cuplikan (snippet) di bawah
-         judul pada hasil pencarian. Ditulis statis dalam bahasa
-         Inggris karena itulah konten yang benar-benar dikirim server
-         sebelum JS bilingual berjalan (lihat catatan lengkap di luar
-         file ini soal batasan sistem EN/ID client-side).
-    ============================================================ -->
-    <meta name="google-site-verification" content="sTC8KGqJyCPST7y48VMDGJsHdDAVXHcY4EsC4RL68m8" />
+     SEO: Meta description
+     Ini yang dipakai Google sebagai cuplikan (snippet) di bawah
+     judul pada hasil pencarian. Ditulis statis dalam bahasa
+     Inggris karena itulah konten yang benar-benar dikirim server
+     sebelum JS bilingual berjalan (lihat catatan lengkap di luar
+     file ini soal batasan sistem EN/ID client-side).
+============================================================ -->
+    <meta
+      name="google-site-verification"
+      content="sTC8KGqJyCPST7y48VMDGJsHdDAVXHcY4EsC4RL68m8"
+    />
     <meta
       name="description"
       content="A personal archive by Alvin Wildan Sahli — notes, reflections, and interactive spatial ecology dashboards on climate and disaster resilience in Indonesia."
     />
 
     <!-- SEO: Directive eksplisit ke crawler (nilainya sama dengan default,
-         tapi eksplisit lebih jelas dan jadi rekomendasi umum audit SEO) -->
+     tapi eksplisit lebih jelas dan jadi rekomendasi umum audit SEO) -->
     <meta name="robots" content="index, follow" />
 
     <!-- SEO: Canonical URL — mencegah masalah duplicate content jika
-         halaman yang sama bisa diakses lewat beberapa variasi URL
-         (mis. dengan/tanpa trailing slash, http vs https, dst). -->
+     halaman yang sama bisa diakses lewat beberapa variasi URL
+     (mis. dengan/tanpa trailing slash, http vs https, dst). -->
     <link rel="canonical" href="https://aws-commonplace.pages.dev/" />
 
     <!-- ============================================================
-         SEO: Open Graph — dipakai Facebook, LinkedIn, WhatsApp, dll.
-         saat link ini dibagikan, untuk menampilkan kartu pratinjau
-         (judul, deskripsi, gambar) alih-alih hanya menampilkan URL polos.
-    ============================================================ -->
+     SEO: Open Graph — dipakai Facebook, LinkedIn, WhatsApp, dll.
+     saat link ini dibagikan, untuk menampilkan kartu pratinjau
+     (judul, deskripsi, gambar) alih-alih hanya menampilkan URL polos.
+============================================================ -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://aws-commonplace.pages.dev/" />
     <meta property="og:title" content="AWS | A Personal Archive" />
@@ -48,7 +51,7 @@
     <meta property="og:locale:alternate" content="id_ID" />
 
     <!-- SEO: Twitter/X Card — kartu pratinjau versi Twitter/X, formatnya
-         beda dari Open Graph sehingga perlu tag terpisah. -->
+     beda dari Open Graph sehingga perlu tag terpisah. -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="AWS | A Personal Archive" />
     <meta
@@ -63,7 +66,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- SEO/Performance: preconnect ke CDN Font Awesome, karena ikon-ikon
-         di footer memakainya sejak render pertama. -->
+     di footer memakainya sejak render pertama. -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
@@ -80,14 +83,14 @@
     <link rel="stylesheet" href="/index.css" />
 
     <!-- ============================================================
-         SEO: Structured Data (JSON-LD) — Person schema.
-         Semua field di bawah murni menyalin ulang informasi yang SUDAH
-         ada dan terlihat di halaman ini (nama, tagline footer, riwayat
-         alumni di kartu organisasi, link sosial di footer) — tidak ada
-         fakta baru yang ditambahkan. Ini membantu Google memahami bahwa
-         halaman ini merepresentasikan satu entitas orang yang jelas,
-         dan berpotensi memicu Knowledge Panel / rich result.
-    ============================================================ -->
+     SEO: Structured Data (JSON-LD) — Person schema.
+     Semua field di bawah murni menyalin ulang informasi yang SUDAH
+     ada dan terlihat di halaman ini (nama, tagline footer, riwayat
+     alumni di kartu organisasi, link sosial di footer) — tidak ada
+     fakta baru yang ditambahkan. Ini membantu Google memahami bahwa
+     halaman ini merepresentasikan satu entitas orang yang jelas,
+     dan berpotensi memicu Knowledge Panel / rich result.
+============================================================ -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
